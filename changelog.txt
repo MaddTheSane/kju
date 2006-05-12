@@ -1,3 +1,5 @@
+[fix] sources rearranged for svn
+
 Q-0.8.0d1105
 [fix] nib for guest downloader updated
 [fix] checking url in downloader updated
