@@ -1,0 +1,45 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>Create a new Diskimage</title>
+		<meta name="KEYWORDS" content="create diskimage qcow raw">
+		<meta name="DESCRIPTION" content="Guide to create a new Diskimage.">
+		<link rel="stylesheet" href="../stylesheet.css" type="text/css">
+	</head>
+	<body>
+		<a class="qhelp" href="../Q Help.html" target="_top"><img class="icon" src="../q_icon_16.png"> Q Help</a>
+		<h2>Create a new Diskimage</h2>
+		To create a new Diskimage select "create new Diskimage..." from the Menu "Tools".
+		<BR>
+		<BR>
+		<img src="../images/s_diskImage.jpg">
+		
+		<ol>
+			<li>Select the Size
+				<img class="cut" src="../images/s_diskImage_size.jpg">
+				Please enter the size of the Diskimage. The size is messured in Megabites.
+				See <a href="editPC.html"></a> for size recommandations.
+				<br><br>
+			
+			<li>Select the Format
+				<img class="cut" src="../images/s_diskImage_format.jpg">
+				<ul>
+					<li><b>qcow</b><br>
+					qcow is QEMUs own format for diskimages. qcow images start with a few kilobites and grow to the desired size. This saves Harddiskspace until the images eventually reaches the maximum size. qcow Images do not shrink, when you delete data on them.
+					<li><b>raw</b><br>
+					raw, also known as img or dsk are just plain diskimages, with not compression. They take longer to create and have all the time theyr original size. This imageformat can be mounted by OS X (you may have to rename them to .img). Please remember, that OS X will write special files to the image, if you mount it under OS X.
+				</ul>
+				<br><br>
+	
+			<li>Select a Filename
+				<img src="../images/s_diskImage_filename.jpg">
+				Please enter a Location and Filename for your new Diskimage. Please remember the place of your new Diskimage.
+				<br><br>
+				
+			<li>Please wait...<br>
+			qcow images are created almost instanteley. raw images can take some minutes to create! (depending oon the size).
+			
+			<li>Your Done!
+		</ol>
+	</body>
+</html>

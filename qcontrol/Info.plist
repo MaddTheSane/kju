@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>qvm</string>
+			</array>
+			<key>CFBundleTypeIconFile</key>
+			<string>q_doc_icon.icns</string>
+			<key>CFBundleTypeName</key>
+			<string>QEMU Virtual Machine</string>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+			<key>LSIsAppleDefaultForType</key>
+			<true/>
+			<key>LSTypeIsPackage</key>
+			<true/>
+		</dict>
+	</array>
+	<key>CFBundleExecutable</key>
+	<string>qemu-control</string>
+	<key>CFBundleHelpBookFolder</key>
+	<string>Q Help</string>
+	<key>CFBundleHelpBookName</key>
+	<string>Q Help</string>
+	<key>CFBundleIconFile</key>
+	<string>q_icon.icns</string>
+	<key>CFBundleIdentifier</key>
+	<string>ch.kberg.q</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>Q</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>QEMU_VERSION</string>
+	<key>CFBundleSignature</key>
+	<string>kiuu</string>
+	<key>CFBundleVersion</key>
+	<string>QEMU_VERSIONdQKJU_VERSION</string>
+	<key>NSMainNibFile</key>
+	<string>cocoaControl</string>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+</dict>
+</plist>

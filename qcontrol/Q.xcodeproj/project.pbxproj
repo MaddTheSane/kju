@@ -1,0 +1,418 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		27C4881F09A5DC3600485786 /* cocoaControl.nib in Resources */ = {isa = PBXBuildFile; fileRef = 27C4881709A5DC3600485786 /* cocoaControl.nib */; };
+		27C4882009A5DC3600485786 /* cocoaControlDiskImage.nib in Resources */ = {isa = PBXBuildFile; fileRef = 27C4881909A5DC3600485786 /* cocoaControlDiskImage.nib */; };
+		27C4882109A5DC3600485786 /* cocoaControlEditPC.nib in Resources */ = {isa = PBXBuildFile; fileRef = 27C4881B09A5DC3600485786 /* cocoaControlEditPC.nib */; };
+		27C4882209A5DC3600485786 /* cocoaControlPreferences.nib in Resources */ = {isa = PBXBuildFile; fileRef = 27C4881D09A5DC3600485786 /* cocoaControlPreferences.nib */; };
+		27C4882509A5DC8C00485786 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 27C4882309A5DC8C00485786 /* InfoPlist.strings */; };
+		27C4883109A5DCB700485786 /* cocoaControlPreferences.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C4882609A5DCB700485786 /* cocoaControlPreferences.m */; };
+		27C4883209A5DCB700485786 /* cocoaControlMain.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C4882809A5DCB700485786 /* cocoaControlMain.m */; };
+		27C4883309A5DCB700485786 /* cocoaControlEditPC.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C4882909A5DCB700485786 /* cocoaControlEditPC.m */; };
+		27C4883409A5DCB700485786 /* cocoaControlDOServer.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C4882B09A5DCB700485786 /* cocoaControlDOServer.m */; };
+		27C4883509A5DCB700485786 /* cocoaControlDiskImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C4882D09A5DCB700485786 /* cocoaControlDiskImage.m */; };
+		27C4883609A5DCB700485786 /* cocoaControlController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C4882F09A5DCB700485786 /* cocoaControlController.m */; };
+		27C4884809A5DD7E00485786 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 27C4884609A5DD7E00485786 /* Localizable.strings */; };
+		27C4885409A5DDAE00485786 /* q_table_shutdown.png in Resources */ = {isa = PBXBuildFile; fileRef = 27C4884909A5DDAE00485786 /* q_table_shutdown.png */; };
+		27C4885509A5DDAE00485786 /* q_icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 27C4884A09A5DDAE00485786 /* q_icon.icns */; };
+		27C4885609A5DDAE00485786 /* q_doc_icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 27C4884B09A5DDAE00485786 /* q_doc_icon.icns */; };
+		27C4885709A5DDAE00485786 /* Credits.html in Resources */ = {isa = PBXBuildFile; fileRef = 27C4884C09A5DDAE00485786 /* Credits.html */; };
+		27C4885809A5DDAE00485786 /* cocoa_tb_startpc_32.png in Resources */ = {isa = PBXBuildFile; fileRef = 27C4884D09A5DDAE00485786 /* cocoa_tb_startpc_32.png */; };
+		27C4885909A5DDAE00485786 /* cocoa_tb_removepc_32.png in Resources */ = {isa = PBXBuildFile; fileRef = 27C4884E09A5DDAE00485786 /* cocoa_tb_removepc_32.png */; };
+		27C4885A09A5DDAE00485786 /* cocoa_tb_editpc_32.png in Resources */ = {isa = PBXBuildFile; fileRef = 27C4884F09A5DDAE00485786 /* cocoa_tb_editpc_32.png */; };
+		27C4885B09A5DDAE00485786 /* cocoa_tb_newpc_32.png in Resources */ = {isa = PBXBuildFile; fileRef = 27C4885009A5DDAE00485786 /* cocoa_tb_newpc_32.png */; };
+		27C4885C09A5DDAE00485786 /* cocoa_tb_hardware.png in Resources */ = {isa = PBXBuildFile; fileRef = 27C4885109A5DDAE00485786 /* cocoa_tb_hardware.png */; };
+		27C4885D09A5DDAE00485786 /* cocoa_tb_general.png in Resources */ = {isa = PBXBuildFile; fileRef = 27C4885209A5DDAE00485786 /* cocoa_tb_general.png */; };
+		27C4885E09A5DDAE00485786 /* cocoa_tb_advanced.png in Resources */ = {isa = PBXBuildFile; fileRef = 27C4885309A5DDAE00485786 /* cocoa_tb_advanced.png */; };
+		27C4886509A5E09600485786 /* Carbon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27C4886409A5E09600485786 /* Carbon.framework */; };
+		27C4890E09A5E23A00485786 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D1107310486CEB800E47090 /* Info.plist */; };
+		8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildStyle section */
+		4A9504CCFFE6A4B311CA0CBA /* Debug */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+		4A9504CDFFE6A4B311CA0CBA /* Release */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+			};
+			name = Release;
+		};
+/* End PBXBuildStyle section */
+
+/* Begin PBXFileReference section */
+		1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
+		13E42FB307B3F0F600E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
+		27C4881809A5DC3600485786 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = Resources/English.lproj/cocoaControl.nib; sourceTree = "<group>"; };
+		27C4881A09A5DC3600485786 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = Resources/English.lproj/cocoaControlDiskImage.nib; sourceTree = "<group>"; };
+		27C4881C09A5DC3600485786 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = Resources/English.lproj/cocoaControlEditPC.nib; sourceTree = "<group>"; };
+		27C4881E09A5DC3600485786 /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = Resources/English.lproj/cocoaControlPreferences.nib; sourceTree = "<group>"; };
+		27C4882409A5DC8C00485786 /* English */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.plist.strings; name = English; path = Resources/English.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		27C4882609A5DCB700485786 /* cocoaControlPreferences.m */ = {isa = PBXFileReference; fileEncoding = 12; lastKnownFileType = sourcecode.c.objc; path = cocoaControlPreferences.m; sourceTree = "<group>"; };
+		27C4882709A5DCB700485786 /* cocoaControlPreferences.h */ = {isa = PBXFileReference; fileEncoding = 12; lastKnownFileType = sourcecode.c.h; path = cocoaControlPreferences.h; sourceTree = "<group>"; };
+		27C4882809A5DCB700485786 /* cocoaControlMain.m */ = {isa = PBXFileReference; fileEncoding = 12; lastKnownFileType = sourcecode.c.objc; path = cocoaControlMain.m; sourceTree = "<group>"; };
+		27C4882909A5DCB700485786 /* cocoaControlEditPC.m */ = {isa = PBXFileReference; fileEncoding = 12; lastKnownFileType = sourcecode.c.objc; path = cocoaControlEditPC.m; sourceTree = "<group>"; };
+		27C4882A09A5DCB700485786 /* cocoaControlEditPC.h */ = {isa = PBXFileReference; fileEncoding = 12; lastKnownFileType = sourcecode.c.h; path = cocoaControlEditPC.h; sourceTree = "<group>"; };
+		27C4882B09A5DCB700485786 /* cocoaControlDOServer.m */ = {isa = PBXFileReference; fileEncoding = 12; lastKnownFileType = sourcecode.c.objc; path = cocoaControlDOServer.m; sourceTree = "<group>"; };
+		27C4882C09A5DCB700485786 /* cocoaControlDOServer.h */ = {isa = PBXFileReference; fileEncoding = 12; lastKnownFileType = sourcecode.c.h; path = cocoaControlDOServer.h; sourceTree = "<group>"; };
+		27C4882D09A5DCB700485786 /* cocoaControlDiskImage.m */ = {isa = PBXFileReference; fileEncoding = 12; lastKnownFileType = sourcecode.c.objc; path = cocoaControlDiskImage.m; sourceTree = "<group>"; };
+		27C4882E09A5DCB700485786 /* cocoaControlDiskImage.h */ = {isa = PBXFileReference; fileEncoding = 12; lastKnownFileType = sourcecode.c.h; path = cocoaControlDiskImage.h; sourceTree = "<group>"; };
+		27C4882F09A5DCB700485786 /* cocoaControlController.m */ = {isa = PBXFileReference; fileEncoding = 12; lastKnownFileType = sourcecode.c.objc; path = cocoaControlController.m; sourceTree = "<group>"; };
+		27C4883009A5DCB700485786 /* cocoaControlController.h */ = {isa = PBXFileReference; fileEncoding = 12; lastKnownFileType = sourcecode.c.h; path = cocoaControlController.h; sourceTree = "<group>"; };
+		27C4884709A5DD7E00485786 /* English */ = {isa = PBXFileReference; fileEncoding = 10; lastKnownFileType = text.plist.strings; name = English; path = Resources/English.lproj/Localizable.strings; sourceTree = "<group>"; };
+		27C4884909A5DDAE00485786 /* q_table_shutdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = q_table_shutdown.png; path = Resources/q_table_shutdown.png; sourceTree = "<group>"; };
+		27C4884A09A5DDAE00485786 /* q_icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = q_icon.icns; path = Resources/q_icon.icns; sourceTree = "<group>"; };
+		27C4884B09A5DDAE00485786 /* q_doc_icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = q_doc_icon.icns; path = Resources/q_doc_icon.icns; sourceTree = "<group>"; };
+		27C4884C09A5DDAE00485786 /* Credits.html */ = {isa = PBXFileReference; fileEncoding = 12; lastKnownFileType = text.html; name = Credits.html; path = Resources/Credits.html; sourceTree = "<group>"; };
+		27C4884D09A5DDAE00485786 /* cocoa_tb_startpc_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cocoa_tb_startpc_32.png; path = Resources/cocoa_tb_startpc_32.png; sourceTree = "<group>"; };
+		27C4884E09A5DDAE00485786 /* cocoa_tb_removepc_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cocoa_tb_removepc_32.png; path = Resources/cocoa_tb_removepc_32.png; sourceTree = "<group>"; };
+		27C4884F09A5DDAE00485786 /* cocoa_tb_editpc_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cocoa_tb_editpc_32.png; path = Resources/cocoa_tb_editpc_32.png; sourceTree = "<group>"; };
+		27C4885009A5DDAE00485786 /* cocoa_tb_newpc_32.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cocoa_tb_newpc_32.png; path = Resources/cocoa_tb_newpc_32.png; sourceTree = "<group>"; };
+		27C4885109A5DDAE00485786 /* cocoa_tb_hardware.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cocoa_tb_hardware.png; path = Resources/cocoa_tb_hardware.png; sourceTree = "<group>"; };
+		27C4885209A5DDAE00485786 /* cocoa_tb_general.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cocoa_tb_general.png; path = Resources/cocoa_tb_general.png; sourceTree = "<group>"; };
+		27C4885309A5DDAE00485786 /* cocoa_tb_advanced.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cocoa_tb_advanced.png; path = Resources/cocoa_tb_advanced.png; sourceTree = "<group>"; };
+		27C4886409A5E09600485786 /* Carbon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Carbon.framework; path = /System/Library/Frameworks/Carbon.framework; sourceTree = "<absolute>"; };
+		29B97324FDCFA39411CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
+		29B97325FDCFA39411CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
+		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		8D1107320486CEB800E47090 /* Q.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Q.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8D11072E0486CEB800E47090 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8D11072F0486CEB800E47090 /* Cocoa.framework in Frameworks */,
+				27C4886509A5E09600485786 /* Carbon.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		080E96DDFE201D6D7F000001 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Classes;
+			sourceTree = "<group>";
+		};
+		1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				27C4886409A5E09600485786 /* Carbon.framework */,
+				1058C7A1FEA54F0111CA2CBB /* Cocoa.framework */,
+			);
+			name = "Linked Frameworks";
+			sourceTree = "<group>";
+		};
+		1058C7A2FEA54F0111CA2CBB /* Other Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				29B97324FDCFA39411CA2CEA /* AppKit.framework */,
+				13E42FB307B3F0F600E4EEF1 /* CoreData.framework */,
+				29B97325FDCFA39411CA2CEA /* Foundation.framework */,
+			);
+			name = "Other Frameworks";
+			sourceTree = "<group>";
+		};
+		19C28FACFE9D520D11CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8D1107320486CEB800E47090 /* Q.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		29B97314FDCFA39411CA2CEA /* Q */ = {
+			isa = PBXGroup;
+			children = (
+				080E96DDFE201D6D7F000001 /* Classes */,
+				29B97315FDCFA39411CA2CEA /* Other Sources */,
+				29B97317FDCFA39411CA2CEA /* Resources */,
+				29B97323FDCFA39411CA2CEA /* Frameworks */,
+				19C28FACFE9D520D11CA2CBB /* Products */,
+			);
+			name = Q;
+			sourceTree = "<group>";
+		};
+		29B97315FDCFA39411CA2CEA /* Other Sources */ = {
+			isa = PBXGroup;
+			children = (
+				27C4882609A5DCB700485786 /* cocoaControlPreferences.m */,
+				27C4882709A5DCB700485786 /* cocoaControlPreferences.h */,
+				27C4882809A5DCB700485786 /* cocoaControlMain.m */,
+				27C4882909A5DCB700485786 /* cocoaControlEditPC.m */,
+				27C4882A09A5DCB700485786 /* cocoaControlEditPC.h */,
+				27C4882B09A5DCB700485786 /* cocoaControlDOServer.m */,
+				27C4882C09A5DCB700485786 /* cocoaControlDOServer.h */,
+				27C4882D09A5DCB700485786 /* cocoaControlDiskImage.m */,
+				27C4882E09A5DCB700485786 /* cocoaControlDiskImage.h */,
+				27C4882F09A5DCB700485786 /* cocoaControlController.m */,
+				27C4883009A5DCB700485786 /* cocoaControlController.h */,
+			);
+			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		29B97317FDCFA39411CA2CEA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				27C4884909A5DDAE00485786 /* q_table_shutdown.png */,
+				27C4884A09A5DDAE00485786 /* q_icon.icns */,
+				27C4884B09A5DDAE00485786 /* q_doc_icon.icns */,
+				27C4884C09A5DDAE00485786 /* Credits.html */,
+				27C4884D09A5DDAE00485786 /* cocoa_tb_startpc_32.png */,
+				27C4884E09A5DDAE00485786 /* cocoa_tb_removepc_32.png */,
+				27C4884F09A5DDAE00485786 /* cocoa_tb_editpc_32.png */,
+				27C4885009A5DDAE00485786 /* cocoa_tb_newpc_32.png */,
+				27C4885109A5DDAE00485786 /* cocoa_tb_hardware.png */,
+				27C4885209A5DDAE00485786 /* cocoa_tb_general.png */,
+				27C4885309A5DDAE00485786 /* cocoa_tb_advanced.png */,
+				27C4884609A5DD7E00485786 /* Localizable.strings */,
+				27C4882309A5DC8C00485786 /* InfoPlist.strings */,
+				27C4881709A5DC3600485786 /* cocoaControl.nib */,
+				27C4881909A5DC3600485786 /* cocoaControlDiskImage.nib */,
+				27C4881B09A5DC3600485786 /* cocoaControlEditPC.nib */,
+				27C4881D09A5DC3600485786 /* cocoaControlPreferences.nib */,
+				8D1107310486CEB800E47090 /* Info.plist */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1058C7A0FEA54F0111CA2CBB /* Linked Frameworks */,
+				1058C7A2FEA54F0111CA2CBB /* Other Frameworks */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8D1107260486CEB800E47090 /* Q */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Q" */;
+			buildPhases = (
+				8D1107290486CEB800E47090 /* Resources */,
+				8D11072C0486CEB800E47090 /* Sources */,
+				8D11072E0486CEB800E47090 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			buildSettings = {
+			};
+			dependencies = (
+			);
+			name = Q;
+			productInstallPath = "$(HOME)/Applications";
+			productName = Q;
+			productReference = 8D1107320486CEB800E47090 /* Q.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		29B97313FDCFA39411CA2CEA /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Q" */;
+			buildSettings = {
+			};
+			buildStyles = (
+				4A9504CCFFE6A4B311CA0CBA /* Debug */,
+				4A9504CDFFE6A4B311CA0CBA /* Release */,
+			);
+			hasScannedForEncodings = 1;
+			mainGroup = 29B97314FDCFA39411CA2CEA /* Q */;
+			projectDirPath = "";
+			targets = (
+				8D1107260486CEB800E47090 /* Q */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		8D1107290486CEB800E47090 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				27C4881F09A5DC3600485786 /* cocoaControl.nib in Resources */,
+				27C4882009A5DC3600485786 /* cocoaControlDiskImage.nib in Resources */,
+				27C4882109A5DC3600485786 /* cocoaControlEditPC.nib in Resources */,
+				27C4882209A5DC3600485786 /* cocoaControlPreferences.nib in Resources */,
+				27C4882509A5DC8C00485786 /* InfoPlist.strings in Resources */,
+				27C4884809A5DD7E00485786 /* Localizable.strings in Resources */,
+				27C4885409A5DDAE00485786 /* q_table_shutdown.png in Resources */,
+				27C4885509A5DDAE00485786 /* q_icon.icns in Resources */,
+				27C4885609A5DDAE00485786 /* q_doc_icon.icns in Resources */,
+				27C4885709A5DDAE00485786 /* Credits.html in Resources */,
+				27C4885809A5DDAE00485786 /* cocoa_tb_startpc_32.png in Resources */,
+				27C4885909A5DDAE00485786 /* cocoa_tb_removepc_32.png in Resources */,
+				27C4885A09A5DDAE00485786 /* cocoa_tb_editpc_32.png in Resources */,
+				27C4885B09A5DDAE00485786 /* cocoa_tb_newpc_32.png in Resources */,
+				27C4885C09A5DDAE00485786 /* cocoa_tb_hardware.png in Resources */,
+				27C4885D09A5DDAE00485786 /* cocoa_tb_general.png in Resources */,
+				27C4885E09A5DDAE00485786 /* cocoa_tb_advanced.png in Resources */,
+				27C4890E09A5E23A00485786 /* Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8D11072C0486CEB800E47090 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				27C4883109A5DCB700485786 /* cocoaControlPreferences.m in Sources */,
+				27C4883209A5DCB700485786 /* cocoaControlMain.m in Sources */,
+				27C4883309A5DCB700485786 /* cocoaControlEditPC.m in Sources */,
+				27C4883409A5DCB700485786 /* cocoaControlDOServer.m in Sources */,
+				27C4883509A5DCB700485786 /* cocoaControlDiskImage.m in Sources */,
+				27C4883609A5DCB700485786 /* cocoaControlController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		27C4881709A5DC3600485786 /* cocoaControl.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				27C4881809A5DC3600485786 /* English */,
+			);
+			name = cocoaControl.nib;
+			sourceTree = "<group>";
+		};
+		27C4881909A5DC3600485786 /* cocoaControlDiskImage.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				27C4881A09A5DC3600485786 /* English */,
+			);
+			name = cocoaControlDiskImage.nib;
+			sourceTree = "<group>";
+		};
+		27C4881B09A5DC3600485786 /* cocoaControlEditPC.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				27C4881C09A5DC3600485786 /* English */,
+			);
+			name = cocoaControlEditPC.nib;
+			sourceTree = "<group>";
+		};
+		27C4881D09A5DC3600485786 /* cocoaControlPreferences.nib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				27C4881E09A5DC3600485786 /* English */,
+			);
+			name = cocoaControlPreferences.nib;
+			sourceTree = "<group>";
+		};
+		27C4882309A5DC8C00485786 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				27C4882409A5DC8C00485786 /* English */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		27C4884609A5DD7E00485786 /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				27C4884709A5DD7E00485786 /* English */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		C01FCF4B08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = Q;
+				WRAPPER_EXTENSION = app;
+				ZERO_LINK = YES;
+			};
+			name = Debug;
+		};
+		C01FCF4C08A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_MODEL_TUNING = G5;
+				INFOPLIST_FILE = Info.plist;
+				INSTALL_PATH = "$(HOME)/Applications";
+				PRODUCT_NAME = Q;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		C01FCF4F08A954540054247B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+			};
+			name = Debug;
+		};
+		C01FCF5008A954540054247B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		C01FCF4A08A954540054247B /* Build configuration list for PBXNativeTarget "Q" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4B08A954540054247B /* Debug */,
+				C01FCF4C08A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C01FCF4E08A954540054247B /* Build configuration list for PBXProject "Q" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C01FCF4F08A954540054247B /* Debug */,
+				C01FCF5008A954540054247B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 29B97313FDCFA39411CA2CEA /* Project object */;
+}

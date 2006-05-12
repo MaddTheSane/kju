@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IBDocumentLocation</key>
+	<string>36 339 444 452 0 0 1280 832 </string>
+	<key>IBEditorPositions</key>
+	<dict>
+		<key>478</key>
+		<string>486 374 440 433 0 0 1440 878 </string>
+		<key>570</key>
+		<string>486 477 440 216 0 0 1440 878 </string>
+		<key>736</key>
+		<string>486 371 440 427 0 0 1440 878 </string>
+	</dict>
+	<key>IBFramework Version</key>
+	<string>443.0</string>
+	<key>IBOpenObjects</key>
+	<array>
+		<integer>570</integer>
+		<integer>736</integer>
+		<integer>10</integer>
+		<integer>478</integer>
+	</array>
+	<key>IBSystem Version</key>
+	<string>8I1119</string>
+	<key>IBUsesTextArchiving</key>
+	<true/>
+</dict>
+</plist>

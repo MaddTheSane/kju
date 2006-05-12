@@ -1,0 +1,23 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {showDownloadsByType = id; startDownload = id; stopDownload = id; }; 
+            CLASS = cocoaDownloadController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                detailsNSView = id; 
+                detailsTextView = id; 
+                downloadButton = id; 
+                mainDlWindow = id; 
+                osTypeSelect = id; 
+                statusBar = id; 
+                statusText = id; 
+                table = id; 
+                welcomePanel = id; 
+            }; 
+            SUPERCLASS = NSObject; 
+        }
+    ); 
+    IBVersion = 1; 
+}

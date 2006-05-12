@@ -1,0 +1,33 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {CLASS = QemuCocoaOpenGLView; LANGUAGE = ObjC; SUPERCLASS = NSOpenGLView; }, 
+        {
+            ACTIONS = {
+                addPC = id; 
+                deletePC = id; 
+                editPC = id; 
+                importQemuXPCs = id; 
+                importVPC7PC = id; 
+                openDIWindow = id; 
+                openDownloadWindow = id; 
+                showPreferences = id; 
+                tableDoubleClick = id; 
+            }; 
+            CLASS = cocoaControlController; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                mainWindow = id; 
+                progressIndicator = NSProgressIndicator; 
+                progressPanel = id; 
+                progressStatusText = NSTextField; 
+                progressText = NSTextField; 
+                progressTitle = NSTextField; 
+                table = NSTableView; 
+                windowMenu = id; 
+            }; 
+            SUPERCLASS = NSObject; 
+        }
+    ); 
+    IBVersion = 1; 
+}
