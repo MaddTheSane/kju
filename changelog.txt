@@ -1,0 +1,148 @@
+Q-0.8.0d1105
+[fix] nib for guest downloader updated
+[fix] checking url in downloader updated
+
+Q-0.8.0d1103
+[new] new guests created directly from free.oszoo.org
+[new] grabless support thru emulated usb tablet
+[new] new Application icon (andi)
+[new] initial intel binaries for ARM, PPC, SPARC, MIPS
+[new] Quartz border for drag'n'drop
+[new] Quartz overlay for pause
+[new] OpenGL border for drag'n'drop
+[new] OpenGL overlay for pause
+[fix] editPC supports usb tablet
+[fix] ctrl-alt-f for fullscreen
+[fix] built on current QEMU CVS
+[fix] Quartz optimized for Intel, rgba
+[fix] Quartz for OS X 10.3.x
+[fix] OpenGL optized for Intel, rgba
+[fix] vga optinized for Intel, rgba
+[fix] guest names are checked for illegal characters (:./)
+[fix] Credits updated
+
+Q-0.8.0d949
+[new] command-m miniaturizes a guests Window
+[fix] Quartz display output optimized for intel
+[fix] Q Windows Drivers are not mounted by default
+[fix] 32px toolbar icons included
+[fix] dropDownToolbarIcons support 32pc images
+
+Q-0.8.0d871
+[new] Shutdown image (txs Tim A)
+[new] new 32px and 24px toolbar icons (andi)
+[fix] parity_table (txs gwenole)
+[fix] windowordering after taskswitching respects keywindow and old window order
+[fix] clicking on Q Control won't bring guests to front
+
+Q-0.8.0d788
+[new] initial Quartz display output with fullscreen and thumbnail support
+[fix] QuickDraw saves VM state correctly
+[fix] OpenGL Thumbnail displayed correctly
+[fix] Adlib x86 functional
+[fix] Credits updated
+
+Q-0.8.0d680
+[fix] load VM: keyboard sending bugged characters
+[fix] load PC: progressPanel remains until PC is loaded
+[fix] edit PC: no -append with no argument
+[fix] QemuX import: threaded toolbar -> no freeze
+[fix] VPC7 import: threaded toolbar -> no freeze
+[fix] Credits updated
+
+Q-0.8.0d649
+[new] OpenGL is enabled by default
+[new] Search for Updates is enabled by default
+[new] Preferences: Guests folder freely selectable
+[new] Preferences: further explanations for the individual options
+[new] QemuX import: added warining at end
+[new] VPC7 import: added warning at end
+[new] Guest toolbar item: ctrl-alt-del
+[new] Guest toolbar item: pause
+[new] new/edit PC better defaults for win2k and xp
+
+Q-0.8.0d631
+[fix] guest grab window title
+[new] QemuX import progress indication panel
+[new] VPC7 import toolbar icon
+[new] VPC7 import Open panel converted to sheet
+[fix] QemuX import table is not updated before the converted PCs are saved
+[fix] VPC7 import table is not updated before the converted PCs are saved
+[fix] VPC7 import alert if converter fails because of unreadable files
+
+Q-0.8.0d606
+[new] Progress indication panel for VP7 import
+[new] VPC7 Diskimages are converted and compressed when imported
+[new] "New X compressed Diskimage" for advanced tab implemented
+[new] "Create other diskimage..." for advanced tab implemented
+[fix] english localization updated (txs Peter)
+[fix] new guests are saved
+
+Q-0.8.0d577
+[new] Q Control Strings localizable
+[new] Q Guest Strings localizable
+[fix] -win2k-hack for DMA
+[fix] new importVPC7PC alerts
+[fix] Sourcecode cleanup
+
+Q-0.8.0d562
+[new] qemu universal binary
+[new] Advanced Options: Harddisk 2
+[new] Advanced Options: Harddisk 3
+[new] Advanced Options: Harddisk 4
+[new] Advanced Options: -win2k-hack
+[new] Advanced Options: Linux Kernel
+[new] Advanced Options: Linux InitRD
+[new] Advanced Options: Linux Kernel Commandline
+[fix] image filenames shorter than 13 chars don't corrupt editPC Panel
+[fix] Q control is always odered in front of guests if activated
+
+Q-0.8.0d537
+[new] 3rd attempt to bring all guest to front, when app is activated
+[new] (un)hiding Q will (un)hide all Guests
+[new] qemu-control universal binary
+[new] qemu-img universal binary
+[fix] QemuX import resets correctly after each guest (cordney*)
+
+Q-0.8.0d500
+[new] VM can be stopped when window is inactive
+
+Q-0.8.0d491
+[new] drag'n'drop support for smb/Q shared files
+[new] diskimage with Q Windows Drivers included
+[new] filesharing available offline
+[new] editPCPanel uses sheets for folder and file selection
+[new] smbFilesharing default: Q Shared Files
+[fix] free qemu Arguments are cleaned up when editPCPanel opens 
+
+Q-0.8.0d347
+[new] dIWindow appears as sheet when called by editPCPanel
+[new] importQemuXPCs supports relative paths (cordney*)
+[fix] dIWindow no longer blocked by editPCPanel
+
+Q-0.8.0d398
+[fix] Japanese Keys "/" and "|" swapped
+
+Q-0.8.0d394
+[new] support for japanese Keyboard Keys "/" and "|"
+[fix] "Q Shared Files" repaired
+
+Q-0.8.0d393
+[new] QemuX import (cordney*)
+[new] .qvm 0.2.0
+
+Q-0.8.0d246
+[new] removed converter for old profiles
+[new] activating brings all guests to front
+
+Q-0.8.0d214
+[new] editPC: other Folders supported for SMB
+[fix] Networking fixed
+
+Q-0.8.0d191
+[new] preferences Window: new
+[new] editPC Window: updated
+[new] icons: new
+[new] Versioning: new
+[new] Check for Updates: new
+[new] Windows: unified Style
