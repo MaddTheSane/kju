@@ -1,0 +1,20 @@
+--- pc.c	2006-02-05 05:14:41.000000000 +0100
++++ pc.c_2	2006-04-21 23:21:30.000000000 +0200
+@@ -195,14 +195,14 @@
+     switch(boot_device) {
+     case 'a':
+     case 'b':
+-        rtc_set_memory(s, 0x3d, 0x01); /* floppy boot */
++        rtc_set_memory(s, 0x3d, 0x21); /* floppy boot */
+         break;
+     default:
+     case 'c':
+-        rtc_set_memory(s, 0x3d, 0x02); /* hard drive boot */
++        rtc_set_memory(s, 0x3d, 0x32); /* hard drive boot */
+         break;
+     case 'd':
+-        rtc_set_memory(s, 0x3d, 0x03); /* CD-ROM boot */
++        rtc_set_memory(s, 0x3d, 0x23); /* CD-ROM boot */
+         break;
+     }
+ 

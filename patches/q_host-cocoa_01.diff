@@ -1,0 +1,27 @@
+Index: Makefile.target
+===================================================================
+RCS file: /sources/qemu/qemu/Makefile.target,v
+retrieving revision 1.90
+diff -u -r1.90 Makefile.target
+--- Makefile.target	6 Dec 2005 21:42:17 -0000	1.90
++++ Makefile.target	12 Dec 2005 17:21:18 -0000
+@@ -342,8 +342,8 @@
+ VL_OBJS+=sdl.o
+ endif
+ ifdef CONFIG_COCOA
+-VL_OBJS+=cocoa.o
+-COCOA_LIBS=-F/System/Library/Frameworks -framework Cocoa -framework IOKit
++VL_OBJS+=cocoaQemuMain.o cocoaQemuController.o cocoaQemu.o cocoaQemuProgressWindow.o cocoaQemuWindow.o cocoaQemuOpenGLView.o cocoaQemuQuartzView.o cocoaQemuQuickDrawView.o cocoaPopUpView.o cocoaCpuView.o
++COCOA_LIBS=-F/System/Library/Frameworks -framework Cocoa -framework IOKit -framework CoreFoundation -framework OpenGL -framework ApplicationServices
+ ifdef CONFIG_COREAUDIO
+ COCOA_LIBS+=-framework CoreAudio
+ endif
+@@ -385,7 +385,7 @@
+ $(QEMU_SYSTEM): $(VL_OBJS) libqemu.a
+ 	$(CC) $(VL_LDFLAGS) -o $@ $^ $(LIBS) $(SDL_LIBS) $(COCOA_LIBS) $(VL_LIBS)
+ 
+-cocoa.o: cocoa.m
++cocoa%.o: host-cocoa/cocoa%.m
+ 	$(CC) $(CFLAGS) $(DEFINES) -c -o $@ $<
+ 
+ sdl.o: sdl.c keymaps.c sdl_keysym.h

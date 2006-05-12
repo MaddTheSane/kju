@@ -1,0 +1,14 @@
+--- slirp.c	Fri Oct  8 01:27:35 2004
++++ slirp2.c	Wed Apr 13 11:16:54 2005
+@@ -148,8 +148,9 @@
+     inet_aton("127.0.0.1", &loopback_addr);
+ 
+     if (get_dns_addr(&dns_addr) < 0) {
+-        fprintf(stderr, "Could not get DNS address\n");
+-        exit(1);
++        fprintf(stderr, "Could not get DNS address, assuming 127.0.0.1\n");
++        // exit(1);
++        inet_aton("127.0.0.1", &dns_addr);
+     }
+ 
+     inet_aton(CTL_SPECIAL, &special_addr);
