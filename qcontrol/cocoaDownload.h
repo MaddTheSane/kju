@@ -43,9 +43,12 @@
     NSURLDownload * theDownload;
     
     // BT Download stuff
-    tr_handle_t                 * fHandle;
+    tr_handle_t                 * fHandle; // main handle for libtransmission instance
+    tr_torrent_t                * tHandle; // handle for single torrent
+    int                         tError; // error code returned by tr_torrentInit
     int                         fCount, fSeeding, fDownloading, fCompleted;
-    tr_stat_t                   * fStat;
+    tr_stat_t                   * tStat;
+    tr_info_t                   * tInfo;
     io_connect_t                fRootPort;
     NSArray                     * fFilenames;
     NSTimer                     * fTimer;

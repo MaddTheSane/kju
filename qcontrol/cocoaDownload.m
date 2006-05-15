@@ -136,24 +136,25 @@
     NSData * torrentFile = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
     [torrentFile writeToFile:torrentPath atomically:YES];
     // init some values
-    fCount = 0;
+    /*fCount = 0;
     fDownloading = 0;
     fSeeding = 0;
-    fCompleted = 0;
-    fStat  = nil;
+    fCompleted = 0;*/
+    tStat = nil;
+    tInfo = nil;
     // get the download data every 10ms &
     // start the torrent download
-    if(tr_torrentInit( fHandle, [torrentPath UTF8String] ) == 0 ) {
-        tr_torrentSetFolder( fHandle, 0, [[torrentPath stringByDeletingLastPathComponent] UTF8String] );
-        tr_torrentStart( fHandle, 0 );
+    tHandle = tr_torrentInit( fHandle, [torrentPath UTF8String], &tError );
+    if(tHandle != NULL) {
+        tr_torrentSetFolder( tHandle, [[torrentPath stringByDeletingLastPathComponent] UTF8String] );
+        tr_torrentStart( tHandle );
         fTimer = [NSTimer scheduledTimerWithTimeInterval: 0.1 target: self selector: @selector( BTDownloadDidReceiveData: ) userInfo: nil repeats: YES];
         
         // set the save path
-        if (fStat)
-            free(fStat);
         
-        fCount = tr_torrentStat( fHandle, &fStat );
-        savePath = [[torrentPath stringByDeletingLastPathComponent] stringByAppendingPathComponent:[NSString stringWithUTF8String:fStat[0].info.name]];
+        tStat = tr_torrentStat( tHandle );
+        tInfo = tr_torrentInfo ( tHandle );
+        savePath = [[torrentPath stringByDeletingLastPathComponent] stringByAppendingPathComponent:[NSString stringWithUTF8String:tInfo[0].name]];
         [savePath retain];
         
         // tell the controller that the download started
@@ -170,9 +171,9 @@
         [theDownload cancel];
         [theDownload release];
     } else if(isBT) {
-        tr_torrentStop(fHandle, 0);
-        tr_torrentClose(fHandle, 0);
-        tr_close(fHandle);
+        tr_torrentStop( tHandle );
+        tr_torrentClose( fHandle, tHandle );
+        tr_close( fHandle );
         [fTimer invalidate];
     }
 }
@@ -240,15 +241,12 @@
 
 - (void) BTDownloadDidReceiveData:(NSTimer *)theTimer
 {
-    int i;
-
     //Update download values
-    if (fStat)
-        free(fStat);
         
-    fCount = tr_torrentStat( fHandle, &fStat );
-    fDownloading = 0;
-    fSeeding = 0;
+    tStat = tr_torrentStat( tHandle );
+    tInfo = tr_torrentInfo( tHandle );
+    /*fDownloading = 0;
+    fSeeding = 0;*/
 
     /*
     //Update the global DL/UL rates
@@ -266,28 +264,26 @@
         ... (see transmission.h->tr_torrentStat)
     */
     
-    receivedContentLength = fStat[0].downloaded;
-    expectedContentLength = fStat[0].info.totalSize;
-    downloadRate = fStat[0].rateDownload;
+    receivedContentLength = tStat[0].downloaded;
+    expectedContentLength = tInfo[0].totalSize;
+    downloadRate = tStat[0].rateDownload;
         
     [[NSNotificationCenter defaultCenter] postNotificationName:@"DownloadDidReceiveData" object:self];
     
-    //check if torrent(s) have recently ended.
-    for (i = 0; i < fCount; i++)
-    {
-        if (fStat[i].status & (TR_STATUS_CHECK | TR_STATUS_DOWNLOAD))
-            fDownloading++;
-        else if (fStat[i].status & TR_STATUS_SEED)
-            fSeeding++;
+    // check if torrent has recently ended.
+
+        if (tStat[0].status & (TR_STATUS_CHECK | TR_STATUS_DOWNLOAD)) {
+            // do nothing
+        } else if (tStat[0].status & TR_STATUS_SEED) {
+            // do nothing
             //NSLog(@"Seeding download.");
 
-        if( !tr_getFinished( fHandle, i ) )
-            continue;
-
-        fCompleted++;
-        tr_setFinished( fHandle, i, 0 );
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"DownloadDidFinish" object:self];
-    }
+            if( tr_getFinished( tHandle ) == 1 ) {
+                //tr_setFinished( fHandle, i, 0 );
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"DownloadDidFinish" object:self];
+            }
+        }
+        
     // DEBUG output
     //NSLog(@"peers: %d | dlRate: %d", fStat[0].peersTotal, fStat[0].rateDownload);
 }
