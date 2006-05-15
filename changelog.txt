@@ -1,3 +1,4 @@
+[fix] build failure due to Transmission API change
 [fix] sources rearranged for svn
 
 Q-0.8.0d1105
