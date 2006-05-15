@@ -319,12 +319,28 @@
 		return;
 	
 	int status = [[aNotification object] terminationStatus];
-	if (status == 0)
+	if (status == 0) {
 		[[thisPC objectForKey:@"PC Data"] setObject:@"shutdown" forKey:@"state"];
-	else if (status == 2)
+	} else if (status == 2) {
 		[[thisPC objectForKey:@"PC Data"] setObject:@"saved" forKey:@"state"];
-	else
+	} else {
+        // something is wrong here :-)
 		[[thisPC objectForKey:@"PC Data"] setObject:@"shutdown" forKey:@"state"];
+		
+		// error management here //
+        NSData * pipedata;
+        //NSFileHandle * fileHandle = [pcsPipes objectForKey:[[thisPC objectForKey:@"PC Data"] objectForKey:@"name"] fileHandleForReading];
+        
+        while ((pipedata = [[[[pcsTasks objectForKey:[[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]] standardOutput] fileHandleForReading] availableData]) && [pipedata length])
+		{
+            NSString * console_out = [[[NSString alloc] initWithData:pipedata encoding:NSUTF8StringEncoding] autorelease];
+            // trim string to only contain the error
+            NSArray * comps = [console_out componentsSeparatedByString:@": "];
+            NSLog(@"error: %@", console_out);
+            NSString * errormsg = [@"Error: " stringByAppendingString:[comps objectAtIndex:1]];         
+            [self standardAlert:@"Qemu unexpectedly quit" informativeText:errormsg];         
+        }
+    }
 
 	/* Save Data */
 	[self savePCConfiguration:thisPC];
@@ -340,6 +356,8 @@
 	[thisPC release];
 	[pcsTasks removeObjectForKey:[[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]];
 	[pcsPIDs removeObjectForKey:[NSString stringWithFormat:@"%d", [[aNotification object] processIdentifier]]];
+	if([pcsPipes objectForKey:[[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]])
+        [pcsPipes removeObjectForKey:[[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]];
 
 }
 
@@ -1259,6 +1277,13 @@
 	[task setLaunchPath: [NSString stringWithFormat:@"%@/Contents/MacOS/%@.app/Contents/MacOS/%@", [[NSBundle mainBundle] bundlePath], [cpuTypes objectForKey:[[thisPC objectForKey:@"PC Data"] objectForKey:@"architecture"]], [cpuTypes objectForKey:[[thisPC objectForKey:@"PC Data"] objectForKey:@"architecture"]]]];
 	[task setArguments: arguments];
 	[arguments release];
+	
+	// prepare nstask output to grab exit codes
+    NSPipe * pipe = [[NSPipe alloc] init];
+
+	[task setStandardOutput: pipe];
+    [task setStandardError: pipe];
+    
 	[task launch];
 	
 	/* add entry to windowMenu */
@@ -1271,7 +1296,9 @@
 	/* save PID */
 	[pcsPIDs setObject:thisPC forKey:[NSString stringWithFormat:@"%d", [task processIdentifier]]];
 	[pcsTasks setObject:task forKey:[[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]];
+	[pcsPipes setObject:pipe forKey:[[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]];
 	[task release];
+	[pipe release];
 	
 	/* update Table */
 	[self loadConfigurations];

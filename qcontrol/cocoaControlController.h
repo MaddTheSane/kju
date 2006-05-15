@@ -66,6 +66,10 @@
 	cocoaControlPreferences *preferences;
 	
 	/* newImage */
+	
+	/* NSTask specific */
+    NSMutableDictionary * pcsPipes;
+    NSMutableDictionary * pcsHandles;
 }
 /* init & dealloc */
 - (id) init;
