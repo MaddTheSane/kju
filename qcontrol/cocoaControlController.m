@@ -353,11 +353,12 @@
 	[windowMenu removeItemAtIndex:[windowMenu indexOfItemWithTitle:[NSString stringWithFormat:@"Q - %@", [[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]]]];
 
 	/* cleanup */
-	[thisPC release];
-	[pcsTasks removeObjectForKey:[[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]];
-	[pcsPIDs removeObjectForKey:[NSString stringWithFormat:@"%d", [[aNotification object] processIdentifier]]];
+    [pcsTasks removeObjectForKey:[[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]];
 	if([pcsPipes objectForKey:[[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]])
         [pcsPipes removeObjectForKey:[[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]];
+	[thisPC release];
+	[pcsPIDs removeObjectForKey:[NSString stringWithFormat:@"%d", [[aNotification object] processIdentifier]]];
+	
 
 }
 
