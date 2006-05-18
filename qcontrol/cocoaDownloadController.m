@@ -355,6 +355,7 @@
         
         // 2. set to downloading mode
         [self disableTableView:YES];
+        [osTypeSelect setEnabled:NO];
         [table setDoubleAction:nil];
         [downloadButton setTitle:@"Stop"];
         [downloadButton setAction:@selector(stopDownload:)];
@@ -519,6 +520,7 @@
     [downloadButton setTitle:@"Download"];
     [downloadButton setAction:@selector(startDownload:)];
     // enable tableview
+    [osTypeSelect setEnabled:YES];
     [self disableTableView:NO];
 }
 
