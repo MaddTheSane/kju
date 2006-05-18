@@ -1,3 +1,4 @@
+[fix] FreeOS type selector not disabled when downloading
 [fix] qemu error reporting memory bug
 [new] qemu error reporting
 [fix] build failure due to Transmission API change
