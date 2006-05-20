@@ -1,7 +1,7 @@
 /*
  * QEMU Cocoa Control Download Controller
  * 
- * Copyright (c) 2006 René Korthaus
+ * Copyright (c) 2006 Ren√© Korthaus
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,8 +31,17 @@
 
 - (id) init
 {
+    self = [super init];
+    return self;
+}
+
+- (id) initWithSender:(id)sender
+{
+    [sender retain];
+    controller = sender;
     showsDetails = NO;
     tableEnabled = YES;
+    
     return self;
 }
 
@@ -41,20 +50,11 @@
     [self showAllDownloads];
     [table setDoubleAction:@selector(startDownload:)];
     [table setDelegate:self];
+    [self showWindow];
 }
 
 #pragma mark -
 #pragma mark Interface Functions
-
-- (void)setupTable
-{
-
-}
-
-- (NSWindow*) dLWindow
-{  
-    return mainDlWindow;
-}
 
 - (void) showWindow
 {
@@ -113,24 +113,17 @@
         downloadOriginalList = [[[NSMutableArray alloc] init] retain];
         downloadList = [[[NSMutableArray alloc] init] retain];
         
-        NSArray * HTTPList = [self getHTTPList];
-        NSArray * BTList = [self getBTList];
+        NSArray * dlList = [self getDownloadListFromServer];
         int i;
     
-        // merge HTTP&BTList
-        if(HTTPList != nil) {
-            for(i=0; i<=[HTTPList count]-1; i++) {
-                // add HTTPList
-                [downloadList addObject:[HTTPList objectAtIndex:i]];
+        // copy downloadList
+         if(dlList != nil) {
+            for(i=0; i<=[dlList count]-1; i++) {
+                // copy dlList from Server
+                [downloadList addObject:[dlList objectAtIndex:i]];
             }
         }
     
-        if(BTList != nil) {
-            for(i=0; i<=[BTList count]-1; i++) {
-                // add BTList
-                [downloadList addObject:[BTList objectAtIndex:i]];
-            }
-        }
         [downloadOriginalList addObjectsFromArray:downloadList];
     } else {
         // when we call it later we only need the original list
@@ -267,17 +260,11 @@
 #pragma mark -
 #pragma mark Data Functions
 
-- (NSArray *)getHTTPList
+- (NSArray *)getDownloadListFromServer
 {
     // TODO: change to arrayWithContentsOfURL: url
-    NSArray * HTTPList = [NSArray arrayWithContentsOfURL:[NSURL URLWithString:@"http://cordney.com/q/freeoszoo.plist"]];
-    return HTTPList;
-}
-
-- (NSArray *)getBTList
-{
-    // TODO: change to arrayWithContentsOfURL: url
-    return nil;
+    NSArray * downloadList = [NSArray arrayWithContentsOfURL:[NSURL URLWithString:@"http://cordney.com/q/freeoszoo.plist"]];
+    return downloadList;
 }
 
 - (void) showDetails:(int)row
@@ -286,15 +273,6 @@
     // clear textView
     [detailsTextView setString:@""];
     NSDictionary * details = [[NSDictionary alloc] initWithDictionary:[downloadList objectAtIndex:row]];
-    // load logo
-    /*NSImage * logo = [[NSImage alloc] initWithContentsOfURL:[NSURL URLWithString:[details valueForKey:@"logo"]]];
-    NSTextAttachment *attachment = [[NSTextAttachment alloc] init];
-    if ([(NSCell *)[attachment attachmentCell] respondsToSelector:@selector(setImage:)]) {
-        [(NSCell *)[attachment attachmentCell] setImage:logo];
-    }*/
-        
-    // create logo
-    //NSAttributedString * detailsLogo = [NSAttributedString attributedStringWithAttachment:attachment];
     
     // create name and version
     NSDictionary * nameAttr = [NSDictionary dictionaryWithObject:[NSFont boldSystemFontOfSize:12] forKey:NSFontAttributeName];
@@ -359,7 +337,7 @@
         [table setDoubleAction:nil];
         [downloadButton setTitle:@"Stop"];
         [downloadButton setAction:@selector(stopDownload:)];
-        [self resizeSmall];
+        if([self returnShowsDetails]) [self resizeSmall];
         
         [statusText setStringValue:@"Starting download..."];
         [statusBar setDoubleValue:0.0];
@@ -402,7 +380,7 @@
     // start the timer to update the text progress every 1sec
     statusTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(updateProgressText:) userInfo:nil repeats:YES];
     
-    // change receivedData notification to downloadDidReceiveData
+    // change receiveData notification to downloadDidReceiveData notification
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"DownloadDidReceiveData" object:download];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadDidReceiveData:) name:@"DownloadDidReceiveData" object:download];
 }
@@ -490,9 +468,19 @@
 
 - (void) downloadDidFail:(NSNotification *)aNotification
 {
-
     // TODO: alert sheet
-    NSLog(@"Download did fail: %@", [[aNotification userInfo] objectForKey:@"ERROR_DESCRIPTION"]);
+    NSAlert *alert = [NSAlert alertWithMessageText:@"Download failed"
+		defaultButton:@"OK"
+		alternateButton:nil
+		otherButton:nil
+		informativeTextWithFormat:[[aNotification userInfo] objectForKey:@"ERROR_DESCRIPTION"]];
+
+    [alert beginSheetModalForWindow:mainDlWindow
+		modalDelegate:self
+		didEndSelector:nil
+		contextInfo:nil];
+		
+    //NSLog(@"Download did fail: %@", [[aNotification userInfo] objectForKey:@"ERROR_DESCRIPTION"]);
     
     // reset UI
     [statusText setStringValue:@"Download failed."];
@@ -532,7 +520,7 @@
     [statusText setStringValue:@"Extracting files.."];
     [statusBar setIndeterminate:YES];
     [statusBar startAnimation:self];
-    NSTask * task = [[NSTask alloc] init];
+    NSTask * task = [[[NSTask alloc] init] autorelease];
     BOOL isArchive = NO;
     if([[path pathExtension] isEqualTo:@"tar"] || [[path pathExtension] isEqualTo:@"bz"] || [[path pathExtension] isEqualTo:@"bz2"] || [[path pathExtension] isEqualTo:@"gz"]) {
         [task setLaunchPath:@"/usr/bin/tar"];
@@ -556,7 +544,6 @@
 
 - (void)uncompressPCFinished:(NSNotification *)aNotification
 {
-    cocoaControlController * controller = [[cocoaControlController alloc] init];
     NSString * path = [download getSavePath];
     NSString * name = [download getName];
     NSFileManager * manager = [NSFileManager defaultManager];
@@ -589,6 +576,15 @@
     [statusBar setIndeterminate:NO];
     [downloadButton setAction:@selector(startDownload:)];
     [download release];
+}
+
+- (void) dealloc
+{
+    // cleanup here..
+    [downloadList release];
+    [downloadOriginalList release];
+    [controller release];
+    [super dealloc];
 }
 
 @end

@@ -24,7 +24,6 @@
  
 #import "cocoaControlController.h"
 #import "cocoaControlDiskImage.h"
-#import "cocoaDownloadController.h"
 
 @implementation cocoaControlController
 -(id)init
@@ -705,7 +704,7 @@
 			break;
 		} else if([[[manager fileAttributesAtPath:[path stringByAppendingPathComponent:[dirContents objectAtIndex:i]] traverseLink:NO] objectForKey:NSFileType] isEqualTo:NSFileTypeDirectory]) {
 			foundDir = YES;
-			NSLog(@"Found Dir: %@", [dirContents objectAtIndex:i]);
+			//NSLog(@"Found Dir: %@", [dirContents objectAtIndex:i]);
 			break;
 		} else {
 			NSLog(@"Found no image or folder.");
@@ -719,7 +718,7 @@
 		for(ii=0; i<=[subDir count]-1; ii++) {
 			// search for .img or .qcow
 			if([[[subDir objectAtIndex:ii] pathExtension] isEqualToString:@"img"] || [[[subDir objectAtIndex:i] pathExtension] isEqualToString:@"qcow"]) {
-				NSLog(@"found HD in subdir!");
+				//NSLog(@"found HD in subdir!");
 				// move hd to root dir and delete the folder
 				[manager movePath:[path stringByAppendingPathComponent:[[dirContents objectAtIndex:i] stringByAppendingPathComponent:[subDir objectAtIndex:ii]]] toPath:[path stringByAppendingPathComponent:[subDir objectAtIndex:ii]] handler:nil];
 				[manager removeFileAtPath:[path stringByAppendingPathComponent:[dirContents objectAtIndex:i]] handler:nil];
@@ -734,7 +733,6 @@
 	
 	/* update Table */
 	[self loadConfigurations];
-	[table reloadData];
 	return foundHD;
 }
 
@@ -1403,16 +1401,26 @@
 	[[dI dIWindow] makeKeyAndOrderFront:self];
 }
 
-/* downloadWindow */
-- (IBAction) openDownloadWindow:(id)sender
+/* openFreeOSDownloader */
+- (IBAction) openFreeOSDownloader:(id)sender
 {
-//	printf("cocoaControlController: openDownloadWindow\n");
-	cocoaDownloadController * dl = [[cocoaDownloadController alloc] init];
-	if (![NSBundle loadNibNamed:@"cocoaDownload" owner:dl]) {
-		printf("cocoaDownload.nib not loaded!\n");
-	}
-	NSLog(@"returns %@", [dl dLWindow]);
-	[dl showWindow];
+//	printf("cocoaControlController: openFreeOSDownloader\n");
+    if(!downloader) {
+        downloader = [[cocoaDownloadController alloc] initWithSender:self];
+        if (![NSBundle loadNibNamed:@"cocoaDownload" owner:downloader]) {
+            printf("cocoaDownload.nib not loaded!\n");
+        }
+    } else {
+        [downloader showWindow];
+    }
+    
+    /*
+    if(!cocoaDownloadController) {
+        cocoaDownloadController * dl = [[cocoaDownloadController alloc] initWithSender:self];
+        if (![NSBundle loadNibNamed:@"cocoaDownload" owner:dl]) {
+            printf("cocoaDownload.nib not loaded!\n");
+	   }
+    }*/
 }
 
 /* Standard Alert */
@@ -1435,7 +1443,7 @@
 /* check for Update */
 - (void) getLatestVersion
 {
-//	NSLog(@"cocoaControlController: getLatestVersion");
+// NSLog(@"cocoaControlController: getLatestVersion");
 
 	unichar dev = 'd';
 	
@@ -1448,7 +1456,7 @@
 
 - (void) URLResourceDidFinishLoading:(NSURL *)sender
 {
-//	NSLog(@"cocoaControlController: URLResourceDidFinishLoading");
+// NSLog(@"cocoaControlController: URLResourceDidFinishLoading");
 
 	NSData *data = [sender resourceDataUsingCache:YES];
 

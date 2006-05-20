@@ -1,7 +1,7 @@
 /*
  * QEMU Cocoa Control Download Controller
  * 
- * Copyright (c) 2006 René Korthaus
+ * Copyright (c) 2006 Ren√© Korthaus
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,8 +36,8 @@
     IBOutlet id statusBar;
     IBOutlet id osTypeSelect;
     
-    IBOutlet id detailsNSView;    
-    
+    IBOutlet id detailsNSView;   
+                
     // download object
     cocoaDownload * download;
     NSTimer * statusTimer;
@@ -45,14 +45,14 @@
 
 NSMutableArray * downloadList;
 NSMutableArray * downloadOriginalList;
-
+id controller;
 
 BOOL showsDetails;
 BOOL tableEnabled;
 
+- (id) initWithSender:(id)sender;
+
 // interface functions
-- (void) setupTable; // table setup functions
-- (NSWindow*) dLWindow;
 - (void) showWindow;
 - (BOOL) returnShowsDetails; // returns whether the window shows details
 - (void) resizeSmall; // show detailsTextView
@@ -69,8 +69,7 @@ BOOL tableEnabled;
 - (BOOL)tableView:(NSTableView *)aTableView shouldSelectTableColumn:(NSTableColumn *)aTableColumn;
 
 // data functions
-- (NSArray *) getHTTPList; // get list of HTTP Downloads
-- (NSArray *) getBTList; // get list of Bittorrent Downloads
+- (NSArray *) getDownloadListFromServer;
 
 - (IBAction) startDownload:(id)sender;
 - (IBAction) stopDownload:(id)sender;

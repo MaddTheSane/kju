@@ -27,6 +27,7 @@
 #import "cocoaControlDOServer.h"
 #import "cocoaControlEditPC.h"
 #import "cocoaControlPreferences.h"
+#import "cocoaDownloadController.h"
 
 @interface cocoaControlController : NSObject
 {
@@ -65,6 +66,9 @@
 	/* preferences */
 	cocoaControlPreferences *preferences;
 	
+	/* FreeOSDownloader */
+	cocoaDownloadController *downloader;
+	
 	/* newImage */
 	
 	/* NSTask specific */
@@ -99,8 +103,8 @@
 /* dIWindow */
 - (IBAction) openDIWindow:(id)sender;
 
-/* downloadWindow */
-- (IBAction)openDownloadWindow:(id)sender;
+/* freeOSDownloader */
+- (IBAction)openFreeOSDownloader:(id)sender;
 
 /* standardAlert */
 - (void)standardAlert:(NSString *)messageText informativeText:(NSString *)informativeText;

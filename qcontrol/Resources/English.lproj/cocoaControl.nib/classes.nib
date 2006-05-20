@@ -10,7 +10,7 @@
                 importQemuXPCs = id; 
                 importVPC7PC = id; 
                 openDIWindow = id; 
-                openDownloadWindow = id; 
+                openFreeOSDownloader = id; 
                 showPreferences = id; 
                 tableDoubleClick = id; 
             }; 

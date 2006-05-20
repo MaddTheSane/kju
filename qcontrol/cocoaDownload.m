@@ -1,7 +1,7 @@
 /*
  * QEMU Cocoa Control Download Class
  * 
- * Copyright (c) 2006 René Korthaus
+ * Copyright (c) 2006 Ren√© Korthaus
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,6 @@
  */
  
 #import "cocoaDownload.h"
-#import <IOKit/IOMessage.h>
 
 #define preferences [NSUserDefaults standardUserDefaults]
 
@@ -131,15 +130,10 @@
 {
     // download the torrent file
     NSString * torrentPath = [[self createQVM] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.torrent", name]];
-    // we need to temporarily save the qvm path here, cause we may need it later
+    // we need to temporarily save the qvm path here, cause we need it later
 
     NSData * torrentFile = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
     [torrentFile writeToFile:torrentPath atomically:YES];
-    // init some values
-    /*fCount = 0;
-    fDownloading = 0;
-    fSeeding = 0;
-    fCompleted = 0;*/
     tStat = nil;
     tInfo = nil;
     // get the download data every 10ms &
@@ -149,19 +143,35 @@
         tr_torrentSetFolder( tHandle, [[torrentPath stringByDeletingLastPathComponent] UTF8String] );
         tr_torrentStart( tHandle );
         fTimer = [NSTimer scheduledTimerWithTimeInterval: 0.1 target: self selector: @selector( BTDownloadDidReceiveData: ) userInfo: nil repeats: YES];
-        
-        // set the save path
-        
+        // prepare the torrent stats
         tStat = tr_torrentStat( tHandle );
         tInfo = tr_torrentInfo ( tHandle );
+        // set the save path
         savePath = [[torrentPath stringByDeletingLastPathComponent] stringByAppendingPathComponent:[NSString stringWithUTF8String:tInfo[0].name]];
         [savePath retain];
         
         // tell the controller that the download started
         [[NSNotificationCenter defaultCenter] postNotificationName:@"DownloadDidReceiveResponse" object:self];
     } else {
-        NSLog(@"Initiating Torrent %@ Failed!", torrentPath);
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"DownloadDidFail" object:self];
+        //NSLog(@"Initiating Torrent %@ Failed!", torrentPath);
+        NSString * errorDescription;
+        switch (tError) {
+            case 1:
+                errorDescription = @"Bittorrent: Invalid torrent / bad torrent file.";
+                break;
+            case 2:
+                errorDescription = @"Bittorrent: Unsupported torrent file.";
+                break;
+            case 3:
+                errorDescription = @"Bittorrent: Torrent already exists.";
+                break;
+            case 666:
+                errorDescription = @"Bittorrent: Miscellanious error.";
+                break;
+            default:
+                errorDescription = @"Bittorrent: Miscellanious error.";
+        }
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"DownloadDidFail" object:self userInfo:[NSDictionary dictionaryWithObject:errorDescription forKey:@"ERROR_DESCRIPTION"]];
     }
 }
 
@@ -194,7 +204,7 @@
     if (expectedContentLength > 0) {
         // the download got a response, hence the download starts
         // we can inform the DownloadController about it
-        //NSLog(@"Download did receive Response.");
+        // NSLog(@"Download did receive Response.");
         [[NSNotificationCenter defaultCenter] postNotificationName:@"DownloadDidReceiveResponse" object:self];
     }
 }
@@ -228,7 +238,7 @@
 {
 	// we should inform the controller about this
 	[download release];
-    NSString *errorDescription = [error localizedDescription];
+	NSString *errorDescription = [error localizedDescription];
     if (!errorDescription) {
         errorDescription = @"Please check your internet connection.";
     }
@@ -242,27 +252,8 @@
 - (void) BTDownloadDidReceiveData:(NSTimer *)theTimer
 {
     //Update download values
-        
     tStat = tr_torrentStat( tHandle );
     tInfo = tr_torrentInfo( tHandle );
-    /*fDownloading = 0;
-    fSeeding = 0;*/
-
-    /*
-    //Update the global DL/UL rates
-    tr_torrentRates( fHandle, &dl, &ul );
-    NSString * downloadRate = [NSString stringForSpeed: dl];
-    NSString * uploadRate = [NSString stringForSpeed: ul];
-    [fTotalDLField setStringValue: downloadRate];
-    [fTotalULField setStringValue: uploadRate];
-    */
-
-    // Update DL/(UL) and size values
-    /* available values:
-        fStat[row].downloaded already downloaded [size]
-        fStat[row].uploaded already uploaded [size]
-        ... (see transmission.h->tr_torrentStat)
-    */
     
     receivedContentLength = tStat[0].downloaded;
     expectedContentLength = tInfo[0].totalSize;
@@ -272,17 +263,15 @@
     
     // check if torrent has recently ended.
 
-        if (tStat[0].status & (TR_STATUS_CHECK | TR_STATUS_DOWNLOAD)) {
-            // do nothing
-        } else if (tStat[0].status & TR_STATUS_SEED) {
-            // do nothing
-            //NSLog(@"Seeding download.");
-
-            if( tr_getFinished( tHandle ) == 1 ) {
-                //tr_setFinished( fHandle, i, 0 );
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"DownloadDidFinish" object:self];
-            }
+    if (tStat[0].status & (TR_STATUS_CHECK | TR_STATUS_DOWNLOAD)) {
+        // do nothing
+    } else if (tStat[0].status & TR_STATUS_SEED) {
+        // do nothing
+        //NSLog(@"Seeding download.");
+        if( tr_getFinished( tHandle ) == 1 ) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"DownloadDidFinish" object:self];
         }
+    }
         
     // DEBUG output
     //NSLog(@"peers: %d | dlRate: %d", fStat[0].peersTotal, fStat[0].rateDownload);
@@ -319,6 +308,9 @@
     [super dealloc];
     [lastReceivedContentLength removeAllObjects];
     [lastReceivedContentLength release];
+    [url release];
+    [name release];
+    [savePath release];
 }
 
 @end

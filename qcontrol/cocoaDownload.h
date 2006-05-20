@@ -1,7 +1,7 @@
 /*
  * QEMU Cocoa Control Download Class
  * 
- * Copyright (c) 2006 René Korthaus
+ * Copyright (c) 2006 Ren√© Korthaus
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -49,10 +49,7 @@
     int                         fCount, fSeeding, fDownloading, fCompleted;
     tr_stat_t                   * tStat;
     tr_info_t                   * tInfo;
-    io_connect_t                fRootPort;
-    NSArray                     * fFilenames;
     NSTimer                     * fTimer;
-    NSTimer                     * fUpdateTimer;
 }
 
 - (id) initWithHTTP;
