@@ -10,7 +10,7 @@
 		<a class="qhelp" href="../Q Help.html" target="_top"><img class="icon" src="../q_icon_16.png"> Q Help</a>
 		<h2>Create or edit a guest PC</h2>
 		To create a new PC select "create new PC" from the Menu "Guest PC" or the Toolbar.
-		To edit a PC, select the PC and select "edit PC" form the Menu "Guest PC" or the Toolbar.
+		To edit a PC, select the PC and select "edit PC" from the Menu "Guest PC" or the Toolbar.
 		<BR>
 		<BR>
        <h3>General Settings</h3>
@@ -29,9 +29,9 @@
                         </ul>
                     <li>Turn on Network and Filesharing
                         <img class="cut" src="../images/s_editPC_usernet.jpg">
-                        If this option is checked. The emulated Machine has access to your net/internet.
+                        If this option is checked, the guest PC has access to your network/internet.
                         Q will also enable filesharing between host and guest.
-                        <b>If your host is not connected to the internet, Q will automatically disable this option</b>
+                        <b>If your host is not connected to the internet, Q will automatically disable this option.</b>
                 </ul>
                 
             <li>Arguments
@@ -44,28 +44,28 @@
 		<img src="../images/s_editPC2.jpg">
 		<ol>
 			<li>Select the Platform<br>
-            A Platform provides You a comlpete PC with Network and Graphics.<br>
+            A Platform provides you a complete PC with network and graphics.<br>
             Please consult the <a href="specs.html" target="content">System Specifications</a> for details about the different platforms.
 				<img class="cut" src="../images/s_editPC_architecture.jpg">
 				<ul>
 					<li><b>x86 PC</b><br>
-						Use this Platform to emulate a Maschine to run Windows/DOS/Linux. x86 is tested and stable.
+						Use this Platform to emulate a machine to run Windows/DOS/Linux. x86 is tested and stable.
 					<li><b>x86-64 PC</b><br>
-						Use this Platform to emulate a Maschine to run Linux64/WindowsXP64. x86-64 is functional, but not stable.
+						Use this Platform to emulate a machine to run Linux64/WindowsXP-64. x86-64 is functional, but not stable.
 					<li><b>PPC PowerMac</b><br>
-						Use this Platform to emulate a Maschine to run Linux/MacOS 9/Mac OS X. PPC PowerMac is for Developpers only.
+						Use this Platform to emulate a machine to run Linux/MacOS 9/Mac OS X. PPC PowerMac is for Developers only.
 					<li><b>PPC PREP</b><br>
-						Use this Platform to emulate a Maschine to run Linux/MacOS 9/Mac OS X. PPC PREP is for Developpers only.
+						Use this Platform to emulate a machine to run Linux/MacOS 9/Mac OS X. PPC PREP is for Developers only.
 					<li><b>SPARC32</b><br>
-						Use this Platform to emulate a Maschine to run SUN Solaris. SPARC32 is for Developpers only. You can select a <b>Machine</b> to emulate
+						Use this Platform to emulate a machine to run SUN Solaris. SPARC32 is for Developers only. You can select a <b>machine</b> to emulate
 					<li><b>MIPS</b><br>
-						MIPS is for Developpers only.
+						MIPS is for Developers only.
 				</ul>
 				<br><br>
 			
 			<li>Select the amount of RAM
 				<img class="cut" src="../images/s_editPC_ram.jpg">
-				Here are some minimal recommandations.
+				Here are some minimal recommendations.
 				The emulated system runs faster, the more RAM it has.
 				Please consider that the host OS and the emulator also need enough RAM to run efficent.
 				A rule of thumb is to dedicate 1/3 of the hosts RAM to the emulator.
@@ -82,7 +82,7 @@
 				<img class="cut" src="../images/s_editPC_audio.jpg">
 				Emulates different Soundcards.
                 It is possible to select several Cards.
-                Audioemulation needs about 150Mhz of your processor speed.
+                Audio emulation needs about 150Mhz of your processor speed.
                 <ul>
 					<li>Adlib for OPL2 Synthesis (good for old dos games)
 					<li>Soundblaster 16 (best choice for soundeffects and windows)
@@ -95,26 +95,26 @@
 				You can emulate a Floppy-Drive for your guest. Q uses image-files to emulate the Disks.
 				<ul>
 					<li>No Floppy: do not emulate a Floppy
-					<li>Choose Imagefile: select a Image-file to represent the Floppy-Disk
+					<li>Choose Imagefile: select an Image-file to represent the Floppy-Disk
 				</ul>
 				<br><br>
 			
 			<li>Harddisk Disk emulation
 				<img class="cut" src="../images/s_editPC_harddisk.jpg">
 				You can emulate a Harddisk for your guest. Q uses image-files to emulate the Disks.
-				The main diskimage format is qcow. This is a "growing" Disk, which starts at a few kb and grows with to guest until it reaches the specified size.
+				The main diskimage format is qcow. This is a "growing" Disk, which starts at a few kb and grows with the guest until it reaches the specified size.
 				<ul>
 					<li>No Harddisk: do not emulate a Harddisk
 					<li>New 10mb compressed image: creates and selects a new diskimage with the size of 10mb, using qcow.
 					<li>New 100mb compressed image: creates and selects a new diskimage with the size of 100mb, using qcow.
-					<li>New 1gb compressed image: creates and selects a new diskimage with the size of 1gb, using qcow.
-					<li>New 2gb compressed image: creates and selects a new diskimage with the size of 2gb, using qcow.
-					<li>Create other Diskimage: opens a Dialog to create a individual Diskimage.
-					<li>Choose Imagefile: select a Image-file to represent the harddisk.
+					<li>New 4gb compressed image: creates and selects a new diskimage with the size of 4gb, using qcow.
+					<li>New 4gb raw image: creates and selects a new diskimage with the size of 4gb, using raw format.
+					<li>Create other Diskimage: opens a Dialog to create an individual Diskimage.
+					<li>Choose Imagefile: select an Image-file to represent the harddisk.
 				</ul>
 				<BR>
-				The size of the Harddisk is determined by the guest OS and the Applications want to use.
-				Here are some recommandetions for different guest OSes (Don't forget to add Space for Your Applications):
+				The size of the Harddisk is determined by the guest OS and the Applications you want to use.
+				Here are some recommendations for different guest OSes (Don't forget to add space for your applications):
 				<ul>
 					<li>DOS: 1mb
 					<li>Windows95: 100mb
@@ -132,7 +132,7 @@
 				<ul>
 					<li>No CD-ROM: do not emulate a CD-ROM.
 					<li>Built-in CD-ROM: use the CD-ROM Drive of your Mac.
-					<li>Choose Imagefile: select a Image-file to represent the CD-ROM.
+					<li>Choose Imagefile: select an Image-file to represent the CD-ROM.
 				</ul>
 				<br><br>
 			
@@ -146,7 +146,7 @@
 				</ul>
 				<br><br>
 	
-			<li>Your Done!
+			<li>You're Done!
 		</ol>
 	</body>
 </html>

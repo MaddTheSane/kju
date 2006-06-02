@@ -1,56 +1,172 @@
 <html>
-    <head>
-        <meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
-        <title>The Q User Interface</title>
-        <meta name="KEYWORDS" content="Q suer interface control">
-        <meta name="DESCRIPTION" content="Explanation of the Q Userinterface Elements.">
-        <link rel="stylesheet" href="../stylesheet.css" type="text/css">
-    </head>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>The Q User Interface</title>
+		<meta name="KEYWORDS" content="Q suer interface control">
+		<meta name="DESCRIPTION" content="Explanation of the Q Userinterface Elements.">
+		<link rel="stylesheet" href="../stylesheet.css" type="text/css">
+	</head>
 	<body>
-        <a class="qhelp" href="../Q Help.html" target="_top"><img class="icon" src="../q_icon_16.png"> Q Help</a>
-        <h2>Q Control</h2>
-        In <b>Q Control</b> you manage your guest PCs.<br>
-        Double-Click a row to start a guest PC.<br>
-        If a guest PC is already running, double-clicking a row will will bring the corresponding PC to front.
-        <img src="../images/s_interface_control.jpg">
-        <table>
-            <tr>
-                <td>
-                    <img src="../../../cocoa_tb_newpc_32.png">
-                </td>
-                <td>
-                    <b>Create new PC</b><br>
-                    Click on this Toolbaritem to start the Dialog to create a new guest PC.<br>
-                </td>
-                <td>
-            </tr>
-            <tr>
-                <td>
-                    <img src="../../../cocoa_tb_editpc_32.png">
-                </td>
-                <td>
-                    <b>editPC</b></br>
-                    Click on this Toolbaritem to start the Dialog to edit a existing guest PC.
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <img src="../../../cocoa_tb_startpc_32.png">
-                </td>
-                <td>
-                    <b>start PC</b></br>
-                    Click on this Toolbaritem to start a existing guest PC.
-                </td>
-           </tr>
-           <tr>
-                <td>
-                    <img src="../../../cocoa_tb_removepc_32.png">
-                </td>
-                <td>
-                    <b>remove PC</b></br>
-                    Click on this Toolbaritem to a existing guest PC.
-                </td>
-            </tr>
-        </table>
-    </body>
+		<a class="qhelp" href="../Q Help.html" target="_top"><img class="icon" src="../q_icon_16.png"> Q Help</a>
+		<h2>Q Control</h2>
+		In <b>Q Control</b> you manage your guest PCs.<br>
+		Double-Click a row to start a guest PC.<br>
+		If a guest PC is already running, double-clicking a row will will bring the corresponding PC to front.
+		<img src="../images/q_contro.jpg">
+		<table>
+			<tr>
+				<td>
+					<img src="../images/q_create.gif">
+				</td>
+				<td>
+					<b>create new PC</b><br>
+					Click on this Toolbaritem to start the Dialog to create a new guest PC.<br>
+				</td>
+				<td>
+			</tr>
+			<tr>
+				<td>
+					<img src="../images/q_pref.gif">
+				</td>
+				<td>
+					<b>edit PC</b></br>
+					Click on this Toolbaritem to start the Dialog to edit a existing guest PC.
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<img src="../images/q_start.gif">
+				</td>
+				<td>
+					<b>start PC</b></br>
+					Click on this Toolbaritem to start a existing guest PC.
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<img src="../images/q_remove.gif">
+				</td>
+				<td>
+					<b>remove PC</b></br>
+					Click on this Toolbaritem to remove a existing guest PC. The PC will be removed permanently. There is no "undo" function for this.
+				</td>
+			</tr>
+		</table>
+		<b>Customize Toolbar</b><br>
+		<b>ctrl+click</b> the toolbar of Q-Control. This will drop a menu with icons for aditional functions.
+		<table>
+			<tr>
+				<td>
+					<img src="../images/q_fvpc.gif">
+				</td>
+				<td>
+					<b>Importfilter for VirtualPC</b><br>
+					This filter will convert VirtualPC guests with <b>non growing</b> disk-iamges. Please make sure to <b>de-install</b> any VirtualPC related Drivers and tools in advance and <b>shutdown</b> the guest.
+				</td>
+				<td>
+			</tr>
+			<tr>
+				<td>
+					<img src="../images/q_fqmx.gif">
+				</td>
+				<td>
+					<b>Importfilter for QemuX</b></br>
+					This filter will import all of your QemuX guests.
+				</td>
+			</tr>
+		</table>
+		
+		<h2>Q Guests</h2>
+		With these Icons you manage your guest PC at runtime.
+		<img src="../images/q_pcboot.jpg">
+		<table>
+			<tr>
+				<td>
+					<img src="../images/q_floppy.gif">
+				</td>
+				<td>
+					<b>change Floppy disk-image of floppy disk drive A</b><br>
+					You can eject and load diskimages by clicking this icon.<br>
+				</td>
+				<td>
+			</tr>
+			<tr>
+				<td>
+					<img src="../images/q_floppy.gif">
+				</td>
+				<td>
+					<b>change Floppy disk-image of floppy disk drive B</b><br>
+					You can eject and load diskimages by clicking this icon.<br>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<img src="../images/q_cd.gif">
+				</td>
+				<td>
+					<b>change CD-ROM or CD-ROM disk-image.</b><br>
+					You can eject and load diskimages by clicking this icon.<br>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<img src="../images/q_reset.gif">
+				</td>
+				<td>
+					<b>reset PC</b></br>
+					Your PC is stuck? Click this icon to do a <b>hard-reset<b>.
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<img src="../images/q_shutd.gif">
+				</td>
+				<td>
+					<b>shutdown PC</b></br>
+					Powerbutton of your guest PC. You can opt to save the PC in it's current state to continueat this point at a later time.
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<img src="../images/q_screens.gif">
+				</td>
+				<td>
+					<b>screenshot</b></br>
+					Take a screenshot of the content of the guests PCs screen.
+				</td>
+			</tr>
+		</table>
+		<b>Customize Toolbar</b><br>
+		<b>ctrl+click</b> the toolbar of the Guest. This will drop a menu with icons for aditional functions.
+		<table>
+			<tr>
+				<td>
+					<img src="../images/q_cpuuse.gif">
+				</td>
+				<td>
+					<b>CPU Usage</b><br>
+					Show the CPU Usage of the guest PC. This is for debuging purpose. Not for fulltime use intended :).
+				</td>
+				<td>
+			</tr>
+			<tr>
+				<td>
+					<img src="../images/q_pause.gif">
+				</td>
+				<td>
+					<b>pause guest PC</b></br>
+					Halt/Start guest PC.
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<img src="../images/q_ctrlad.gif">
+				</td>
+				<td>
+					<b>send ctrl-alt-del</b></br>
+					Your PC is stuck? Click this icon to do a <b>soft-reset<b>. Also used by windows login.
+				</td>
+			</tr>
+		</table>
+	</body>
 </html>

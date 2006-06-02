@@ -1,67 +1,65 @@
 <HTML>
 <HEAD>
-<!-- Created by texi2html 1.57 from qemu-tech.texi on July, 27  2005 -->
+<!-- Created by texi2html 1.56k from qemu-tech.texi on 19 December 2005 -->
 
 <TITLE>QEMU Internals</TITLE>
 </HEAD>
-<BODY >
+<BODY>
 <H1>QEMU Internals</H1>
 <P>
 <P><HR><P>
 <H1>Table of Contents</H1>
 <UL>
 <LI><A NAME="TOC1" HREF="qemu-tech.html#SEC1">1. Introduction</A>
-</LI><UL>
+<UL>
 <LI><A NAME="TOC2" HREF="qemu-tech.html#SEC2">1.1 Features</A>
-</LI><LI><A NAME="TOC3" HREF="qemu-tech.html#SEC3">1.2 x86 emulation</A>
-</LI><LI><A NAME="TOC4" HREF="qemu-tech.html#SEC4">1.3 ARM emulation</A>
-</LI><LI><A NAME="TOC5" HREF="qemu-tech.html#SEC5">1.4 PowerPC emulation</A>
-</LI><LI><A NAME="TOC6" HREF="qemu-tech.html#SEC6">1.5 SPARC emulation</A>
-</LI></UL>
+<LI><A NAME="TOC3" HREF="qemu-tech.html#SEC3">1.2 x86 emulation</A>
+<LI><A NAME="TOC4" HREF="qemu-tech.html#SEC4">1.3 ARM emulation</A>
+<LI><A NAME="TOC5" HREF="qemu-tech.html#SEC5">1.4 PowerPC emulation</A>
+<LI><A NAME="TOC6" HREF="qemu-tech.html#SEC6">1.5 SPARC emulation</A>
+</UL>
 <LI><A NAME="TOC7" HREF="qemu-tech.html#SEC7">2. QEMU Internals</A>
-</LI><UL>
+<UL>
 <LI><A NAME="TOC8" HREF="qemu-tech.html#SEC8">2.1 QEMU compared to other emulators</A>
-</LI><LI><A NAME="TOC9" HREF="qemu-tech.html#SEC9">2.2 Portable dynamic translation</A>
-</LI><LI><A NAME="TOC10" HREF="qemu-tech.html#SEC10">2.3 Register allocation</A>
-</LI><LI><A NAME="TOC11" HREF="qemu-tech.html#SEC11">2.4 Condition code optimisations</A>
-</LI><LI><A NAME="TOC12" HREF="qemu-tech.html#SEC12">2.5 CPU state optimisations</A>
-</LI><LI><A NAME="TOC13" HREF="qemu-tech.html#SEC13">2.6 Translation cache</A>
-</LI><LI><A NAME="TOC14" HREF="qemu-tech.html#SEC14">2.7 Direct block chaining</A>
-</LI><LI><A NAME="TOC15" HREF="qemu-tech.html#SEC15">2.8 Self-modifying code and translated code invalidation</A>
-</LI><LI><A NAME="TOC16" HREF="qemu-tech.html#SEC16">2.9 Exception support</A>
-</LI><LI><A NAME="TOC17" HREF="qemu-tech.html#SEC17">2.10 MMU emulation</A>
-</LI><LI><A NAME="TOC18" HREF="qemu-tech.html#SEC18">2.11 Hardware interrupts</A>
-</LI><LI><A NAME="TOC19" HREF="qemu-tech.html#SEC19">2.12 User emulation specific details</A>
-</LI><UL>
+<LI><A NAME="TOC9" HREF="qemu-tech.html#SEC9">2.2 Portable dynamic translation</A>
+<LI><A NAME="TOC10" HREF="qemu-tech.html#SEC10">2.3 Register allocation</A>
+<LI><A NAME="TOC11" HREF="qemu-tech.html#SEC11">2.4 Condition code optimisations</A>
+<LI><A NAME="TOC12" HREF="qemu-tech.html#SEC12">2.5 CPU state optimisations</A>
+<LI><A NAME="TOC13" HREF="qemu-tech.html#SEC13">2.6 Translation cache</A>
+<LI><A NAME="TOC14" HREF="qemu-tech.html#SEC14">2.7 Direct block chaining</A>
+<LI><A NAME="TOC15" HREF="qemu-tech.html#SEC15">2.8 Self-modifying code and translated code invalidation</A>
+<LI><A NAME="TOC16" HREF="qemu-tech.html#SEC16">2.9 Exception support</A>
+<LI><A NAME="TOC17" HREF="qemu-tech.html#SEC17">2.10 MMU emulation</A>
+<LI><A NAME="TOC18" HREF="qemu-tech.html#SEC18">2.11 Hardware interrupts</A>
+<LI><A NAME="TOC19" HREF="qemu-tech.html#SEC19">2.12 User emulation specific details</A>
+<UL>
 <LI><A NAME="TOC20" HREF="qemu-tech.html#SEC20">2.12.1 Linux system call translation</A>
-</LI><LI><A NAME="TOC21" HREF="qemu-tech.html#SEC21">2.12.2 Linux signals</A>
-</LI><LI><A NAME="TOC22" HREF="qemu-tech.html#SEC22">2.12.3 clone() system call and threads</A>
-</LI><LI><A NAME="TOC23" HREF="qemu-tech.html#SEC23">2.12.4 Self-virtualization</A>
-</LI></UL>
+<LI><A NAME="TOC21" HREF="qemu-tech.html#SEC21">2.12.2 Linux signals</A>
+<LI><A NAME="TOC22" HREF="qemu-tech.html#SEC22">2.12.3 clone() system call and threads</A>
+<LI><A NAME="TOC23" HREF="qemu-tech.html#SEC23">2.12.4 Self-virtualization</A>
+</UL>
 <LI><A NAME="TOC24" HREF="qemu-tech.html#SEC24">2.13 Bibliography</A>
-</LI></UL>
+</UL>
 <LI><A NAME="TOC25" HREF="qemu-tech.html#SEC25">3. Regression Tests</A>
-</LI><UL>
+<UL>
 <LI><A NAME="TOC26" HREF="qemu-tech.html#SEC26">3.1 <TT>`test-i386'</TT></A>
-</LI><LI><A NAME="TOC27" HREF="qemu-tech.html#SEC27">3.2 <TT>`linux-test'</TT></A>
-</LI><LI><A NAME="TOC28" HREF="qemu-tech.html#SEC28">3.3 <TT>`qruncom.c'</TT></A>
-</LI></UL>
+<LI><A NAME="TOC27" HREF="qemu-tech.html#SEC27">3.2 <TT>`linux-test'</TT></A>
+<LI><A NAME="TOC28" HREF="qemu-tech.html#SEC28">3.3 <TT>`qruncom.c'</TT></A>
+</UL>
 </UL>
 <P><HR><P>
 
-<center>
 <P>
- QEMU Internals
-</center>
+QEMU Internals
 
 
 
 
-<H1><A NAME="SEC1">1. Introduction</A></H1>
+<H1><A NAME="SEC1" HREF="qemu-tech.html#TOC1">1. Introduction</A></H1>
 
 
 
-<H2><A NAME="SEC2">1.1 Features</A></H2>
+<H2><A NAME="SEC2" HREF="qemu-tech.html#TOC2">1.1 Features</A></H2>
 
 <P>
 QEMU is a FAST! processor emulator using a portable dynamic
@@ -143,7 +141,7 @@ QEMU full system emulation features:
 
 
 
-<H2><A NAME="SEC3">1.2 x86 emulation</A></H2>
+<H2><A NAME="SEC3" HREF="qemu-tech.html#TOC3">1.2 x86 emulation</A></H2>
 
 <P>
 QEMU x86 target features:
@@ -193,7 +191,7 @@ maximum performances.
 
 
 
-<H2><A NAME="SEC4">1.3 ARM emulation</A></H2>
+<H2><A NAME="SEC4" HREF="qemu-tech.html#TOC4">1.3 ARM emulation</A></H2>
 
 
 <UL>
@@ -208,7 +206,7 @@ maximum performances.
 
 
 
-<H2><A NAME="SEC5">1.4 PowerPC emulation</A></H2>
+<H2><A NAME="SEC5" HREF="qemu-tech.html#TOC5">1.4 PowerPC emulation</A></H2>
 
 
 <UL>
@@ -223,7 +221,7 @@ FPU and MMU.
 
 
 
-<H2><A NAME="SEC6">1.5 SPARC emulation</A></H2>
+<H2><A NAME="SEC6" HREF="qemu-tech.html#TOC6">1.5 SPARC emulation</A></H2>
 
 
 <UL>
@@ -265,11 +263,11 @@ implemented.  Floating point exception support is untested.
 
 
 
-<H1><A NAME="SEC7">2. QEMU Internals</A></H1>
+<H1><A NAME="SEC7" HREF="qemu-tech.html#TOC7">2. QEMU Internals</A></H1>
 
 
 
-<H2><A NAME="SEC8">2.1 QEMU compared to other emulators</A></H2>
+<H2><A NAME="SEC8" HREF="qemu-tech.html#TOC8">2.1 QEMU compared to other emulators</A></H2>
 
 <P>
 Like bochs <A HREF="qemu-tech.html#BIB3">[3]</A>, QEMU emulates an x86 CPU. But QEMU is much faster than
@@ -331,7 +329,7 @@ provide cycle exact simulation as an emulator can.
 
 
 
-<H2><A NAME="SEC9">2.2 Portable dynamic translation</A></H2>
+<H2><A NAME="SEC9" HREF="qemu-tech.html#TOC9">2.2 Portable dynamic translation</A></H2>
 
 <P>
 QEMU is a dynamic translator. When it first encounters a piece of code,
@@ -374,7 +372,7 @@ state of the virtual CPU.
 
 
 
-<H2><A NAME="SEC10">2.3 Register allocation</A></H2>
+<H2><A NAME="SEC10" HREF="qemu-tech.html#TOC10">2.3 Register allocation</A></H2>
 
 <P>
 Since QEMU uses fixed simple instructions, no efficient register
@@ -385,7 +383,7 @@ doing complicated register allocation.
 
 
 
-<H2><A NAME="SEC11">2.4 Condition code optimisations</A></H2>
+<H2><A NAME="SEC11" HREF="qemu-tech.html#TOC11">2.4 Condition code optimisations</A></H2>
 
 <P>
 Good CPU condition codes emulation (<CODE>EFLAGS</CODE> register on x86) is a
@@ -411,7 +409,7 @@ condition codes are computed at all.
 
 
 
-<H2><A NAME="SEC12">2.5 CPU state optimisations</A></H2>
+<H2><A NAME="SEC12" HREF="qemu-tech.html#TOC12">2.5 CPU state optimisations</A></H2>
 
 <P>
 The x86 CPU has many internal states which change the way it evaluates
@@ -428,7 +426,7 @@ segment base.
 
 
 
-<H2><A NAME="SEC13">2.6 Translation cache</A></H2>
+<H2><A NAME="SEC13" HREF="qemu-tech.html#TOC13">2.6 Translation cache</A></H2>
 
 <P>
 A 16 MByte cache holds the most recently used translations. For
@@ -440,7 +438,7 @@ translator cannot deduce statically).
 
 
 
-<H2><A NAME="SEC14">2.7 Direct block chaining</A></H2>
+<H2><A NAME="SEC14" HREF="qemu-tech.html#TOC14">2.7 Direct block chaining</A></H2>
 
 <P>
 After each translated basic block is executed, QEMU uses the simulated
@@ -463,7 +461,7 @@ directly patched so that the block chaining has no overhead.
 
 
 
-<H2><A NAME="SEC15">2.8 Self-modifying code and translated code invalidation</A></H2>
+<H2><A NAME="SEC15" HREF="qemu-tech.html#TOC15">2.8 Self-modifying code and translated code invalidation</A></H2>
 
 <P>
 Self-modifying code is a special challenge in x86 emulation because no
@@ -507,7 +505,7 @@ only data is modified in the page.
 
 
 
-<H2><A NAME="SEC16">2.9 Exception support</A></H2>
+<H2><A NAME="SEC16" HREF="qemu-tech.html#TOC16">2.9 Exception support</A></H2>
 
 <P>
 longjmp() is used when an exception such as division by zero is
@@ -531,7 +529,7 @@ still be restarted in any cases.
 
 
 
-<H2><A NAME="SEC17">2.10 MMU emulation</A></H2>
+<H2><A NAME="SEC17" HREF="qemu-tech.html#TOC17">2.10 MMU emulation</A></H2>
 
 <P>
 For system emulation, QEMU uses the mmap() system call to emulate the
@@ -560,7 +558,7 @@ reset (i.e. a basic block can no longer jump directly to another one).
 
 
 
-<H2><A NAME="SEC18">2.11 Hardware interrupts</A></H2>
+<H2><A NAME="SEC18" HREF="qemu-tech.html#TOC18">2.11 Hardware interrupts</A></H2>
 
 <P>
 In order to be faster, QEMU does not check at every basic block if an
@@ -574,11 +572,11 @@ pending and handle it.
 
 
 
-<H2><A NAME="SEC19">2.12 User emulation specific details</A></H2>
+<H2><A NAME="SEC19" HREF="qemu-tech.html#TOC19">2.12 User emulation specific details</A></H2>
 
 
 
-<H3><A NAME="SEC20">2.12.1 Linux system call translation</A></H3>
+<H3><A NAME="SEC20" HREF="qemu-tech.html#TOC20">2.12.1 Linux system call translation</A></H3>
 
 <P>
 QEMU includes a generic system call translator for Linux. It means that
@@ -596,7 +594,7 @@ because of bad page alignment.
 
 
 
-<H3><A NAME="SEC21">2.12.2 Linux signals</A></H3>
+<H3><A NAME="SEC21" HREF="qemu-tech.html#TOC21">2.12.2 Linux signals</A></H3>
 
 <P>
 Normal and real-time signals are queued along with their information
@@ -622,7 +620,7 @@ calls need to be fully emulated (see <TT>`signal.c'</TT>).
 
 
 
-<H3><A NAME="SEC22">2.12.3 clone() system call and threads</A></H3>
+<H3><A NAME="SEC22" HREF="qemu-tech.html#TOC22">2.12.3 clone() system call and threads</A></H3>
 
 <P>
 The Linux clone() system call is usually used to create a thread. QEMU
@@ -644,7 +642,7 @@ reentrancy.
 
 
 
-<H3><A NAME="SEC23">2.12.4 Self-virtualization</A></H3>
+<H3><A NAME="SEC23" HREF="qemu-tech.html#TOC23">2.12.4 Self-virtualization</A></H3>
 
 <P>
 QEMU was conceived so that ultimately it can emulate itself. Although
@@ -661,7 +659,7 @@ relocated at load time.
 
 
 
-<H2><A NAME="SEC24">2.13 Bibliography</A></H2>
+<H2><A NAME="SEC24" HREF="qemu-tech.html#TOC24">2.13 Bibliography</A></H2>
 
 <DL COMPACT>
 
@@ -726,7 +724,7 @@ The TwoOStwo PC virtualizer.
 
 
 
-<H1><A NAME="SEC25">3. Regression Tests</A></H1>
+<H1><A NAME="SEC25" HREF="qemu-tech.html#TOC25">3. Regression Tests</A></H1>
 
 <P>
 In the directory <TT>`tests/'</TT>, various interesting testing programs
@@ -735,7 +733,7 @@ are available. There are used for regression testing.
 
 
 
-<H2><A NAME="SEC26">3.1 <TT>`test-i386'</TT></A></H2>
+<H2><A NAME="SEC26" HREF="qemu-tech.html#TOC26">3.1 <TT>`test-i386'</TT></A></H2>
 
 <P>
 This program executes most of the 16 bit and 32 bit x86 instructions and
@@ -760,7 +758,7 @@ exception reporting.
 
 
 
-<H2><A NAME="SEC27">3.2 <TT>`linux-test'</TT></A></H2>
+<H2><A NAME="SEC27" HREF="qemu-tech.html#TOC27">3.2 <TT>`linux-test'</TT></A></H2>
 
 <P>
 This program tests various Linux system calls. It is used to verify
@@ -770,13 +768,12 @@ and host CPUs.
 
 
 
-<H2><A NAME="SEC28">3.3 <TT>`qruncom.c'</TT></A></H2>
+<H2><A NAME="SEC28" HREF="qemu-tech.html#TOC28">3.3 <TT>`qruncom.c'</TT></A></H2>
 
 <P>
 Example of usage of <CODE>libqemu</CODE> to emulate a user mode i386 CPU.
 <P><HR><P>
-This document was generated on July, 27  2005 using
-<A HREF="http://www.mathematik.uni-kl.de/~obachman/Texi2html">texi2html</A>&nbsp;1.57.
-
+This document was generated on 19 December 2005 using
+<A HREF="http://wwwinfo.cern.ch/dis/texi2html/">texi2html</A>&nbsp;1.56k.
 </BODY>
 </HTML>
