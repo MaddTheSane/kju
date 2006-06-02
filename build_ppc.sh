@@ -9,8 +9,8 @@ cd ..
 
 
 # remove obsolete files
-rm -r tmp/qemu
-rm -r products/ppc/Q.app
+rm -r -f tmp/qemu
+rm -r -f products/ppc/Q.app
 
 
 
@@ -18,9 +18,7 @@ rm -r products/ppc/Q.app
 cd Transmission
 make clean
 ./configure
-cd libtransmission
 make
-cd ..
 cd ..
 
 

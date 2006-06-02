@@ -7,8 +7,8 @@
 cd ..
 
 # remove obsolete files
-rm -r tmp/qemu
-rm -r products/i386/Q.app
+rm -r -f tmp/qemu
+rm -r -f products/i386/Q.app
 
 
 
@@ -16,9 +16,7 @@ rm -r products/i386/Q.app
 cd Transmission
 make clean
 ./configure
-cd libtransmission
 make
-cd ..
 cd ..
 
 
