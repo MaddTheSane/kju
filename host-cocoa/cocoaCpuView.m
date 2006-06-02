@@ -31,6 +31,7 @@
 //	NSLog(@"cocoaCpuView: encodeWithCoder");
 
 	[super encodeWithCoder:coder];
+	[coder encodeObject: [self image] forKey:@"regularImage"];
 }
 
 - (id) initWithCoder:(NSCoder *) coder
@@ -38,48 +39,60 @@
 //	NSLog(@"cocoaCpuView: initWithCoder");
 
 	if ((self = [super initWithCoder:coder])) {
+		regularImage = [[coder decodeObjectForKey:@"regularImage"] retain];
+		smallImage = nil;
 		ctlSize = NSRegularControlSize;
 		cpuUsage = 100;
+		
 		return self;
 	}
 	return nil;
 }
 
-- (id) initWithFrame:(NSRect) frame
+- (id) initWithImage:(NSImage *) image
 {
-//	NSLog(@"cocoaCpuView: initWithFrame");
+//	NSLog(@"cocoaPopUpView: initWithImage");
 
-	if( ( self = [super initWithFrame:frame] ) ) {
+	if( ( self = [super initWithFrame:NSMakeRect(0.,0.,[image size].width,[image size].height)] ) ) {
+		[self setImage:image];
 		return self;
 	}
+	
 	return nil;
+}
+
+- (void) dealloc
+{
+//	NSLog(@"cocoaCpuView: dealloc");
+
+	[regularImage release];
+	[smallImage release];
+
+	regularImage = nil;
+	smallImage = nil;
+
+	[super dealloc];
 }
 
 - (void) drawRect:(NSRect) rect
 {
 //	NSLog(@"cocoaCpuView: drawRect");
 
-	int lines;
-	int width;
-	int i = 0;
-	
-	if( ctlSize == NSRegularControlSize ) {
-		lines = (int)(cpuUsage/100. * 32 / 3.);
-		width = 32;;
-	} else {
-		lines = (int)(cpuUsage/100. * 24 / 3.);
-		width = 24;
-	}
-	
-	[[NSColor greenColor] set]; 
+	[[NSColor blackColor] set]; 
 	NSBezierPath *path = [NSBezierPath bezierPath];
 	[path setLineWidth:1.0];
-	while (i < lines) {
-		i++;
-		[path moveToPoint:NSMakePoint(0, i*3)];
-		[path relativeLineToPoint:NSMakePoint( width, 0)];
-		[path stroke];
+
+	if( ctlSize == NSRegularControlSize ) {
+		[regularImage compositeToPoint:NSMakePoint(0,0) operation:NSCompositeSourceOver];
+		[path moveToPoint:NSMakePoint(16, 0)];
+		[path lineToPoint:NSMakePoint(16. - cos(pi / 180. * (40. + cpuUsage)) * 24., sin(pi / 180. * (40. + cpuUsage)) * 24.)];
+	} else {
+		[smallImage compositeToPoint:NSMakePoint(0,0) operation:NSCompositeSourceOver];
+		[path moveToPoint:NSMakePoint(12, 0)];
+		[path lineToPoint:NSMakePoint(12. - cos(pi / 180. * (40. + cpuUsage)) * 16., sin(pi / 180. * (40. + cpuUsage)) * 16.)];
 	}
+	[path stroke];
+	
 }
 
 - (void) mouseDown:(NSEvent *) theEvent
@@ -105,6 +118,51 @@
 	}
 	ctlSize = controlSize;
 }
+- (NSImage *) image;
+{
+//	NSLog(@"cocoaPopUpView: image");
+
+	return regularImage;
+}
+
+- (void) setImage:(NSImage *) image
+{
+//	NSLog(@"cocoaPopUpView: setImage");
+
+	int i;
+	BOOL g = false;
+	BOOL s = false;
+
+	NSArray *reps = [image representations];
+	for (i=0; i<[reps count]; i++) {
+		if ([[reps objectAtIndex:i] pixelsHigh] == 32) {
+			[regularImage autorelease];
+			regularImage = [[NSImage alloc] initWithSize:NSMakeSize( 32., 32. )];
+			[regularImage addRepresentation:[reps objectAtIndex:i]];
+			g = true;
+		} else if ([[reps objectAtIndex:i] pixelsHigh] == 24) {
+			[smallImage autorelease];
+			smallImage = [[NSImage alloc] initWithSize:NSMakeSize( 24., 24. )];
+			[smallImage addRepresentation:[reps objectAtIndex:i]];
+			s = true;
+		}
+	}
+	
+	if (!g) {
+		[regularImage autorelease];
+		regularImage = [image copy];
+	}
+	
+	if (!s) {
+		NSImageRep *sourceImageRep = [image bestRepresentationForDevice:nil];
+		[smallImage autorelease];
+		smallImage = [[NSImage alloc] initWithSize:NSMakeSize( 24., 24. )];
+		[smallImage lockFocus];
+		[[NSGraphicsContext currentContext] setImageInterpolation:NSImageInterpolationHigh];
+		[sourceImageRep drawInRect:NSMakeRect( 0., 0., 24., 24. )];
+		[smallImage unlockFocus];
+	}
+}
 
 - (NSToolbarItem *) toolbarItem
 {
@@ -119,7 +177,7 @@
 
 - (void) updateToolbarItem
 {
-//	NSLog(@"cocoaCpuView: awakeFromNib");
+//	NSLog(@"cocoaCpuView: updateToolbarItem");
 
 	/* read cpu usage */ //ps o "pcpu" -p PID
 	NSTask *task = [[NSTask alloc] init];
@@ -136,8 +194,10 @@
 	
 	/* update Label */
 	[toolbarItem setLabel:[NSString stringWithFormat:@"CPU %D%%", cpuUsage]];
+	[toolbarItem setTitle:[NSString stringWithFormat:@"CPU %D%%", cpuUsage]];
 	
 	/* update Icon */
 	[self setNeedsDisplay:YES];
+	[self display];
 }
 @end

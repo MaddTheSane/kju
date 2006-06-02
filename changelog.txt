@@ -1,3 +1,5 @@
+[fix] new CPU meter
+[fix] documentation reworked
 [fix] extended warning when deleting a guest
 [fix] downloader: major code cleanup
 [fix] FreeOS does not show up in the list after downloading from within Q

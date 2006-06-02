@@ -26,15 +26,21 @@
 
 @interface cocoaCpuView : NSView <NSCoding>
 {
+	NSImage *regularImage;
+	NSImage *smallImage;
 	NSControlSize ctlSize;
 	NSToolbarItem *toolbarItem;
 	int cpuUsage;
 }
 
-- (id) initWithFrame:(NSRect) frame;
+//- (id) initWithFrame:(NSRect) frame;
+- (id) initWithImage:(NSImage *) image;
 
 - (NSControlSize) controlSize;
 - (void) setControlSize:(NSControlSize) controlSize;
+
+- (NSImage *) image;
+- (void) setImage:(NSImage *) image;
 
 - (NSToolbarItem *) toolbarItem;
 - (void) setToolbarItem:(NSToolbarItem *) item;

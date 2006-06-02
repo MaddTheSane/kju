@@ -174,7 +174,9 @@
 		[toolbarItem setMinSize: NSMakeSize(32,32)];
 		[toolbarItem setMaxSize: NSMakeSize(32,32)];
 		
-		cocoaCpuView *cpuView = [[cocoaCpuView alloc] initWithFrame:NSMakeRect(0.,0.,32.,32.)];
+//		cocoaCpuView *cpuView = [[cocoaCpuView alloc] initWithFrame:NSMakeRect(0.,0.,32.,32.)];
+		cocoaCpuView *cpuView = [[cocoaCpuView alloc] initWithImage:[NSImage imageNamed: @"q_tb_cpu.tiff"]];
+		
 		[cpuView setToolbarItem:toolbarItem];
 		[toolbarItem setView: cpuView];
 		[cpuView release];
@@ -256,16 +258,16 @@
 
 - (void)toolbarWillAddItem:(NSNotification *)notification
 {
-//	NSLog(@"will add item: %@", [[[notification userInfo] objectForKey:@"item"] itemIdentifier]);
+	NSLog(@"will add item: %@", [[[notification userInfo] objectForKey:@"item"] itemIdentifier]);
 	
 	if ([[[[notification userInfo] objectForKey:@"item"] itemIdentifier] isEqual:@"cpuIdentifier"]) {
-				cpuTimer = [NSTimer scheduledTimerWithTimeInterval:3 target:[[[notification userInfo] objectForKey:@"item"] view] selector:@selector( updateToolbarItem ) userInfo:nil repeats:YES];
+		cpuTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:[[[notification userInfo] objectForKey:@"item"] view] selector:@selector( updateToolbarItem ) userInfo:nil repeats:YES];
 	}
 }
 
 - (void)toolbarDidRemoveItem:(NSNotification *)notification
 {
-//	NSLog(@"did remove item: %@", [[[notification userInfo] objectForKey:@"item"] itemIdentifier]);
+	NSLog(@"did remove item: %@", [[[notification userInfo] objectForKey:@"item"] itemIdentifier]);
 	
 	if ([[[[notification userInfo] objectForKey:@"item"] itemIdentifier] isEqual:@"cpuIdentifier"]) {
 		[cpuTimer invalidate];

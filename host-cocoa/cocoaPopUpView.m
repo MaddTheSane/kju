@@ -60,6 +60,7 @@
 		[self setImage:image];
 		return self;
 	}
+	
 	return nil;
 }
 
@@ -113,7 +114,7 @@
 		eventNumber: [theEvent eventNumber]
 		clickCount: [theEvent clickCount]
 		pressure: [theEvent pressure]];
-	    
+
 	[NSMenu popUpContextMenu: menu  withEvent: newEvent  forView: self];
 }
 
