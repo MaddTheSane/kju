@@ -1,3 +1,8 @@
+[new] newPC: assistant
+[fix] editPC: RAM value inserted correctly 
+[fix] libtransmission
+
+Q-0.8.0d1148
 [fix] new CPU meter
 [fix] documentation reworked
 [fix] extended warning when deleting a guest
@@ -8,6 +13,7 @@
 [new] qemu error reporting
 [fix] build failure due to Transmission API change
 [fix] sources rearranged for svn
+[fix] adapted Q to the new QEMU 0.8.1
 
 Q-0.8.0d1105
 [fix] nib for guest downloader updated

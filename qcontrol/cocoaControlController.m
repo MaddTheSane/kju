@@ -24,6 +24,7 @@
  
 #import "cocoaControlController.h"
 #import "cocoaControlDiskImage.h"
+#import "cocoaControlNewPCAssistant.h"
 
 @implementation cocoaControlController
 -(id)init
@@ -574,17 +575,21 @@
 {
 //	NSLog(@"cocoaControlController: addPC");
 
-	/* standard values */
-	NSMutableDictionary *thisPC = [[[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:
-		[[NSMutableDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Q", @"none", [NSDate date], @"Q guest PC", nil] forKeys:[NSArray arrayWithObjects: @"Author", @"Copyright", @"Date", @"Description", nil]],
-		[[NSMutableString alloc] initWithString:@"-m 128 -net nic -net user -cdrom /dev/cdrom -boot c -localtime -smb ~/Desktop/Q Shared Files/"],
-		[[NSMutableDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"My new PC", @"shutdown", @"x86", nil] forKeys:[NSArray arrayWithObjects: @"name", @"state", @"architecture", nil]],
-//		[[NSMutableDictionary alloc] initWithObjects:[NSArray arrayWithObjects:[NSNumber numberWithBool:true], nil] forKeys:[NSArray arrayWithObjects: @"QWinDrivers", nil]],
-		[[NSMutableDictionary alloc] initWithObjects:[NSArray arrayWithObjects: nil] forKeys:[NSArray arrayWithObjects: nil]],
-		@"0.2.0.Q",
-		nil
-	] forKeys:[NSArray arrayWithObjects:@"About", @"Arguments", @"PC Data", @"Temporary", @"Version", nil]] retain];
-				
+	cocoaControlNewPCAssistant *npa = [[cocoaControlNewPCAssistant alloc] init];
+	[NSBundle loadNibNamed:@"cocoaControlNewPCAssistant" owner:npa];
+	[npa setQSender:self];
+	
+	[NSApp beginSheet:[npa npaPanel]
+		modalForWindow:mainWindow 
+		modalDelegate:npa
+		didEndSelector:@selector(npaPanelDidEnd:returnCode:contextInfo:)
+		contextInfo:nil];
+}
+
+-(IBAction) addPCFromAssistant:(NSMutableDictionary *)thisPC
+{
+//	NSLog(@"cocoaControlController: addPCAssistant");
+
 	/* enter current Values into editPCPanel */
 	[editPC prepareEditPCPanel:thisPC newPC:YES sender:self];
  

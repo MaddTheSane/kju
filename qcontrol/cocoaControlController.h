@@ -89,6 +89,7 @@
 - (void) savePCConfiguration:(id)thisPC;
 - (void) updateThumbnails;
 - (IBAction) addPC:(id)sender;
+- (IBAction) addPCFromAssistant:(NSMutableDictionary *)thisPC;
 - (IBAction) deletePC:(id)sender;
 - (IBAction) editPC:(id)sender;
 - (BOOL) importFreeOSZooPC:(NSString *)name withPath:(NSString *)path;

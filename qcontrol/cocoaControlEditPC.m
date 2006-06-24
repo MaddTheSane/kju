@@ -195,12 +195,22 @@
 
 	/* -hda */
 	} else if ([option isEqual:@"-hda"]) {
-		 if ([popUpButtonHda indexOfItemWithTitle:argument]	 > -1) {
-			 [popUpButtonHda selectItemWithTitle:argument];
-		 } else {
-			 [popUpButtonHda insertItemWithTitle:[NSString stringWithString:argument] atIndex:1];
-			 [popUpButtonHda selectItemAtIndex:1];
-		 }
+		if ([popUpButtonHda indexOfItemWithTitle:argument]	 > -1) {
+			[popUpButtonHda selectItemWithTitle:argument];
+		} else {
+			int intResult;
+			NSString *stringValue;
+			NSScanner *scanner = [NSScanner scannerWithString: argument];
+			
+			if ([scanner scanString:@"createNew" intoString:&stringValue]) {
+				[scanner scanInt:&intResult];
+				customImagePopUpButtonTemp = popUpButtonHda;
+				[self setCustomDIType:@"qcow" size:intResult];
+			} else {
+				[popUpButtonHda insertItemWithTitle:[NSString stringWithString:argument] atIndex:1];
+				[popUpButtonHda selectItemAtIndex:1];
+			}
+		}
 
 	/* -hdb */
 	} else if ([option isEqual:@"-hdb"]) {
@@ -449,7 +459,7 @@
 	NSMutableString *option = [[NSMutableString alloc] initWithString:@""];
 	NSMutableString *argument = [[NSMutableString alloc] init];
 	int i;
-	for (i = 1; i < [array count]; i++) {
+	for (i = 0; i < [array count]; i++) {
 		if ([[array objectAtIndex:i] cString][0] != '-') { //Teil eines Arguments
 			[argument appendFormat:[NSString stringWithFormat:@" %@", [array objectAtIndex:i]]];
 		} else {

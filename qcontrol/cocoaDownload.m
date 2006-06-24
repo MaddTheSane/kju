@@ -138,7 +138,7 @@
     tInfo = nil;
     // get the download data every 10ms &
     // start the torrent download
-    tHandle = tr_torrentInit( fHandle, [torrentPath UTF8String], &tError );
+    tHandle = tr_torrentInit( fHandle, [torrentPath UTF8String], 0, &tError );
     if(tHandle != NULL) {
         tr_torrentSetFolder( tHandle, [[torrentPath stringByDeletingLastPathComponent] UTF8String] );
         tr_torrentStart( tHandle );
