@@ -2,7 +2,7 @@ include ../../tmp/qemu/config-host.mak
 
 all: qemu-control$(EXESUF)
 
-qemu-control$(EXESUF): cocoaControlMain.m cocoaControlController.m cocoaControlDiskImage.m cocoaControlEditPC.m cocoaControlPreferences.m cocoaControlDOServer.m cocoaDownload.m cocoaDownloadController.m
+qemu-control$(EXESUF): cocoaControlMain.m cocoaControlController.m cocoaControlDiskImage.m cocoaControlNewPCAssistant.m cocoaControlEditPC.m cocoaControlPreferences.m cocoaControlDOServer.m cocoaDownload.m cocoaDownloadController.m
 	gcc -Wall -O4 -F/System/Library/Frameworks -framework Carbon -framework Cocoa ../../Transmission/build/Debug/libtransmission.a /usr/lib/libcrypto.dylib -o $@ $^
 
 clean:
