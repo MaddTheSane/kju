@@ -16,7 +16,7 @@ rm -r -f products/ppc/Q.app
 
 #make libtransmission
 cd Transmission
-make clean
+#make clean
 ./configure
 make
 cd ..
@@ -25,11 +25,6 @@ cd ..
 
 #make qemu
 cp -R qemu tmp/qemu
-
-
-# update Q Version Number
-echo "$(($(cat q/version.txt) + 1))" > q/version.txt
-VERSION=$(cat qemu/VERSION)"d"$(cat q/version.txt)
 
 
 # patch qemu sources
@@ -53,6 +48,10 @@ cd hw
 patch -p0 -u < ../../../q/patches/qemu-2ndbootdevice_02.diff
 cd ..
 
+#add HDLED
+patch -p0 -u < ../../q/patches/q_block_int.h_hdled_1.diff
+patch -p0 -u < ../../q/patches/q_block.c_hdled_1.diff
+
 # merge Q
 cp -r ../../q/host-cocoa/ host-cocoa/
 
@@ -69,7 +68,7 @@ cd ..
 #make Q Control
 cd q
 cd qcontrol
-make clean
+#make clean
 make
 make app
 cd ..

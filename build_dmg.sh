@@ -2,10 +2,9 @@
 # Q DMG Build script
 #
 
+VERSION=$(cat ../qemu/VERSION)"d"$(svn info | grep "Revision:" | sed s/"Revision: "/""/)
+
 cd ..
-
-VERSION=$(cat qemu/VERSION)"d"$(cat q/version.txt)
-
 
 # mount Q.dmg
 hdiutil mount "dmg/Q.dmg"

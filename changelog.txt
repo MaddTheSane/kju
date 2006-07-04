@@ -1,3 +1,16 @@
+Q-0.8.0d34
+[new] CPU meter gets Harddisk activity indicator
+[fix] CPU meter gets info right from mach
+[fix] CPU meter Title Error removed
+[fix] CPU meter Update Frequency increased
+[fix] new default toolbar iconset
+[fix] proll.elf removed
+[fix] Makefile Versioning according to SVN revision
+[fix] build_i386.sh Versioning according to SVN revision
+[fix] build_ppc.sh Versioning according to SVN revision
+[fix] build_dmg.sh Versioning according to SVN revision
+
+Q-0.8.0d1202
 [new] newPC: assistant
 [fix] editPC: RAM value inserted correctly 
 [fix] libtransmission

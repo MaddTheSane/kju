@@ -30,10 +30,8 @@
 	NSImage *smallImage;
 	NSControlSize ctlSize;
 	NSToolbarItem *toolbarItem;
-	int cpuUsage;
 }
 
-//- (id) initWithFrame:(NSRect) frame;
 - (id) initWithImage:(NSImage *) image;
 
 - (NSControlSize) controlSize;
@@ -44,5 +42,5 @@
 
 - (NSToolbarItem *) toolbarItem;
 - (void) setToolbarItem:(NSToolbarItem *) item;
-- (void) updateToolbarItem;
+- (void) updateToolbarItem:(NSTimer*) timer;
 @end

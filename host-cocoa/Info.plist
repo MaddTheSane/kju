@@ -5,7 +5,7 @@
 	<key>CFBundleExecutable</key>
 	<string>QEMU_TARGET</string>
 	<key>CFBundleGetInfoString</key>
-	<string>© 2005 Fabrice Bellard.  All rights reserved.</string>
+	<string>© 2005-2006 Fabrice Bellard.  All rights reserved.</string>
 	<key>CFBundleIconFile</key>
 	<string>q_icon.icns</string>
 	<key>CFBundleIdentifier</key>
@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>QEMU</string>
 	<key>CFBundleVersion</key>
-	<string>QEMU_VERSIONd QKJU_VERSION</string>
+	<string>QEMU_VERSIONdQKJU_VERSION</string>
 	<key>CSResourcesFileMapped</key>
 	<false/>
 	<key>NSUIElement</key>

@@ -1,4 +1,5 @@
 include ../../tmp/qemu/config-host.mak
+QVERSION=$(shell svn info | grep "Revision:" | sed s/"Revision: "/""/)
 
 all: qemu-control$(EXESUF)
 
@@ -14,7 +15,7 @@ app:
 	mkdir -p "../$(prefix)/Q.app/Contents/Resources/English.lproj/Q Help/";
 	install -m 755 -s ../../tmp/qemu/qemu-img "../$(prefix)/Q.app/Contents/MacOS/";
 	install -m 755 -s qemu-control "../$(prefix)/Q.app/Contents/MacOS/";
-	sed 's/QEMU_VERSION/$(VERSION)/;s/QKJU_VERSION/$(shell cat ../version.txt)/' Info.plist > "../$(prefix)/Q.app/Contents/Info.plist";
+	sed 's/QEMU_VERSION/$(VERSION)/;s/QKJU_VERSION/$(QVERSION)/' Info.plist > "../$(prefix)/Q.app/Contents/Info.plist";
 	echo "APPLQKJU" > "../$(prefix)/Q.app/Contents/PkgInfo";
 	cp -R Resources/* "../$(prefix)/Q.app/Contents/Resources/";
 	install -m 644 ../../tmp/qemu/qemu-doc.html "../$(prefix)/Q.app/Contents/Resources/English.lproj/Q Help/html/";
@@ -25,7 +26,7 @@ app:
 		mkdir -p "../$(prefix)/Q.app/Contents/MacOS/"$$d".app/Contents/Resources/qemu/"; \
 		cp -R ../../tmp/qemu/host-cocoa/Resources/* "../$(prefix)/Q.app/Contents/MacOS/"$$d".app/Contents/Resources/"; \
 		echo "APPLQEMU" > "../$(prefix)/Q.app/Contents/MacOS/"$$d".app/Contents/PkgInfo"; \
-		sed 's/QEMU_TARGET/'$$d'/;s/QEMU_VERSION/$(VERSION)/;s/QKJU_VERSION/$(VERSION)/' ../../tmp/qemu/host-cocoa/Info.plist > "../$(prefix)/Q.app/Contents/MacOS/"$$d".app/Contents/Info.plist"; \
+		sed 's/QEMU_TARGET/'$$d'/;s/QEMU_VERSION/$(VERSION)/;s/QKJU_VERSION/$(QVERSION)/' ../../tmp/qemu/host-cocoa/Info.plist > "../$(prefix)/Q.app/Contents/MacOS/"$$d".app/Contents/Info.plist"; \
 		case "$$d" in \
 			i386-softmmu) \
 				install -m 755 -s ../../tmp/qemu/$$d/qemu "../$(prefix)/Q.app/Contents/MacOS/"$$d".app/Contents/MacOS/"$$d \
@@ -51,6 +52,5 @@ app:
 		install -m 644 ../../tmp/qemu/pc-bios/vgabios.bin "../$(prefix)/Q.app/Contents/MacOS/"$$d".app/Contents/Resources/qemu/"; \
 		install -m 644 ../../tmp/qemu/pc-bios/vgabios-cirrus.bin "../$(prefix)/Q.app/Contents/MacOS/"$$d".app/Contents/Resources/qemu/"; \
 		install -m 644 ../../tmp/qemu/pc-bios/video.x "../$(prefix)/Q.app/Contents/MacOS/"$$d".app/Contents/Resources/qemu/"; \
-		install -m 644 ../../tmp/qemu/pc-bios/proll.elf "../$(prefix)/Q.app/Contents/MacOS/"$$d".app/Contents/Resources/qemu/"; \
 		install -m 644 ../../tmp/qemu/pc-bios/linux_boot.bin "../$(prefix)/Q.app/Contents/MacOS/"$$d".app/Contents/Resources/qemu/"; \
 		done

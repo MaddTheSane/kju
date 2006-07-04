@@ -244,10 +244,12 @@
 		@"fdaChangeIdentifier",
 		@"cdromChangeIdentifier",
 		@"screenshotIdentifier",
-		NSToolbarSeparatorItemIdentifier,
-		@"shutdownPCIdentifier",
 		NSToolbarFlexibleSpaceItemIdentifier,
+		@"cpuIdentifier",
+		NSToolbarFlexibleSpaceItemIdentifier,
+		@"ctrlAltDelIdentifier",
 		@"systemResetIdentifier",
+		@"shutdownPCIdentifier",
 		nil];
 }
 
@@ -258,16 +260,18 @@
 
 - (void)toolbarWillAddItem:(NSNotification *)notification
 {
-	NSLog(@"will add item: %@", [[[notification userInfo] objectForKey:@"item"] itemIdentifier]);
+//	NSLog(@"will add item: %@", [[[notification userInfo] objectForKey:@"item"] itemIdentifier]);
+
+    id tempView = [[[notification userInfo] objectForKey:@"item"] view];
 	
 	if ([[[[notification userInfo] objectForKey:@"item"] itemIdentifier] isEqual:@"cpuIdentifier"]) {
-		cpuTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:[[[notification userInfo] objectForKey:@"item"] view] selector:@selector( updateToolbarItem ) userInfo:nil repeats:YES];
+		cpuTimer = [NSTimer scheduledTimerWithTimeInterval:0.25 target:tempView selector:@selector(updateToolbarItem:) userInfo:nil repeats:YES];
 	}
 }
 
 - (void)toolbarDidRemoveItem:(NSNotification *)notification
 {
-	NSLog(@"did remove item: %@", [[[notification userInfo] objectForKey:@"item"] itemIdentifier]);
+//	NSLog(@"did remove item: %@", [[[notification userInfo] objectForKey:@"item"] itemIdentifier]);
 	
 	if ([[[[notification userInfo] objectForKey:@"item"] itemIdentifier] isEqual:@"cpuIdentifier"]) {
 		[cpuTimer invalidate];

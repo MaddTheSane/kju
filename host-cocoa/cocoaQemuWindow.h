@@ -35,5 +35,4 @@
 - (id) initWithSender:(id)sender;
 - (void) setupToolbar;
 - (void) setMyContentView:(id)aContentView;
-//- (void) elo_testX:(int)x y:(int)y p:(int)p buttons:(int)buttons;
 @end

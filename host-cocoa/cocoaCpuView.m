@@ -23,6 +23,18 @@
  */
 
 #import "cocoaCpuView.h"
+#import "vl.h"
+
+#include <mach/mach.h>
+#include <mach/mach_error.h>
+#include <mach/task.h>
+#include <mach/task_info.h>
+#include <mach/thread_info.h>
+#include <mach/thread_act.h>
+#include <mach/mach_init.h>
+
+struct BlockDriverState {    int64_t total_sectors;    int read_only; /* if true, the media is read only */    int inserted; /* if true, the media is present */    int removable; /* if true, the media can be removed */    int locked;    /* if true, the media cannot temporarily be ejected */    int encrypted; /* if true, the media is encrypted */
+    int activityLED; /* if true, the media is accessed atm */    /* event callback when inserting/removing */    void (*change_cb)(void *opaque);    void *change_opaque;    BlockDriver *drv;    void *opaque;    int boot_sector_enabled;    uint8_t boot_sector_data[512];    char filename[1024];    char backing_file[1024]; /* if non zero, the image is a diff of                                this file image */    int is_temporary;        BlockDriverState *backing_hd;        /* NOTE: the following infos are only hints for real hardware       drivers. They are not used by the block driver */    int cyls, heads, secs, translation;    int type;    char device_name[32];    BlockDriverState *next;};
 
 @implementation cocoaCpuView
 
@@ -42,7 +54,6 @@
 		regularImage = [[coder decodeObjectForKey:@"regularImage"] retain];
 		smallImage = nil;
 		ctlSize = NSRegularControlSize;
-		cpuUsage = 100;
 		
 		return self;
 	}
@@ -77,19 +88,112 @@
 - (void) drawRect:(NSRect) rect
 {
 //	NSLog(@"cocoaCpuView: drawRect");
+	
+    NSBezierPath* path = [NSBezierPath bezierPath];
+	
+	/* HD Activity */
+	BlockDriverState *bs;
+	bs = bdrv_find([@"hda" cString]);
+	if (bs) {
+        path = [NSBezierPath bezierPath];
+        if( ctlSize == NSRegularControlSize ) {
+            [path setLineWidth:2.0];
+            [path appendBezierPathWithOvalInRect:NSMakeRect(1,1,16,16)];
+        } else {
+            [path appendBezierPathWithOvalInRect:NSMakeRect(1,1,12,12)];
+        }
+        [[NSColor blackColor] setStroke];
+        if (bs->activityLED) {
+            [[NSColor greenColor] setFill];
+            bs->activityLED = 0;
+        } else {
+            [[NSColor yellowColor] setFill];
+        }
+        [path fill];
+        [path stroke];
+	}
+	
+	/* CD-ROM Activity */
+//	BlockDriverState *bs;
+	bs = bdrv_find([@"cdrom" cString]);
+	if (bs) {
+        path = [NSBezierPath bezierPath];
+        if( ctlSize == NSRegularControlSize ) {
+            [path setLineWidth:2.0];
+            [path appendBezierPathWithOvalInRect:NSMakeRect(39,1,16,16)];
+        } else {
+            [path appendBezierPathWithOvalInRect:NSMakeRect(29,1,12,12)];
+        }
+        [[NSColor blackColor] setStroke];
+        if (bs->activityLED) {
+            [[NSColor greenColor] setFill];
+            bs->activityLED = 0;
+        } else {
+            [[NSColor yellowColor] setFill];
+        }
+        [path fill];
+        [path stroke];
+        path = [NSBezierPath bezierPath];
+        if( ctlSize == NSRegularControlSize ) {
+            [path appendBezierPathWithOvalInRect:NSMakeRect(44,6,6,6)];
+        } else {
+            [path appendBezierPathWithOvalInRect:NSMakeRect(33,5,4,4)];
+        }
+        [[NSColor blackColor] setFill];
+        [path fill];
+	}
+	 
+    /* CPU Activity */
+    kern_return_t error;    
+    struct thread_basic_info tbi;
+    unsigned int thread_info_count;
+    task_port_t task;
+    float cpuUsage = 0.;
+    thread_act_array_t threadList;                      //#include <mach/thread_act.h>
+    mach_msg_type_number_t threadCount;
+    threadCount = 0;
+    thread_info_count = THREAD_BASIC_INFO_COUNT;
+    int c;
+    error = task_for_pid(
+        mach_task_self(),                               //task_port_t task #include <mach/mach_init.h>
+        [[NSProcessInfo processInfo] processIdentifier],//pid_t pid
+        &task);                                         //task_port_t *target
+#ifdef qdebug
+    if (error != KERN_SUCCESS)
+       NSLog(@"Call to task_for_pid() failed");
+#endif
+    error = task_threads(                               //#include <mach/task.h>
+        task,                                           //task_t target_task
+        &threadList,                                    //thread_act_array_t *act_list
+        &threadCount);                                  //mach_msg_type_number_t *act_listCnt
+#ifdef qdebug
+    if (error != KERN_SUCCESS)
+       NSLog(@"Call to task_threads() failed");
+#endif
+    for (c = 0; c < threadCount; c++) {
+        thread_info_count = THREAD_BASIC_INFO_COUNT;
+        error = thread_info(                            //#include <mach/thread_act.h>
+            threadList[c],                              //thread_act_t target_act
+            THREAD_BASIC_INFO,                          //thread_flavor_t flavor            &tbi,                                       //thread_info_t thread_info_out            &thread_info_count);                        //mach_msg_type_number_t *thread_info_outCnt
+#ifdef qdebug
+        if (error != KERN_SUCCESS)
+            NSLog(@"Call to thread_info() failed");
+#endif	
+        cpuUsage += tbi.cpu_usage;
+    }
+    cpuUsage = cpuUsage * 0.05;
 
 	[[NSColor blackColor] set]; 
-	NSBezierPath *path = [NSBezierPath bezierPath];
-	[path setLineWidth:1.0];
+	path = [NSBezierPath bezierPath];
 
 	if( ctlSize == NSRegularControlSize ) {
-		[regularImage compositeToPoint:NSMakePoint(0,0) operation:NSCompositeSourceOver];
-		[path moveToPoint:NSMakePoint(16, 0)];
-		[path lineToPoint:NSMakePoint(16. - cos(pi / 180. * (40. + cpuUsage)) * 24., sin(pi / 180. * (40. + cpuUsage)) * 24.)];
+		[regularImage compositeToPoint:NSMakePoint(12,0) operation:NSCompositeSourceOver];
+		[path moveToPoint:NSMakePoint(28, 0)];
+		[path lineToPoint:NSMakePoint(28. - cos(pi / 180. * (65. + cpuUsage)) * 28., sin(pi / 180. * (65. + cpuUsage)) * 28.)];
 	} else {
-		[smallImage compositeToPoint:NSMakePoint(0,0) operation:NSCompositeSourceOver];
-		[path moveToPoint:NSMakePoint(12, 0)];
-		[path lineToPoint:NSMakePoint(12. - cos(pi / 180. * (40. + cpuUsage)) * 16., sin(pi / 180. * (40. + cpuUsage)) * 16.)];
+		[smallImage compositeToPoint:NSMakePoint(9,0) operation:NSCompositeSourceOver];
+		[path moveToPoint:NSMakePoint(21, 0)];
+		[path lineToPoint:NSMakePoint(21. - cos(pi / 180. * (65. + cpuUsage)) * 20., sin(pi / 180. * (65. + cpuUsage)) * 20.)];
 	}
 	[path stroke];
 	
@@ -110,11 +214,11 @@
 
 - (void) setControlSize:(NSControlSize) controlSize {
 	if( controlSize == NSRegularControlSize ) {
-		[toolbarItem setMinSize:NSMakeSize( 32., 32. )];
-		[toolbarItem setMaxSize:NSMakeSize( 32., 32. )];
+		[toolbarItem setMinSize:NSMakeSize( 56., 32. )];
+		[toolbarItem setMaxSize:NSMakeSize( 56., 32. )];
 	} else if( controlSize == NSSmallControlSize ) {
-		[toolbarItem setMinSize:NSMakeSize( 24., 24. )];
-		[toolbarItem setMaxSize:NSMakeSize( 24., 24. )];
+		[toolbarItem setMinSize:NSMakeSize( 42., 24. )];
+		[toolbarItem setMaxSize:NSMakeSize( 42., 24. )];
 	}
 	ctlSize = controlSize;
 }
@@ -175,29 +279,10 @@
 	toolbarItem = item;
 }
 
-- (void) updateToolbarItem
+- (void) updateToolbarItem:(NSTimer*) timer
 {
 //	NSLog(@"cocoaCpuView: updateToolbarItem");
 
-	/* read cpu usage */ //ps o "pcpu" -p PID
-	NSTask *task = [[NSTask alloc] init];
-	[task setLaunchPath: @"/bin/ps"];
-	NSArray *arguments = [NSArray arrayWithObjects: @"o", @"pcpu", @"-p", [NSString stringWithFormat:@"%D",[[NSProcessInfo processInfo]processIdentifier]], nil];
-	[task setArguments: arguments];
-	NSPipe *pipe = [NSPipe pipe];
-	[task setStandardOutput: pipe];
-	NSFileHandle *file = [pipe fileHandleForReading];
-	[task launch];
-	NSData *data = [file readDataToEndOfFile];
-	NSString *string = [[NSString alloc] initWithData: data encoding: NSUTF8StringEncoding];
-	cpuUsage = [[string substringFromIndex:6] intValue];
-	
-	/* update Label */
-	[toolbarItem setLabel:[NSString stringWithFormat:@"CPU %D%%", cpuUsage]];
-	[toolbarItem setTitle:[NSString stringWithFormat:@"CPU %D%%", cpuUsage]];
-	
-	/* update Icon */
 	[self setNeedsDisplay:YES];
-	[self display];
 }
 @end
