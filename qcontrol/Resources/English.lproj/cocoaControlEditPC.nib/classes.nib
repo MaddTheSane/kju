@@ -18,7 +18,9 @@
                 buttonEnableSB16 = NSButton; 
                 buttonEnableUSBTablet = NSButton; 
                 buttonLocaltime = NSButton; 
-                buttonNetNic = NSButton; 
+                buttonNetNicNe2000 = NSButton; 
+                buttonNetNicPcnet = NSButton; 
+                buttonNetNicRtl8139 = NSButton; 
                 buttonNetUser = NSButton; 
                 buttonOk = NSButton; 
                 buttonQWinDrivers = NSButton; 

@@ -51,7 +51,9 @@
 	IBOutlet NSButton *buttonEnableSB16;
 	IBOutlet NSButton *buttonEnableES1370;
 	IBOutlet NSButton *buttonEnableUSBTablet;
-	IBOutlet NSButton *buttonNetNic;
+	IBOutlet NSButton *buttonNetNicNe2000;
+	IBOutlet NSButton *buttonNetNicRtl8139;
+	IBOutlet NSButton *buttonNetNicPcnet;
 	IBOutlet NSButton *buttonNetUser;
 	IBOutlet NSButton *buttonLocaltime;
 	IBOutlet NSButton *buttonWMStopWhenInactive;

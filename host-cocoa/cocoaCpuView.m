@@ -33,8 +33,38 @@
 #include <mach/thread_act.h>
 #include <mach/mach_init.h>
 
-struct BlockDriverState {    int64_t total_sectors;    int read_only; /* if true, the media is read only */    int inserted; /* if true, the media is present */    int removable; /* if true, the media can be removed */    int locked;    /* if true, the media cannot temporarily be ejected */    int encrypted; /* if true, the media is encrypted */
-    int activityLED; /* if true, the media is accessed atm */    /* event callback when inserting/removing */    void (*change_cb)(void *opaque);    void *change_opaque;    BlockDriver *drv;    void *opaque;    int boot_sector_enabled;    uint8_t boot_sector_data[512];    char filename[1024];    char backing_file[1024]; /* if non zero, the image is a diff of                                this file image */    int is_temporary;        BlockDriverState *backing_hd;        /* NOTE: the following infos are only hints for real hardware       drivers. They are not used by the block driver */    int cyls, heads, secs, translation;    int type;    char device_name[32];    BlockDriverState *next;};
+struct BlockDriverState {
+    int64_t total_sectors;
+    int read_only; /* if true, the media is read only */
+    int inserted; /* if true, the media is present */
+    int removable; /* if true, the media can be removed */
+    int locked;    /* if true, the media cannot temporarily be ejected */
+    int encrypted; /* if true, the media is encrypted */
+    int activityLED; /* if true, the media is accessed atm */
+    /* event callback when inserting/removing */
+    void (*change_cb)(void *opaque);
+    void *change_opaque;
+
+    BlockDriver *drv;
+    void *opaque;
+
+    int boot_sector_enabled;
+    uint8_t boot_sector_data[512];
+
+    char filename[1024];
+    char backing_file[1024]; /* if non zero, the image is a diff of
+                                this file image */
+    int is_temporary;
+    
+    BlockDriverState *backing_hd;
+    
+    /* NOTE: the following infos are only hints for real hardware
+       drivers. They are not used by the block driver */
+    int cyls, heads, secs, translation;
+    int type;
+    char device_name[32];
+    BlockDriverState *next;
+};
 
 @implementation cocoaCpuView
 
@@ -158,7 +188,7 @@ struct BlockDriverState {    int64_t total_sectors;    int read_only; /* if tr
         mach_task_self(),                               //task_port_t task #include <mach/mach_init.h>
         [[NSProcessInfo processInfo] processIdentifier],//pid_t pid
         &task);                                         //task_port_t *target
-#ifdef qdebug
+#ifdef QDEBUG
     if (error != KERN_SUCCESS)
        NSLog(@"Call to task_for_pid() failed");
 #endif
@@ -166,7 +196,7 @@ struct BlockDriverState {    int64_t total_sectors;    int read_only; /* if tr
         task,                                           //task_t target_task
         &threadList,                                    //thread_act_array_t *act_list
         &threadCount);                                  //mach_msg_type_number_t *act_listCnt
-#ifdef qdebug
+#ifdef QDEBUG
     if (error != KERN_SUCCESS)
        NSLog(@"Call to task_threads() failed");
 #endif
@@ -174,8 +204,10 @@ struct BlockDriverState {    int64_t total_sectors;    int read_only; /* if tr
         thread_info_count = THREAD_BASIC_INFO_COUNT;
         error = thread_info(                            //#include <mach/thread_act.h>
             threadList[c],                              //thread_act_t target_act
-            THREAD_BASIC_INFO,                          //thread_flavor_t flavor            &tbi,                                       //thread_info_t thread_info_out            &thread_info_count);                        //mach_msg_type_number_t *thread_info_outCnt
-#ifdef qdebug
+            THREAD_BASIC_INFO,                          //thread_flavor_t flavor
+            &tbi,                                       //thread_info_t thread_info_out
+            &thread_info_count);                        //mach_msg_type_number_t *thread_info_outCnt
+#ifdef QDEBUG
         if (error != KERN_SUCCESS)
             NSLog(@"Call to thread_info() failed");
 #endif	

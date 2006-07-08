@@ -173,7 +173,11 @@
 	/* -net */
 	} else if ([option isEqual:@"-net"]) {
 		if ([argument isEqual:@"nic"]) {
-			[buttonNetNic setState:NSOnState];
+			[buttonNetNicNe2000 setState:NSOnState];
+		} else if ([argument isEqual:@"nic,model=rtl8139"]) {
+			[buttonNetNicRtl8139 setState:NSOnState];
+		} else if ([argument isEqual:@"nic,model=pcnet"]) {
+			[buttonNetNicPcnet setState:NSOnState];
 		}
 		if ([argument isEqual:@"user"]) {
 			[buttonNetUser setState:NSOnState];
@@ -346,7 +350,9 @@
 	[buttonEnableES1370 setState:NSOffState];
 	[buttonEnableUSBTablet setState:NSOffState];
 	[buttonLocaltime setState:NSOffState];
-	[buttonNetNic setState:NSOffState];
+	[buttonNetNicNe2000 setState:NSOffState];
+	[buttonNetNicRtl8139 setState:NSOffState];
+	[buttonNetNicPcnet setState:NSOffState];
 	[buttonNetUser setState:NSOffState];
 	[buttonWin2kHack setState:NSOffState];
 	[popUpButtonBoot selectItemAtIndex:1];
@@ -912,8 +918,14 @@
 	}
 
 	/* -net */
-	if ([buttonNetNic state] == NSOnState) {
+	if ([buttonNetNicNe2000 state] == NSOnState) {
 		[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -net nic"]];
+    }
+	if ([buttonNetNicRtl8139 state] == NSOnState) {
+		[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -net nic,model=rtl8139"]];
+    }
+	if ([buttonNetNicPcnet state] == NSOnState) {
+		[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -net nic,model=pcnet"]];
 	}
 	if ([buttonNetUser state] == NSOnState) {
 		[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -net user"]];

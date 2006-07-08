@@ -1,4 +1,12 @@
-Q-0.8.0d34
+Q-0.8.1d35
+[new] rtl8139 Networkcard support
+[new] pcnet Networkcard support
+[fix] mousegrab is deactivated when application looses key (VirtueDesktops fix)
+[fix] fullscreen is deactivated if user is app switching (command-tab fix)
+[fix] .toast support for CD-ROM images loaded from toolbar
+[fix] grab/ungrab not called when usb-tablet is emulated (mousepointer sync fix)
+
+Q-0.8.1d34
 [new] CPU meter gets Harddisk activity indicator
 [fix] CPU meter gets info right from mach
 [fix] CPU meter Title Error removed
@@ -10,12 +18,12 @@ Q-0.8.0d34
 [fix] build_ppc.sh Versioning according to SVN revision
 [fix] build_dmg.sh Versioning according to SVN revision
 
-Q-0.8.0d1202
+Q-0.8.1d1202
 [new] newPC: assistant
 [fix] editPC: RAM value inserted correctly 
 [fix] libtransmission
 
-Q-0.8.0d1148
+Q-0.8.1d1148
 [fix] new CPU meter
 [fix] documentation reworked
 [fix] extended warning when deleting a guest

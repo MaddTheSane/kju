@@ -88,7 +88,7 @@ kern_return_t GetBSDPath( io_iterator_t mediaIterator, char *bsdPath, CFIndex ma
 
 	if ((self = [super init])) {
 		/* set allowed filetypes */
-		fileTypes = [[NSArray arrayWithObjects:@"img",@"iso",@"dmg",@"qcow",@"cow",@"cloop",@"vmdk",nil] retain];
+		fileTypes = [[NSArray arrayWithObjects:@"img",@"iso",@"dmg",@"qcow",@"cow",@"cloop",@"vmdk",@"toast",nil] retain];
 
 		/* pc */
 		pcName = [@"" retain];
@@ -1137,6 +1137,12 @@ void cocoa_refresh(DisplayState *ds)
 										[pc setFullscreen:[[pc contentView] toggleFullScreen]];
 									[[pc pcWindow] miniaturize:nil];
 									return;
+									
+//								/* app switch *//* does not work, as dock is ogging command-tab */
+//								case 48: /* tab key */
+//									if ([pc fullscreen])
+//										[pc setFullscreen:[[pc contentView] toggleFullScreen]];
+//									return;
 							}
 						}
 						

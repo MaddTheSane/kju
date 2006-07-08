@@ -303,8 +303,14 @@
 
 	/* Mouse-grab is activatet by clicks in Windowed View only,
 		so we can handle clicks on other GUI Items */
-	if(!fullscreen && ![pc absolute_enabled])
+	if(fullscreen) {
+	} else if([pc absolute_enabled]) {
+        if (![pc tablet_enabled])
+            [NSCursor hide];
+        [pc setTablet_enabled:1];
+    } else {
 		[pc grabMouse];
+    }
 }
 
 /* drag'n'drop */

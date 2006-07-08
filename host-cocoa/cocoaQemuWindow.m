@@ -30,6 +30,7 @@
 #import "cocoaPopUpView.h"
 #import "cocoaCpuView.h"
 #import "vl.h"
+#import "CGSPrivate.h"
 
 
 
@@ -355,24 +356,73 @@
 	/* start WM if required */
 	if ([pc wMStopWhenInactive] && ![pc wMPausedByUser])
 		[pc startVM];
+		
+    /* if we are fullscreen, reactivate tablet/grab (fix for virtueDesktop) */
+    if ([pc fullscreen]) {
+        if ([pc absolute_enabled]) {
+            /* enable Tablet */
+            if (![pc tablet_enabled]) {
+                [NSCursor hide];
+                [pc setTablet_enabled:1];
+            }
+        } else {
+            /* grab Mouse */
+            [pc grabMouse];
+        }
+    }
+        
+}
+
+- (BOOL) windowIsVisible
+{
+    OSStatus oResult;
+    int iActiveWorkspace;
+    int iWindowWorkspace;
+    CGSConnection oConnection = _CGSDefaultConnection();
+    
+    /* get active Workspace */
+    oResult = CGSGetWorkspace(oConnection, &iActiveWorkspace);
+    if (oResult) {
+#ifdef QDEBUG
+        NSLog(@"Failed getting active workspace [Error: %i]", oResult);
+#endif
+        return YES;
+    }
+    
+    /* get window Workspace */
+    oResult = CGSGetWindowWorkspace(oConnection, [self windowNumber], &iWindowWorkspace);
+    if (oResult) {
+#ifdef QDEBUG
+        NSLog(@"Failed getting window workspace [Error: %i]", iActiveWorkspace, oResult);
+#endif
+        return YES;
+    }
+    
+    /* is the window on the same workspace? */
+    return (iActiveWorkspace == iWindowWorkspace);
 }
 
 - (void) windowDidResignKey:(NSNotification *)aNotification
 {
 //	NSLog(@"cocoaQemuWindow: windowDidResignKey");
 
-	/* ungrab Mouse */
-	[pc ungrabMouse];
-		[NSCursor unhide];
-	[pc setTablet_enabled:0];
+
+    if ([pc fullscreen] && [self windowIsVisible])
+        [pc setFullscreen:[[pc contentView] toggleFullScreen]];
+
+    if ([pc absolute_enabled]) {
+        /* disable Tablet */
+        if ([pc tablet_enabled]) {
+            [NSCursor unhide];
+            [pc setTablet_enabled:0];
+        }
+    } else {
+	   /* ungrab Mouse */
+        [pc ungrabMouse];
+    }
 	
 	/* reset Key Modifiers */
 	[pc resetModifiers];
-
-	/* disable Tablet */
-	if ([pc tablet_enabled]) {
-	
-	}
 
 	/* stop WM if required */
 	if ([pc wMStopWhenInactive])
