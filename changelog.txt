@@ -1,3 +1,10 @@
+Q-0.8.1d36
+[new] microicon to stop a crashed guest
+[new] microicons in qcontrol
+[fix] patch for second Bootdevice
+[fix] changing datapath takes effect immediately after closing preffs
+[fix] build_stable.sh Versioning according to SVN revision
+
 Q-0.8.1d35
 [new] rtl8139 Networkcard support
 [new] pcnet Networkcard support

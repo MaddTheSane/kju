@@ -159,4 +159,32 @@
 		return FALSE;
 	}
 }
+
+- (BOOL) guestPause: (NSString *) guest
+{
+//	NSLog(@"cocoaControlDOServer: pause: %@", guest);
+
+	id obj = [guests objectForKey:guest];
+	if (obj != nil) {
+//		NSLog(@"OK");
+		return [obj guestPause];
+	} else {
+		NSLog(@"cocoaControlDOServer: cocoaControlDOServer: failed");
+		return FALSE;
+	}
+}
+
+- (BOOL) guestStop: (NSString *) guest
+{
+//	NSLog(@"cocoaControlDOServer: stop: %@", guest);
+
+	id obj = [guests objectForKey:guest];
+	if (obj != nil) {
+//		NSLog(@"OK");
+		return [obj guestStop];
+	} else {
+		NSLog(@"cocoaControlDOServer: cocoaControlDOServer: failed");
+		return FALSE;
+	}
+}
 @end

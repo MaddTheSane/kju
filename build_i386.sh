@@ -56,7 +56,7 @@ cd ..
 
 #add 2nd Bootdevice
 cd hw
-patch -p0 -u < ../../../q/patches/qemu-2ndbootdevice_02.diff
+patch -p0 -u < ../../../q/patches/qemu-2ndbootdevice_03.diff
 cd ..
 
 #add HDLED

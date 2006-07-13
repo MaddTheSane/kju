@@ -171,6 +171,22 @@ kern_return_t GetBSDPath( io_iterator_t mediaIterator, char *bsdPath, CFIndex ma
 	return true;
 }
 
+- (BOOL) guestPause;
+{
+//	NSLog(@"cocoaQemu: guestPause");
+
+	[self pausePlay:self];
+	return true;
+}
+
+- (BOOL) guestStop;
+{
+//	NSLog(@"cocoaQemu: guestStop");
+
+	[self shutdownPC];
+	return true;
+}
+
 /* getters] setters */
 - (NSString *) pcName
 {

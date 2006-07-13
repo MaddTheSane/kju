@@ -28,6 +28,7 @@
 #import "cocoaControlEditPC.h"
 #import "cocoaControlPreferences.h"
 #import "cocoaDownloadController.h"
+#import "QControlTableView.h"
 
 @interface cocoaControlController : NSObject
 {
@@ -49,7 +50,7 @@
 	NSMutableDictionary *pcsPIDs;
 	NSString *dataPath;
 	IBOutlet id mainWindow;
-	IBOutlet NSTableView *table;
+	IBOutlet QControlTableView *table;
 	
 	NSTimer *timer;	 //to update Table Thumbnails
 	
@@ -90,13 +91,19 @@
 - (void) updateThumbnails;
 - (IBAction) addPC:(id)sender;
 - (IBAction) addPCFromAssistant:(NSMutableDictionary *)thisPC;
+- (void) deleteThisPC:(id)pc;
 - (IBAction) deletePC:(id)sender;
+- (void) editThisPC:(id)pc;
 - (IBAction) editPC:(id)sender;
 - (BOOL) importFreeOSZooPC:(NSString *)name withPath:(NSString *)path;
 - (IBAction) importVPC7PC:(id)sender;
 - (IBAction) importQemuXPCs:(id)sender;
+- (void) startThisPC:(id)pc;
 - (void) startPC:(NSString *)filename;
 - (void) tableDoubleClick:(id)sender;
+- (void) pauseThisPC:(id)pc;
+- (void) playThisPC:(id)pc;
+- (void) stopThisPC:(id)pc;
 
 /* editPCPanel */
 -(BOOL) checkPC:(NSString *)name create:(BOOL)create;

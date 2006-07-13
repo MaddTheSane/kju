@@ -32,6 +32,8 @@
 - (BOOL) guestOrderWindow:(NSWindowOrderingMode)place relativeTo:(int)otherWindowNumber;
 - (BOOL) guestHide;
 - (BOOL) guestUnhide;
+- (BOOL) guestPause;
+- (BOOL) guestStop;
 @end
 
 /* Q Control protocol */
@@ -54,4 +56,6 @@
 - (BOOL) guestOrderWindow:(NSWindowOrderingMode)place relativeTo:(int)otherWindowNumber guest:(NSString *) guest;
 - (BOOL) guestHide: (NSString *) guest;
 - (BOOL) guestUnhide: (NSString *) guest;
+- (BOOL) guestPause: (NSString *) guest;
+- (BOOL) guestStop: (NSString *) guest;
 @end

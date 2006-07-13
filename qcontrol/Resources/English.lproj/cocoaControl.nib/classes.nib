@@ -1,6 +1,12 @@
 {
     IBClasses = (
         {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            CLASS = QControlTableView; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {fController = Controller; }; 
+            SUPERCLASS = NSTableView; 
+        }, 
         {CLASS = QemuCocoaOpenGLView; LANGUAGE = ObjC; SUPERCLASS = NSOpenGLView; }, 
         {
             ACTIONS = {

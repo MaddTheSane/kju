@@ -141,6 +141,9 @@
 	cell = [NSImageCell new];
 	[theColumn setDataCell:cell];
 	
+	/* set infos for microIcons */
+    [table setQControl:self];
+		
 	/* handle Table DoubleClick */
 	[table setTarget:self];
 	[table setDoubleAction:@selector(tableDoubleClick:)];
@@ -279,7 +282,7 @@
 //	NSLog(@"cocoaControlController: showPreferences");
 
 	/* enter current Values into preferencesPanel */
-	[preferences preparePreferences];
+	[preferences preparePreferences:self];
 
 	/* display preferencesPanel */
 	[[preferences preferencesPanel] setDelegate:preferences];
@@ -366,6 +369,9 @@
 - (void) loadConfigurations
 {
 //	NSLog(@"cocoaControlController: loadConfigurations");
+
+    /* update defaults */
+    userDefaults = [NSUserDefaults standardUserDefaults];
 
 	if (pcs)
 		[pcs release];
@@ -598,6 +604,18 @@
 	[NSApp runModalForWindow:[editPC editPCPanel]];
 }
 
+-(void) editThisPC:(id)pc
+{
+//	NSLog(@"cocoaControlController: editThisPC");
+
+	/* enter current Values into editPCPanel */
+	[editPC prepareEditPCPanel:pc newPC:NO sender:self];
+ 
+	/* display editPCPanel */		  
+	[[editPC editPCPanel] makeKeyAndOrderFront:self];
+	[NSApp runModalForWindow:[editPC editPCPanel]];
+}
+
 -(IBAction) editPC:(id)sender
 {
 //	NSLog(@"cocoaControlController: editPC");
@@ -616,12 +634,7 @@
 		return;
 	}
 
-	/* enter current Values into editPCPanel */
-	[editPC prepareEditPCPanel:thisPC newPC:NO sender:self];
-
-	/* display editPCPanel */
-	[[editPC editPCPanel] makeKeyAndOrderFront:self];
-	[NSApp runModalForWindow:[editPC editPCPanel]];
+	[self editThisPC:thisPC];
 }
 
 -(BOOL) checkPC:(NSString *)name create:(BOOL)create
@@ -649,6 +662,40 @@
 	return 1;
 }
 
+- (void) deletePCAlertDidEnd:alert returnCode:(int)returnCode contextInfo:(id)contextInfo
+{
+//	NSLog(@"cocoaControlController: deletePCAlertDidEnd");
+
+	if (returnCode == 1) {
+		
+		/* delete .qvm */
+		NSFileManager *fileManager = [NSFileManager defaultManager];
+		if ([fileManager fileExistsAtPath: [NSString stringWithFormat: @"%@/%@.qvm", [userDefaults objectForKey:@"dataPath"], [[contextInfo objectForKey:@"PC Data"] objectForKey:@"name"]]])
+			[fileManager removeFileAtPath: [NSString stringWithFormat: @"%@/%@.qvm", [userDefaults objectForKey:@"dataPath"], [[contextInfo objectForKey:@"PC Data"] objectForKey:@"name"]] handler:nil];
+	
+		/* cleanup */
+        [self loadConfigurations];
+	}
+}
+
+- (void) deleteThisPC:(id)pc
+{
+//	NSLog(@"cocoaControlController: deleteThisPC");
+
+	/* prepare alert */
+	NSAlert *alert = [NSAlert alertWithMessageText: NSLocalizedStringFromTable(@"deletePC:alertWithMessageText", @"Localizable", @"cocoaControlController")
+					  defaultButton: NSLocalizedStringFromTable(@"deletePC:defaultButton", @"Localizable", @"cocoaControlController")
+					alternateButton: NSLocalizedStringFromTable(@"deletePC:alternateButton", @"Localizable", @"cocoaControlController")
+						otherButton:nil
+				  informativeTextWithFormat:[NSString stringWithFormat: NSLocalizedStringFromTable(@"deletePC:informativeTextWithFormat", @"Localizable", @"cocoaControlController"),[[pc objectForKey:@"PC Data"] objectForKey:@"name"]]];
+	
+	/* display alert */
+	[alert beginSheetModalForWindow:mainWindow
+				  modalDelegate:self
+				 didEndSelector:@selector(deletePCAlertDidEnd:returnCode:contextInfo:)
+				 contextInfo:pc];
+}
+
 -(IBAction) deletePC:(id)sender
 {
 //	NSLog(@"cocoaControlController: deletePC");
@@ -666,18 +713,7 @@
 		return;
 	}
 	
-	/* prepare alert */
-	NSAlert *alert = [NSAlert alertWithMessageText: NSLocalizedStringFromTable(@"deletePC:alertWithMessageText", @"Localizable", @"cocoaControlController")
-					  defaultButton: NSLocalizedStringFromTable(@"deletePC:defaultButton", @"Localizable", @"cocoaControlController")
-					alternateButton: NSLocalizedStringFromTable(@"deletePC:alternateButton", @"Localizable", @"cocoaControlController")
-						otherButton:nil
-				  informativeTextWithFormat:[NSString stringWithFormat: NSLocalizedStringFromTable(@"deletePC:informativeTextWithFormat", @"Localizable", @"cocoaControlController"),[[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]]];
-	
-	/* display alert */
-	[alert beginSheetModalForWindow:mainWindow
-				  modalDelegate:self
-				 didEndSelector:@selector(deletePCAlertDidEnd:returnCode:contextInfo:)
-				 contextInfo:nil];
+	[self deleteThisPC:thisPC];
 }
 
 - (BOOL) importFreeOSZooPC:(NSString *)name withPath:(NSString *)path
@@ -897,7 +933,7 @@
 		[NSApp endSheet:progressPanel];
 		[progressPanel orderOut:self];
 		
-		/* show warining */
+		/* show warning */
 		[self standardAlert: NSLocalizedStringFromTable(@"importVPC7PC:standardAlert:finish", @"Localizable", @"cocoaControlController") informativeText: NSLocalizedStringFromTable(@"importVPC7PC:informativeText:finish", @"Localizable", @"cocoaControlController")];
 	}
 }
@@ -1153,6 +1189,12 @@
 }
 
 
+- (void) startThisPC:(id)pc
+{
+//	NSLog(@"cocoaControlController: startThisPC");
+    [self startPC:[NSString stringWithFormat:@"%@/%@.qvm", [userDefaults objectForKey:@"dataPath"], [[pc objectForKey:@"PC Data"] objectForKey:@"name"]]];
+}
+
 
 - (void) startPC:(NSString *)filename
 {
@@ -1309,24 +1351,6 @@
 	[table reloadData];
 }
 
-- (void) deletePCAlertDidEnd:alert returnCode:(int)returnCode contextInfo:(void *)contextInfo
-{
-//	NSLog(@"cocoaControlController: deletePCAlertDidEnd");
-
-	if (returnCode == 1) {
-		
-		/* delete .qvm */
-		NSFileManager *fileManager = [NSFileManager defaultManager];
-		if ([fileManager fileExistsAtPath: [NSString stringWithFormat: @"%@/%@.qvm", [userDefaults objectForKey:@"dataPath"], [[[pcs objectAtIndex:[table selectedRow]] objectForKey:@"PC Data"] objectForKey:@"name"]]])
-			[fileManager removeFileAtPath: [NSString stringWithFormat: @"%@/%@.qvm", [userDefaults objectForKey:@"dataPath"], [[[pcs objectAtIndex:[table selectedRow]] objectForKey:@"PC Data"] objectForKey:@"name"]] handler:nil];
-	
-		/* cleanup */
-		[pcs removeObjectAtIndex:[table selectedRow]];
-		[pcsImages removeObjectAtIndex:[table selectedRow]];
-		[table reloadData];
-	}
-}
-
 - (id) tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(int)rowIndex
 {
 //	NSLog(@"cocoaControlController: tableView");
@@ -1388,8 +1412,30 @@
 		SetFrontProcess( &psn );
 	} else {
 		/* start PC */
-		[self startPC:[NSString stringWithFormat:@"%@/%@.qvm", [userDefaults objectForKey:@"dataPath"], [[[pcs objectAtIndex:[table selectedRow]] objectForKey:@"PC Data"] objectForKey:@"name"]]];
+//		[self startPC:[NSString stringWithFormat:@"%@/%@.qvm", [userDefaults objectForKey:@"dataPath"], [[[pcs objectAtIndex:[table selectedRow]] objectForKey:@"PC Data"] objectForKey:@"name"]]];
+        [self startThisPC:[pcs objectAtIndex:[table selectedRow]]];
 	}
+}
+
+- (void) pauseThisPC:(id)pc
+{
+//	NSLog(@"cocoaControlController: pauseThisPC");
+    [qdoserver guestPause:[[pc objectForKey:@"PC Data"] objectForKey:@"name"]];
+}
+
+- (void) playThisPC:(id)pc
+{
+//	NSLog(@"cocoaControlController: playThisPC");
+    [qdoserver guestPause:[[pc objectForKey:@"PC Data"] objectForKey:@"name"]];
+}
+
+- (void) stopThisPC:(id)pc
+{
+//	NSLog(@"cocoaControlController: stopThisPC");
+
+    if (![qdoserver guestStop:[[pc objectForKey:@"PC Data"] objectForKey:@"name"]]) { //if we can't shutdown the guest in normal manner, use force
+        [[pcsTasks objectForKey:[[pc objectForKey:@"PC Data"] objectForKey:@"name"]] terminate]; //this sends sigterm, maybe we need something stronger here: "bin kill -9"
+    }
 }
 
 /* dIWindow */

@@ -138,6 +138,9 @@
 	
 	[userDefaults setObject:[textFieldDataPath stringValue] forKey:@"dataPath"];
 	
+	/* Update qControl to new datapath */
+	[qControl loadConfigurations];
+	
 	[preferencesPanel close];
 }
 
@@ -155,9 +158,11 @@
 	return preferencesPanel;
 }
 
-- (void)preparePreferences
+- (void)preparePreferences:(id)sender
 {
 //	NSLog(@"awakeFromNib: preparePreferences");
+
+    qControl = sender;
 
 	if ([[userDefaults objectForKey:@"display"] isEqual:@"OpenGL"]) {
 		[popUpButtonDisplay selectItemAtIndex:0];

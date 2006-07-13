@@ -1,7 +1,7 @@
 /*
- * QEMU Cocoa Control Preferences
+ * Q Control Controller
  * 
- * Copyright (c) 2005, 2006 Mike Kronenberg
+ * Copyright (c) 2006 Mike Kronenberg, inspired by transmission
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,21 +24,15 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface cocoaControlPreferences : NSObject
+@interface QControlTableView : NSTableView
 {
-	IBOutlet id preferencesPanel;
-	IBOutlet NSPopUpButton *popUpButtonDisplay;
-	IBOutlet NSButton *buttonEnableCheckForUpdates;
-	IBOutlet NSButton *buttonDataPathChoose;
-	IBOutlet NSTextField *textFieldDataPath;
-    NSUserDefaults *userDefaults;
     id qControl;
+    NSPoint pointClicked;
+    NSImage *qPlayIcon;
+    NSImage *qPauseIcon;
+    NSImage *qStopIcon;
+    NSImage *qEditIcon;
+    NSImage *qDeleteIcon;
 }
-- (void) viewGeneral:(id)sender;
-- (IBAction) ok:(id)sender;
-- (IBAction) cancel:(id)sender;
-- (IBAction) genericFolderSelectPanel:(id)sender;
-- (IBAction) resetDataPath: (id)sender;
-- (id) preferencesPanel;
-- (void) preparePreferences:(id)sender;
+-(void) setQControl:(id)sender;
 @end
