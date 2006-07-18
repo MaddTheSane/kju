@@ -30,6 +30,8 @@
 #import "cocoaQemuQuartzView.h"
 #import "cocoaQemuQuickDrawView.h"
 
+#import "CGSPrivate.h"
+
 /* Pasteboard *//*#include "sdl_keysym.h"#include "keymaps.c"
 static kbd_layout_t *kbd_layout;
 */
@@ -88,7 +90,7 @@ kern_return_t GetBSDPath( io_iterator_t mediaIterator, char *bsdPath, CFIndex ma
 
 	if ((self = [super init])) {
 		/* set allowed filetypes */
-		fileTypes = [[NSArray arrayWithObjects:@"img",@"iso",@"dmg",@"qcow",@"cow",@"cloop",@"vmdk",@"toast",nil] retain];
+		fileTypes = [[NSArray arrayWithObjects:@"qcow", @"raw", @"cow", @"vmdk", @"cloop", @"img", @"iso", @"dsk", @"dmg", @"cdr", @"toast", @"flp", @"fs", nil] retain];
 
 		/* pc */
 		pcName = [@"" retain];
@@ -207,6 +209,13 @@ kern_return_t GetBSDPath( io_iterator_t mediaIterator, char *bsdPath, CFIndex ma
 //	NSLog(@"cocoaQemu: smbPath");
 
 	return smbPath;
+}
+
+- (id) qdoserver
+{
+//	NSLog(@"cocoaQemu: qdoserver");
+
+    return qdoserver;
 }
 
 - (BOOL) fullscreen
@@ -754,6 +763,10 @@ kern_return_t GetBSDPath( io_iterator_t mediaIterator, char *bsdPath, CFIndex ma
 {
 //	NSLog(@"cocoaQemu: shutdownPC");
 
+    /* exit fullscreen */
+    if (fullscreen)
+        [contentView toggleFullScreen];
+
 	if (!pcDialogs) {
 		pcStatus = @"shutdown";
 		qemu_system_shutdown_request();
@@ -798,6 +811,7 @@ kern_return_t GetBSDPath( io_iterator_t mediaIterator, char *bsdPath, CFIndex ma
 	{
 		pcStatus = @"shutdown";
 		qemu_system_shutdown_request();
+		vm_start();
 	}
 }
 
@@ -816,6 +830,7 @@ kern_return_t GetBSDPath( io_iterator_t mediaIterator, char *bsdPath, CFIndex ma
 		if ( [pcStatus isEqual: @"running"] )
 			pcStatus = @"shutdown";
 		qemu_system_shutdown_request();
+		vm_start();
 	}
 }
 
@@ -1159,6 +1174,13 @@ void cocoa_refresh(DisplayState *ds)
 //									if ([pc fullscreen])
 //										[pc setFullscreen:[[pc contentView] toggleFullScreen]];
 //									return;
+									
+								/* window switch */
+								case 50: /* backquote key */
+								    if ([[pc qdoserver] guestSwitch:[pc pcName] fullscreen:[pc fullscreen] nextGuestName:nil])
+                                        return;
+								    else
+								        break;
 							}
 						}
 						
@@ -1167,8 +1189,23 @@ void cocoa_refresh(DisplayState *ds)
 							switch (keycode) {
 								/* toggle Monitor */
 								case 0x02 ... 0x0a: /* '1' to '9' keys */
-									console_select(keycode - 0x02);
-									break;
+								    {
+                                        /* setup transition */                                        CGSConnection cid = _CGSDefaultConnection();                                        int transitionHandle = -1;                                        CGSTransitionSpec transitionSpecifications;
+                                                                                transitionSpecifications.type = 9; //transition;
+                                        if (keycode - 0x02 == 0)                                            transitionSpecifications.option = 1; //option;
+                                        else                                            transitionSpecifications.option = 2; //option;                                        transitionSpecifications.wid = [[pc pcWindow] windowNumber]; //wid                                        transitionSpecifications.backColour = 0; //background color                                                    /* freeze desktop: OSStatus CGSNewTransition(const CGSConnection cid, const CGSTransitionSpec* transitionSpecifications, int *transitionHandle) */                                        CGSNewTransition(cid, &transitionSpecifications, &transitionHandle);                            
+                                        /* change monitor */
+                                        console_select(keycode - 0x02);
+                                        vga_hw_update();
+                                        
+                                        /* wait */                                        usleep(10000);
+                                        
+                                        /* run transition: OSStatus CGSInvokeTransition(const CGSConnection cid, int transitionHandle, float duration) */                                        CGSInvokeTransition(cid, transitionHandle, 1.0);
+                                        
+                                        break;
+                                    }
+//									console_select(keycode - 0x02);
+//									break;
 								/* toggle Fullscreen */
 								case 0x21: /* 'f' key */
 									[pc setFullscreen:[[pc contentView] toggleFullScreen]];

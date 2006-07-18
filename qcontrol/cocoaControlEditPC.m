@@ -37,8 +37,8 @@
 
 	if ((self = [super init])) {
 		userDefaults = [NSUserDefaults standardUserDefaults];
-		fileTypes = [[NSArray arrayWithObjects:@"qcow", @"raw", @"cow", @"vmdk", @"cloop", @"img", @"iso", @"dsk", @"cdr", @"toast", nil] retain];
-			
+		fileTypes = [[NSArray arrayWithObjects:@"qcow", @"raw", @"cow", @"vmdk", @"cloop", @"img", @"iso", @"dsk", @"dmg", @"cdr", @"toast", @"flp", @"fs", nil] retain];
+
 		return self;
 	}
 
@@ -594,7 +594,7 @@
 	[openPanel setCanChooseDirectories:YES];
 	[openPanel setCanCreateDirectories:YES];
 	[openPanel setCanChooseFiles:NO];
-	[openPanel beginSheetForDirectory:NSHomeDirectory()
+	[openPanel beginSheetForDirectory:nil
 		file:nil
 		types:nil
 		modalForWindow:editPCPanel
@@ -698,7 +698,7 @@
 //	NSLog(@"cocoaControlEditPC: genericImageSelectPanel");
 
 	NSOpenPanel *openPanel = [[NSOpenPanel alloc] init];
-		[openPanel beginSheetForDirectory:NSHomeDirectory()
+		[openPanel beginSheetForDirectory:nil
 			file:nil
 			types:fileTypes
 			modalForWindow:editPCPanel
@@ -810,13 +810,13 @@
 	
 	/* no double PC Name */
 	if ( [[buttonOk title] isEqualTo: NSLocalizedStringFromTable(@"prepareEditPCPanel:newPC", @"Localizable", @"cocoaControlEditPC")]) {
-		if ( ![qSender checkPC:[textFieldName stringValue] create:YES] ) {
+		if ( ![qSender checkPC:thisPC name:[textFieldName stringValue] create:YES] ) {
 			[textFieldName setStringValue: NSLocalizedStringFromTable(@"prepareEditPCPanel:otherName", @"Localizable", @"cocoaControlEditPC")];
 			[textFieldName setTextColor:[NSColor redColor]];
 			return;
 		}
 	} else {
-		if ( ![qSender checkPC:[textFieldName stringValue] create:NO] ) {
+		if ( ![qSender checkPC:thisPC name:[textFieldName stringValue] create:NO] ) {
 			[textFieldName setStringValue: NSLocalizedStringFromTable(@"prepareEditPCPanel:otherName", @"Localizable", @"cocoaControlEditPC")];
 			[textFieldName setTextColor:[NSColor redColor]];
 			return;

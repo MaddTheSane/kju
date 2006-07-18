@@ -61,6 +61,7 @@
 	
 	/* start qserver  for distributed object */
 	qdoserver = [[cocoaControlDOServer alloc] init];
+	[qdoserver setSender:self];
 	
 	return self;
 	}
@@ -71,6 +72,11 @@
 -(id)pcs
 {
 	return pcs;
+}
+
+- (id)pcsTasks
+{
+    return pcsTasks;
 }
 
 /* NSApp Delegate */
@@ -229,6 +235,13 @@
 	}
 }
 
+- (IBAction) activateApp:(id)sender
+{
+//	NSLog(@"cocoaControlController: activateApp");
+    if (![NSApp isActive])
+        [NSApp activateIgnoringOtherApps:YES];
+}
+
 - (void) applicationWillHide:(NSNotification *)aNotification
 {
 //	NSLog(@"cocoaControlController: applicationWillHide");
@@ -302,6 +315,13 @@
 }
 
 /* NSWindow Delegate */
+- (IBAction) cycleWindows:(id)sender
+{
+//    NSLog(@"cocoaControlController: cycleWindows");
+    
+    [qdoserver guestSwitch: @"Q Control" fullscreen:NO nextGuestName:nil];
+}
+
 - (BOOL) windowShouldClose:(id)sender
 {
 //	NSLog(@"cocoaControlController: windowShouldClose");
@@ -366,6 +386,11 @@
 }
 
 /* control Window */
+- (id) mainWindow {
+//	NSLog(@"cocoaControlController: mainWindow");
+    return mainWindow;
+}
+
 - (void) loadConfigurations
 {
 //	NSLog(@"cocoaControlController: loadConfigurations");
@@ -637,7 +662,7 @@
 	[self editThisPC:thisPC];
 }
 
--(BOOL) checkPC:(NSString *)name create:(BOOL)create
+-(BOOL) checkPC:(id)thisPC name:(NSString *)name create:(BOOL)create
 {
 //	NSLog(@"cocoaControlController: checkPC");
 
@@ -650,7 +675,7 @@
 				return 0;
 		}
 	} else {
-		id thisPC = [pcs objectAtIndex:[table selectedRow]];
+//		id thisPC = [pcs objectAtIndex:[table selectedRow]];
 		while ( (object = [enumerator nextObject]) ) {
 			if ([[[object objectForKey:@"PC Data"] objectForKey:@"name"] isEqual: name]) {
 				if ( ![[[thisPC objectForKey:@"PC Data"] objectForKey:@"name"] isEqual:name])
@@ -1403,16 +1428,15 @@
 
 	/* no empty line selection */
 	if ([table selectedRow] < 0)
-		return;
-	
-	if ([[[[pcs objectAtIndex:[table selectedRow]] objectForKey:@"PC Data"] objectForKey:@"state"] isEqualTo:@"running"]) {
+		[self addPC:self];
+	else if ([[[[pcs objectAtIndex:[table selectedRow]] objectForKey:@"PC Data"] objectForKey:@"state"] isEqualTo:@"running"]) {
 		/* move QEMU to front */
-		ProcessSerialNumber psn;
-		GetProcessForPID( [[pcsTasks objectForKey:[[[pcs objectAtIndex:[table selectedRow]] objectForKey:@"PC Data"] objectForKey:@"name"]] processIdentifier], &psn );
-		SetFrontProcess( &psn );
+		[qdoserver guestSwitch: @"Q Control" fullscreen:NO nextGuestName:[[[pcs objectAtIndex:[table selectedRow]] objectForKey:@"PC Data"] objectForKey:@"name"]];
+//		ProcessSerialNumber psn;
+//		GetProcessForPID( [[pcsTasks objectForKey:[[[pcs objectAtIndex:[table selectedRow]] objectForKey:@"PC Data"] objectForKey:@"name"]] processIdentifier], &psn );
+//		SetFrontProcess( &psn );
 	} else {
 		/* start PC */
-//		[self startPC:[NSString stringWithFormat:@"%@/%@.qvm", [userDefaults objectForKey:@"dataPath"], [[[pcs objectAtIndex:[table selectedRow]] objectForKey:@"PC Data"] objectForKey:@"name"]]];
         [self startThisPC:[pcs objectAtIndex:[table selectedRow]]];
 	}
 }

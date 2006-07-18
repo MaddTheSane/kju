@@ -10,7 +10,10 @@
         {CLASS = QemuCocoaOpenGLView; LANGUAGE = ObjC; SUPERCLASS = NSOpenGLView; }, 
         {
             ACTIONS = {
+                activateApp = id; 
                 addPC = id; 
+                addPCFromAssistant = id; 
+                cycleWindows = id; 
                 deletePC = id; 
                 editPC = id; 
                 importQemuXPCs = id; 
@@ -29,7 +32,7 @@
                 progressStatusText = NSTextField; 
                 progressText = NSTextField; 
                 progressTitle = NSTextField; 
-                table = NSTableView; 
+                table = QControlTableView; 
                 windowMenu = id; 
             }; 
             SUPERCLASS = NSObject; 

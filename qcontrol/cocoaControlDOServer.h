@@ -34,22 +34,27 @@
 - (BOOL) guestUnhide;
 - (BOOL) guestPause;
 - (BOOL) guestStop;
+- (BOOL) fullscreen;
 @end
 
 /* Q Control protocol */
 @protocol cocoaControlDOServerProto
 - (BOOL) guestRegister: (byref id)guest withName:(bycopy NSString *) name;
 - (BOOL) guestUnregisterWithName: (bycopy NSString *) name;
+- (BOOL) guestSwitch: (bycopy NSString *) name fullscreen:(BOOL)fullscreen nextGuestName:(bycopy NSString *)nextGuestName;
 @end
  
  
  
 @interface cocoaControlDOServer : NSObject <cocoaControlDOServerProto> {
+    id qControl;
     NSMutableDictionary * guests;
 }
 - (id) init;
+- (void) setSender:(id)sender;
 - (BOOL) guestRegister: (id)client withName: (NSString *)name;
 - (BOOL) guestUnregisterWithName: (NSString *)name;
+- (BOOL) guestSwitch: (NSString *) name fullscreen:(BOOL)fullscreen nextGuestName:(NSString *)nextGuestName;
 - (int) guestWindowLevel: (NSString *) guest;
 - (int) guestWindowNumber: (NSString *) guest;
 - (BOOL) guestOrderFrontRegardless: (NSString *) guest;

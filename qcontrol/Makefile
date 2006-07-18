@@ -11,6 +11,7 @@ clean:
 
 # generate OS X .app Packages
 app:
+	rm -rf "../$(prefix)/Q.app";
 	mkdir -p "../$(prefix)/Q.app/Contents/MacOS/";
 	mkdir -p "../$(prefix)/Q.app/Contents/Resources/English.lproj/Q Help/";
 	install -m 755 -s ../../tmp/qemu/qemu-img "../$(prefix)/Q.app/Contents/MacOS/";
@@ -53,4 +54,51 @@ app:
 		install -m 644 ../../tmp/qemu/pc-bios/vgabios-cirrus.bin "../$(prefix)/Q.app/Contents/MacOS/"$$d".app/Contents/Resources/qemu/"; \
 		install -m 644 ../../tmp/qemu/pc-bios/video.x "../$(prefix)/Q.app/Contents/MacOS/"$$d".app/Contents/Resources/qemu/"; \
 		install -m 644 ../../tmp/qemu/pc-bios/linux_boot.bin "../$(prefix)/Q.app/Contents/MacOS/"$$d".app/Contents/Resources/qemu/"; \
+		done
+
+# generate OS X .app Packages and install it to /applications
+install:
+	rm -rf "/Applications/Q.app";
+	mkdir -p "/Applications/Q.app/Contents/MacOS/";
+	mkdir -p "/Applications/Q.app/Contents/Resources/English.lproj/Q Help/";
+	install -m 755 -s ../../tmp/qemu/qemu-img "/Applications/Q.app/Contents/MacOS/";
+	install -m 755 -s qemu-control "/Applications/Q.app/Contents/MacOS/";
+	sed 's/QEMU_VERSION/$(VERSION)/;s/QKJU_VERSION/$(QVERSION)/' Info.plist > "/Applications/Q.app/Contents/Info.plist";
+	echo "APPLQKJU" > "/Applications/Q.app/Contents/PkgInfo";
+	cp -R Resources/* "/Applications/Q.app/Contents/Resources/";
+	install -m 644 ../../tmp/qemu/qemu-doc.html "/Applications/Q.app/Contents/Resources/English.lproj/Q Help/html/";
+	install -m 644 ../../tmp/qemu/qemu-tech.html "/Applications/Q.app/Contents/Resources/English.lproj/Q Help/html/";
+
+	for d in $(TARGET_DIRS); do \
+		mkdir -p "/Applications/Q.app/Contents/MacOS//"$$d".app/Contents/MacOS/"; \
+		mkdir -p "/Applications/Q.app/Contents/MacOS/"$$d".app/Contents/Resources/qemu/"; \
+		cp -R ../../tmp/qemu/host-cocoa/Resources/* "/Applications/Q.app/Contents/MacOS/"$$d".app/Contents/Resources/"; \
+		echo "APPLQEMU" > "/Applications/Q.app/Contents/MacOS/"$$d".app/Contents/PkgInfo"; \
+		sed 's/QEMU_TARGET/'$$d'/;s/QEMU_VERSION/$(VERSION)/;s/QKJU_VERSION/$(QVERSION)/' ../../tmp/qemu/host-cocoa/Info.plist > "/Applications/Q.app/Contents/MacOS/"$$d".app/Contents/Info.plist"; \
+		case "$$d" in \
+			i386-softmmu) \
+				install -m 755 -s ../../tmp/qemu/$$d/qemu "/Applications/Q.app/Contents/MacOS/"$$d".app/Contents/MacOS/"$$d \
+			;; \
+			x86_64-softmmu) \
+				install -m 755 -s ../../tmp/qemu/$$d/qemu-system-x86_64 "/Applications/Q.app/Contents/MacOS/"$$d".app/Contents/MacOS/"$$d \
+			;; \
+			ppc-softmmu) \
+				install -m 755 -s ../../tmp/qemu/$$d/qemu-system-ppc "/Applications/Q.app/Contents/MacOS/"$$d".app/Contents/MacOS/"$$d; \
+				install -m 644 ../../tmp/qemu/pc-bios/ppc_rom.bin "/Applications/Q.app/Contents/MacOS/"$$d".app/Contents/Resources/qemu/" \
+			;; \
+			sparc-softmmu) \
+				install -m 755 -s ../../tmp/qemu/$$d/qemu-system-sparc "/Applications/Q.app/Contents/MacOS/"$$d".app/Contents/MacOS/"$$d \
+			;; \
+			mips-softmmu) \
+				install -m 755 -s ../../tmp/qemu/$$d/qemu-system-mips "/Applications/Q.app/Contents/MacOS/"$$d".app/Contents/MacOS/"$$d \
+			;; \
+			arm-softmmu) \
+				install -m 755 -s ../../tmp/qemu/$$d/qemu-system-arm "/Applications/Q.app/Contents/MacOS/"$$d".app/Contents/MacOS/"$$d \
+			;; \
+		esac; \
+		install -m 644 ../../tmp/qemu/pc-bios/bios.bin "/Applications/Q.app/Contents/MacOS/"$$d".app/Contents/Resources/qemu/"; \
+		install -m 644 ../../tmp/qemu/pc-bios/vgabios.bin "/Applications/Q.app/Contents/MacOS/"$$d".app/Contents/Resources/qemu/"; \
+		install -m 644 ../../tmp/qemu/pc-bios/vgabios-cirrus.bin "/Applications/Q.app/Contents/MacOS/"$$d".app/Contents/Resources/qemu/"; \
+		install -m 644 ../../tmp/qemu/pc-bios/video.x "/Applications/Q.app/Contents/MacOS/"$$d".app/Contents/Resources/qemu/"; \
+		install -m 644 ../../tmp/qemu/pc-bios/linux_boot.bin "/Applications/Q.app/Contents/MacOS/"$$d".app/Contents/Resources/qemu/"; \
 		done

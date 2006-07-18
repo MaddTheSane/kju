@@ -88,6 +88,7 @@
 - (NSString *) pcName;
 - (NSString *) pcWindowName;
 - (NSString *) smbPath;
+- (id) qdoserver;
 - (int) modifierAtIndex:(int)index;
 - (BOOL) fullscreen;
 - (void) setFullscreen:(BOOL)val;

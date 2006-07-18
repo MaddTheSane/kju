@@ -84,8 +84,12 @@
 
 /* getter & setter */
 - (id)pcs;
+- (id)pcsTasks;
 
 /* controlWindow */
+- (id) mainWindow;
+- (IBAction) cycleWindows:(id)sender;
+- (IBAction) activateApp:(id)sender;
 - (void) loadConfigurations;
 - (void) savePCConfiguration:(id)thisPC;
 - (void) updateThumbnails;
@@ -106,7 +110,7 @@
 - (void) stopThisPC:(id)pc;
 
 /* editPCPanel */
--(BOOL) checkPC:(NSString *)name create:(BOOL)create;
+-(BOOL) checkPC:(id)thisPC name:(NSString *)name create:(BOOL)create;
 
 /* dIWindow */
 - (IBAction) openDIWindow:(id)sender;

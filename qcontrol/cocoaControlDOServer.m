@@ -21,8 +21,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
- 
+
+#import <unistd.h>
+
 #import "cocoaControlDOServer.h"
+
+#import "cocoaControlController.h"
+
+#import "../host-cocoa/CGSPrivate.h"
 
 @implementation cocoaControlDOServer
 
@@ -46,6 +52,13 @@
 	printf("finished init\n");
 	
 	return self;
+}
+
+-(void) setSender:(id)sender
+{
+//	  NSLog(@"cocoaControlDOServer: setSender");
+
+    qControl = sender;
 }
 
 - (BOOL) guestRegister: (id) guest withName: (NSString *) name
@@ -74,6 +87,82 @@
 		NSLog(@"cocoaControlDOServer: guestUnregisterWithName: failed");
 		return FALSE;
 	}
+}
+
+- (BOOL) guestSwitch: (NSString *) name fullscreen:(BOOL)fullscreen nextGuestName:(NSString *)nextGuestName
+{
+//    NSLog(@"guestSwitch: windowSwitchKeyPressed:%@ fullscreen:%d nextGuest:%@\n", name, fullscreen, nextGuestName);
+
+    int i;
+    int a = 0;
+    NSArray *keys = [guests allKeys];
+    
+    if (nextGuestName) {
+        for (i = 0; i < [keys count]; i++) {
+            if ([[keys objectAtIndex:i] isEqual:nextGuestName]) {
+                a = i;
+            }
+        }
+    } else {
+        for (i = 0; i < [keys count]; i++) {
+            if ([[keys objectAtIndex:i] isEqual:name]) {
+                a = i + 1;
+            }
+        }
+    }
+    
+    ProcessSerialNumber psn;
+    id obj = nil;
+    BOOL nFullscreen = FALSE;
+    
+    if (a < [keys count]) {
+		/* move QEMU to front */
+		GetProcessForPID( [[[qControl pcsTasks] objectForKey:[keys objectAtIndex:a]] processIdentifier], &psn );
+		obj = [guests objectForKey:[keys objectAtIndex:a]];
+		if ([obj fullscreen])
+            nFullscreen = TRUE;
+    } else
+        GetProcessForPID( [[NSProcessInfo processInfo ] processIdentifier ], &psn );
+    
+    if (fullscreen||nFullscreen) {
+        /* setup transition */        CGSConnection cid = _CGSDefaultConnection();        int transitionHandle = -1;        CGSTransitionSpec transitionSpecifications;
+        transitionSpecifications.type = 7;          //transition;
+        transitionSpecifications.option = 0;        //option;
+        transitionSpecifications.wid = 0;           //wid        transitionSpecifications.backColour = 0;    //background color        /* freeze desktop: OSStatus CGSNewTransition(const CGSConnection cid, const CGSTransitionSpec* transitionSpecifications, int *transitionHandle) */        CGSNewTransition(cid, &transitionSpecifications, &transitionHandle);                            
+        /* change windows */
+        if (nFullscreen)
+            [obj guestUnhide];
+
+        if (fullscreen)
+            [[guests objectForKey:name] guestHide];
+
+        if (a < [keys count]) //avoid activating "Q Control"
+            SetFrontProcess( &psn );
+        else {
+            [[qControl mainWindow] orderWindow:NSWindowAbove relativeTo:[[guests objectForKey:name] guestWindowNumber]];
+            SetFrontProcess( &psn );
+        }
+                      
+        /* wait */        usleep(10000);
+                       
+        /* run transition: OSStatus CGSInvokeTransition(const CGSConnection cid, int transitionHandle, float duration) */        CGSInvokeTransition(cid, transitionHandle, 1.0);
+
+        /* release transition: OSStatus CGSReleaseTransition(const CGSConnection cid, int transitionHandle) */
+//        CGSReleaseTransition(cid, transitionHandle);
+    } else {
+        if (a < [keys count]) //avoid activating "Q Control"
+            SetFrontProcess( &psn );
+        else {
+            [[qControl mainWindow] orderWindow:NSWindowAbove relativeTo:[[guests objectForKey:name] guestWindowNumber]];
+            SetFrontProcess( &psn );
+        }
+    }
+    
+    
+    
+	return true;	
+//    id obj = [guests objectAtIndex:a];
+//    return [self guestOrderFrontRegardless:[keys objectAtIndex:a]];
 }
 
 - (int) guestWindowLevel: (NSString *) guest
