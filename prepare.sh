@@ -1,8 +1,9 @@
 rm -r -f products
 rm -r -f tmp
 
-#get/update Transmission
-svn co svn://svn.m0k.org/Transmission/trunk Transmission
+#get/update libtransmission
+svn co -r 638 svn://svn.m0k.org/Transmission/trunk/ Transmission
+cp Transmission/mk/lib.mk Transmission/libtransmission/Makefile
 
 #get/update QEMU
 export CVS_RSH="ssh"

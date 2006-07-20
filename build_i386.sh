@@ -16,7 +16,10 @@ rm -r -f products/i386/Q.app
 cd Transmission
 #make clean
 ./configure
+./version.sh
+cd libtransmission
 make
+cd ..
 cd ..
 
 

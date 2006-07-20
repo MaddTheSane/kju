@@ -18,7 +18,10 @@ rm -r -f products/ppc/Q.app
 cd Transmission
 #make clean
 ./configure
+./version.sh
+cd libtransmission
 make
+cd ..
 cd ..
 
 
