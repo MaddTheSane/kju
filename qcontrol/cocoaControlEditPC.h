@@ -31,10 +31,18 @@
 	IBOutlet id viewGeneral;
 	IBOutlet id viewHardware;
 	IBOutlet id viewAdvanced;
+	IBOutlet id viewNetwork;
+	IBOutlet id firewallPortPanel;
+	IBOutlet id firewallPortTable;
+	IBOutlet id firewallPortEditView;
 	IBOutlet NSTextField *textFieldName;
 	IBOutlet NSTextField *textFieldRAM;
 	IBOutlet NSTextField *textFieldAppend;
 	IBOutlet NSTextField *textFieldArguments;
+	IBOutlet NSTextField *textFieldFirewallPortName;
+	IBOutlet NSTextField *textFieldFirewallPortHostPorts;
+	IBOutlet NSTextField *textFieldFirewallPortGuestPorts;
+	IBOutlet NSTextField *textFieldFirewallPortError;
 	IBOutlet NSPopUpButton *popUpButtonSmbFilesharing;
 	IBOutlet NSPopUpButton *popUpButtonVGA;
 	IBOutlet NSPopUpButton *popUpButtonCPU;
@@ -47,6 +55,8 @@
 	IBOutlet NSPopUpButton *popUpButtonBoot;
 	IBOutlet NSPopUpButton *popUpButtonKernel;
 	IBOutlet NSPopUpButton *popUpButtonInitrd;
+	IBOutlet NSPopUpButton *popUpButtonFirewallAdditionalPorts;
+	IBOutlet NSPopUpButton *popUpButtonFirewallServiceType;
 	IBOutlet NSButton *buttonEnableAdlib;
 	IBOutlet NSButton *buttonEnableSB16;
 	IBOutlet NSButton *buttonEnableES1370;
@@ -60,6 +70,11 @@
 	IBOutlet NSButton *buttonQWinDrivers;
 	IBOutlet NSButton *buttonWin2kHack;
 	IBOutlet NSButton *buttonOk;
+	IBOutlet NSButton *buttonFirewallNewPort;
+	IBOutlet NSButton *buttonFirewallEditPort;
+	IBOutlet NSButton *buttonFirewallDeletePort;
+	IBOutlet NSButton *buttonFirewallOk;
+	IBOutlet NSButton *buttonFirewallSavePort;
 	id customImagePopUpButtonTemp;
 	int customImageSizeHda;
 	int customImageSizeHdb;
@@ -73,6 +88,8 @@
 	id qSender;
 	NSMutableDictionary *thisPC;
 }
+NSMutableArray *firewallPortList;
+BOOL firewallPortTableEnabled;
 - (NSPanel *) editPCPanel;
 - (void) prepareEditPCPanel:(NSMutableDictionary *)aPC newPC:(BOOL)newPC sender:(id)sender;
 - (IBAction) genericFolderSelectPanel:(id)sender;
@@ -83,4 +100,18 @@
 - (void) setCustomDIType:(NSString *)string size:(int)size;
 - (IBAction) showHelp:(id)sender;
 - (NSString *) createDI:(NSString *)type withSize:(int)size;
+- (void) disableTableView:(BOOL)disable;
+- (void)initFirewallSettings;
+- (IBAction) showFirewallPortList:(id)sender;
+- (IBAction) startShowNewPort:(id)sender;
+- (IBAction) startShowEditPort:(id)sender;
+- (void) startEditPort:(BOOL)newPort;
+- (IBAction) deletePort:(id)sender;
+- (IBAction) setAdditionalPort:(id)sender;
+- (IBAction) saveNewPort:(id)sender;
+- (IBAction) saveEditPort:(id)sender;
+- (BOOL) checkPort:(BOOL)newPort;
+- (IBAction) endEditPort:(id)sender;
+- (IBAction) closeFirewallPortList:(id)sender;
+- (NSString *) constructFirewallArguments;
 @end

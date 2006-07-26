@@ -72,6 +72,10 @@
 		[viewAdvanced retain];
 		[viewAdvanced removeFromSuperview];
 	}
+		if ([viewNetwork superview]) {
+        [viewNetwork retain];
+        [viewNetwork removeFromSuperview];
+    }
 	
 	[editPCPanel setTitle:[NSString stringWithFormat: NSLocalizedStringFromTable(@"viewGeneral:title", @"Localizable", @"cocoaControlEditPC"), [[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]]];
 	[editPCPanel setFrame:NSMakeRect(
@@ -97,6 +101,10 @@
 		[viewAdvanced retain];
 		[viewAdvanced removeFromSuperview];
 	}
+		if ([viewNetwork superview]) {
+        [viewNetwork retain];
+        [viewNetwork removeFromSuperview];
+    }
 		
 	[editPCPanel setTitle:[NSString stringWithFormat: NSLocalizedStringFromTable(@"viewHardware:title", @"Localizable", @"cocoaControlEditPC"), [[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]]];
 	[editPCPanel setFrame:NSMakeRect(
@@ -122,6 +130,10 @@
 		[viewGeneral retain];
 		[viewGeneral removeFromSuperview];
 	}
+	if ([viewNetwork superview]) {
+        [viewNetwork retain];
+        [viewNetwork removeFromSuperview];
+    }
 		
 	[editPCPanel setTitle:[NSString stringWithFormat: NSLocalizedStringFromTable(@"viewAdvanced:title", @"Localizable", @"cocoaControlEditPC"), [[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]]];
 	[editPCPanel setFrame:NSMakeRect(
@@ -133,6 +145,33 @@
 	
 	[[editPCPanel contentView] addSubview:viewAdvanced];
 	[viewAdvanced setFrameOrigin:NSMakePoint(0,60)];
+}
+
+- (void) viewNetwork:(id)sender
+{
+    if ([viewHardware superview]) {
+        [viewHardware retain];
+        [viewHardware removeFromSuperview];
+    }
+    if ([viewGeneral superview]) {
+        [viewGeneral retain];
+        [viewGeneral removeFromSuperview];
+    }
+    if ([viewAdvanced superview]) {
+        [viewAdvanced retain];
+        [viewAdvanced removeFromSuperview];
+    }
+        
+    [editPCPanel setTitle:[NSString stringWithFormat: NSLocalizedStringFromTable(@"viewNetwork:title", @"Localizable", @"cocoaControlEditPC"), [[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]]];
+    [editPCPanel setFrame:NSMakeRect(
+        [editPCPanel frame].origin.x,
+        [editPCPanel frame].origin.y + [editPCPanel frame].size.height - [viewNetwork bounds].size.height - 140,
+        [editPCPanel frame].size.width,
+        [viewNetwork bounds].size.height + 140
+    ) display:YES animate:YES];
+    
+    [[editPCPanel contentView] addSubview:viewNetwork];
+    [viewNetwork setFrameOrigin:NSMakePoint(0,60)];
 }
 
 - (void) setOption:(id)option argument:(id)argument
@@ -283,7 +322,10 @@
 	} else if ([option isEqual:@"-initrd"]) {
 		[popUpButtonInitrd insertItemWithTitle:[NSString stringWithString:argument] atIndex:1];
 		[popUpButtonInitrd selectItemAtIndex:1];
-		
+    
+    /* -redir */
+    } else if ([option isEqual:@"-redir"]) {
+        // we do not have to do anything about it here, because the information is already saved in the configuration.plist		
 	/* -M */
 	} else if ([option isEqual:@"-M"]) {
 	
@@ -457,8 +499,11 @@
 		[popUpButtonInitrd removeItemAtIndex:1];
 	[popUpButtonInitrd selectItemAtIndex:0];
 	
-	/* ceanup free qemu Arguments */
+	/* cleanup free qemu Arguments */
 	[textFieldArguments setStringValue:@""];
+	
+    /* init firewall configuration */
+	[self initFirewallSettings];
 	
 	/* Arguments of thisPC */
 	NSArray *array = [[thisPC objectForKey:@"Arguments"] componentsSeparatedByString:@" "];
@@ -504,6 +549,8 @@
 	[editPCPanelToolbar setSizeMode:NSToolbarSizeModeRegular]; //default Toolbar Size
 	[editPCPanelToolbar setDelegate: self]; // We are the delegate
 	[editPCPanel setToolbar: editPCPanelToolbar]; // Attach the toolbar to the document window
+	[firewallPortTable setDelegate:self];
+	[firewallPortTable setDataSource:self];
 }
 
 /* Toolbar Delegates*/
@@ -532,6 +579,13 @@
 		[toolbarItem setImage: [NSImage imageNamed: @"cocoa_tb_advanced.png"]];
 		[toolbarItem setTarget: self];
 		[toolbarItem setAction: @selector( viewAdvanced: )];
+    } else if ([itemIdent isEqual: @"network"]) {
+		[toolbarItem setLabel: NSLocalizedStringFromTable(@"toolbar:label:network", @"Localizable", @"cocoaControlEditPC")];
+		[toolbarItem setPaletteLabel: NSLocalizedStringFromTable(@"toolbar:paletteLabel:network", @"Localizable", @"cocoaControlEditPC")];
+		[toolbarItem setToolTip: NSLocalizedStringFromTable(@"toolbar:toolTip:network", @"Localizable", @"cocoaControlEditPC")];
+		[toolbarItem setImage: [NSImage imageNamed: @"cocoa_tb_network.tiff"]];
+		[toolbarItem setTarget: self];
+		[toolbarItem setAction: @selector( viewNetwork: )];
 	} else {
 		toolbarItem = nil;
 	}
@@ -544,6 +598,7 @@
 	return [NSArray arrayWithObjects:
 		@"general",
 		@"hardware",
+		@"network",
 		@"advanced",
 		nil];
 }
@@ -553,6 +608,7 @@
 	return [NSArray arrayWithObjects:
 		@"general",
 		@"hardware",
+		@"network",
 		@"advanced",
 		nil];
 }
@@ -562,6 +618,7 @@
 	return [NSArray arrayWithObjects:
 		@"general",
 		@"hardware",
+		@"network",
 		@"advanced",
 		nil];	
 }
@@ -1040,6 +1097,10 @@
 		[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -initrd %@", [popUpButtonInitrd titleOfSelectedItem]]];
 	}
 	
+	/* -redir */
+	// todo: add to arguments
+	[[thisPC objectForKey:@"Arguments"] appendFormat:@"%@",[self constructFirewallArguments]];
+	
 	/* qemu arguments */
 	[[thisPC objectForKey:@"Arguments"] appendFormat:@" %@",[textFieldArguments stringValue]];
 	
@@ -1088,4 +1149,634 @@
 	
 	return name;
 }
+
+/* Network Methods */
+/* Firewall Port Tableview Delegates */
+
+- (int)numberOfRowsInTableView:(NSTableView *)tableView
+{
+	return [firewallPortList count];
+}
+
+- (id)tableView:(NSTableView *)tableView objectValueForTableColumn:(NSTableColumn *)tableColumn row:(int)row
+{	
+	id thisPort;
+	thisPort = [firewallPortList objectAtIndex:row];
+
+	if ([[tableColumn identifier] isEqualToString:@"status"]) {
+        return [thisPort objectForKey:@"Enabled"];
+    } else if ([[tableColumn identifier] isEqualToString:@"name"]) {
+        return [thisPort objectForKey:@"Name"];
+	} else {
+		return @"";
+	}
+	return nil;
+}
+
+- (void) disableTableView:(BOOL)disable
+{
+    NSEnumerator * ec = [[firewallPortTable tableColumns] objectEnumerator];
+    NSTableColumn * curColumn;
+    NSColor * textColor = nil; 
+    NSColor * backgroundColor = nil;
+    
+    if(disable) {
+        textColor = [NSColor colorWithCalibratedWhite:0.50 alpha:1.0];
+        backgroundColor = [NSColor colorWithCalibratedWhite:0.94 alpha:1.0];
+        firewallPortTableEnabled = NO;
+    } else {
+        textColor = [NSColor blackColor];
+        backgroundColor = [NSColor colorWithCalibratedWhite:0.94 alpha:1.0];
+        firewallPortTableEnabled = YES;
+    }
+    
+    while ((curColumn = [ec nextObject])) {
+        if([[curColumn dataCell] isKindOfClass:[NSTextFieldCell class]]) {
+                [[curColumn dataCell] setTextColor:textColor];
+                [[curColumn dataCell] setBackgroundColor:backgroundColor];
+        }
+    }
+    
+    if([[firewallPortTable enclosingScrollView] hasVerticalScroller])
+        [[[firewallPortTable enclosingScrollView] verticalScroller] setEnabled:!disable];
+
+    //if([[table enclosingScrollView] hasHorizontalScroller])
+        //[[[table enclosingScrollView] horizontalScroller] setEnabled:(bEnable && saveHorizontalScrollerEnabled)];
+}
+
+#pragma mark Table Delegate Methods needed for the disableTableView method
+
+- (BOOL)selectionShouldChangeInTableView:(NSTableView *)aTableView
+{
+    return firewallPortTableEnabled;
+}
+
+- (BOOL)tableView:(NSTableView *)aTableView shouldEditTableColumn:(NSTableColumn *)aTableColumn row:(int)rowIndex
+{
+    return firewallPortTableEnabled;
+}
+
+- (BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(int)rowIndex
+{
+    return firewallPortTableEnabled;
+}
+
+- (BOOL)tableView:(NSTableView *)aTableView shouldSelectTableColumn:(NSTableColumn *)aTableColumn
+{
+    return firewallPortTableEnabled;
+}
+
+// for setting the checkbox status to the configuration file
+- (void)tableView:(NSTableView *)aTableView setObjectValue:(id)theValue forTableColumn:(NSTableColumn *)aTableColumn row:(int)rowIndex
+{
+    if([[aTableColumn identifier] isEqualToString:@"status"]) {
+        // set the new "enabled" status in firewallPortList
+        [[firewallPortList objectAtIndex:rowIndex] setObject:theValue forKey:@"Enabled"];
+        // calls table reloadData automatically
+    }
+}
+    
+- (void)initFirewallSettings
+{
+    firewallPortTableEnabled = YES;
+    if(firewallPortList == nil) {
+        firewallPortList = [[[NSMutableArray alloc] init] retain];
+    } else {
+        [firewallPortList removeAllObjects];
+    }
+    // load defaults into array
+    NSArray * firewallDefaults = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"fw-defaults" ofType:@"plist"]];
+    NSMutableArray * tempArray = [NSMutableArray arrayWithCapacity:5];
+    [firewallPortList addObjectsFromArray:firewallDefaults];
+    // load customs from thisPC
+    if([[thisPC objectForKey:@"Network"] objectForKey:@"Redirect"]) {
+        // enumerate through entries and check for defaults
+        int i;
+        int ii;
+        int found = 0;
+        for(i=0; i<[[[thisPC objectForKey:@"Network"] objectForKey:@"Redirect"] count]; i++) {
+            for(ii=0; ii<[firewallPortList count]; ii++) {
+                if([[[[[thisPC objectForKey:@"Network"] objectForKey:@"Redirect"] objectAtIndex:i] objectForKey:@"Name"] isEqualTo:[[firewallDefaults objectAtIndex:ii] objectForKey:@"Name"]]) {
+                    // found equal entry in customs, set enabled status in firewallPortList
+                    [[firewallPortList objectAtIndex:ii] setObject:[NSNumber numberWithBool:YES] forKey:@"Enabled"];
+                    found = 1;
+                }
+            }
+            // check if previously found
+            if(found == 0) {
+                // not found, add entry to firewallPortList
+                [tempArray addObject:[[[thisPC objectForKey:@"Network"] objectForKey:@"Redirect"] objectAtIndex:i]];
+            }
+            found = 0;
+        }
+        if([tempArray count] > 0) [firewallPortList addObjectsFromArray:tempArray];
+    }
+        
+    // load additionals into additional selector
+    NSArray * firewallAdditionalServices = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"fw-additionals" ofType:@"plist"]];
+    
+    int i;
+    [popUpButtonFirewallAdditionalPorts removeAllItems];
+    for(i=0; i<[firewallAdditionalServices count]; i++) {
+        [popUpButtonFirewallAdditionalPorts addItemWithTitle:[[firewallAdditionalServices objectAtIndex:i] valueForKey:@"Name"]];
+    }
+    [[popUpButtonFirewallAdditionalPorts menu] addItem:[NSMenuItem separatorItem]];
+    [popUpButtonFirewallAdditionalPorts addItemWithTitle:@"Custom.."];
+	[popUpButtonFirewallAdditionalPorts selectItemAtIndex:0];
+}
+
+- (IBAction) showFirewallPortList:(id)sender
+{ 
+    [firewallPortTable reloadData];
+    [firewallPortTable selectRow:0 byExtendingSelection:NO];
+    
+    [NSApp beginSheet:firewallPortPanel
+        modalForWindow:editPCPanel 
+        modalDelegate:self
+        didEndSelector:nil
+        contextInfo:nil];
+}
+
+- (IBAction) startShowNewPort:(id)sender
+{
+    [self startEditPort:YES];
+}
+- (IBAction) startShowEditPort:(id)sender
+{
+    int restrictedPort = 0;
+    NSArray * additionalPorts = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"fw-additionals" ofType:@"plist"]];
+    if([firewallPortTable selectedRow] >= 0) {
+        int i;
+        for(i=0; i<=[additionalPorts count]-1; i++) {
+            if([[[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] objectForKey:@"Name"] isEqualTo:[[additionalPorts objectAtIndex:i] objectForKey:@"Name"]]) {
+                restrictedPort = 1;
+            }
+        }
+        if([firewallPortTable selectedRow] >= 0 && [firewallPortTable selectedRow] < [[NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"fw-defaults" ofType:@"plist"]] count]) {
+            restrictedPort = 1;
+        }
+        if(restrictedPort == 1) {
+            NSString * redirectedPorts;
+            if(![[[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] valueForKey:@"TCP-Ports-Host"] isEqualToString:@""] && ![[[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] valueForKey:@"UDP-Ports-Host"] isEqualToString:@""]) {
+                // tcp and udp
+                redirectedPorts = [NSString stringWithFormat:@"%@,%@ on the Host to port(s) %@,%@ on the Guest (TCP and UDP).", [[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] valueForKey:@"TCP-Ports-Host"], [[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] valueForKey:@"UDP-Ports-Host"], [[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] valueForKey:@"TCP-Ports-Guest"], [[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] valueForKey:@"UDP-Ports-Guest"]];
+            } else if (![[[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] valueForKey:@"TCP-Ports-Host"] isEqualToString:@""]) {
+                // tcp only
+                redirectedPorts = [NSString stringWithFormat:@"%@ on the Host to port(s) %@ on the Guest (TCP).", [[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] valueForKey:@"TCP-Ports-Host"], [[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] valueForKey:@"TCP-Ports-Guest"]];
+            } else {
+                // udp only
+                redirectedPorts = [NSString stringWithFormat:@"%@ on the Host to port(s) %@ on the Guest (UDP).", [[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] valueForKey:@"UDP-Ports-Host"], [[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] valueForKey:@"UDP-Ports-Guest"]];
+            }
+            
+            NSAlert *alert = [NSAlert alertWithMessageText:@"This service cannot be edited!"
+				defaultButton:@"OK"
+				alternateButton:nil
+				otherButton:nil
+				informativeTextWithFormat:[NSString stringWithFormat:@"%@ redirects incoming connections from port(s) %@", [[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] valueForKey:@"Name"], redirectedPorts]];
+				
+            [alert runModal];
+        } else {
+        [self startEditPort:NO];
+        }
+    }
+}
+
+- (void) startEditPort:(BOOL)newPort
+{  
+    [firewallPortPanel setFrame:NSMakeRect(
+        [firewallPortPanel frame].origin.x,
+        [firewallPortPanel frame].origin.y - 263,
+        [firewallPortPanel frame].size.width,
+        [firewallPortPanel frame].size.height + 263
+    ) display:YES animate:YES];
+        
+    // disable new,edit,delete,ok,tableview
+    [buttonFirewallNewPort setEnabled:NO];
+    [buttonFirewallEditPort setEnabled:NO];
+    [buttonFirewallDeletePort setEnabled:NO];
+    [buttonFirewallOk setKeyEquivalent:@""];
+    [buttonFirewallOk setEnabled:NO];
+    [self disableTableView:YES];
+    
+    [buttonFirewallSavePort setKeyEquivalent:@"\r"];
+        
+    if(newPort) {
+        // called to create a new port
+        [textFieldFirewallPortName setStringValue:@""];
+        [popUpButtonFirewallServiceType selectItemAtIndex:0];
+        [textFieldFirewallPortHostPorts setStringValue:@""];
+        [textFieldFirewallPortGuestPorts setStringValue:@""];
+        
+        [popUpButtonFirewallAdditionalPorts selectItemAtIndex:0];
+        [self setAdditionalPort:self];
+        [buttonFirewallSavePort setTarget:self];
+        [buttonFirewallSavePort setAction:@selector(saveNewPort:)];
+    } else {
+        // called to edit a port
+        [buttonFirewallSavePort setTarget:self];
+        [buttonFirewallSavePort setAction:@selector(saveEditPort:)];
+        [popUpButtonFirewallAdditionalPorts selectItemWithTitle:@"Custom.."];
+        // load port info from list
+        int selectedPort = [firewallPortTable selectedRow];
+        
+        [textFieldFirewallPortName setStringValue:[[firewallPortList objectAtIndex:selectedPort] valueForKey:@"Name"]];
+        if(![[[firewallPortList objectAtIndex:selectedPort] valueForKey:@"TCP-Ports-Host"] isEqualToString:@""] && ![[[firewallPortList objectAtIndex:selectedPort] valueForKey:@"UDP-Ports-Host"] isEqualToString:@""]) {
+            [popUpButtonFirewallServiceType selectItemAtIndex:2];
+            [textFieldFirewallPortHostPorts setStringValue:[[firewallPortList objectAtIndex:selectedPort] valueForKey:@"TCP-Ports-Host"]];
+        [textFieldFirewallPortGuestPorts setStringValue:[[firewallPortList objectAtIndex:selectedPort] valueForKey:@"TCP-Ports-Guest"]];
+        } else if(![[[firewallPortList objectAtIndex:selectedPort] valueForKey:@"TCP-Ports-Host"] isEqualToString:@""]) {
+            [popUpButtonFirewallServiceType selectItemAtIndex:0];
+            [textFieldFirewallPortHostPorts setStringValue:[[firewallPortList objectAtIndex:selectedPort] valueForKey:@"TCP-Ports-Host"]];
+        [textFieldFirewallPortGuestPorts setStringValue:[[firewallPortList objectAtIndex:selectedPort] valueForKey:@"TCP-Ports-Guest"]];
+        } else if(![[[firewallPortList objectAtIndex:selectedPort] valueForKey:@"UDP-Ports-Host"] isEqualToString:@""]) {
+            [popUpButtonFirewallServiceType selectItemAtIndex:1];
+            [textFieldFirewallPortHostPorts setStringValue:[[firewallPortList objectAtIndex:selectedPort] valueForKey:@"UDP-Ports-Host"]];
+        [textFieldFirewallPortGuestPorts setStringValue:[[firewallPortList objectAtIndex:selectedPort] valueForKey:@"UDP-Ports-Guest"]];
+        }
+    }
+}
+
+- (IBAction) deletePort:(id)sender
+{
+    // check if port is a default port
+    if([firewallPortTable selectedRow] >= 0 && [firewallPortTable selectedRow] < [[NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"fw-defaults" ofType:@"plist"]] count]) {
+        NSAlert *alert = [NSAlert alertWithMessageText:@"This service cannot be deleted!"
+				defaultButton:@"OK"
+				alternateButton:nil
+				otherButton:nil
+				informativeTextWithFormat:@"To disable this service from being redirected use the corresponding checkbox."];
+				
+        [alert runModal];
+    } else {
+        // delete
+        [firewallPortList removeObjectAtIndex:[firewallPortTable selectedRow]];
+        [firewallPortTable reloadData];
+    }
+}
+
+- (IBAction) setAdditionalPort:(id)sender
+{
+    // load data from fw-additionals.plist
+    if ([popUpButtonFirewallAdditionalPorts indexOfSelectedItem] <= ([popUpButtonFirewallAdditionalPorts numberOfItems] - 3)) {
+        // only sets from fw-additionals are loaded here..
+        NSArray * additionalPorts = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"fw-additionals" ofType:@"plist"]];
+        
+        [textFieldFirewallPortName setStringValue:[[additionalPorts objectAtIndex:[popUpButtonFirewallAdditionalPorts indexOfSelectedItem]] valueForKey:@"Name"]];
+        if(![[[additionalPorts objectAtIndex:[popUpButtonFirewallAdditionalPorts indexOfSelectedItem]] valueForKey:@"TCP-Ports-Host"] isEqualToString:@""] && ![[[additionalPorts objectAtIndex:[popUpButtonFirewallAdditionalPorts indexOfSelectedItem]] valueForKey:@"UDP-Ports-Host"] isEqualToString:@""]) {
+            // tcp and udp
+            // add both type's ports, if set is saved we load it directly from fw-additionals because of possible duplicates
+            [popUpButtonFirewallServiceType selectItemAtIndex:2];
+            [textFieldFirewallPortHostPorts setStringValue:[NSString stringWithFormat:@"%@,%@", [[additionalPorts objectAtIndex:[popUpButtonFirewallAdditionalPorts indexOfSelectedItem]] valueForKey:@"TCP-Ports-Host"], [[additionalPorts objectAtIndex:[popUpButtonFirewallAdditionalPorts indexOfSelectedItem]] valueForKey:@"UDP-Ports-Host"]]];
+        [textFieldFirewallPortGuestPorts setStringValue:[NSString stringWithFormat:@"%@,%@", [[additionalPorts objectAtIndex:[popUpButtonFirewallAdditionalPorts indexOfSelectedItem]] valueForKey:@"TCP-Ports-Guest"], [[additionalPorts objectAtIndex:[popUpButtonFirewallAdditionalPorts indexOfSelectedItem]] valueForKey:@"UDP-Ports-Guest"]]];
+        } else if(![[[additionalPorts objectAtIndex:[popUpButtonFirewallAdditionalPorts indexOfSelectedItem]] valueForKey:@"TCP-Ports-Host"] isEqualToString:@""]) {
+            // tcp only
+            [popUpButtonFirewallServiceType selectItemAtIndex:0];
+            [textFieldFirewallPortHostPorts setStringValue:[[additionalPorts objectAtIndex:[popUpButtonFirewallAdditionalPorts indexOfSelectedItem]] valueForKey:@"TCP-Ports-Host"]];
+        [textFieldFirewallPortGuestPorts setStringValue:[[additionalPorts objectAtIndex:[popUpButtonFirewallAdditionalPorts indexOfSelectedItem]] valueForKey:@"TCP-Ports-Guest"]];
+        } else if(![[[additionalPorts objectAtIndex:[popUpButtonFirewallAdditionalPorts indexOfSelectedItem]] valueForKey:@"UDP-Ports-Host"] isEqualToString:@""]) {
+            // udp only
+            [popUpButtonFirewallServiceType selectItemAtIndex:1];
+            [textFieldFirewallPortHostPorts setStringValue:[[additionalPorts objectAtIndex:[popUpButtonFirewallAdditionalPorts indexOfSelectedItem]] valueForKey:@"UDP-Ports-Host"]];
+        [textFieldFirewallPortGuestPorts setStringValue:[[additionalPorts objectAtIndex:[popUpButtonFirewallAdditionalPorts indexOfSelectedItem]] valueForKey:@"UDP-Ports-Guest"]];
+        }
+        // lock elements
+        [textFieldFirewallPortName setEnabled:NO];
+        [textFieldFirewallPortHostPorts setEnabled:NO];
+        [textFieldFirewallPortGuestPorts setEnabled:NO];
+        [popUpButtonFirewallServiceType setEnabled:NO];
+    } else {
+        // custom port chosen
+        [textFieldFirewallPortName setStringValue:@""];
+        [textFieldFirewallPortHostPorts setStringValue:@""];
+        [textFieldFirewallPortGuestPorts setStringValue:@""];
+        [popUpButtonFirewallServiceType selectItemAtIndex:0];
+        
+        [textFieldFirewallPortName setEnabled:YES];
+        [textFieldFirewallPortHostPorts setEnabled:YES];
+        [textFieldFirewallPortGuestPorts setEnabled:YES];
+        [popUpButtonFirewallServiceType setEnabled:YES];
+    }
+}
+
+- (IBAction) saveNewPort:(id)sender
+{
+    if([self checkPort:YES] == YES) {
+        NSMutableDictionary * portDict;
+        if ([popUpButtonFirewallAdditionalPorts indexOfSelectedItem] <= ([popUpButtonFirewallAdditionalPorts numberOfItems] - 3)) {
+        // this is a set from fw-additionals, load it directly from the file        
+        NSArray * additionalPorts = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"fw-additionals" ofType:@"plist"]];
+        portDict = [additionalPorts objectAtIndex:[popUpButtonFirewallAdditionalPorts indexOfSelectedItem]];
+        } else {
+        // this is a custom port, take entries from textFields
+        portDict = [NSMutableDictionary dictionaryWithCapacity:5];
+        [portDict setObject:[textFieldFirewallPortName stringValue] forKey:@"Name"];
+        if([popUpButtonFirewallServiceType indexOfSelectedItem] == 0) {
+            // tcp only
+            [portDict setObject:[textFieldFirewallPortHostPorts stringValue] forKey:@"TCP-Ports-Host"];
+            [portDict setObject:[textFieldFirewallPortGuestPorts stringValue] forKey:@"TCP-Ports-Guest"];
+        } else if([popUpButtonFirewallServiceType indexOfSelectedItem] == 1) {
+            // udp only
+            [portDict setObject:[textFieldFirewallPortHostPorts stringValue] forKey:@"UDP-Ports-Host"];
+            [portDict setObject:[textFieldFirewallPortGuestPorts stringValue] forKey:@"UDP-Ports-Guest"];
+        } else if([popUpButtonFirewallServiceType indexOfSelectedItem] == 2) {
+            // tcp and udp
+            [portDict setObject:[textFieldFirewallPortHostPorts stringValue] forKey:@"TCP-Ports-Host"];
+            [portDict setObject:[textFieldFirewallPortGuestPorts stringValue] forKey:@"TCP-Ports-Guest"];
+            [portDict setObject:[textFieldFirewallPortHostPorts stringValue] forKey:@"UDP-Ports-Host"];
+            [portDict setObject:[textFieldFirewallPortGuestPorts stringValue] forKey:@"UDP-Ports-Guest"];
+        }
+        } // end predefined/custom check
+        // set enabled key
+        [portDict setObject:[NSNumber numberWithBool:YES] forKey:@"Enabled"];
+        // add to list
+        [firewallPortList addObject:portDict];
+        [self endEditPort:self];
+    }
+}
+
+- (IBAction) saveEditPort:(id)sender
+{
+    if([self checkPort:NO] == YES) {
+        // save to edited port
+        int selectedPort = [firewallPortTable selectedRow];
+        
+        NSMutableDictionary * portDict = [NSMutableDictionary dictionaryWithCapacity:5];
+        [portDict setObject:[textFieldFirewallPortName stringValue] forKey:@"Name"];
+        if([popUpButtonFirewallServiceType indexOfSelectedItem] == 0) {
+            // tcp only
+            [portDict setObject:[textFieldFirewallPortHostPorts stringValue] forKey:@"TCP-Ports-Host"];
+            [portDict setObject:[textFieldFirewallPortGuestPorts stringValue] forKey:@"TCP-Ports-Guest"];
+        } else if([popUpButtonFirewallServiceType indexOfSelectedItem] == 1) {
+            // udp only
+            [portDict setObject:[textFieldFirewallPortHostPorts stringValue] forKey:@"UDP-Ports-Host"];
+            [portDict setObject:[textFieldFirewallPortGuestPorts stringValue] forKey:@"UDP-Ports-Guest"];
+        } else if([popUpButtonFirewallServiceType indexOfSelectedItem] == 2) {
+            // tcp and udp
+            [portDict setObject:[textFieldFirewallPortHostPorts stringValue] forKey:@"TCP-Ports-Host"];
+            [portDict setObject:[textFieldFirewallPortGuestPorts stringValue] forKey:@"TCP-Ports-Guest"];
+            [portDict setObject:[textFieldFirewallPortHostPorts stringValue] forKey:@"UDP-Ports-Host"];
+            [portDict setObject:[textFieldFirewallPortGuestPorts stringValue] forKey:@"UDP-Ports-Guest"];
+        }
+        // set enabled/disabled key
+        [portDict setObject:[[firewallPortList objectAtIndex:selectedPort] objectForKey:@"Enabled"] forKey:@"Enabled"];
+        // replace in list
+        [firewallPortList replaceObjectAtIndex:selectedPort withObject:portDict];          
+        [self endEditPort:self];
+    }
+}
+
+- (BOOL) checkPort:(BOOL)newPort
+{
+    if([[textFieldFirewallPortName stringValue] isEqualToString:@""]) {
+        // name empty
+        [textFieldFirewallPortError setStringValue:@"No empty name!"];
+        [textFieldFirewallPortError setHidden:NO];
+        return NO;
+    } else if([[textFieldFirewallPortHostPorts stringValue] isEqualToString:@""]) {
+        // host ports empty
+        NSLog(@"No empty host-port entry!");
+        [textFieldFirewallPortError setStringValue:@"No empty host-port entry!"];
+        [textFieldFirewallPortError setHidden:NO];
+        return NO;
+    } else if([[textFieldFirewallPortGuestPorts stringValue] isEqualToString:@""]) {
+        // guest ports empty
+        NSLog(@"No empty guest-port entry!");
+        [textFieldFirewallPortError setStringValue:@"No empty guest-port entry!"];
+        [textFieldFirewallPortError setHidden:NO];
+        return NO;
+    } else {
+        // check for valid port ranges
+	   int i,j,k;
+	   int dcc = 0; // delimiter comma count
+	   int dhc = 0; // delimiter haifin count
+	   unichar tChar;
+	   int invalid = 0;
+	   NSString *tForbidden = [NSString stringWithString:@"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz!\"$%&/()=?+*#'_;:.<>"];
+	   NSString *tDelimiters = [NSString stringWithString:@",-"];
+	   NSArray *tPortRanges = [NSArray arrayWithObjects:[textFieldFirewallPortHostPorts stringValue], [textFieldFirewallPortGuestPorts stringValue], nil];
+	   for (i = 0; i < [tPortRanges count]; i++) {
+            for (j = 0; j < [[tPortRanges objectAtIndex:i] length]; j++) {
+                tChar = [[tPortRanges objectAtIndex:i] characterAtIndex:j];
+                for (k=0; k < [tForbidden length]; k++) {
+                    //NSLog(@"%C, %C", tChar, [tForbidden characterAtIndex:k]);
+                    if (tChar == [tForbidden characterAtIndex:k]) {
+                        // invalid character
+                        invalid = 1;
+                    } else if(tChar == [tDelimiters characterAtIndex:0]) {
+                        // raise comma count
+                        dcc++;
+                    } else if(tChar == [tDelimiters characterAtIndex:1]) {
+                        // raise haifin count
+                        dhc++;
+                    }
+                }
+            }
+	   }
+	   if (invalid == 1) {
+	       NSLog(@"Illegal characters in ports!");
+	       [textFieldFirewallPortError setStringValue:@"Illegal characters in ports!"];
+	       [textFieldFirewallPortError setHidden:NO];
+	       return NO;
+	   } else if(dcc > 0 && dhc > 0) {
+	       // both comma and haifin found, not supported/allowed atm
+	       NSLog(@"Combination of , and - not allowed.");
+	       [textFieldFirewallPortError setStringValue:@"Combination of , and - not allowed."];
+	       [textFieldFirewallPortError setHidden:NO];
+	       return NO;
+	   }
+    }
+    int i;
+    int found = 0;
+    if(newPort) {
+        // check for same name in all entries of current list
+        
+        for(i=0; i<=[firewallPortList count]-1; i++) {
+            if([[textFieldFirewallPortName stringValue] isEqualTo:[[firewallPortList objectAtIndex:i] objectForKey:@"Name"]]) {
+                found = 1;
+            }
+        }
+    } else {
+        // check for same name in fw-default entries of current list
+        for(i=0; i<=[[NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"fw-defaults" ofType:@"plist"]] count]-1; i++) {
+            if([[textFieldFirewallPortName stringValue] isEqualTo:[[firewallPortList objectAtIndex:i] objectForKey:@"Name"]]) {
+                found = 1;
+            }
+        }
+    }
+    if(found == 1) return NO;
+    return YES;
+}
+
+- (IBAction) endEditPort:(id)sender
+{
+    // reset
+    [textFieldFirewallPortName setStringValue:@""];
+    [textFieldFirewallPortHostPorts setStringValue:@""];
+    [textFieldFirewallPortGuestPorts setStringValue:@""];
+    [popUpButtonFirewallServiceType selectItemAtIndex:0];
+    [textFieldFirewallPortError setStringValue:@""];
+    [textFieldFirewallPortError setHidden:YES];
+        
+    [textFieldFirewallPortName setEnabled:YES];
+    [textFieldFirewallPortHostPorts setEnabled:YES];
+    [textFieldFirewallPortGuestPorts setEnabled:YES];
+    [popUpButtonFirewallServiceType setEnabled:YES];    
+    
+    [firewallPortPanel setFrame:NSMakeRect(
+        [firewallPortPanel frame].origin.x,
+        [firewallPortPanel frame].origin.y + 263,
+        [firewallPortPanel frame].size.width,
+        [firewallPortPanel frame].size.height - 263
+    ) display:YES animate:YES];
+    
+    // enable new,edit,delete,ok,tableview
+    [buttonFirewallNewPort setEnabled:YES];
+    [buttonFirewallEditPort setEnabled:YES];
+    [buttonFirewallDeletePort setEnabled:YES];
+    [buttonFirewallOk setKeyEquivalent:@"\r"];
+    [buttonFirewallOk setEnabled:YES];
+    [self disableTableView:NO];
+    
+    [buttonFirewallSavePort setKeyEquivalent:@""];
+    [firewallPortTable reloadData];
+}
+
+- (IBAction) closeFirewallPortList:(id)sender
+{
+    // save the ports in configuration.plist
+    // enumerate through entries and check for defaults, when enabled => save
+    NSArray * firewallDefaults = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"fw-defaults" ofType:@"plist"]];
+    NSMutableArray * customPorts = [NSMutableArray arrayWithCapacity:10];
+    int i;
+    int ii;
+    int found = 0;
+    for(i=0; i<=[firewallPortList count]-1; i++) {
+        for(ii=0; ii<=[firewallDefaults count]-1; ii++) {
+            if([[[firewallPortList objectAtIndex:i] objectForKey:@"Name"] isEqualTo:[[firewallDefaults objectAtIndex:ii] objectForKey:@"Name"]]) {
+                // found default port in customs, check for enabled status in firewallPortList
+                found = 1;
+                if([[[firewallPortList objectAtIndex:i] objectForKey:@"Enabled"] isEqualTo:[NSNumber numberWithBool:YES]]) {
+                    // default port enabled => save to conf.plist
+                    [customPorts addObject:[firewallPortList objectAtIndex:i]]; 
+                }
+            }   
+        }
+        if(found == 0) {
+            // port is not default port, save to conf.plist regardless of Enabled
+            [customPorts addObject:[firewallPortList objectAtIndex:i]];
+        }
+        found = 0;
+    }
+    [thisPC setObject:[NSDictionary dictionaryWithObject:customPorts forKey:@"Redirect"] forKey:@"Network"];
+    [NSApp endSheet:firewallPortPanel];
+    [firewallPortPanel orderOut:self];
+}
+
+- (NSString *) constructFirewallArguments
+{
+    NSArray * portlist = [[thisPC objectForKey:@"Network"] objectForKey:@"Redirect"];
+    NSMutableString * arguments = [NSMutableString stringWithCapacity:10];
+    
+    int i, ii, j, k;
+    for(i=0; i<[portlist count]; i++) {
+        // enumerate through portlist in conf.plist
+        if([[[portlist objectAtIndex:i] objectForKey:@"Enabled"] isEqualTo:[NSNumber numberWithBool:YES]]) {
+            NSArray * tcpHostComma = [[[portlist objectAtIndex:i] valueForKey:@"TCP-Ports-Host"] componentsSeparatedByString:@","];
+            NSArray * tcpHostHaifin = [[[portlist objectAtIndex:i] valueForKey:@"TCP-Ports-Host"] componentsSeparatedByString:@"-"];
+            NSArray * tcpGuestComma = [[[portlist objectAtIndex:i] valueForKey:@"TCP-Ports-Guest"] componentsSeparatedByString:@","];
+            NSArray * tcpGuestHaifin = [[[portlist objectAtIndex:i] valueForKey:@"TCP-Ports-Guest"] componentsSeparatedByString:@"-"];
+            
+            NSArray * udpHostComma = [[[portlist objectAtIndex:i] valueForKey:@"UDP-Ports-Host"] componentsSeparatedByString:@","];
+            NSArray * udpHostHaifin = [[[portlist objectAtIndex:i] valueForKey:@"UDP-Ports-Host"] componentsSeparatedByString:@"-"];
+            NSArray * udpGuestComma = [[[portlist objectAtIndex:i] valueForKey:@"UDP-Ports-Guest"] componentsSeparatedByString:@","];
+            NSArray * udpGuestHaifin = [[[portlist objectAtIndex:i] valueForKey:@"UDP-Ports-Guest"] componentsSeparatedByString:@"-"];
+            
+            NSArray * typeA = [NSArray arrayWithObjects:@"tcp",@"udp",nil];
+            NSArray * seperatedA = [NSArray arrayWithObjects:[NSArray arrayWithObjects:tcpHostComma, tcpHostHaifin, tcpGuestComma, tcpGuestHaifin, nil], [NSArray arrayWithObjects:udpHostComma, udpHostHaifin, udpGuestComma, udpGuestHaifin, nil], nil];
+            
+            for(ii=0; ii<[seperatedA count]; ii++) {
+            // tcp/udp
+            id tp = [typeA objectAtIndex:ii];
+            id hc = [[seperatedA objectAtIndex:ii] objectAtIndex:0];
+            id hh = [[seperatedA objectAtIndex:ii] objectAtIndex:1];
+            id gc = [[seperatedA objectAtIndex:ii] objectAtIndex:2];
+            id gh = [[seperatedA objectAtIndex:ii] objectAtIndex:3];
+            
+            
+            /* comma code */
+            if([hc count] > 1 && [gc count] > 1) {
+                // both seperated by comma
+                if([hc count] == [gc count]) {
+                    // both have the same amount of ports
+                    // redirect same=>same
+                    for(j=0; j < [hc count]; j++) {
+                        [arguments appendString:[NSString stringWithFormat:@" -redir %@:%@::%@",tp, [hc objectAtIndex:j], [gc objectAtIndex:j]]];
+                    }
+                } else {
+                    // both have a different amount of ports
+                    // redirect every=>every
+                    for(j=0; j < [hc count]; j++) {
+                        for(k=0; k < [gc count]; k++) {
+                            [arguments appendString:[NSString stringWithFormat:@" -redir %@:%@::%@",tp, [hc objectAtIndex:j], [gc objectAtIndex:k]]];
+                        }
+                    }
+                }
+            } else if([hc count] == 1 && [gc count] > 1) {
+                // only guest seperated by comma
+                // redirect one=>every
+                 for(j=0; j < [gc count]; j++) {
+                    [arguments appendString:[NSString stringWithFormat:@" -redir %@:%@::%@",tp, [hc objectAtIndex:0], [gc objectAtIndex:j]]];
+                    }
+            } else if([hc count] > 1 && [gc count] == 1) {
+                // only host seperated by comma
+                // redirect one=>every
+                 for(j=0; j < [hc count]; j++) {
+                    [arguments appendString:[NSString stringWithFormat:@" -redir %@:%@::%@",tp, [hc objectAtIndex:j], [gc objectAtIndex:0]]];
+                    }
+            }
+            
+            /* haifin code */
+            if([hh count] > 1 && [gh count] > 1) {
+                // both seperated by haifin
+                // redirect same=>same
+                j=[[hh objectAtIndex:0] intValue];
+                k=[[gh objectAtIndex:0] intValue]; 
+                while(j <= [[hh objectAtIndex:1] intValue]) {
+                    [arguments appendString:[NSString stringWithFormat:@" -redir %@:%d::%d",tp, j,k]];
+                    j++;
+                    k++;
+                }
+            } else if([hh count] == 1 && [gh count] > 1) {
+                // only guest seperated by haifin
+                // redirect one=>every
+                j=[[gh objectAtIndex:0] intValue];
+                while(j < [[gh objectAtIndex:1] intValue]) {
+                    [arguments appendString:[NSString stringWithFormat:@" -redir %@:%@::%d",tp, [hh objectAtIndex:0],j]];
+                    j++;
+                    }
+            } else if([hh count] > 1 && [gh count] == 1) {
+                // only host seperated by haifin
+                // redirect one=>every
+                j=[[hh objectAtIndex:0] intValue];
+                while(j < [[hh objectAtIndex:1] intValue]) {
+                    [arguments appendString:[NSString stringWithFormat:@" -redir %@:%d::%@", j,[gh objectAtIndex:0]]];
+                    j++;
+                    }
+            }
+            
+            /* only one=>one port code */
+            // check also for empty port ranges, because componentsSeperatedByString: returns count 1 even from an empty string
+            if(([hh count] == 1 && [gh count] == 1) && ([hc count] == 1 && [gc count] == 1)) {
+                if(!([[hh objectAtIndex:0] isEqualTo:@""] && [[gh objectAtIndex:0] isEqualTo:@""]) && !([[hc objectAtIndex:0] isEqualTo:@""] && [[gc objectAtIndex:0] isEqualTo:@""])) {
+                    // only one port
+                    // redirect one=>one
+                    [arguments appendString:[NSString stringWithFormat:@" -redir %@:%@::%@",tp, [hc objectAtIndex:0] ,[gc objectAtIndex:0]]];
+                }
+            } // end if ([hh count == 1] ...
+            } // end tcp/udp
+        } // end if enabled
+    } // end for portlist
+    return arguments;
+}
+
 @end
