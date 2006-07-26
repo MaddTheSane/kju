@@ -10,7 +10,7 @@ export CVS_RSH="ssh"
 cvs -z3 -d:pserver:anonymous@cvs.savannah.nongnu.org:/sources/qemu co qemu
 
 #get/update [kju:]
-svn co svn://svn.kju-app.org/q/trunk q
+svn co http://www.kju-app.org/svn/q/trunk q
 
 mkdir products
 mkdir products/i386

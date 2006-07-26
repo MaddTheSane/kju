@@ -1,3 +1,12 @@
+Q-0.8.1d40
+[fix] prepare.sh does co q over http for simpler commit
+
+Q-0.8.1d39
+[fix] comply with new transmission build rules
+
+Q-0.8.1d38
+[fix] comply with new transmission build system[fix] fixed transmission svn rev to 638
+
 Q-0.8.1d37
 [new] fullscreen guest/windowcycling
 [new] hotkey support for guest/windowcycling
