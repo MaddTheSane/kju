@@ -1418,9 +1418,9 @@
 		}
 		
 		NSMutableAttributedString *attrString = [[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat: @"%@\n", [[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]] attributes:[NSDictionary dictionaryWithObject: [NSFont boldSystemFontOfSize:[NSFont systemFontSize]] forKey:NSFontAttributeName]] autorelease];
-		[attrString appendAttributedString: [[[NSAttributedString alloc] initWithString:[NSString stringWithFormat: NSLocalizedStringFromTable(@"tableView:mb", @"Localizable", @"cocoaControlController"), platform, [[thisPC objectForKey:@"Temporary"] objectForKey:@"-m"]] attributes:[NSDictionary dictionaryWithObject: [NSFont systemFontOfSize:[NSFont smallSystemFontSize]] forKey:NSFontAttributeName]] autorelease]];
-		if ([[thisPC objectForKey:@"Temporary"] objectForKey:@"-soundhw"])
-			[attrString appendAttributedString: [[[NSAttributedString alloc] initWithString:[NSString stringWithFormat: NSLocalizedStringFromTable(@"tableView:audio", @"Localizable", @"cocoaControlController"),[[thisPC objectForKey:@"Temporary"] objectForKey:@"-soundhw"]] attributes:[NSDictionary dictionaryWithObject:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]] forKey:NSFontAttributeName]] autorelease]];
+//		[attrString appendAttributedString: [[[NSAttributedString alloc] initWithString:[NSString stringWithFormat: NSLocalizedStringFromTable(@"tableView:mb", @"Localizable", @"cocoaControlController"), platform, [[thisPC objectForKey:@"Temporary"] objectForKey:@"-m"]] attributes:[NSDictionary dictionaryWithObject: [NSFont systemFontOfSize:[NSFont smallSystemFontSize]] forKey:NSFontAttributeName]] autorelease]];
+//		if ([[thisPC objectForKey:@"Temporary"] objectForKey:@"-soundhw"])
+//			[attrString appendAttributedString: [[[NSAttributedString alloc] initWithString:[NSString stringWithFormat: NSLocalizedStringFromTable(@"tableView:audio", @"Localizable", @"cocoaControlController"),[[thisPC objectForKey:@"Temporary"] objectForKey:@"-soundhw"]] attributes:[NSDictionary dictionaryWithObject:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]] forKey:NSFontAttributeName]] autorelease]];
 		[attrString appendAttributedString: [[[NSAttributedString alloc] initWithString: NSLocalizedStringFromTable([[thisPC objectForKey:@"PC Data"] objectForKey:@"state"], @"Localizable", @"vmstate") attributes:[NSDictionary dictionaryWithObject:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]] forKey:NSFontAttributeName]] autorelease]];
 		
 		return attrString;

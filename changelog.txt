@@ -1,3 +1,10 @@
+Q-0.8.1d47
+[fix] streamlined Q Control Guest Infos
+
+Q-0.8.1d46
+[fix] editPC network firewall display bug
+[fix] better interface for firewall
+
 Q-0.8.1d45
 [new] fullscreen toolbarIcon
 [new] toolbarIcon defaults
