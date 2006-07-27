@@ -89,6 +89,76 @@
 	}
 }
 
+- (BOOL) guestSwitch: (NSString *) name fullscreen:(BOOL)fullscreen previousGuestName:(NSString *)previousGuestName
+{
+//    NSLog(@"guestSwitch: windowSwitchKeyPressed:%@ fullscreen:%d previousGuest:%@\n", name, fullscreen, previousGuestName);
+
+    int i;
+    NSArray *keys = [guests allKeys];
+    int a = [keys count] - 1;
+    
+    if (previousGuestName) {
+        for (i = 0; i < [keys count]; i++) {
+            if ([[keys objectAtIndex:i] isEqual:previousGuestName]) {
+                a = i;
+            }
+        }
+    } else {
+        for (i = 0; i < [keys count]; i++) {
+            if ([[keys objectAtIndex:i] isEqual:name]) {
+                a = i - 1;
+            }
+        }
+    }
+    
+    ProcessSerialNumber psn;
+    id obj = nil;
+    BOOL nFullscreen = FALSE;
+    
+    if (a > -1) {
+		/* move QEMU to front */
+		GetProcessForPID( [[[qControl pcsTasks] objectForKey:[keys objectAtIndex:a]] processIdentifier], &psn );
+		obj = [guests objectForKey:[keys objectAtIndex:a]];
+		if ([obj fullscreen])
+            nFullscreen = TRUE;
+    } else
+        GetProcessForPID( [[NSProcessInfo processInfo ] processIdentifier ], &psn );
+    
+    if (fullscreen||nFullscreen) {
+        /* setup transition */        CGSConnection cid = _CGSDefaultConnection();        int transitionHandle = -1;        CGSTransitionSpec transitionSpecifications;
+        transitionSpecifications.type = 7;          //transition;
+        transitionSpecifications.option = 2;        //option;
+        transitionSpecifications.wid = 0;           //wid        transitionSpecifications.backColour = 0;    //background color        /* freeze desktop: OSStatus CGSNewTransition(const CGSConnection cid, const CGSTransitionSpec* transitionSpecifications, int *transitionHandle) */        CGSNewTransition(cid, &transitionSpecifications, &transitionHandle);                            
+        /* change windows */
+        if (nFullscreen)
+            [obj guestUnhide];
+
+        if (fullscreen)
+            [[guests objectForKey:name] guestHide];
+
+        if (a > -1) //avoid activating "Q Control"
+            SetFrontProcess( &psn );
+        else {
+            [[qControl mainWindow] orderWindow:NSWindowAbove relativeTo:[[guests objectForKey:name] guestWindowNumber]];
+            SetFrontProcess( &psn );
+        }
+                      
+        /* wait */        usleep(10000);
+                       
+        /* run transition: OSStatus CGSInvokeTransition(const CGSConnection cid, int transitionHandle, float duration) */        CGSInvokeTransition(cid, transitionHandle, 1.0);
+        
+    } else {
+        if (a > -1) //avoid activating "Q Control"
+            SetFrontProcess( &psn );
+        else {
+            [[qControl mainWindow] orderWindow:NSWindowAbove relativeTo:[[guests objectForKey:name] guestWindowNumber]];
+            SetFrontProcess( &psn );
+        }
+    }
+    
+	return true;
+}
+
 - (BOOL) guestSwitch: (NSString *) name fullscreen:(BOOL)fullscreen nextGuestName:(NSString *)nextGuestName
 {
 //    NSLog(@"guestSwitch: windowSwitchKeyPressed:%@ fullscreen:%d nextGuest:%@\n", name, fullscreen, nextGuestName);
@@ -127,7 +197,7 @@
     if (fullscreen||nFullscreen) {
         /* setup transition */        CGSConnection cid = _CGSDefaultConnection();        int transitionHandle = -1;        CGSTransitionSpec transitionSpecifications;
         transitionSpecifications.type = 7;          //transition;
-        transitionSpecifications.option = 0;        //option;
+        transitionSpecifications.option = 1;        //option;
         transitionSpecifications.wid = 0;           //wid        transitionSpecifications.backColour = 0;    //background color        /* freeze desktop: OSStatus CGSNewTransition(const CGSConnection cid, const CGSTransitionSpec* transitionSpecifications, int *transitionHandle) */        CGSNewTransition(cid, &transitionSpecifications, &transitionHandle);                            
         /* change windows */
         if (nFullscreen)
@@ -146,9 +216,7 @@
         /* wait */        usleep(10000);
                        
         /* run transition: OSStatus CGSInvokeTransition(const CGSConnection cid, int transitionHandle, float duration) */        CGSInvokeTransition(cid, transitionHandle, 1.0);
-
-        /* release transition: OSStatus CGSReleaseTransition(const CGSConnection cid, int transitionHandle) */
-//        CGSReleaseTransition(cid, transitionHandle);
+        
     } else {
         if (a < [keys count]) //avoid activating "Q Control"
             SetFrontProcess( &psn );
@@ -158,11 +226,7 @@
         }
     }
     
-    
-    
-	return true;	
-//    id obj = [guests objectAtIndex:a];
-//    return [self guestOrderFrontRegardless:[keys objectAtIndex:a]];
+	return true;
 }
 
 - (int) guestWindowLevel: (NSString *) guest

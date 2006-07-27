@@ -35,4 +35,5 @@
 - (id) initWithSender:(id)sender;
 - (void) setupToolbar;
 - (void) setMyContentView:(id)aContentView;
+- (void) setFullscreen:(id)sender;
 @end

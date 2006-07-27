@@ -322,6 +322,13 @@
     [qdoserver guestSwitch: @"Q Control" fullscreen:NO nextGuestName:nil];
 }
 
+- (IBAction) cycleWindowsBack:(id)sender
+{
+//    NSLog(@"cocoaControlController: cycleWindows");
+    
+    [qdoserver guestSwitch: @"Q Control" fullscreen:NO previousGuestName:nil];
+}
+
 - (BOOL) windowShouldClose:(id)sender
 {
 //	NSLog(@"cocoaControlController: windowShouldClose");

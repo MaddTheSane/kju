@@ -89,6 +89,7 @@
 /* controlWindow */
 - (id) mainWindow;
 - (IBAction) cycleWindows:(id)sender;
+- (IBAction) cycleWindowsBack:(id)sender;
 - (IBAction) activateApp:(id)sender;
 - (void) loadConfigurations;
 - (void) savePCConfiguration:(id)thisPC;

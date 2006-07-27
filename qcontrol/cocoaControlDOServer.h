@@ -41,6 +41,7 @@
 @protocol cocoaControlDOServerProto
 - (BOOL) guestRegister: (byref id)guest withName:(bycopy NSString *) name;
 - (BOOL) guestUnregisterWithName: (bycopy NSString *) name;
+- (BOOL) guestSwitch: (bycopy NSString *) name fullscreen:(BOOL)fullscreen previousGuestName:(bycopy NSString *)previousGuestName;
 - (BOOL) guestSwitch: (bycopy NSString *) name fullscreen:(BOOL)fullscreen nextGuestName:(bycopy NSString *)nextGuestName;
 @end
  
@@ -54,6 +55,7 @@
 - (void) setSender:(id)sender;
 - (BOOL) guestRegister: (id)client withName: (NSString *)name;
 - (BOOL) guestUnregisterWithName: (NSString *)name;
+- (BOOL) guestSwitch: (NSString *) name fullscreen:(BOOL)fullscreen previousGuestName:(NSString *)previousGuestName;
 - (BOOL) guestSwitch: (NSString *) name fullscreen:(BOOL)fullscreen nextGuestName:(NSString *)nextGuestName;
 - (int) guestWindowLevel: (NSString *) guest;
 - (int) guestWindowNumber: (NSString *) guest;

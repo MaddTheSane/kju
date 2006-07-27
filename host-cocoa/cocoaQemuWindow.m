@@ -213,6 +213,13 @@
 		[toolbarItem setImage: [NSImage imageNamed: @"q_tb_ctrlaltdel.tiff"]];
 		[toolbarItem setTarget: pc];
 		[toolbarItem setAction: @selector( ctrlAltDel: )];
+	} else if ([itemIdent isEqual: @"fullscreenIdentifier"]) {
+		[toolbarItem setLabel: NSLocalizedStringFromTable(@"toolbar:label:fullscreen", @"Localizable", @"cocoaQemuWindow")];
+		[toolbarItem setPaletteLabel: NSLocalizedStringFromTable(@"toolbar:paletteLabel:fullscreen", @"Localizable", @"cocoaQemuWindow")];
+		[toolbarItem setToolTip: NSLocalizedStringFromTable(@"toolbar:toolTip:fullscreen", @"Localizable", @"cocoaQemuWindow")];
+		[toolbarItem setImage: [NSImage imageNamed: @"q_tb_fullscreen.tiff"]];
+		[toolbarItem setTarget: self];
+		[toolbarItem setAction: @selector( setFullscreen: )];
 	} else {
 		toolbarItem = nil;
 	}
@@ -232,6 +239,7 @@
 		@"cpuIdentifier",
 		@"pausePlayIdentifier",
 		@"ctrlAltDelIdentifier",
+		@"fullscreenIdentifier",
 		NSToolbarCustomizeToolbarItemIdentifier,
 		NSToolbarFlexibleSpaceItemIdentifier,
 		NSToolbarSpaceItemIdentifier,
@@ -242,8 +250,8 @@
 - (NSArray *)toolbarDefaultItemIdentifiers:(NSToolbar*)toolbar
 {
 	return [NSArray arrayWithObjects:
-		@"fdaChangeIdentifier",
 		@"cdromChangeIdentifier",
+		@"fullscreenIdentifier",
 		@"screenshotIdentifier",
 		NSToolbarFlexibleSpaceItemIdentifier,
 		@"cpuIdentifier",
@@ -449,5 +457,10 @@
 	return NO;
 }
 
+- (void) setFullscreen:(id)sender;
+{
+//	NSLog(@"cocoaQemuWindow: setFullscreen");
+    [pc setFullscreen:[[pc contentView] toggleFullScreen]];
+}
 
 @end

@@ -1,3 +1,8 @@
+Q-0.8.1d45
+[new] fullscreen toolbarIcon
+[new] toolbarIcon defaults
+[new] backwards guest/windowcycling (cmd + >)
+
 Q-0.8.1d44
 [new] editPC network tab
 [new| firewall (redirect) pane
@@ -14,7 +19,7 @@ Q-0.8.1d38
 
 Q-0.8.1d37
 [new] fullscreen guest/windowcycling
-[new] hotkey support for guest/windowcycling
+[new] hotkey support for guest/windowcycling (cmd + <)
 [new] animation when switch to monitor and back (ctrl-alt-1..9)
 [new] new Guest Assistant launched when double-clicking a empty table row
 [new] qcontrol Makefile added "install" target

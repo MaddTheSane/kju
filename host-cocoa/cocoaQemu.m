@@ -1177,10 +1177,17 @@ void cocoa_refresh(DisplayState *ds)
 									
 								/* window switch */
 								case 50: /* backquote key */
-								    if ([[pc qdoserver] guestSwitch:[pc pcName] fullscreen:[pc fullscreen] nextGuestName:nil])
-                                        return;
-								    else
-								        break;
+								    if ([event modifierFlags] & NSShiftKeyMask) { /* previous Window */
+                                        if ([[pc qdoserver] guestSwitch:[pc pcName] fullscreen:[pc fullscreen] previousGuestName:nil])
+                                            return;
+                                        else
+                                            break;
+                                    } else { /* next Window */
+                                        if ([[pc qdoserver] guestSwitch:[pc pcName] fullscreen:[pc fullscreen] nextGuestName:nil])
+                                            return;
+                                        else
+                                            break;
+                                    }
 							}
 						}
 						
