@@ -4,7 +4,6 @@
         {
             ACTIONS = {
                 closeEditPCPanel = id; 
-                closeFirewallPortList = id; 
                 deletePort = id; 
                 editPCEditPCPanel = id; 
                 endEditPort = id; 
@@ -14,7 +13,6 @@
                 saveEditPort = id; 
                 saveNewPort = id; 
                 setAdditionalPort = id; 
-                showFirewallPortList = id; 
                 showHelp = id; 
                 startShowEditPort = id; 
                 startShowNewPort = id; 
@@ -26,10 +24,6 @@
                 buttonEnableES1370 = NSButton; 
                 buttonEnableSB16 = NSButton; 
                 buttonEnableUSBTablet = NSButton; 
-                buttonFirewallDeletePort = NSButton; 
-                buttonFirewallEditPort = NSButton; 
-                buttonFirewallNewPort = NSButton; 
-                buttonFirewallOk = NSButton; 
                 buttonFirewallSavePort = NSButton; 
                 buttonLocaltime = NSButton; 
                 buttonNetNicNe2000 = NSButton; 
@@ -42,8 +36,7 @@
                 buttonWin2kHack = NSButton; 
                 customImagePopUpButtonTemp = id; 
                 editPCPanel = id; 
-                firewallPortEditView = id; 
-                firewallPortPanel = id; 
+                firewallPortEditPanel = id; 
                 firewallPortTable = id; 
                 popUpButtonBoot = NSPopUpButton; 
                 popUpButtonCPU = NSPopUpButton; 

@@ -1098,7 +1098,8 @@
 	}
 	
 	/* -redir */
-	// todo: add to arguments
+	// first save to configuration.plist, then add to arguments
+	[self saveFirewallPortList];
 	[[thisPC objectForKey:@"Arguments"] appendFormat:@"%@",[self constructFirewallArguments]];
 	
 	/* qemu arguments */
@@ -1173,59 +1174,6 @@
 	return nil;
 }
 
-- (void) disableTableView:(BOOL)disable
-{
-    NSEnumerator * ec = [[firewallPortTable tableColumns] objectEnumerator];
-    NSTableColumn * curColumn;
-    NSColor * textColor = nil; 
-    NSColor * backgroundColor = nil;
-    
-    if(disable) {
-        textColor = [NSColor colorWithCalibratedWhite:0.50 alpha:1.0];
-        backgroundColor = [NSColor colorWithCalibratedWhite:0.94 alpha:1.0];
-        firewallPortTableEnabled = NO;
-    } else {
-        textColor = [NSColor blackColor];
-        backgroundColor = [NSColor colorWithCalibratedWhite:0.94 alpha:1.0];
-        firewallPortTableEnabled = YES;
-    }
-    
-    while ((curColumn = [ec nextObject])) {
-        if([[curColumn dataCell] isKindOfClass:[NSTextFieldCell class]]) {
-                [[curColumn dataCell] setTextColor:textColor];
-                [[curColumn dataCell] setBackgroundColor:backgroundColor];
-        }
-    }
-    
-    if([[firewallPortTable enclosingScrollView] hasVerticalScroller])
-        [[[firewallPortTable enclosingScrollView] verticalScroller] setEnabled:!disable];
-
-    //if([[table enclosingScrollView] hasHorizontalScroller])
-        //[[[table enclosingScrollView] horizontalScroller] setEnabled:(bEnable && saveHorizontalScrollerEnabled)];
-}
-
-#pragma mark Table Delegate Methods needed for the disableTableView method
-
-- (BOOL)selectionShouldChangeInTableView:(NSTableView *)aTableView
-{
-    return firewallPortTableEnabled;
-}
-
-- (BOOL)tableView:(NSTableView *)aTableView shouldEditTableColumn:(NSTableColumn *)aTableColumn row:(int)rowIndex
-{
-    return firewallPortTableEnabled;
-}
-
-- (BOOL)tableView:(NSTableView *)aTableView shouldSelectRow:(int)rowIndex
-{
-    return firewallPortTableEnabled;
-}
-
-- (BOOL)tableView:(NSTableView *)aTableView shouldSelectTableColumn:(NSTableColumn *)aTableColumn
-{
-    return firewallPortTableEnabled;
-}
-
 // for setting the checkbox status to the configuration file
 - (void)tableView:(NSTableView *)aTableView setObjectValue:(id)theValue forTableColumn:(NSTableColumn *)aTableColumn row:(int)rowIndex
 {
@@ -1283,18 +1231,9 @@
     [[popUpButtonFirewallAdditionalPorts menu] addItem:[NSMenuItem separatorItem]];
     [popUpButtonFirewallAdditionalPorts addItemWithTitle:@"Custom.."];
 	[popUpButtonFirewallAdditionalPorts selectItemAtIndex:0];
-}
-
-- (IBAction) showFirewallPortList:(id)sender
-{ 
+	
     [firewallPortTable reloadData];
     [firewallPortTable selectRow:0 byExtendingSelection:NO];
-    
-    [NSApp beginSheet:firewallPortPanel
-        modalForWindow:editPCPanel 
-        modalDelegate:self
-        didEndSelector:nil
-        contextInfo:nil];
 }
 
 - (IBAction) startShowNewPort:(id)sender
@@ -1343,22 +1282,19 @@
 
 - (void) startEditPort:(BOOL)newPort
 {  
-    [firewallPortPanel setFrame:NSMakeRect(
+    /*[firewallPortPanel setFrame:NSMakeRect(
         [firewallPortPanel frame].origin.x,
         [firewallPortPanel frame].origin.y - 263,
         [firewallPortPanel frame].size.width,
         [firewallPortPanel frame].size.height + 263
     ) display:YES animate:YES];
-        
-    // disable new,edit,delete,ok,tableview
-    [buttonFirewallNewPort setEnabled:NO];
-    [buttonFirewallEditPort setEnabled:NO];
-    [buttonFirewallDeletePort setEnabled:NO];
-    [buttonFirewallOk setKeyEquivalent:@""];
-    [buttonFirewallOk setEnabled:NO];
-    [self disableTableView:YES];
+    */
     
-    [buttonFirewallSavePort setKeyEquivalent:@"\r"];
+    [NSApp beginSheet:firewallPortEditPanel
+        modalForWindow:editPCPanel 
+        modalDelegate:self
+        didEndSelector:nil
+        contextInfo:nil];
         
     if(newPort) {
         // called to create a new port
@@ -1622,26 +1558,13 @@
     [textFieldFirewallPortGuestPorts setEnabled:YES];
     [popUpButtonFirewallServiceType setEnabled:YES];    
     
-    [firewallPortPanel setFrame:NSMakeRect(
-        [firewallPortPanel frame].origin.x,
-        [firewallPortPanel frame].origin.y + 263,
-        [firewallPortPanel frame].size.width,
-        [firewallPortPanel frame].size.height - 263
-    ) display:YES animate:YES];
+    [NSApp endSheet:firewallPortEditPanel];
+    [firewallPortEditPanel orderOut:self];
     
-    // enable new,edit,delete,ok,tableview
-    [buttonFirewallNewPort setEnabled:YES];
-    [buttonFirewallEditPort setEnabled:YES];
-    [buttonFirewallDeletePort setEnabled:YES];
-    [buttonFirewallOk setKeyEquivalent:@"\r"];
-    [buttonFirewallOk setEnabled:YES];
-    [self disableTableView:NO];
-    
-    [buttonFirewallSavePort setKeyEquivalent:@""];
     [firewallPortTable reloadData];
 }
 
-- (IBAction) closeFirewallPortList:(id)sender
+- (void) saveFirewallPortList
 {
     // save the ports in configuration.plist
     // enumerate through entries and check for defaults, when enabled => save
@@ -1668,8 +1591,6 @@
         found = 0;
     }
     [thisPC setObject:[NSDictionary dictionaryWithObject:customPorts forKey:@"Redirect"] forKey:@"Network"];
-    [NSApp endSheet:firewallPortPanel];
-    [firewallPortPanel orderOut:self];
 }
 
 - (NSString *) constructFirewallArguments
