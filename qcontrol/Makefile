@@ -4,7 +4,7 @@ QVERSION=$(shell svn info | grep "Revision:" | sed s/"Revision: "/""/)
 all: qemu-control$(EXESUF)
 
 qemu-control$(EXESUF): cocoaControlMain.m cocoaControlController.m cocoaControlDiskImage.m cocoaControlNewPCAssistant.m cocoaControlEditPC.m cocoaControlPreferences.m cocoaControlDOServer.m cocoaDownload.m cocoaDownloadController.m QControlTableView.m
-	gcc -Wall -O4 -F/System/Library/Frameworks -framework Carbon -framework Cocoa ../../Transmission/libtransmission/libtransmission.a /usr/lib/libcrypto.dylib -o $@ $^
+	gcc -Wall -O4 -F/System/Library/Frameworks -framework Carbon -framework Cocoa ../../Transmission/libtransmission/libtransmission.a -lcrypto -o $@ $^
 
 clean:
 	rm -f *.o *.a qemu-control$(EXESUF) *.pod *~ */*~

@@ -131,8 +131,14 @@
     // download the torrent file
     NSString * torrentPath = [[self createQVM] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.torrent", name]];
     // we need to temporarily save the qvm path here, cause we need it later
-
+    savePath = torrentPath;
+    [savePath retain];
+    
     NSData * torrentFile = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
+    if([torrentFile length] == 0) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"DownloadDidFail" object:self userInfo:[NSDictionary dictionaryWithObject:@"Could not download bittorrent meta file. Maybe the file doesn't exist anymore or the server is down." forKey:@"ERROR_DESCRIPTION"]];
+        return;
+    }
     [torrentFile writeToFile:torrentPath atomically:YES];
     tStat = nil;
     tInfo = nil;
@@ -146,7 +152,9 @@
         // prepare the torrent stats
         tStat = tr_torrentStat( tHandle );
         tInfo = tr_torrentInfo ( tHandle );
+        tr_torrentRemoveSaved( tHandle );
         // set the save path
+        [savePath release];
         savePath = [[torrentPath stringByDeletingLastPathComponent] stringByAppendingPathComponent:[NSString stringWithUTF8String:tInfo[0].name]];
         [savePath retain];
         
@@ -184,6 +192,8 @@
         tr_torrentStop( tHandle );
         tr_torrentClose( fHandle, tHandle );
         tr_close( fHandle );
+        fHandle = nil;
+        tHandle = nil;
         [fTimer invalidate];
     }
 }
@@ -255,7 +265,8 @@
     tStat = tr_torrentStat( tHandle );
     tInfo = tr_torrentInfo( tHandle );
     
-    receivedContentLength = tStat[0].downloaded;
+    NSLog(@"rcvCL: %f", receivedContentLength);
+    receivedContentLength = tInfo[0].totalSize * tStat[0].progress;
     expectedContentLength = tInfo[0].totalSize;
     downloadRate = tStat[0].rateDownload;
         

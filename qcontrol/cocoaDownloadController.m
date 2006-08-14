@@ -47,14 +47,18 @@
 
 - (void)awakeFromNib
 {
-    [self showAllDownloads];
-    [table setDoubleAction:@selector(startDownload:)];
-    [table setDelegate:self];
-    [self showWindow];
+    [self initDownloadInterface];
 }
 
 #pragma mark -
 #pragma mark Interface Functions
+
+- (void) initDownloadInterface
+{
+    [table setDoubleAction:@selector(startDownload:)];
+    //[self showWindow];
+    [self showAllDownloads];
+}
 
 - (void) showWindow
 {
@@ -108,27 +112,32 @@
 {
     // load downloadLists
     // save an original of the list so we dont have to load it again
-    if(downloadOriginalList == nil) {
-        // first call in the class
-        downloadOriginalList = [[[NSMutableArray alloc] init] retain];
-        downloadList = [[[NSMutableArray alloc] init] retain];
+    if(downloadOriginalList == nil || [downloadOriginalList count] == 0) {
+        // first call in the class || call again when initially list not loaded
+        if(downloadOriginalList == nil) {
+            downloadOriginalList = [[[NSMutableArray alloc] init] retain];
+            downloadList = [[[NSMutableArray alloc] init] retain];
+        }
         
         NSArray * dlList = [self getDownloadListFromServer];
-        int i;
     
         // copy downloadList
-         if(dlList != nil) {
-            for(i=0; i<=[dlList count]-1; i++) {
-                // copy dlList from Server
-                [downloadList addObject:[dlList objectAtIndex:i]];
-            }
+        if(dlList != nil) {
+            [downloadList addObjectsFromArray:dlList];
+            [self prepareOSTypeSelector];
+            [self showWindow];
+        } else {
+            // download list is nil, spawn error message
+            NSLog(@"Could not load list.");
+            NSBeginAlertSheet(@"Cannot show Guest PCs from free.oszoo.org.",@"OK",nil,nil,[controller mainWindow],self,nil,nil,nil,@"Couldn't get the list of downloadable Guest PCs from kju-app.org.");
         }
-    
         [downloadOriginalList addObjectsFromArray:downloadList];
     } else {
+        // list is still there, we dont have to download it again
         // when we call it later we only need the original list
         [downloadList removeAllObjects];
         [downloadList addObjectsFromArray:downloadOriginalList];
+        [self showWindow];
     }
     // force table reload
     [table reloadData];
@@ -136,33 +145,62 @@
     if([self returnShowsDetails]) [self showDetails:[table selectedRow]];
 }
 
+- (void) prepareOSTypeSelector
+{
+    // fill 'all' and space
+    [osTypeSelect removeAllItems];
+    [osTypeSelect addItemWithTitle:@"All"];
+    [[osTypeSelect menu] addItem:[NSMenuItem separatorItem]];
+    int i,j;
+    BOOL found = NO;
+    NSMutableArray * array = [NSMutableArray arrayWithCapacity:1];
+    for(i=0; i<[downloadList count]; i++) {
+        // if the Category is not listed yet in array add it
+        for(j=0; j<[array count]; j++) {
+            // search array
+            if([[array objectAtIndex:j] isEqualTo:[[downloadList objectAtIndex:i] objectForKey:@"Category"]]) {
+                found = YES;
+            }
+        }
+        if(!found) [array addObject:[[downloadList objectAtIndex:i] objectForKey:@"Category"]];
+        found = NO;
+    }
+    
+    // add to selector
+    for(i=0; i<[array count]; i++) {
+        [osTypeSelect addItemWithTitle:[array objectAtIndex:i]];
+    }
+}
+
 - (IBAction) showDownloadsByType:(id)sender
 {
+    NSLog(@"showDownloadsByType:");
     // method for the popupbutton to select os type
+    NSMutableArray * array = [NSMutableArray arrayWithCapacity:1];
     if([[osTypeSelect titleOfSelectedItem] isEqualToString:@"All"]) {
-        [self showAllDownloads];
+        //NSLog(@"dlO: %@", downloadOriginalList);
+        [array addObjectsFromArray:downloadOriginalList];
     } else {
         // be sure that we have the original downloadList here
         [downloadList removeAllObjects];
         [downloadList addObjectsFromArray:downloadOriginalList];
         int i;
-        NSMutableArray * array = [NSMutableArray arrayWithCapacity:1];
         for (i=0; i<=[downloadList count]-1; i++) {
             // search for ostype and add equalling entries
-            if ([[[downloadList objectAtIndex:i] valueForKey:@"ostype"] isEqualTo:[osTypeSelect titleOfSelectedItem]]) {
+            if ([[[downloadList objectAtIndex:i] valueForKey:@"Category"] isEqualTo:[osTypeSelect titleOfSelectedItem]]) {
                 [array addObject:[downloadList objectAtIndex:i]];
             }
         }
-        
-        // write os by found criteria into downloadList
-        [downloadList removeAllObjects];
-        [downloadList addObjectsFromArray:array];
-        
-        // force table reload
-        [table reloadData];
-        // force showDetails update
-        if([self returnShowsDetails]) [self showDetails:[table selectedRow]];
     }
+    
+    // write os by found criteria/original downloads into downloadList
+    [downloadList removeAllObjects];
+    [downloadList addObjectsFromArray:array];
+        
+    // force table reload
+    [table reloadData];
+    // force showDetails update
+    if([self returnShowsDetails]) [self showDetails:[table selectedRow]];
 }
 
 - (void) disableTableView:(BOOL)disable
@@ -232,8 +270,8 @@
 	
 	if ([[tableColumn identifier] isEqualToString:@"name"]) {
 	   // return name and version 
-	   NSMutableAttributedString *attrString = [[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat: @"%@ %@\n", [thisDownload objectForKey:@"name"], [thisDownload objectForKey:@"version"]] attributes:[NSDictionary dictionaryWithObject: [NSFont boldSystemFontOfSize:[NSFont systemFontSize]] forKey:NSFontAttributeName]] autorelease];
-	   [attrString appendAttributedString: [[[NSAttributedString alloc] initWithString:[NSString stringWithFormat: @"%@, %@. Download Size: %@ MB\nprovided by %@.", [thisDownload objectForKey:@"ostype"], [thisDownload objectForKey:@"installtype"], [thisDownload objectForKey:@"size"], [thisDownload objectForKey:@"author"]] attributes:[NSDictionary dictionaryWithObject:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]] forKey:NSFontAttributeName]] autorelease]];
+	   NSMutableAttributedString *attrString = [[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat: @"%@ %@\n", [thisDownload objectForKey:@"Name"], [thisDownload objectForKey:@"Version"]] attributes:[NSDictionary dictionaryWithObject: [NSFont boldSystemFontOfSize:[NSFont systemFontSize]] forKey:NSFontAttributeName]] autorelease];
+	   [attrString appendAttributedString: [[[NSAttributedString alloc] initWithString:[NSString stringWithFormat: @"%@, %@. Download Size: %@ MB\nprovided by %@.", [thisDownload objectForKey:@"Category"], [thisDownload objectForKey:@"InstallType"], [thisDownload objectForKey:@"DownloadSize"], [thisDownload objectForKey:@"Author"]] attributes:[NSDictionary dictionaryWithObject:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]] forKey:NSFontAttributeName]] autorelease]];
 	   
 		return attrString;
 	} else {
@@ -262,10 +300,51 @@
 
 - (NSArray *)getDownloadListFromServer
 {
-    // TODO: change to arrayWithContentsOfURL: url
-    NSArray * downloadList = [NSArray arrayWithContentsOfURL:[NSURL URLWithString:@"http://cordney.com/q/freeoszoo.plist"]];
+    // show status panel
+    /*[NSApp beginSheet:precheckPanel
+        modalForWindow:mainDlWindow
+        modalDelegate:nil
+        didEndSelector:nil
+        contextInfo:nil];
+    [precheckPanel orderFront:self];
+    //[NSApp runModalForWindow: precheckPanel];
+    [precheckStatusTextView setStringValue:@"Getting list from server.."];
+    [precheckStatusProgressView startAnimation:self];
+    // arrayWithContentsOfURL: url
+    NSURLResponse * response;
+    NSError * error;
+    NSData * data = [NSURLConnection sendSynchronousRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://cordney.com/q/freeoszoo.plist"]] returningResponse:nil error:nil];
+    NSArray * downloadList = [NSPropertyListSerialization propertyListFromData:data mutabilityOption:NSPropertyListMutableContainersAndLeaves format:nil errorDescription:nil];
+    */
+    NSArray * downloadList = [NSArray arrayWithContentsOfURL:[NSURL URLWithString:@"http://kju-app.org/data/freeoszoo.plist"]];
     return downloadList;
 }
+
+// NSURLHandleClient This informal protocol defines the interface for clients to NSURL. A client is an object loading a URL resource in the background.
+/*
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+{   
+    NSLog(@"Data available..");
+    //[[NSRunLoop currentRunLoop] runUntilDate:[NSDate distantPast]];
+}
+-(void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+    NSLog(@"Download finished");
+    [precheckStatusTextView setStringValue:@"Got list from server.."];
+    // todo: connectivity check freeoszoo.org
+    [NSApp endSheet:precheckPanel];
+    //[NSApp stopModal];
+    [precheckPanel orderOut:self];
+    [precheckStatusTextView setStringValue:@"Loading.."];
+    [precheckStatusProgressView stopAnimation:self];
+    [table reloadData];
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+    NSLog(@"Download failed: %@", error);
+}
+*/
 
 - (void) showDetails:(int)row
 {
@@ -276,10 +355,10 @@
     
     // create name and version
     NSDictionary * nameAttr = [NSDictionary dictionaryWithObject:[NSFont boldSystemFontOfSize:12] forKey:NSFontAttributeName];
-    NSAttributedString * detailsName = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", [details objectForKey:@"name"], [details objectForKey:@"version"]] attributes:nameAttr];
-    NSAttributedString * detailsDesc = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"\n%@", [details objectForKey:@"description"]]];
-    NSAttributedString * detailsURLpre = [[NSAttributedString alloc] initWithString:@"\nWeb: "];
-    NSAttributedString * detailsURL = [[NSAttributedString alloc] initWithString:[details objectForKey:@"weburl"] attributes:[NSDictionary dictionaryWithObject:[details objectForKey:@"weburl"] forKey:NSLinkAttributeName]];
+    NSAttributedString * detailsName = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", [details objectForKey:@"Name"], [details objectForKey:@"Version"]] attributes:nameAttr];
+    NSAttributedString * detailsDesc = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"\n%@", [details objectForKey:@"Description"]]];
+    NSAttributedString * detailsURLpre = [[NSAttributedString alloc] initWithString:@"\nMore Info: "];
+    NSAttributedString * detailsURL = [[NSAttributedString alloc] initWithString:[details objectForKey:@"InfopageURL"] attributes:[NSDictionary dictionaryWithObject:[details objectForKey:@"InfopageURL"] forKey:NSLinkAttributeName]];
     // create spacer
     NSAttributedString * spacer = [[NSAttributedString alloc] initWithString:@"\n"];
     
@@ -318,19 +397,17 @@
             download = [[[cocoaDownload alloc] initWithHTTP] retain];
         }
         if([[thisDownload objectForKey:@"version"] isEqualToString:@""]) {
-            [download setName:[thisDownload objectForKey:@"name"]];
+            [download setName:[thisDownload objectForKey:@"Name"]];
         } else {
-            [download setName:[NSString stringWithFormat:@"%@ %@", [thisDownload objectForKey:@"name"], [thisDownload objectForKey:@"version"]]];
+            [download setName:[NSString stringWithFormat:@"%@ %@", [thisDownload objectForKey:@"Name"], [thisDownload objectForKey:@"Version"]]];
         }
-        [download setURL:[thisDownload objectForKey:@"url"]];
+        [download setURL:[thisDownload objectForKey:@"DownloadURL"]];
         // - monitor the download object with NSNotifications
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadDidReceiveResponse:) name:@"DownloadDidReceiveResponse" object:download];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startStatusTimer:) name:@"DownloadDidReceiveData" object:download];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadDidFinish:) name:@"DownloadDidFinish" object:download];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downloadDidFail:) name:@"DownloadDidFail" object:download];
-						
-        [download startDownload];
-        
+						        
         // 2. set to downloading mode
         [self disableTableView:YES];
         [osTypeSelect setEnabled:NO];
@@ -345,6 +422,8 @@
         [statusBar setHidden:NO];
         [statusBar setIndeterminate:YES];
         [statusBar startAnimation:self];
+        
+        [download startDownload];
     }
 }
 
@@ -468,41 +547,41 @@
 
 - (void) downloadDidFail:(NSNotification *)aNotification
 {
-    // TODO: alert sheet
-    NSAlert *alert = [NSAlert alertWithMessageText:@"Download failed"
-		defaultButton:@"OK"
-		alternateButton:nil
-		otherButton:nil
-		informativeTextWithFormat:[[aNotification userInfo] objectForKey:@"ERROR_DESCRIPTION"]];
-
-    [alert beginSheetModalForWindow:mainDlWindow
-		modalDelegate:self
-		didEndSelector:nil
-		contextInfo:nil];
-		
-    //NSLog(@"Download did fail: %@", [[aNotification userInfo] objectForKey:@"ERROR_DESCRIPTION"]);
+    NSLog(@"Download did fail: %@", [[aNotification userInfo] objectForKey:@"ERROR_DESCRIPTION"]);
+    
+    // delete qvm
+    NSLog(@"savepath: %@", [download getSavePath]);
+    if(![[[download getSavePath] stringByDeletingLastPathComponent] isEqualTo:@""] || [[download getSavePath] stringByDeletingLastPathComponent] != nil) {
+        NSFileManager * manager = [NSFileManager defaultManager];
+        [manager removeFileAtPath:[[download getSavePath] stringByDeletingLastPathComponent] handler:nil];
+    }
     
     // reset UI
-    [statusText setStringValue:@"Download failed."];
     [self cleanupDownload:[[download getSavePath] stringByDeletingLastPathComponent]];
+    [statusText setStringValue:@"Download failed."];
+    
     [download release];
+    
+    // alert sheet
+    NSBeginAlertSheet(@"Download failed",@"OK",nil,nil,mainDlWindow,self,nil,nil,nil,[[aNotification userInfo] objectForKey:@"ERROR_DESCRIPTION"]);
 }
 
 - (void) cleanupDownload:(NSString *)path
-{    
+{
+    NSLog(@"Cleaning up after download..");
     if(statusTimer) {
         [statusTimer invalidate];
-    }
-    
-    [statusBar stopAnimation:self];
-    [statusBar setIndeterminate:NO];
-    [statusBar setDoubleValue:0.0];
-    [statusBar setMaxValue:100.0];
+    }      
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"DownloadDidReceiveResponse" object:download];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"DownloadDidReceiveData" object:download];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"DownloadDidFinish" object:download];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"DownloadDidFail" object:download];
+    
+    [statusBar stopAnimation:self];
+    [statusBar setIndeterminate:NO];
+    [statusBar setDoubleValue:0.0];
+    [statusBar setMaxValue:100.0];
     
     [table setDoubleAction:@selector(startDownload:)];
     [downloadButton setTitle:@"Download"];
@@ -524,7 +603,15 @@
     BOOL isArchive = NO;
     if([[path pathExtension] isEqualTo:@"tar"] || [[path pathExtension] isEqualTo:@"bz"] || [[path pathExtension] isEqualTo:@"bz2"] || [[path pathExtension] isEqualTo:@"gz"]) {
         [task setLaunchPath:@"/usr/bin/tar"];
-        [task setArguments:[NSArray arrayWithObjects:@"-xf", path, nil]];
+        NSString * fmtArgs;
+        if([[path pathExtension] isEqualTo:@"bz"] || [[path pathExtension] isEqualTo:@"bz2"]) {
+            fmtArgs = @"-xjf";
+        } else if ([[path pathExtension] isEqualTo:@"gz"]) {
+            fmtArgs = @"-xzf";
+        } else {
+            fmtArgs = @"-xf";
+        }
+        [task setArguments:[NSArray arrayWithObjects:fmtArgs, path, nil]];
         isArchive = YES;
     } else if([[path pathExtension] isEqualTo:@"zip"]) {
         [task setLaunchPath:@"/usr/bin/unzip"];
@@ -544,19 +631,28 @@
 
 - (void)uncompressPCFinished:(NSNotification *)aNotification
 {
+    int status = [[aNotification object] terminationStatus];
+    NSString * message;        
     NSString * path = [download getSavePath];
     NSString * name = [download getName];
-    NSFileManager * manager = [NSFileManager defaultManager];
-    [statusText setStringValue:@"Extracting files complete."];
-    [manager removeFileAtPath:path handler:nil];
     
-    NSString * message;
     // start import into Q
     [statusText setStringValue:@"Importing Free OS.."];
     if([controller importFreeOSZooPC:name withPath:[path stringByDeletingLastPathComponent]]) {
         message = @"You can now start using your Free OS.";
     } else {
         message = @"The harddisk could not be found. Please check the settings before using your Free OS.";
+    }
+    
+    if(status == 0) {
+        //NSLog(@"Task succeeded.");
+        // delete downloaded file, leave message unchanged
+        NSFileManager * manager = [NSFileManager defaultManager];
+        [manager removeFileAtPath:path handler:nil];
+    } else {
+        //NSLog(@"Task failed.");
+        // do not delete file, set message to failed
+        message = [NSString stringWithFormat:@"The files could not be extracted. The archive seems to be corrupt. You may want to try to extract it manually or report this to free.oszoo.org.\n\nPath: %@", path];
     }
     
     NSAlert *alert = [NSAlert alertWithMessageText:@"Import finished"

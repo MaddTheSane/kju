@@ -318,7 +318,6 @@
 - (IBAction) cycleWindows:(id)sender
 {
 //    NSLog(@"cocoaControlController: cycleWindows");
-    
     [qdoserver guestSwitch: @"Q Control" fullscreen:NO nextGuestName:nil];
 }
 
@@ -750,7 +749,7 @@
 
 - (BOOL) importFreeOSZooPC:(NSString *)name withPath:(NSString *)path
 {
-	NSMutableDictionary * thisPC = [[[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:
+    NSMutableDictionary * thisPC = [[[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:
 		[[NSMutableDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Q", @"none", [NSDate date], @"Q guest PC from FreeOSZoo", nil] forKeys:[NSArray arrayWithObjects: @"Author", @"Copyright", @"Date", @"Description", nil]],
 		[[NSMutableString alloc] initWithString:@" -m 128 -net user -boot c -localtime -smb ~/Desktop/Q Shared Files/"],
 		[[NSMutableDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"My new PC", @"shutdown", @"x86", nil] forKeys:[NSArray arrayWithObjects: @"name", @"state", @"architecture", nil]],
@@ -767,12 +766,13 @@
 	// for now we search for a .img/.qcow file and use it as HD
 	BOOL foundHD = NO;
 	BOOL foundDir = NO;
+	BOOL foundReadme = NO;
 	NSFileManager * manager = [NSFileManager defaultManager];
 	NSArray * dirContents = [manager directoryContentsAtPath:path];
 	NSArray * subDir;
-	int i,ii;
+	int i,ii,j,k;
 	for (i=0; i<=[dirContents count]-1; i++) {
-		if ([[[dirContents objectAtIndex:i] pathExtension] isEqualToString:@"img"] || [[[dirContents objectAtIndex:i] pathExtension] isEqualToString:@"qcow"]) {
+		if (([[[dirContents objectAtIndex:i] pathExtension] isEqualToString:@"img"] || [[[dirContents objectAtIndex:i] pathExtension] isEqualToString:@"qcow"] || [[[dirContents objectAtIndex:i] pathExtension] isEqualToString:@"dsk"]) && (![[[manager fileAttributesAtPath:[path stringByAppendingPathComponent:[dirContents objectAtIndex:i]] traverseLink:NO] objectForKey:NSFileType] isEqualTo:NSFileTypeDirectory])) {
 			foundHD = YES;
 			break;
 		} else if([[[manager fileAttributesAtPath:[path stringByAppendingPathComponent:[dirContents objectAtIndex:i]] traverseLink:NO] objectForKey:NSFileType] isEqualTo:NSFileTypeDirectory]) {
@@ -780,32 +780,52 @@
 			//NSLog(@"Found Dir: %@", [dirContents objectAtIndex:i]);
 			break;
 		} else {
-			NSLog(@"Found no image or folder.");
+			//NSLog(@"Found no image or folder.");
 		}
 	}
 
 	if(foundHD) {
-		[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -hda %@", [dirContents objectAtIndex:i]]];
+	   //if we found the hd image in the root folder, we only need to append -hda file to arguments
+	   [[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -hda %@", [dirContents objectAtIndex:i]]];
 	} else if(foundDir) {
-		subDir = [manager directoryContentsAtPath:[path stringByAppendingPathComponent:[dirContents objectAtIndex:i]]];
-		for(ii=0; i<=[subDir count]-1; ii++) {
+	   // if we found a folder, the hd should be in it
+	   // if hd is found, move all files in the folder to root directory and delete folder
+	   subDir = [manager directoryContentsAtPath:[path stringByAppendingPathComponent:[dirContents objectAtIndex:i]]];
+	   for(ii=0; i<=[subDir count]-1; ii++) {
 			// search for .img or .qcow
 			if([[[subDir objectAtIndex:ii] pathExtension] isEqualToString:@"img"] || [[[subDir objectAtIndex:i] pathExtension] isEqualToString:@"qcow"]) {
 				//NSLog(@"found HD in subdir!");
-				// move hd to root dir and delete the folder
-				[manager movePath:[path stringByAppendingPathComponent:[[dirContents objectAtIndex:i] stringByAppendingPathComponent:[subDir objectAtIndex:ii]]] toPath:[path stringByAppendingPathComponent:[subDir objectAtIndex:ii]] handler:nil];
+				// move all files to root dir and delete the folder
+				for(j=0; j<[subDir count]; j++) {
+				    [manager movePath:[path stringByAppendingPathComponent:[[dirContents objectAtIndex:i] stringByAppendingPathComponent:[subDir objectAtIndex:j]]] toPath:[path stringByAppendingPathComponent:[subDir objectAtIndex:j]] handler:nil];
+				}
 				[manager removeFileAtPath:[path stringByAppendingPathComponent:[dirContents objectAtIndex:i]] handler:nil];
+				// append hd name to arguments
 				[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -hda %@", [subDir objectAtIndex:ii]]];
 				foundHD = YES;
 				break;
 			}
 		}
 	}
+	
+	// search for a readme file, if found, open it with TextEdit
+	dirContents = [manager directoryContentsAtPath:path];
+	for(k=0; k<[dirContents count]; k++) {
+	   if([[dirContents objectAtIndex:k] isEqualToString:@"README"]) {
+	       foundReadme = YES;
+	       break;
+	   }
+    }
+	
 	/* save Configuration */
 	[self savePCConfiguration:thisPC];
 	
 	/* update Table */
 	[self loadConfigurations];
+	
+	/* open Readme */
+	if(foundReadme) [[NSWorkspace sharedWorkspace] openFile:[path stringByAppendingPathComponent:@"README"] withApplication:@"TextEdit.app"];
+	
 	return foundHD;
 }
 
@@ -1493,7 +1513,7 @@
             printf("cocoaDownload.nib not loaded!\n");
         }
     } else {
-        [downloader showWindow];
+        [downloader initDownloadInterface];
     }
     
     /*

@@ -35,6 +35,9 @@
     IBOutlet id statusText;
     IBOutlet id statusBar;
     IBOutlet id osTypeSelect;
+    IBOutlet id precheckPanel;
+    IBOutlet id precheckStatusTextView;
+    IBOutlet id precheckStatusProgressView;
     
     IBOutlet id detailsNSView;   
                 
@@ -53,11 +56,13 @@ BOOL tableEnabled;
 - (id) initWithSender:(id)sender;
 
 // interface functions
+- (void) initDownloadInterface;
 - (void) showWindow;
 - (BOOL) returnShowsDetails; // returns whether the window shows details
 - (void) resizeSmall; // show detailsTextView
 - (void) resizeBig; // show detailsTextView
 - (void) showAllDownloads;
+- (void) prepareOSTypeSelector;
 - (IBAction) showDownloadsByType:(id)sender;
 - (void) showDetails:(int)row; // show details of selected free os
 - (void) disableTableView:(BOOL)disable;

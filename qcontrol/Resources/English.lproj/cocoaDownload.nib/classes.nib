@@ -11,6 +11,9 @@
                 downloadButton = id; 
                 mainDlWindow = id; 
                 osTypeSelect = id; 
+                precheckPanel = id; 
+                precheckStatusProgressView = id; 
+                precheckStatusTextView = id; 
                 statusBar = id; 
                 statusText = id; 
                 table = id; 
