@@ -1,3 +1,15 @@
+Q-0.8.1d50
+[new] downloader: new download list according to new oszoo pages, moved list to new server 
+[fix] Makefile: use -lcrypto instead of full path to libcrypto 
+[new] credits: licenses 
+[new] downloader: if there is a README file with the downloaded Guest PC, open it in TextEdit? after download is finished 
+[fix] downloader: leave all files from the downloaded archive in qvm package 
+[fix] downloader: finding a folder with .img or .qcow in it's name sets it not as harddisk anymore 
+[fix] downloader: add support for gzip files, throw warning when archive is corrupt 
+[fix] downloader: downloaded progress not reset when download cancelled or started again 
+[fix] downloader: set Transmission revision back to 480 (official version 0.6.1), now using only stable Transmission releases 
+[fix] downloader: cancel download when .torrent file could not be downloaded and show error message
+
 Q-0.8.1d47
 [fix] streamlined Q Control Guest Infos
 
