@@ -1,7 +1,8 @@
-Q-0.8.1d51
+Q-0.8.2d52
 [fix] downloader: crashes on starting download
+[fix] changelog was still on qemu 0.8.1, changed to 0.8.2
 
-Q-0.8.1d50
+Q-0.8.2d50
 [new] downloader: new download list according to new oszoo pages, moved list to new server 
 [fix] Makefile: use -lcrypto instead of full path to libcrypto 
 [new] credits: licenses 
@@ -13,33 +14,33 @@ Q-0.8.1d50
 [fix] downloader: set Transmission revision back to 480 (official version 0.6.1), now using only stable Transmission releases 
 [fix] downloader: cancel download when .torrent file could not be downloaded and show error message
 
-Q-0.8.1d47
+Q-0.8.2d47
 [fix] streamlined Q Control Guest Infos
 
-Q-0.8.1d46
+Q-0.8.2d46
 [fix] editPC network firewall display bug
 [fix] better interface for firewall
 
-Q-0.8.1d45
+Q-0.8.2d45
 [new] fullscreen toolbarIcon
 [new] toolbarIcon defaults
 [new] backwards guest/windowcycling (cmd + >)
 
-Q-0.8.1d44
+Q-0.8.2d44
 [new] editPC network tab
 [new| firewall (redirect) pane
 
-Q-0.8.1d40
+Q-0.8.2d40
 [fix] prepare.sh does co q over http for simpler commit
 
-Q-0.8.1d39
+Q-0.8.2d39
 [fix] comply with new transmission build rules
 
-Q-0.8.1d38
+Q-0.8.2d38
 [fix] comply with new transmission build system
 [fix] fixed transmission svn rev to 638
 
-Q-0.8.1d37
+Q-0.8.2d37
 [new] fullscreen guest/windowcycling
 [new] hotkey support for guest/windowcycling (cmd + <)
 [new] animation when switch to monitor and back (ctrl-alt-1..9)
