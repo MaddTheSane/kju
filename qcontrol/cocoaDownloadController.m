@@ -128,7 +128,7 @@
             [self showWindow];
         } else {
             // download list is nil, spawn error message
-            NSLog(@"Could not load list.");
+            //NSLog(@"Could not load list.");
             NSBeginAlertSheet(@"Cannot show Guest PCs from free.oszoo.org.",@"OK",nil,nil,[controller mainWindow],self,nil,nil,nil,@"Couldn't get the list of downloadable Guest PCs from kju-app.org.");
         }
         [downloadOriginalList addObjectsFromArray:downloadList];
@@ -174,7 +174,7 @@
 
 - (IBAction) showDownloadsByType:(id)sender
 {
-    NSLog(@"showDownloadsByType:");
+    //NSLog(@"showDownloadsByType:");
     // method for the popupbutton to select os type
     NSMutableArray * array = [NSMutableArray arrayWithCapacity:1];
     if([[osTypeSelect titleOfSelectedItem] isEqualToString:@"All"]) {
@@ -391,12 +391,12 @@
         
         // 1. init download object, set values
         // TODO: distinguish between HTTP&BT, url pathExtension?
-        if([thisDownload valueForKey:@"torrent"] == [NSNumber numberWithInt:1]) {
+        if([thisDownload valueForKey:@"Torrent"] == [NSNumber numberWithInt:1]) {
             download = [[[cocoaDownload alloc] initWithBT] retain];
         } else {
             download = [[[cocoaDownload alloc] initWithHTTP] retain];
         }
-        if([[thisDownload objectForKey:@"version"] isEqualToString:@""]) {
+        if([[thisDownload objectForKey:@"Version"] isEqualToString:@""]) {
             [download setName:[thisDownload objectForKey:@"Name"]];
         } else {
             [download setName:[NSString stringWithFormat:@"%@ %@", [thisDownload objectForKey:@"Name"], [thisDownload objectForKey:@"Version"]]];
@@ -547,10 +547,10 @@
 
 - (void) downloadDidFail:(NSNotification *)aNotification
 {
-    NSLog(@"Download did fail: %@", [[aNotification userInfo] objectForKey:@"ERROR_DESCRIPTION"]);
+    //NSLog(@"Download did fail: %@", [[aNotification userInfo] objectForKey:@"ERROR_DESCRIPTION"]);
     
     // delete qvm
-    NSLog(@"savepath: %@", [download getSavePath]);
+    //NSLog(@"savepath: %@", [download getSavePath]);
     if(![[[download getSavePath] stringByDeletingLastPathComponent] isEqualTo:@""] || [[download getSavePath] stringByDeletingLastPathComponent] != nil) {
         NSFileManager * manager = [NSFileManager defaultManager];
         [manager removeFileAtPath:[[download getSavePath] stringByDeletingLastPathComponent] handler:nil];
@@ -568,7 +568,7 @@
 
 - (void) cleanupDownload:(NSString *)path
 {
-    NSLog(@"Cleaning up after download..");
+    //NSLog(@"Cleaning up after download..");
     if(statusTimer) {
         [statusTimer invalidate];
     }      

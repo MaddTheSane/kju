@@ -265,7 +265,7 @@
     tStat = tr_torrentStat( tHandle );
     tInfo = tr_torrentInfo( tHandle );
     
-    NSLog(@"rcvCL: %f", receivedContentLength);
+    //NSLog(@"rcvCL: %f", receivedContentLength);
     receivedContentLength = tInfo[0].totalSize * tStat[0].progress;
     expectedContentLength = tInfo[0].totalSize;
     downloadRate = tStat[0].rateDownload;
