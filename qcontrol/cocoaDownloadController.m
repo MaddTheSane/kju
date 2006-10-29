@@ -129,7 +129,7 @@
         } else {
             // download list is nil, spawn error message
             //NSLog(@"Could not load list.");
-            NSBeginAlertSheet(@"Cannot show Guest PCs from free.oszoo.org.",@"OK",nil,nil,[controller mainWindow],self,nil,nil,nil,@"Couldn't get the list of downloadable Guest PCs from kju-app.org.");
+            NSBeginAlertSheet(NSLocalizedStringFromTable(@"showAllDownloads:AlertSheet:standardAlert", @"Localizable", @"cocoaDownloadController"),NSLocalizedStringFromTable(@"showAllDownloads:AlertSheet:defaultButton", @"Localizable", @"cocoaDownloadController"),nil,nil,[controller mainWindow],self,nil,nil,nil,NSLocalizedStringFromTable(@"showAllDownloads:AlertSheet:informativeText", @"Localizable", @"cocoaDownloadController"));
         }
         [downloadOriginalList addObjectsFromArray:downloadList];
     } else {
@@ -271,7 +271,7 @@
 	if ([[tableColumn identifier] isEqualToString:@"name"]) {
 	   // return name and version 
 	   NSMutableAttributedString *attrString = [[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat: @"%@ %@\n", [thisDownload objectForKey:@"Name"], [thisDownload objectForKey:@"Version"]] attributes:[NSDictionary dictionaryWithObject: [NSFont boldSystemFontOfSize:[NSFont systemFontSize]] forKey:NSFontAttributeName]] autorelease];
-	   [attrString appendAttributedString: [[[NSAttributedString alloc] initWithString:[NSString stringWithFormat: @"%@, %@. Download Size: %@ MB\nprovided by %@.", [thisDownload objectForKey:@"Category"], [thisDownload objectForKey:@"InstallType"], [thisDownload objectForKey:@"DownloadSize"], [thisDownload objectForKey:@"Author"]] attributes:[NSDictionary dictionaryWithObject:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]] forKey:NSFontAttributeName]] autorelease]];
+	   [attrString appendAttributedString: [[[NSAttributedString alloc] initWithString:[NSString stringWithFormat: @"%@, %@. %@: %@ MB\n%@ %@.", [thisDownload objectForKey:@"Category"], [thisDownload objectForKey:@"InstallType"], NSLocalizedStringFromTable(@"tableView:objectValueForTableColumn:Size", @"Localizable", @"cocoaDownloadController"), [thisDownload objectForKey:@"DownloadSize"], NSLocalizedStringFromTable(@"tableView:objectValueForTableColumn:Author", @"Localizable", @"cocoaDownloadController"), [thisDownload objectForKey:@"Author"]] attributes:[NSDictionary dictionaryWithObject:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]] forKey:NSFontAttributeName]] autorelease]];
 	   
 		return attrString;
 	} else {
@@ -357,7 +357,7 @@
     NSDictionary * nameAttr = [NSDictionary dictionaryWithObject:[NSFont boldSystemFontOfSize:12] forKey:NSFontAttributeName];
     NSAttributedString * detailsName = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@", [details objectForKey:@"Name"], [details objectForKey:@"Version"]] attributes:nameAttr];
     NSAttributedString * detailsDesc = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"\n%@", [details objectForKey:@"Description"]]];
-    NSAttributedString * detailsURLpre = [[NSAttributedString alloc] initWithString:@"\nMore Info: "];
+    NSAttributedString * detailsURLpre = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"\n%@: ", NSLocalizedStringFromTable(@"showDetails:MoreInfo", @"Localizable", @"cocoaDownloadController")]];
     NSAttributedString * detailsURL = [[NSAttributedString alloc] initWithString:[details objectForKey:@"InfopageURL"] attributes:[NSDictionary dictionaryWithObject:[details objectForKey:@"InfopageURL"] forKey:NSLinkAttributeName]];
     // create spacer
     NSAttributedString * spacer = [[NSAttributedString alloc] initWithString:@"\n"];
@@ -412,11 +412,11 @@
         [self disableTableView:YES];
         [osTypeSelect setEnabled:NO];
         [table setDoubleAction:nil];
-        [downloadButton setTitle:@"Stop"];
+        [downloadButton setTitle:NSLocalizedStringFromTable(@"startDownload:downloadButton:Title", @"Localizable", @"cocoaDownloadController")];
         [downloadButton setAction:@selector(stopDownload:)];
         if([self returnShowsDetails]) [self resizeSmall];
         
-        [statusText setStringValue:@"Starting download..."];
+        [statusText setStringValue:NSLocalizedStringFromTable(@"startDownload:statusText:Text", @"Localizable", @"cocoaDownloadController")];
         [statusBar setDoubleValue:0.0];
         [statusText setHidden:NO];
         [statusBar setHidden:NO];
@@ -429,7 +429,7 @@
 
 - (IBAction)stopDownload:(id)sender
 {
-    NSBeginAlertSheet(@"You have active downloads running.",@"Stop",@"Cancel",nil,mainDlWindow,self,@selector(stopDownloadSheetDidEnd:returnCode:contextInfo:),nil,nil,@"Are you sure you want to stop downloading?");
+    NSBeginAlertSheet(NSLocalizedStringFromTable(@"stopDownload:AlertSheet:standardAlert", @"Localizable", @"cocoaDownloadController"),NSLocalizedStringFromTable(@"stopDownload:AlertSheet:defaultButton", @"Localizable", @"cocoaDownloadController"),NSLocalizedStringFromTable(@"stopDownload:AlertSheet:alternativeButton", @"Localizable", @"cocoaDownloadController"),nil,mainDlWindow,self,@selector(stopDownloadSheetDidEnd:returnCode:contextInfo:),nil,nil,NSLocalizedStringFromTable(@"stopDownload:AlertSheet:informativeText", @"Localizable", @"cocoaDownloadController"));
 }
 
 - (void)stopDownloadSheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(void *)contextInfo
@@ -511,31 +511,31 @@
     NSString * remainingString;
     
     if(time_rhour >= 1) {
-        remainingString = [NSString stringWithFormat:@"%d hours %d minutes remaining", time_rhour, time_rlmin, time_rlsec];
+        remainingString = [NSString stringWithFormat:NSLocalizedStringFromTable(@"downloadDidReceiveData:remainingString1", @"Localizable", @"cocoaDownloadController"), time_rhour, time_rlmin, time_rlsec];
     } else if(time_rmin >= 1 && time_rmin < 10) {
-        remainingString = [NSString stringWithFormat:@"%d minutes %d seconds remaining", time_rmin, time_rlsec];
+        remainingString = [NSString stringWithFormat:NSLocalizedStringFromTable(@"downloadDidReceiveData:remainingString2", @"Localizable", @"cocoaDownloadController"), time_rmin, time_rlsec];
     } else if(time_rmin >=1) {
-        remainingString = [NSString stringWithFormat:@"about %d minutes remaining", time_rmin];
+        remainingString = [NSString stringWithFormat:NSLocalizedStringFromTable(@"downloadDidReceiveData:remainingString3", @"Localizable", @"cocoaDownloadController"), time_rmin];
     } else {
-        remainingString = [NSString stringWithFormat:@"about %d seconds remaining", time_rsec];
+        remainingString = [NSString stringWithFormat:NSLocalizedStringFromTable(@"downloadDidReceiveData:remainingString4", @"Localizable", @"cocoaDownloadController"), time_rsec];
     }
     
     if(receivedKB < 10.0) {
-        [statusText setStringValue:@"Connecting.."];
+        [statusText setStringValue:NSLocalizedStringFromTable(@"downloadDidReceiveData:connecting", @"Localizable", @"cocoaDownloadController")];
     } else {
         if([statusBar isIndeterminate])
             [statusBar setIndeterminate:NO];
         if(receivedKB <= 1024) {
-            [statusText setStringValue:[NSString stringWithFormat:@"%.0f %@ of %.1f %@ (%d kB/s), %@", receivedD, dSize, expectedD, tDSize, lastRCVData/1024, remainingString]];
+            [statusText setStringValue:[NSString stringWithFormat:NSLocalizedStringFromTable(@"downloadDidReceiveData:statusText1", @"Localizable", @"cocoaDownloadController"), receivedD, dSize, expectedD, tDSize, lastRCVData/1024, remainingString]];
         } else {
-            [statusText setStringValue:[NSString stringWithFormat:@"%.1f %@ of %.1f %@ (%d kB/s), %@", receivedD, dSize, expectedD, tDSize, lastRCVData/1024, remainingString]];
+            [statusText setStringValue:[NSString stringWithFormat:NSLocalizedStringFromTable(@"downloadDidReceiveData:statusText2", @"Localizable", @"cocoaDownloadController"), receivedD, dSize, expectedD, tDSize, lastRCVData/1024, remainingString]];
         }
     }
 }
 
 - (void) downloadDidFinish:(NSNotification *)aNotification
 {
-    [statusText setStringValue:@"Download finished."];
+    [statusText setStringValue: NSLocalizedStringFromTable(@"downloadDidFinish:statusText", @"Localizable", @"cocoaDownloadController")];
     [downloadButton setAction:nil];
     
     // call some File Manipulation Functions here
@@ -547,7 +547,7 @@
 
 - (void) downloadDidFail:(NSNotification *)aNotification
 {
-    //NSLog(@"Download did fail: %@", [[aNotification userInfo] objectForKey:@"ERROR_DESCRIPTION"]);
+    NSLog(@"Download did fail: %@", [[aNotification userInfo] objectForKey:@"ERROR_DESCRIPTION"]);
     
     // delete qvm
     //NSLog(@"savepath: %@", [download getSavePath]);
@@ -558,12 +558,12 @@
     
     // reset UI
     [self cleanupDownload:[[download getSavePath] stringByDeletingLastPathComponent]];
-    [statusText setStringValue:@"Download failed."];
+    [statusText setStringValue: NSLocalizedStringFromTable(@"downloadDidFail:statusText", @"Localizable", @"cocoaDownloadController")];
     
     [download release];
     
     // alert sheet
-    NSBeginAlertSheet(@"Download failed",@"OK",nil,nil,mainDlWindow,self,nil,nil,nil,[[aNotification userInfo] objectForKey:@"ERROR_DESCRIPTION"]);
+    NSBeginAlertSheet(NSLocalizedStringFromTable(@"downloadDidFail:AlertSheet:standardAlert", @"Localizable", @"cocoaDownloadController"),NSLocalizedStringFromTable(@"downloadDidFail:AlertSheet:defaultButton", @"Localizable", @"cocoaDownloadController"),nil,nil,mainDlWindow,self,nil,nil,nil,[[aNotification userInfo] objectForKey:@"ERROR_DESCRIPTION"]);
 }
 
 - (void) cleanupDownload:(NSString *)path
@@ -596,10 +596,10 @@
 
 - (void)uncompressPC:(NSString *)path
 {
-    [statusText setStringValue:@"Extracting files.."];
+    [statusText setStringValue: NSLocalizedStringFromTable(@"uncompressPC:statusText", @"Localizable", @"cocoaDownloadController")];
     [statusBar setIndeterminate:YES];
     [statusBar startAnimation:self];
-    NSTask * task = [[[NSTask alloc] init] autorelease];
+    NSTask * task = [[[NSTask alloc] init] retain];
     BOOL isArchive = NO;
     if([[path pathExtension] isEqualTo:@"tar"] || [[path pathExtension] isEqualTo:@"bz"] || [[path pathExtension] isEqualTo:@"bz2"] || [[path pathExtension] isEqualTo:@"gz"]) {
         [task setLaunchPath:@"/usr/bin/tar"];
@@ -620,53 +620,64 @@
     }
 
     if(isArchive) {
-	   [task setCurrentDirectoryPath:[path stringByDeletingLastPathComponent]];
-	
+        [task setCurrentDirectoryPath:[path stringByDeletingLastPathComponent]];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(uncompressPCFinished:) name:NSTaskDidTerminateNotification object:task];
         [task launch];
     } else {
         NSLog(@"Could not detect file format. No archive?");
+        [self finishDownload:1 withStatus:0];
     }
+    [task release];
 }
 
 - (void)uncompressPCFinished:(NSNotification *)aNotification
 {
-    int status = [[aNotification object] terminationStatus];
+    [self finishDownload:0 withStatus:[[aNotification object] terminationStatus]];
+    //NSLog(@"extract finished Notify");
+}
+
+- (void) finishDownload:(int)sender withStatus:(int)status
+{
     NSString * message;        
     NSString * path = [download getSavePath];
     NSString * name = [download getName];
     
     // start import into Q
-    [statusText setStringValue:@"Importing Free OS.."];
+    [statusText setStringValue: NSLocalizedStringFromTable(@"finishDownload:statusText1", @"Localizable", @"cocoaDownloadController")];
     if([controller importFreeOSZooPC:name withPath:[path stringByDeletingLastPathComponent]]) {
-        message = @"You can now start using your Free OS.";
+        message = NSLocalizedStringFromTable(@"finishDownload:message1", @"Localizable", @"cocoaDownloadController");
     } else {
-        message = @"The harddisk could not be found. Please check the settings before using your Free OS.";
+        message = NSLocalizedStringFromTable(@"finishDownload:message2", @"Localizable", @"cocoaDownloadController");
     }
     
-    if(status == 0) {
-        //NSLog(@"Task succeeded.");
-        // delete downloaded file, leave message unchanged
-        NSFileManager * manager = [NSFileManager defaultManager];
-        [manager removeFileAtPath:path handler:nil];
-    } else {
-        //NSLog(@"Task failed.");
-        // do not delete file, set message to failed
-        message = [NSString stringWithFormat:@"The files could not be extracted. The archive seems to be corrupt. You may want to try to extract it manually or report this to free.oszoo.org.\n\nPath: %@", path];
+    // sender: 0: task, 1: file check
+    if(sender == 0) {
+        if(status == 0) {
+            //NSLog(@"Task succeeded.");
+            // delete downloaded file, leave message unchanged
+            NSFileManager * manager = [NSFileManager defaultManager];
+            [manager removeFileAtPath:path handler:nil];
+        } else {
+            //NSLog(@"Task failed.");
+            // do not delete file, set message to failed
+            message = [NSString stringWithFormat: NSLocalizedStringFromTable(@"finishDownload:message2", @"Localizable", @"cocoaDownloadController"), path];
+        }
+    } else if(sender == 1) {
+        message = [NSString stringWithFormat: NSLocalizedStringFromTable(@"finishDownload:message2", @"Localizable", @"cocoaDownloadController"), path];
     }
     
-    NSAlert *alert = [NSAlert alertWithMessageText:@"Import finished"
-		defaultButton:@"OK"
+    NSAlert *alert = [NSAlert alertWithMessageText:  NSLocalizedStringFromTable(@"finishDownload:AlertSheet:messageText", @"Localizable", @"cocoaDownloadController")
+		defaultButton:  NSLocalizedStringFromTable(@"finishDownload:AlertSheet:defaultButton", @"Localizable", @"cocoaDownloadController")
 		alternateButton:nil
 		otherButton:nil
 		informativeTextWithFormat:message];
 
-	   [alert beginSheetModalForWindow:mainDlWindow
+    [alert beginSheetModalForWindow:mainDlWindow
 		modalDelegate:self
 		didEndSelector:nil
 		contextInfo:nil];
     
-    [statusText setStringValue:@"Finished."];
+    [statusText setStringValue:  NSLocalizedStringFromTable(@"finishDownload:statusText2", @"Localizable", @"cocoaDownloadController")];
     [statusBar setMaxValue:100.0];
     [statusBar setDoubleValue:0.0];
     [statusBar setIndeterminate:NO];

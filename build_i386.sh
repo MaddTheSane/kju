@@ -25,7 +25,7 @@ cd ..
 
 
 #make qemu
-cp -R qemu tmp/qemu
+cp -R qemu-0.8.1 tmp/qemu
 
 
 # patch qemu sources
@@ -33,11 +33,6 @@ cd tmp/qemu
 
 #Q
 patch -p0 -u < ../../q/patches/q_host-cocoa_01.diff
-
-#dns patch
-cd slirp
-patch -p0 < ../../../q/patches/qemu-dns.patch
-cd ..
 
 #gcc4 patches
 patch -p1 -u < ../../q/patches/qemu-0.7.0-gcc4.patch

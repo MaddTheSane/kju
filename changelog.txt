@@ -1,3 +1,15 @@
+Q-0.8.2d53
+[fix] set qemu revision in prepare.sh to 2006-07-24 18:00 instead of current CVS, because current CVS fails to build right now (thx Dravick)
+[new] added new freeoszoo images
+[fix] removed obsolete dns patch
+[new] fullscreen toolbar
+[fix] shutdown PC from fullscreen changing workspace
+[fix] typo in NewPC Assistant
+[fix] add downloader, networking redirect to Localizable.strings
+[fix] downloader: remove tiger dependent code
+[fix] downloader: add connection timeout error handling
+[fix] downloader: add error handling when file is no valid archive (tar, gz, bz)
+
 Q-0.8.2d52
 [fix] downloader: crashes on starting download
 [fix] changelog was still on qemu 0.8.1, changed to 0.8.2

@@ -435,6 +435,11 @@
 	/* Mouse-grab is activatet by clicks in Windowed View only,
 		so we can handle clicks on other GUI Items */
 	if(fullscreen) {
+	   /* exception: if the user activated the toolbar, mouse grab is released; so when he clicks on fullscreen view we have to grab again */
+	   if([pc fullscreenController] && [[pc fullscreenController] showsToolbar]) {
+	       [[pc fullscreenController] toggleToolbar];
+	       [pc grabMouse];
+	   }
 	} else if([pc absolute_enabled]) {
         if (![pc tablet_enabled])
             [NSCursor hide];

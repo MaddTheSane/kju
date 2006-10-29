@@ -114,28 +114,6 @@
 	</dict>
 	<dict>
 		<key>Author</key>
-		<string>Simone Vellei for FreeOSZoo</string>
-		<key>Category</key>
-		<string>Linux</string>
-		<key>Description</key>
-		<string>Arch Linux is an i686-optimized linux distribution targeted at competent linux users (read: not afraid of the commandline).</string>
-		<key>DownloadSize</key>
-		<string>600</string>
-		<key>DownloadURL</key>
-		<string>http://www.oszoo.org/ftp/images/archlinux_0.7.tar.torrent</string>
-		<key>InfopageURL</key>
-		<string>http://www.oszoo.org/wiki/index.php/Archlinux_0.7.tar</string>
-		<key>InstallType</key>
-		<string>Preconfigured</string>
-		<key>Name</key>
-		<string>ArchLinux</string>
-		<key>Torrent</key>
-		<integer>1</integer>
-		<key>Version</key>
-		<string>0.7</string>
-	</dict>
-	<dict>
-		<key>Author</key>
 		<string>Charles Jensen for FreeOSZoo</string>
 		<key>Category</key>
 		<string>ArchLinux</string>
@@ -466,6 +444,28 @@
 	</dict>
 	<dict>
 		<key>Author</key>
+		<string>Stefano Marinelli for FreeOSZoo</string>
+		<key>Category</key>
+		<string>Trixbox</string>
+		<key>Description</key>
+		<string>Asterisk based trixbox enables even the novice user to quickly set up a voice over IP phone system. trixbox can be configured to handle a single phone line for a home user, several lines for a small office, or several T1s for a million minute a month call center.</string>
+		<key>DownloadSize</key>
+		<string>500</string>
+		<key>DownloadURL</key>
+		<string>http://www.oszoo.org/ftp/images/trixbox_1.1_x86.zip.torrent</string>
+		<key>InfopageURL</key>
+		<string>http://www.oszoo.org/wiki/index.php/Trixbox_1.1_x86.zip</string>
+		<key>InstallType</key>
+		<string>Preconfigured</string>
+		<key>Name</key>
+		<string>Trixbox</string>
+		<key>Torrent</key>
+		<integer>1</integer>
+		<key>Version</key>
+		<string>1.1</string>
+	</dict>
+	<dict>
+		<key>Author</key>
 		<string>Renzo Davoli for FreeOSZoo</string>
 		<key>Category</key>
 		<string>Ubuntu</string>
@@ -507,6 +507,28 @@
 		<integer>1</integer>
 		<key>Version</key>
 		<string>5.1 Warty</string>
+	</dict>
+	<dict>
+		<key>Author</key>
+		<string>Oliver Gerlich for FreeOSZoo</string>
+		<key>Category</key>
+		<string>Ubuntu</string>
+		<key>Description</key>
+		<string>"Ubuntu" is an ancient African word, meaning "humanity to others". Ubuntu also means "I am what I am because of who we all are". The Ubuntu Linux distribution brings the spirit of Ubuntu to the software world. Ubuntu is a complete Linux-based operating system, freely available with both community and professional support. It is developed by a large community and we invite you to participate too!</string>
+		<key>DownloadSize</key>
+		<string>1100</string>
+		<key>DownloadURL</key>
+		<string>http://www.oszoo.org/ftp/images/ubuntu-6.06-desktop-x86.qcow.img.zip.torrent</string>
+		<key>InfopageURL</key>
+		<string>http://www.oszoo.org/wiki/index.php/Ubuntu-6.06-desktop-x86.qcow.img.zip</string>
+		<key>InstallType</key>
+		<string>Preconfigured</string>
+		<key>Name</key>
+		<string>Ubuntu</string>
+		<key>Torrent</key>
+		<integer>1</integer>
+		<key>Version</key>
+		<string>6.06 Dapper Drake</string>
 	</dict>
 	<dict>
 		<key>Author</key>
@@ -642,23 +664,23 @@
 	</dict>
 	<dict>
 		<key>Author</key>
-		<string>Stefano Marinelli for FreeOSZoo</string>
+		<string>Mike Swanson for FreeOSZoo</string>
 		<key>Category</key>
 		<string>OpenBSD</string>
 		<key>Description</key>
 		<string>The OpenBSD project produces a FREE, multi-platform 4.4BSD-based UNIX-like operating system. Our efforts emphasize portability, standardization, correctness, proactive security and integrated cryptography. OpenBSD supports binary emulation of most programs from SVR4 (Solaris), FreeBSD, Linux, BSD/OS, SunOS and HP-UX.</string>
 		<key>DownloadSize</key>
-		<string>172</string>
+		<string>244</string>
 		<key>DownloadURL</key>
-		<string>http://www.oszoo.org/ftp/images/openbsd_3.9_x86.zip</string>
+		<string>http://www.oszoo.org/ftp/images/openbsd3.9-full.zip.torrent</string>
 		<key>InfopageURL</key>
-		<string>http://www.oszoo.org/wiki/index.php/Openbsd_3.9_x86.zip</string>
+		<string>http://www.oszoo.org/wiki/index.php/Openbsd3.9-full.zip</string>
 		<key>InstallType</key>
 		<string>Preconfigured</string>
 		<key>Name</key>
 		<string>OpenBSD</string>
 		<key>Torrent</key>
-		<integer>0</integer>
+		<integer>1</integer>
 		<key>Version</key>
 		<string>3.9</string>
 	</dict>

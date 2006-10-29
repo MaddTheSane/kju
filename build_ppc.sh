@@ -36,11 +36,6 @@ cd tmp/qemu
 #Q
 patch -p0 -u < ../../q/patches/q_host-cocoa_01.diff
 
-#dns patch
-cd slirp
-patch -p0 < ../../../q/patches/qemu-dns.patch
-cd ..
-
 #rgb support for intel
 cd hw
 #patch -p0 -u < ../../../q/patches/q_vga.c_02.diff

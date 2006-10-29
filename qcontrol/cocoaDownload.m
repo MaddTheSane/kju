@@ -121,9 +121,10 @@
 // custom HTTP&BT startDownload methods
 - (void) startHTTPDownload
 {
-    NSURL * URLObject = [NSURL URLWithString:url];
-    theDownload = [[NSURLDownload alloc] initWithRequest:[NSURLRequest requestWithURL:URLObject] delegate:self];
-    [theDownload setDeletesFileUponFailure:YES];
+    // timeout does not work here, instead we fire a 1min timer and check if receivedContentLength > 0
+    NSURLRequest * theRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:url]]; //cachePolicy:NSURLRequestReloadIgnoringCacheData timeoutInterval:30.0];
+    theDownload = [[NSURLDownload alloc] initWithRequest:theRequest delegate:self];
+    if (theDownload) timer = [[NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(checkDownloadStarted) userInfo:nil repeats:NO] retain];
 }
 
 - (void) startBTDownload
@@ -136,7 +137,7 @@
     
     NSData * torrentFile = [NSData dataWithContentsOfURL:[NSURL URLWithString:url]];
     if([torrentFile length] == 0) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"DownloadDidFail" object:self userInfo:[NSDictionary dictionaryWithObject:@"Could not download bittorrent meta file. Maybe the file doesn't exist anymore or the server is down." forKey:@"ERROR_DESCRIPTION"]];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"DownloadDidFail" object:self userInfo:[NSDictionary dictionaryWithObject:NSLocalizedStringFromTable(@"startBTDownload:torrentFile:length", @"Localizable", @"cocoaDownload") forKey:@"ERROR_DESCRIPTION"]];
         return;
     }
     [torrentFile writeToFile:torrentPath atomically:YES];
@@ -160,27 +161,45 @@
         
         // tell the controller that the download started
         [[NSNotificationCenter defaultCenter] postNotificationName:@"DownloadDidReceiveResponse" object:self];
+        // start timer for checking download started
+        timer = [[NSTimer scheduledTimerWithTimeInterval:60.0 target:self selector:@selector(checkDownloadStarted) userInfo:nil repeats:NO] retain];
     } else {
         //NSLog(@"Initiating Torrent %@ Failed!", torrentPath);
         NSString * errorDescription;
         switch (tError) {
             case 1:
-                errorDescription = @"Bittorrent: Invalid torrent / bad torrent file.";
+                errorDescription = NSLocalizedStringFromTable(@"startBTDownload:torrentFile:tError:invalid", @"Localizable", @"cocoaDownload");
                 break;
             case 2:
-                errorDescription = @"Bittorrent: Unsupported torrent file.";
+                errorDescription = NSLocalizedStringFromTable(@"startBTDownload:torrentFile:tError:unsupported", @"Localizable", @"cocoaDownload");
                 break;
             case 3:
-                errorDescription = @"Bittorrent: Torrent already exists.";
+                errorDescription = NSLocalizedStringFromTable(@"startBTDownload:torrentFile:tError:exists", @"Localizable", @"cocoaDownload");
                 break;
             case 666:
-                errorDescription = @"Bittorrent: Miscellanious error.";
+                errorDescription = NSLocalizedStringFromTable(@"startBTDownload:torrentFile:tError:miscellanious", @"Localizable", @"cocoaDownload");
                 break;
             default:
-                errorDescription = @"Bittorrent: Miscellanious error.";
+                errorDescription = NSLocalizedStringFromTable(@"startBTDownload:torrentFile:tError:miscellanious", @"Localizable", @"cocoaDownload");
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:@"DownloadDidFail" object:self userInfo:[NSDictionary dictionaryWithObject:errorDescription forKey:@"ERROR_DESCRIPTION"]];
     }
+}
+
+- (void) checkDownloadStarted
+{
+    NSLog(@"check: receivedBytes %f", receivedContentLength);
+    if(receivedContentLength > 0.0) {
+        // download started
+    } else {
+        NSLog(@"download cancelled.");
+        // download did not start for 60 seconds, cancel and inform the user
+        NSString * errorDescription = NSLocalizedStringFromTable(@"checkDownloadStarted:errorDescription", @"Localizable", @"cocoaDownload");
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"DownloadDidFail" object:self userInfo:[NSDictionary dictionaryWithObject:errorDescription forKey:@"ERROR_DESCRIPTION"]];
+        [self stopDownload];
+    }
+    // called only once, so invalidate timer
+    [timer invalidate];
 }
 
 - (void) stopDownload
@@ -241,7 +260,7 @@
     [download release];
     // we should inform the controller about this
     [[NSNotificationCenter defaultCenter] postNotificationName:@"DownloadDidFinish" object:self];
-    //NSLog(@"Download did finish.");
+    NSLog(@"Download did finish.");
 }
 
 - (void)download:(NSURLDownload *)download didFailWithError:(NSError *)error
@@ -252,7 +271,7 @@
     if (!errorDescription) {
         errorDescription = @"Please check your internet connection.";
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"DownloadDidFail" object:download userInfo:[NSDictionary dictionaryWithObject:errorDescription forKey:@"ERROR_DESCRIPTION"]];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"DownloadDidFail" object:self userInfo:[NSDictionary dictionaryWithObject:errorDescription forKey:@"ERROR_DESCRIPTION"]];
     //NSLog(@"Download did fail with error: %@", errorDescription);
 }
 

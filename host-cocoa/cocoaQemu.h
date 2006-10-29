@@ -40,6 +40,7 @@
 #import "../../../q/qcontrol/cocoaControlDOServer.h"
 #import "cocoaQemuProgressWindow.h"
 #import "cocoaQemuOpenGLView.h"
+#import "FSControls/FSController.h"
 
 /*
  ------------------------------------------------------
@@ -79,6 +80,9 @@
 	
 	/* progressWindow */
 	cocoaQemuProgressWindow *progressWindow;
+	
+	/* FullscreenController */
+    FSController * fullscreenController;
 }
 /* init & dealloc */
 - (id) init;
@@ -92,6 +96,8 @@
 - (int) modifierAtIndex:(int)index;
 - (BOOL) fullscreen;
 - (void) setFullscreen:(BOOL)val;
+- (id) fullscreenController;
+- (void) setFullscreenController:(id)controller;
 - (BOOL) grab;
 - (BOOL) absolute_enabled;
 - (BOOL) tablet_enabled;

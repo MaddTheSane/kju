@@ -13,22 +13,21 @@
 		<key>736</key>
 		<string>420 324 440 427 0 0 1280 778 </string>
 		<key>930</key>
-		<string>420 280 436 339 0 0 1280 778 </string>
+		<string>422 368 436 339 0 0 1280 778 </string>
 	</dict>
 	<key>IBFramework Version</key>
 	<string>446.1</string>
 	<key>IBOpenObjects</key>
 	<array>
-		<integer>478</integer>
-		<integer>570</integer>
-		<integer>1080</integer>
-		<integer>893</integer>
-		<integer>10</integer>
 		<integer>736</integer>
+		<integer>478</integer>
+		<integer>1080</integer>
 		<integer>930</integer>
+		<integer>10</integer>
+		<integer>570</integer>
 	</array>
 	<key>IBSystem Version</key>
-	<string>8J2135a</string>
+	<string>8L2127</string>
 	<key>IBUsesTextArchiving</key>
 	<true/>
 </dict>

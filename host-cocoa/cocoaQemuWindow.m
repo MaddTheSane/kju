@@ -414,20 +414,31 @@
 {
 //	NSLog(@"cocoaQemuWindow: windowDidResignKey");
 
-
-    if ([pc fullscreen] && [self windowIsVisible]) {
+    /* window resisigns key when fullscreenToolbar is becoming key; add check if toolbar is shown to avoid flipping screen (changing workspace) */
+    if ([pc fullscreen] && [self windowIsVisible] && ![[pc fullscreenController] showsToolbar]) {
 //        [pc setFullscreen:[[pc contentView] toggleFullScreen]];
         
-         /* setup transition */        CGSConnection cid = _CGSDefaultConnection();        int transitionHandle = -1;        CGSTransitionSpec transitionSpecifications;
-                transitionSpecifications.type = 7;          //transition;
-        transitionSpecifications.option = 0;        //option;        transitionSpecifications.wid = 0;           //wid        transitionSpecifications.backColour = 0;    //background color        /* freeze desktop: OSStatus CGSNewTransition(const CGSConnection cid, const CGSTransitionSpec* transitionSpecifications, int *transitionHandle) */        CGSNewTransition(cid, &transitionSpecifications, &transitionHandle);
+         /* setup transition */
+        CGSConnection cid = _CGSDefaultConnection();
+        int transitionHandle = -1;
+        CGSTransitionSpec transitionSpecifications;
+        
+        transitionSpecifications.type = 7;          //transition;
+        transitionSpecifications.option = 0;        //option;
+        transitionSpecifications.wid = 0;           //wid
+        transitionSpecifications.backColour = 0;    //background color
+
+        /* freeze desktop: OSStatus CGSNewTransition(const CGSConnection cid, const CGSTransitionSpec* transitionSpecifications, int *transitionHandle) */
+        CGSNewTransition(cid, &transitionSpecifications, &transitionHandle);
 
         /* change monitor */
         [NSApp hide:self];
         
-        /* wait */        usleep(10000);
+        /* wait */
+        usleep(10000);
         
-        /* run transition: OSStatus CGSInvokeTransition(const CGSConnection cid, int transitionHandle, float duration) */        CGSInvokeTransition(cid, transitionHandle, 1.0);       
+        /* run transition: OSStatus CGSInvokeTransition(const CGSConnection cid, int transitionHandle, float duration) */
+        CGSInvokeTransition(cid, transitionHandle, 1.0);       
     }
 
     if ([pc absolute_enabled]) {

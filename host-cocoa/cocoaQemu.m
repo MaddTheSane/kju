@@ -32,7 +32,9 @@
 
 #import "CGSPrivate.h"
 
-/* Pasteboard *//*#include "sdl_keysym.h"#include "keymaps.c"
+/* Pasteboard *//*
+#include "sdl_keysym.h"
+#include "keymaps.c"
 static kbd_layout_t *kbd_layout;
 */
 /* main defined in qemu/vl.c */
@@ -231,6 +233,20 @@ kern_return_t GetBSDPath( io_iterator_t mediaIterator, char *bsdPath, CFIndex ma
 
 	fullscreen = val;
 }
+
+- (id) fullscreenController
+{
+// NSLog(@"cocoaQemu: fullscreenController");
+    
+    return fullscreenController;
+}
+
+- (void) setFullscreenController:(id)controller
+{
+// NSLog(@"cocoaQemu: setFullscreenController");
+
+    fullscreenController = controller;
+}   
 
 - (BOOL) grab
 {
@@ -765,7 +781,7 @@ kern_return_t GetBSDPath( io_iterator_t mediaIterator, char *bsdPath, CFIndex ma
 
     /* exit fullscreen */
     if (fullscreen)
-        [contentView toggleFullScreen];
+        [pc setFullscreen:[[pc contentView] toggleFullScreen]];
 
 	if (!pcDialogs) {
 		pcStatus = @"shutdown";
@@ -1127,6 +1143,13 @@ void cocoa_refresh(DisplayState *ds)
 								/* toggle fullscreen */
 								case 3: /* f key */
 									[pc setFullscreen:[[pc contentView] toggleFullScreen]];
+									if([pc fullscreen]) {
+									   NSLog(@"init FSController");
+									   [pc setFullscreenController:[[FSController alloc] initWithSender:pc]];
+								    } else {
+								        NSLog(@"release FSController");
+								        [[pc fullscreenController] release];
+								    }
 									return;
 
 //								/* paste text in Host Clipboard to Guest */
@@ -1145,8 +1168,15 @@ void cocoa_refresh(DisplayState *ds)
 //											keycode = keysym2scancode(kbd_layout, [string characterAtIndex:ii]);
 //
 //											if (keycode!=0) {
-//												/* key down events *///												if (keycode & 0x80)//													kbd_put_keycode(0xe0);//												kbd_put_keycode(keycode & 0x7f);
-//											//												/* key up events *///												if (keycode & 0x80)//													kbd_put_keycode(0xe0);//												kbd_put_keycode(keycode | 0x80);
+//												/* key down events */
+//												if (keycode & 0x80)
+//													kbd_put_keycode(0xe0);
+//												kbd_put_keycode(keycode & 0x7f);
+//											
+//												/* key up events */
+//												if (keycode & 0x80)
+//													kbd_put_keycode(0xe0);
+//												kbd_put_keycode(keycode | 0x80);
 //											}
 //										}
 //										[string release];
@@ -1157,8 +1187,10 @@ void cocoa_refresh(DisplayState *ds)
 								/* quit */
 								case 12: /* q key */
 									/* switch to windowed View */
-									if ([pc fullscreen])
+									if ([pc fullscreen]) {
 										[pc setFullscreen:[[pc contentView] toggleFullScreen]];
+										[[pc fullscreenController] release];
+								    }
 									[[pc pcWindow] performClose:nil];
 									return;
 
@@ -1188,6 +1220,14 @@ void cocoa_refresh(DisplayState *ds)
                                         else
                                             break;
                                     }
+                                /* fullscreen toolbar */
+                                case 11: /* B-key */
+                                    if ([pc fullscreen]) {
+                                        [[pc fullscreenController] toggleToolbar];
+                                        return;
+                                    } else {
+                                        break;
+                                    }
 							}
 						}
 						
@@ -1197,17 +1237,31 @@ void cocoa_refresh(DisplayState *ds)
 								/* toggle Monitor */
 								case 0x02 ... 0x0a: /* '1' to '9' keys */
 								    {
-                                        /* setup transition */                                        CGSConnection cid = _CGSDefaultConnection();                                        int transitionHandle = -1;                                        CGSTransitionSpec transitionSpecifications;
-                                                                                transitionSpecifications.type = 9; //transition;
-                                        if (keycode - 0x02 == 0)                                            transitionSpecifications.option = 1; //option;
-                                        else                                            transitionSpecifications.option = 2; //option;                                        transitionSpecifications.wid = [[pc pcWindow] windowNumber]; //wid                                        transitionSpecifications.backColour = 0; //background color                                                    /* freeze desktop: OSStatus CGSNewTransition(const CGSConnection cid, const CGSTransitionSpec* transitionSpecifications, int *transitionHandle) */                                        CGSNewTransition(cid, &transitionSpecifications, &transitionHandle);                            
+                                        /* setup transition */
+                                        CGSConnection cid = _CGSDefaultConnection();
+                                        int transitionHandle = -1;
+                                        CGSTransitionSpec transitionSpecifications;
+                                        
+                                        transitionSpecifications.type = 9; //transition;
+                                        if (keycode - 0x02 == 0)
+                                            transitionSpecifications.option = 1; //option;
+                                        else
+                                            transitionSpecifications.option = 2; //option;
+                                        transitionSpecifications.wid = [[pc pcWindow] windowNumber]; //wid
+                                        transitionSpecifications.backColour = 0; //background color
+            
+                                        /* freeze desktop: OSStatus CGSNewTransition(const CGSConnection cid, const CGSTransitionSpec* transitionSpecifications, int *transitionHandle) */
+                                        CGSNewTransition(cid, &transitionSpecifications, &transitionHandle);
+                            
                                         /* change monitor */
                                         console_select(keycode - 0x02);
                                         vga_hw_update();
                                         
-                                        /* wait */                                        usleep(10000);
+                                        /* wait */
+                                        usleep(10000);
                                         
-                                        /* run transition: OSStatus CGSInvokeTransition(const CGSConnection cid, int transitionHandle, float duration) */                                        CGSInvokeTransition(cid, transitionHandle, 1.0);
+                                        /* run transition: OSStatus CGSInvokeTransition(const CGSConnection cid, int transitionHandle, float duration) */
+                                        CGSInvokeTransition(cid, transitionHandle, 1.0);
                                         
                                         break;
                                     }

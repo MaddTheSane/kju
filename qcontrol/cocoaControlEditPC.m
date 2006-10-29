@@ -1229,7 +1229,7 @@
         [popUpButtonFirewallAdditionalPorts addItemWithTitle:[[firewallAdditionalServices objectAtIndex:i] valueForKey:@"Name"]];
     }
     [[popUpButtonFirewallAdditionalPorts menu] addItem:[NSMenuItem separatorItem]];
-    [popUpButtonFirewallAdditionalPorts addItemWithTitle:@"Custom.."];
+    [popUpButtonFirewallAdditionalPorts addItemWithTitle:  NSLocalizedStringFromTable(@"initFirewallSettings:popUpButtonFirewallAdittionalPortsCustom", @"Localizable", @"cocoaControlEditPC")];
 	[popUpButtonFirewallAdditionalPorts selectItemAtIndex:0];
 	
     [firewallPortTable reloadData];
@@ -1258,20 +1258,20 @@
             NSString * redirectedPorts;
             if(![[[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] valueForKey:@"TCP-Ports-Host"] isEqualToString:@""] && ![[[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] valueForKey:@"UDP-Ports-Host"] isEqualToString:@""]) {
                 // tcp and udp
-                redirectedPorts = [NSString stringWithFormat:@"%@,%@ on the Host to port(s) %@,%@ on the Guest (TCP and UDP).", [[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] valueForKey:@"TCP-Ports-Host"], [[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] valueForKey:@"UDP-Ports-Host"], [[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] valueForKey:@"TCP-Ports-Guest"], [[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] valueForKey:@"UDP-Ports-Guest"]];
+                redirectedPorts = [NSString stringWithFormat: NSLocalizedStringFromTable(@"startShowEditPort:restrictedPorts1", @"Localizable", @"cocoaControlEditPC"), [[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] valueForKey:@"TCP-Ports-Host"], [[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] valueForKey:@"UDP-Ports-Host"], [[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] valueForKey:@"TCP-Ports-Guest"], [[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] valueForKey:@"UDP-Ports-Guest"]];
             } else if (![[[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] valueForKey:@"TCP-Ports-Host"] isEqualToString:@""]) {
                 // tcp only
-                redirectedPorts = [NSString stringWithFormat:@"%@ on the Host to port(s) %@ on the Guest (TCP).", [[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] valueForKey:@"TCP-Ports-Host"], [[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] valueForKey:@"TCP-Ports-Guest"]];
+                redirectedPorts = [NSString stringWithFormat: NSLocalizedStringFromTable(@"startShowEditPort:restrictedPorts2", @"Localizable", @"cocoaControlEditPC"), [[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] valueForKey:@"TCP-Ports-Host"], [[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] valueForKey:@"TCP-Ports-Guest"]];
             } else {
                 // udp only
-                redirectedPorts = [NSString stringWithFormat:@"%@ on the Host to port(s) %@ on the Guest (UDP).", [[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] valueForKey:@"UDP-Ports-Host"], [[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] valueForKey:@"UDP-Ports-Guest"]];
+                redirectedPorts = [NSString stringWithFormat: NSLocalizedStringFromTable(@"startShowEditPort:restrictedPorts3", @"Localizable", @"cocoaControlEditPC"), [[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] valueForKey:@"UDP-Ports-Host"], [[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] valueForKey:@"UDP-Ports-Guest"]];
             }
             
-            NSAlert *alert = [NSAlert alertWithMessageText:@"This service cannot be edited!"
-				defaultButton:@"OK"
+            NSAlert *alert = [NSAlert alertWithMessageText: NSLocalizedStringFromTable(@"startShowEditPort:AlertSheet:messageText", @"Localizable", @"cocoaControlEditPC")
+				defaultButton: NSLocalizedStringFromTable(@"startShowEditPort:AlertSheet:defaultButton", @"Localizable", @"cocoaControlEditPC")
 				alternateButton:nil
 				otherButton:nil
-				informativeTextWithFormat:[NSString stringWithFormat:@"%@ redirects incoming connections from port(s) %@", [[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] valueForKey:@"Name"], redirectedPorts]];
+				informativeTextWithFormat:[NSString stringWithFormat: NSLocalizedStringFromTable(@"startShowEditPort:AlertSheet:informativeText", @"Localizable", @"cocoaControlEditPC"), [[firewallPortList objectAtIndex:[firewallPortTable selectedRow]] valueForKey:@"Name"], redirectedPorts]];
 				
             [alert runModal];
         } else {
@@ -1311,7 +1311,7 @@
         // called to edit a port
         [buttonFirewallSavePort setTarget:self];
         [buttonFirewallSavePort setAction:@selector(saveEditPort:)];
-        [popUpButtonFirewallAdditionalPorts selectItemWithTitle:@"Custom.."];
+        [popUpButtonFirewallAdditionalPorts selectItemWithTitle: NSLocalizedStringFromTable(@"startEditPort:popUpButtonFirewallAdittionalPortsCustom", @"Localizable", @"cocoaControlEditPC")];
         // load port info from list
         int selectedPort = [firewallPortTable selectedRow];
         
@@ -1336,11 +1336,11 @@
 {
     // check if port is a default port
     if([firewallPortTable selectedRow] >= 0 && [firewallPortTable selectedRow] < [[NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"fw-defaults" ofType:@"plist"]] count]) {
-        NSAlert *alert = [NSAlert alertWithMessageText:@"This service cannot be deleted!"
-				defaultButton:@"OK"
+        NSAlert *alert = [NSAlert alertWithMessageText: NSLocalizedStringFromTable(@"deletePort:AlertSheet:messageText", @"Localizable", @"cocoaControlEditPC")
+				defaultButton: NSLocalizedStringFromTable(@"deletePort:AlertSheet:defaultButton", @"Localizable", @"cocoaControlEditPC")
 				alternateButton:nil
 				otherButton:nil
-				informativeTextWithFormat:@"To disable this service from being redirected use the corresponding checkbox."];
+				informativeTextWithFormat: NSLocalizedStringFromTable(@"deletePort:AlertSheet:informativeText", @"Localizable", @"cocoaControlEditPC")];
 				
         [alert runModal];
     } else {
@@ -1465,19 +1465,19 @@
 {
     if([[textFieldFirewallPortName stringValue] isEqualToString:@""]) {
         // name empty
-        [textFieldFirewallPortError setStringValue:@"No empty name!"];
+        [textFieldFirewallPortError setStringValue: NSLocalizedStringFromTable(@"checkPort:textFieldFirewallPortError:name", @"Localizable", @"cocoaControlEditPC")];
         [textFieldFirewallPortError setHidden:NO];
         return NO;
     } else if([[textFieldFirewallPortHostPorts stringValue] isEqualToString:@""]) {
         // host ports empty
-        NSLog(@"No empty host-port entry!");
-        [textFieldFirewallPortError setStringValue:@"No empty host-port entry!"];
+        //NSLog(@"No empty host-port entry!");
+        [textFieldFirewallPortError setStringValue: NSLocalizedStringFromTable(@"checkPort:textFieldFirewallPortError:hostport", @"Localizable", @"cocoaControlEditPC")];
         [textFieldFirewallPortError setHidden:NO];
         return NO;
     } else if([[textFieldFirewallPortGuestPorts stringValue] isEqualToString:@""]) {
         // guest ports empty
-        NSLog(@"No empty guest-port entry!");
-        [textFieldFirewallPortError setStringValue:@"No empty guest-port entry!"];
+        //NSLog(@"No empty guest-port entry!");
+        [textFieldFirewallPortError setStringValue: NSLocalizedStringFromTable(@"checkPort:textFieldFirewallPortError:guestport", @"Localizable", @"cocoaControlEditPC")];
         [textFieldFirewallPortError setHidden:NO];
         return NO;
     } else {
@@ -1509,14 +1509,14 @@
             }
 	   }
 	   if (invalid == 1) {
-	       NSLog(@"Illegal characters in ports!");
-	       [textFieldFirewallPortError setStringValue:@"Illegal characters in ports!"];
+	       //NSLog(@"Illegal characters in ports!");
+	       [textFieldFirewallPortError setStringValue: NSLocalizedStringFromTable(@"checkPort:textFieldFirewallPortError:illegalchars", @"Localizable", @"cocoaControlEditPC")];
 	       [textFieldFirewallPortError setHidden:NO];
 	       return NO;
 	   } else if(dcc > 0 && dhc > 0) {
 	       // both comma and haifin found, not supported/allowed atm
-	       NSLog(@"Combination of , and - not allowed.");
-	       [textFieldFirewallPortError setStringValue:@"Combination of , and - not allowed."];
+	       //NSLog(@"Combination of , and - not allowed.");
+	       [textFieldFirewallPortError setStringValue: NSLocalizedStringFromTable(@"checkPort:textFieldFirewallPortError:combination", @"Localizable", @"cocoaControlEditPC")];
 	       [textFieldFirewallPortError setHidden:NO];
 	       return NO;
 	   }
