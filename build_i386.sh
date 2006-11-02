@@ -25,7 +25,7 @@ cd ..
 
 
 #make qemu
-cp -R qemu-0.8.1 tmp/qemu
+cp -R qemu tmp/qemu
 
 
 # patch qemu sources

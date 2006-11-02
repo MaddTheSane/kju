@@ -1,3 +1,8 @@
+Q-0.8.2d54
+[fix] build/commit fixes
+[fix] semitransparent color in FSToolbar now predefined
+[fix] deleted old reference to qemu-0.8.1 sources in build_i386.sh
+
 Q-0.8.2d53
 [fix] set qemu revision in prepare.sh to 2006-07-24 18:00 instead of current CVS, because current CVS fails to build right now (thx Dravick)
 [new] added new freeoszoo images
