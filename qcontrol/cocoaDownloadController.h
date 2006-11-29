@@ -82,5 +82,6 @@ BOOL tableEnabled;
 
 // file manipulation functions
 - (void)uncompressPC:(NSString *)path;
+- (void) finishDownload:(int)sender withStatus:(int)status;
 
 @end

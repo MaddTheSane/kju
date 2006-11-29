@@ -31,6 +31,7 @@
     NSString * url;
     NSString * savePath;
     NSMutableArray * lastReceivedContentLength;
+    NSTimer * timer;
     
     BOOL isHTTP;
     BOOL isBT;
@@ -69,6 +70,7 @@
 - (void) startDownload;
 - (void) startHTTPDownload;
 - (void) startBTDownload;
+- (void) checkDownloadStarted;
 - (void) stopDownload;
 
 // HTTP Download Methods and Delegates
