@@ -33,7 +33,7 @@
 	
 	/* preferences */
 	[[NSUserDefaults standardUserDefaults] registerDefaults:[[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:
-		[NSString stringWithString:@"OpenGL"], /* enable OpenGL */
+		[NSString stringWithString:@"Quartz"], /* enable Quartz by default */
 		[NSNumber numberWithBool:TRUE], /* enable search for updates */
 		[@"~/Documents/QEMU" stringByExpandingTildeInPath], /* standart path */
 		nil

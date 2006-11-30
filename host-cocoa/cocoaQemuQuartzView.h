@@ -39,7 +39,6 @@
 }
 - (id)initWithFrame:(NSRect)frameRect sender:(id)sender;
 - (BOOL) toggleFullScreen;
-- (void) drawContent:(DisplayState *)ds;
 - (void) resizeContent:(DisplayState *)ds width:(int)w height:(int)h;
 - (NSImage *) screenshot:(NSSize)size;
 @end

@@ -1069,9 +1069,28 @@ int cocoa_keycode_to_qemu(int keycode)
 */
 void cocoa_update(DisplayState *ds, int x, int y, int w, int h)
 {
-//	NSLog(@"cocoa: update\n");
+//	NSLog(@"cocoa: update");
 
-	[[pc contentView] drawContent:ds];
+    if ([[[pc contentView] class] isEqual:[cocoaQemuQuartzView class]]) {
+        /* new selective drawing code (draws only dirty rectangles) */
+        float dx;
+        float dy;
+        
+        dx = [[pc contentView] frame].size.width / (float)ds->width;
+        dy = [[pc contentView] frame].size.height / (float)ds->height;
+        
+        [[pc contentView] setNeedsDisplayInRect:NSMakeRect(
+            x * dx,
+            [[pc contentView] frame].size.height - (h + y) * dy,
+            w * dx,
+            h * dy
+        )];    
+    } else {
+    
+        /* old drawing code (draws everything) */
+        [[pc contentView] drawContent:ds];
+        
+    }
 }
 
 void cocoa_resize(DisplayState *ds, int w, int h)

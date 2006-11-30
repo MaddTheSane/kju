@@ -1,3 +1,7 @@
+Q-0.8.2d58
+[new] Quartz: selective drawing code
+[new] Quartz: is default now
+
 Q-0.8.2d57
 [fix] FSToolbar: added localization
 

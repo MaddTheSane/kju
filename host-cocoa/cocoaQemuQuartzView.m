@@ -26,6 +26,7 @@
 
 #import "cocoaQemuQuartzView.h"
 
+#define cgrect(nsrect) (*(CGRect *)&(nsrect))
 
 @implementation cocoaQemuQuartzView
 - (id)initWithFrame:(NSRect)frameRect sender:(id)sender
@@ -90,7 +91,43 @@
 			0, //interpolate
 			kCGRenderingIntentDefault //intent
 		);
-		CGContextDrawImage (viewContextRef, CGRectMake(0, 0, rect.size.width, rect.size.height), imageRef);
+        
+        /* new selective drawing code */
+        if (CGImageCreateWithImageInRect != NULL) {
+        
+            /* new selective drawing code (draws only dirty rectangles) (Tiger) */
+            const NSRect *rectList;
+            int rectCount;
+            int i;
+            CGImageRef clipImageRef;
+            CGRect clipRect;
+            float dx;
+            float dy;
+            
+            dx = [self frame].size.width / current_ds.width;
+            dy = [self frame].size.height / current_ds.height;
+        
+            [self getRectsBeingDrawn:&rectList count:&rectCount];
+            for (i = 0; i < rectCount; i++) {
+                clipRect.origin.x = rectList[i].origin.x / dx;
+                clipRect.origin.y = current_ds.height - (rectList[i].origin.y + rectList[i].size.height) / dy;
+                clipRect.size.width = rectList[i].size.width / dx;
+                clipRect.size.height = rectList[i].size.height / dy;
+            
+                clipImageRef = CGImageCreateWithImageInRect(
+                    imageRef,
+                    clipRect
+                );
+                CGContextDrawImage (viewContextRef, cgrect(rectList[i]), clipImageRef);
+                CGImageRelease (clipImageRef);
+            }
+            
+        } else {
+        
+            /* old drawing code (draws everything) (Panther) */
+            CGContextDrawImage (viewContextRef, CGRectMake(0, 0, [self bounds].size.width, [self bounds].size.height), imageRef);
+
+        }
 		CGImageRelease (imageRef);
 	}
 	
@@ -204,13 +241,6 @@
 	return fullscreen;
 }
 
-- (void) drawContent:(DisplayState *)ds
-{
-//	NSLog(@"quartzView: drawcontent");
-
-	[self display];
-}
-
 - (void) resizeContent:(DisplayState *)ds width:(int)w height:(int)h
 {
 //	NSLog(@"quartzView: resizeContent width:%d height:%d", w, h);
@@ -304,11 +334,6 @@
 	/* Mouse-grab is activatet by clicks in Windowed View only,
 		so we can handle clicks on other GUI Items */
 	if(fullscreen) {
-	/* exception: if the user activated the toolbar, mouse grab is released; so when he clicks on fullscreen view we have to grab again */
-	   if([pc fullscreenController] && [[pc fullscreenController] showsToolbar]) {
-	       [[pc fullscreenController] toggleToolbar];
-	       [pc grabMouse];
-	   }
 	} else if([pc absolute_enabled]) {
         if (![pc tablet_enabled])
             [NSCursor hide];
