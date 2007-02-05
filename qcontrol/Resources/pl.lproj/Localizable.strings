@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>URLResourceDidFinishLoading:alertWithMessageText</key>
+	<string>Jest dostępna nowa wersja Q. Chcesz ją pobrać teraz?</string>
+	<key>URLResourceDidFinishLoading:alternateButton</key>
+	<string>Anuluj</string>
+	<key>URLResourceDidFinishLoading:defaultButton</key>
+	<string>OK</string>
+	<key>addArgumentTo:informativeText</key>
+	<string>Ta konfiguracja używa składni 0.8.0 (%@). Proszę usunąć ją z zakładki zaawansowane.</string>
+	<key>addArgumentTo:standardAlert</key>
+	<string>Nie mogę uruchomić komputera Gościa</string>
+	<key>applicationShouldTerminate:informativeText</key>
+	<string>Najpierw wyłącz Gościa, wówczas zakończ Q</string>
+	<key>applicationShouldTerminate:standardAlert</key>
+	<string>Q nie może być zakończone. Wciąż są uruchomine komputery Goście.</string>
+	<key>dIWindowCreate:file</key>
+	<string>Mój nowy obraz dysku.%@</string>
+	<key>deletePC:alertWithMessageText</key>
+	<string>Usuwanie PC</string>
+	<key>deletePC:alternateButton</key>
+	<string>Anuluj</string>
+	<key>deletePC:defaultButton</key>
+	<string>OK</string>
+	<key>deletePC:informativeText</key>
+	<string>Najpierw wyłącz Gościa "%@" później go usuń.</string>
+	<key>deletePC:informativeTextWithFormat</key>
+	<string>Czy napewno usunąć Gościa "%@"? Gość zostanie nieodwracalnie usunięty z twojego dysku.</string>
+	<key>deletePC:standardAlert</key>
+	<string>Komputer Gość "%@"nie może być usunięty, ponieważ jest włączony.</string>
+	<key>editPC:informativeText</key>
+	<string>Najpierw wyłącz Gościa "%@" później go edytuj.</string>
+	<key>editPC:standardAlert</key>
+	<string>Gość "%@" nie może być edytowany, ponieważ jest włączony lub jest w trybie zapisu.</string>
+	<key>editPCEditPCPanel:charName</key>
+	<string>Nazwa z niedozwolonymi znakami (:./)</string>
+	<key>editPCEditPCPanel:name</key>
+	<string>Wpisz Nazwę</string>
+	<key>editPCEditPCPanel:otherName</key>
+	<string>Wpisz inną nazwę</string>
+	<key>importQemuXPCs:informativeText:finish</key>
+	<string>Sprawdź priorytety Gościa aby go uruchomić (brakujące płyty CD itp.).</string>
+	<key>importQemuXPCs:informativeText:plist</key>
+	<string>Nie można odczytać pliku oslist.plist!</string>
+	<key>importQemuXPCs:progress:config</key>
+	<string>Wykonywanie konfiguracji QemuX</string>
+	<key>importQemuXPCs:progress:hdx</key>
+	<string>Kopiowanie dysku twardego%@</string>
+	<key>importQemuXPCs:progress:pc</key>
+	<string>Konwersja PC "%@"...</string>
+	<key>importQemuXPCs:progress:title</key>
+	<string>Importowanie QemuX</string>
+	<key>importQemuXPCs:standardAlert:finish</key>
+	<string>Import Gościa QemuX zakończony powodzeniem</string>
+	<key>importQemuXPCs:standardAlert:plist</key>
+	<string>Import Gościa QemuX nie powiódł się</string>
+	<key>importVPC7PC:informativeText:finish</key>
+	<string>Sprawdź priorytety Gościa aby go uruchomić (brakujące płyty CD itp.).</string>
+	<key>importVPC7PC:informativeText:imageConvert</key>
+	<string>Ten rodzaj obrazu dysku VPC nie jest obsługiwany przez Q.</string>
+	<key>importVPC7PC:informativeText:plist</key>
+	<string>Nie można odczytać pliku Configuration.plist!
+</string>
+	<key>importVPC7PC:informativeText:running</key>
+	<string>Gość jest uruchomiony! Musi być wyłączony przed konwersją.</string>
+	<key>importVPC7PC:progress:config</key>
+	<string>Aktywowanie konfiguracji VPC7</string>
+	<key>importVPC7PC:progress:hdx</key>
+	<string>Konwersja obrazu dysku_%D.vhd</string>
+	<key>importVPC7PC:progress:title</key>
+	<string>importowanie VPC7</string>
+	<key>importVPC7PC:standardAlert:finish</key>
+	<string>import gościa VPC zakończony powodzeniem</string>
+	<key>importVPC7PC:standardAlert:imageConvert</key>
+	<string>Konwersja obrazu dysku VPC7 nie powiodła się</string>
+	<key>importVPC7PC:standardAlert:plist</key>
+	<string>import gościa VPC7 nie powiodła się</string>
+	<key>importVPC7PC:standardAlert:running</key>
+	<string>import gościa VPC7 nie powiodła się</string>
+	<key>prepareEditPCPanel:newPC</key>
+	<string>Tworzenie PC</string>
+	<key>prepareEditPCPanel:updatePC</key>
+	<string>Zmiana PC</string>
+	<key>running</key>
+	<string>działanie</string>
+	<key>savePanelDidEnd:dIName</key>
+	<string>Obraz dysku: %@</string>
+	<key>saved</key>
+	<string>zapisane</string>
+	<key>setCustomDIType:title</key>
+	<string>Własny obraz</string>
+	<key>shutdown</key>
+	<string>wyłączenie</string>
+	<key>tableView:audio</key>
+	<string>Audio: %@
+</string>
+	<key>tableView:mb</key>
+	<string>%@, %@mb
+</string>
+	<key>toolbar:label:advanced</key>
+	<string>Zaawansowane</string>
+	<key>toolbar:label:editPC</key>
+	<string>Edytuj PC</string>
+	<key>toolbar:label:general</key>
+	<string>Główne</string>
+	<key>toolbar:label:hardware</key>
+	<string>Sprzęt</string>
+	<key>toolbar:label:newPC</key>
+	<string>Nowy PC</string>
+	<key>toolbar:label:removePC</key>
+	<string>Usuń PC</string>
+	<key>toolbar:label:startPC</key>
+	<string>Uruchom PC</string>
+	<key>toolbar:paletteLabel:advanced</key>
+	<string>Zaawansowane</string>
+	<key>toolbar:paletteLabel:editPC</key>
+	<string>Edytuj PC</string>
+	<key>toolbar:paletteLabel:general</key>
+	<string>Główne</string>
+	<key>toolbar:paletteLabel:hardware</key>
+	<string>Sprzęt</string>
+	<key>toolbar:paletteLabel:newPC</key>
+	<string>Nowz PC</string>
+	<key>toolbar:paletteLabel:removePC</key>
+	<string>Usuń PC</string>
+	<key>toolbar:paletteLabel:startPC</key>
+	<string>Uruchom PC</string>
+	<key>toolbar:toolTip:advanced</key>
+	<string>Zaawansowane</string>
+	<key>toolbar:toolTip:editPC</key>
+	<string>Edytuj PC</string>
+	<key>toolbar:toolTip:general</key>
+	<string>Główne</string>
+	<key>toolbar:toolTip:hardware</key>
+	<string>Sprzęt</string>
+	<key>toolbar:toolTip:newPC</key>
+	<string>Utwórz nowego Gościa</string>
+	<key>toolbar:toolTip:removePC</key>
+	<string>Usuń gościa</string>
+	<key>toolbar:toolTip:startPC</key>
+	<string>Uruchom Gościa</string>
+	<key>viewAdvanced:title</key>
+	<string>Q %@ - Zaawansowane</string>
+	<key>viewGeneral:title</key>
+	<string>Główne</string>
+	<key>viewHardware:title</key>
+	<string>Q %@ - Sprzęt</string>
+</dict>
+</plist>
