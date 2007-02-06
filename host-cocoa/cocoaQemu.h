@@ -1,9 +1,9 @@
 /*
  * QEMU Cocoa display driver
  * 
- * Copyright (c) 2005, 2006 Pierre d'Herbemont
- *							Mike Kronenberg
- *							many code/inspiration from SDL 1.2 code (LGPL)
+ * Copyright (c) 2005 - 2007 Pierre d'Herbemont
+ *							 Mike Kronenberg
+ *							 many code/inspiration from SDL 1.2 code (LGPL)
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,7 +36,7 @@
 #import <OpenGL/CGLCurrent.h>
 #import <OpenGL/CGLContext.h>
 
-#import "vl.h"
+#import "../vl.h"
 #import "../../../q/qcontrol/cocoaControlDOServer.h"
 #import "cocoaQemuProgressWindow.h"
 #import "cocoaQemuOpenGLView.h"
@@ -61,6 +61,7 @@
 	NSTimer *pcTimer;
 	NSTimer *progressWindowTimer;
 	id thisPC;
+	BOOL WMSupportsSnapshots;
 	BOOL WMStopWhenInactive;
 	BOOL wMPausedByUser;
 	BOOL wMPaused;

@@ -1,3 +1,8 @@
+2007-02-01  Mike Kronenberg  <mike.kronenberg@kronenberg.org>
+
+	* target-ppc/exec.h: Fix for QEMU 0.9.0.
+	* dyngen-exec.h: Fix for QEMU 0.9.0.
+	
 2005-06-02  Gwenole Beauchesne  <gbeauchesne@mandriva.com>
 
 	* dyngen.c (trace_i386_insn): Fix push/imul case with 8-bit
@@ -9,14 +14,14 @@
 
 --- qemu-0.7.0/target-ppc/exec.h.gcc4	2005-04-27 22:52:05.000000000 +0200
 +++ qemu-0.7.0/target-ppc/exec.h	2005-06-02 21:41:51.000000000 +0200
-@@ -33,11 +33,7 @@ register uint32_t T2 asm(AREG3);
+@@ -33,11 +33,7 @@ #define FT0 (env->ft0)
  #define FT1 (env->ft1)
  #define FT2 (env->ft2)
  
 -#if defined (DEBUG_OP)
--#define RETURN() __asm__ __volatile__("nop");
+-# define RETURN() __asm__ __volatile__("nop" : : : "memory");
 -#else
--#define RETURN() __asm__ __volatile__("");
+-# define RETURN() __asm__ __volatile__("" : : : "memory");
 -#endif
 +#define RETURN() FORCE_RET()
  
@@ -32,7 +37,7 @@
 +/* Also add 4 bytes of padding so that we can replace the ret with a jmp.  */
 +#define FORCE_RET() asm volatile ("nop;nop;nop;nop");
 +#else
- #define FORCE_RET() asm volatile ("");
+ #define FORCE_RET() __asm__ __volatile__("" : : : "memory");
 +#endif
  
  #ifndef OPPROTO

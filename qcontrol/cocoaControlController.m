@@ -1,7 +1,7 @@
 /*
  * QEMU Cocoa Control Controller
  * 
- * Copyright (c) 2005, 2006 Mike Kronenberg
+ * Copyright (c) 2005 - 2007 Mike Kronenberg
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -839,12 +839,12 @@
 	NSString *path = [NSString stringWithString:[[NSString stringWithFormat:@"%@/%@.qvm",[userDefaults objectForKey:@"dataPath"], newPCname] stringByExpandingTildeInPath]];
 	NSFileManager *fileManager = [NSFileManager defaultManager];
 
-	while ([fileManager fileExistsAtPath:[NSString stringWithFormat:@"%@/%@", path, [NSString stringWithFormat:@"Harddisk_%d.qcow", i]]])
+	while ([fileManager fileExistsAtPath:[NSString stringWithFormat:@"%@/%@", path, [NSString stringWithFormat:@"Harddisk_%d.qcow2", i]]])
 		i++;
-	name = [NSString stringWithFormat:@"Harddisk_%d.qcow", i];
+	name = [NSString stringWithFormat:@"Harddisk_%d.qcow2", i];
 	
 	/* convert diskImage */
-	NSArray *arguments = [NSArray arrayWithObjects:@"convert", @"-c", @"-O", @"qcow", oldImagePath, [NSString stringWithFormat:@"%@/%@", path, name], nil];
+	NSArray *arguments = [NSArray arrayWithObjects:@"convert", @"-c", @"-O", @"qcow2", oldImagePath, [NSString stringWithFormat:@"%@/%@", path, name], nil];
 	NSTask *task;
 	task = [[NSTask alloc] init];
 	[task setLaunchPath: [NSString stringWithFormat:@"%@/MacOS/qemu-img", [[[NSBundle mainBundle] resourcePath] stringByDeletingLastPathComponent]]];
@@ -1360,7 +1360,7 @@
 	/* start a saved vm */
 	if ([[[thisPC objectForKey:@"PC Data"] objectForKey:@"state"] isEqual:@"saved"]) {
 		[arguments addObject: @"-loadvm"];
-		[arguments addObject:[NSString stringWithFormat: @"%@/saved.vm", filename]]; 
+		[arguments addObject: @"kju"];
 	}
 
 	for (i = 0; i < [arguments count]; i++)

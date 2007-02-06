@@ -1,7 +1,7 @@
 /*
  * QEMU Cocoa Control PC Editor Window
  * 
- * Copyright (c) 2005, 2006 Mike Kronenberg
+ * Copyright (c) 2005 - 2007 Mike Kronenberg
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -37,7 +37,7 @@
 
 	if ((self = [super init])) {
 		userDefaults = [NSUserDefaults standardUserDefaults];
-		fileTypes = [[NSArray arrayWithObjects:@"qcow", @"raw", @"cow", @"vmdk", @"cloop", @"img", @"iso", @"dsk", @"dmg", @"cdr", @"toast", @"flp", @"fs", nil] retain];
+		fileTypes = [[NSArray arrayWithObjects:@"qcow2", @"qcow", @"raw", @"cow", @"vmdk", @"cloop", @"img", @"iso", @"dsk", @"dmg", @"cdr", @"toast", @"flp", @"fs", nil] retain];
 
 		return self;
 	}
@@ -248,7 +248,7 @@
 			if ([scanner scanString:@"createNew" intoString:&stringValue]) {
 				[scanner scanInt:&intResult];
 				customImagePopUpButtonTemp = popUpButtonHda;
-				[self setCustomDIType:@"qcow" size:intResult];
+				[self setCustomDIType:@"qcow2" size:intResult];
 			} else {
 				[popUpButtonHda insertItemWithTitle:[NSString stringWithString:argument] atIndex:1];
 				[popUpButtonHda selectItemAtIndex:1];
@@ -1003,11 +1003,11 @@
 	/* -hda */
 	if ([popUpButtonHda indexOfSelectedItem] > 0) {
 		if ([popUpButtonHda indexOfSelectedItem] == [popUpButtonHda indexOfItemWithTag:200]) {
-			[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -hda %@", [self createDI:@"qcow" withSize:10]]];
+			[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -hda %@", [self createDI:@"qcow2" withSize:10]]];
 		} else if ([popUpButtonHda indexOfSelectedItem] == [popUpButtonHda indexOfItemWithTag:201]) {
-			[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -hda %@", [self createDI:@"qcow" withSize:100]]];
+			[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -hda %@", [self createDI:@"qcow2" withSize:100]]];
 		} else if ([popUpButtonHda indexOfSelectedItem] == [popUpButtonHda indexOfItemWithTag:202]) {
-			[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -hda %@", [self createDI:@"qcow" withSize:4000]]];
+			[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -hda %@", [self createDI:@"qcow2" withSize:4000]]];
 		} else if ([popUpButtonHda indexOfSelectedItem] == [popUpButtonHda indexOfItemWithTag:203]) {
 			[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -hda %@", [self createDI:@"raw" withSize:4000]]];
 		} else if ([[popUpButtonHda titleOfSelectedItem] rangeOfString: NSLocalizedStringFromTable(@"setCustomDIType:title", @"Localizable", @"cocoaControlEditPC")].location != NSNotFound) {
@@ -1020,11 +1020,11 @@
 	/* -hdb */
 	if ([popUpButtonHdb indexOfSelectedItem] > 0) {
 		if ([popUpButtonHdb indexOfSelectedItem] == [popUpButtonHdb indexOfItemWithTag:200]) {
-			[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -hdb %@", [self createDI:@"qcow" withSize:10]]];
+			[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -hdb %@", [self createDI:@"qcow2" withSize:10]]];
 		} else if ([popUpButtonHdb indexOfSelectedItem] == [popUpButtonHdb indexOfItemWithTag:201]) {
-			[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -hdb %@", [self createDI:@"qcow" withSize:100]]];
+			[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -hdb %@", [self createDI:@"qcow2" withSize:100]]];
 		} else if ([popUpButtonHdb indexOfSelectedItem] == [popUpButtonHdb indexOfItemWithTag:202]) {
-			[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -hdb %@", [self createDI:@"qcow" withSize:4000]]];
+			[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -hdb %@", [self createDI:@"qcow2" withSize:4000]]];
 		} else if ([popUpButtonHdb indexOfSelectedItem] == [popUpButtonHdb indexOfItemWithTag:203]) {
 			[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -hdb %@", [self createDI:@"raw" withSize:4000]]];
 		} else if ([[popUpButtonHdb titleOfSelectedItem] rangeOfString:@"Custom Image:"].location != NSNotFound) {
@@ -1037,11 +1037,11 @@
 	/* -hdc */
 	if ([popUpButtonHdc indexOfSelectedItem] > 0) {
 		if ([popUpButtonHdc indexOfSelectedItem] == [popUpButtonHdb indexOfItemWithTag:200]) {
-			[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -hdc %@", [self createDI:@"qcow" withSize:10]]];
+			[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -hdc %@", [self createDI:@"qcow2" withSize:10]]];
 		} else if ([popUpButtonHdc indexOfSelectedItem] == [popUpButtonHdb indexOfItemWithTag:201]) {
-			[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -hdc %@", [self createDI:@"qcow" withSize:100]]];
+			[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -hdc %@", [self createDI:@"qcow2" withSize:100]]];
 		} else if ([popUpButtonHdc indexOfSelectedItem] == [popUpButtonHdb indexOfItemWithTag:202]) {
-			[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -hdc %@", [self createDI:@"qcow" withSize:4000]]];
+			[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -hdc %@", [self createDI:@"qcow2" withSize:4000]]];
 		} else if ([popUpButtonHdc indexOfSelectedItem] == [popUpButtonHdb indexOfItemWithTag:203]) {
 			[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -hdc %@", [self createDI:@"raw" withSize:4000]]];
 		} else if ([[popUpButtonHdc titleOfSelectedItem] rangeOfString:@"Custom Image:"].location != NSNotFound) {
@@ -1054,11 +1054,11 @@
 	/* -hdd */
 	if ([popUpButtonHdd indexOfSelectedItem] > 0) {
 		if ([popUpButtonHdd indexOfSelectedItem] == [popUpButtonHdb indexOfItemWithTag:200]) {
-			[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -hdd %@", [self createDI:@"qcow" withSize:10]]];
+			[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -hdd %@", [self createDI:@"qcow2" withSize:10]]];
 		} else if ([popUpButtonHdd indexOfSelectedItem] == [popUpButtonHdb indexOfItemWithTag:201]) {
-			[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -hdd %@", [self createDI:@"qcow" withSize:100]]];
+			[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -hdd %@", [self createDI:@"qcow2" withSize:100]]];
 		} else if ([popUpButtonHdd indexOfSelectedItem] == [popUpButtonHdb indexOfItemWithTag:202]) {
-			[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -hdd %@", [self createDI:@"qcow" withSize:4000]]];
+			[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -hdd %@", [self createDI:@"qcow2" withSize:4000]]];
 		} else if ([popUpButtonHdd indexOfSelectedItem] == [popUpButtonHdb indexOfItemWithTag:203]) {
 			[[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -hdd %@", [self createDI:@"raw" withSize:4000]]];
 		} else if ([[popUpButtonHdd titleOfSelectedItem] rangeOfString:@"Custom Image:"].location != NSNotFound) {

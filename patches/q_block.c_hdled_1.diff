@@ -2,18 +2,18 @@
 +++ block2.c	2006-07-04 01:43:59.000000000 +0200
 @@ -420,6 +420,8 @@
  
-     if (!bs->inserted)
-         return -1;
+     if (!drv)
+         return -ENOMEDIUM;
 +        
 +    bs->activityLED = 1;
  
-     while (nb_sectors > 0) {
-         if (sector_num == 0 && bs->boot_sector_enabled) {
+     if (sector_num == 0 && bs->boot_sector_enabled && nb_sectors > 0) {
+             memcpy(buf, bs->boot_sector_data, 512);
 @@ -454,6 +456,7 @@
  int bdrv_write(BlockDriverState *bs, int64_t sector_num, 
                 const uint8_t *buf, int nb_sectors)
  {
 +    bs->activityLED = 1;
-     if (!bs->inserted)
-         return -1;
-     if (bs->read_only)
+     BlockDriver *drv = bs->drv;
+     if (!bs->drv)
+         return -ENOMEDIUM;

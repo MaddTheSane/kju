@@ -1,6 +1,6 @@
---- Makefile.target	2006-07-18 23:23:34.000000000 +0200
-+++ Makefile.target.new	2006-09-17 10:57:14.000000000 +0200
-@@ -378,8 +378,8 @@
+--- Makefile.target	2007-01-31 13:24:18.000000000 +0100
++++ Makefile.target	2007-02-02 14:45:02.000000000 +0100
+@@ -415,8 +419,8 @@
  endif
  VL_OBJS+=vnc.o
  ifdef CONFIG_COCOA
@@ -11,15 +11,16 @@
  ifdef CONFIG_COREAUDIO
  COCOA_LIBS+=-framework CoreAudio
  endif
-@@ -428,7 +428,10 @@
+@@ -465,7 +469,11 @@
  $(QEMU_SYSTEM): $(VL_OBJS) libqemu.a
  	$(CC) $(VL_LDFLAGS) -o $@ $^ $(LIBS) $(SDL_LIBS) $(COCOA_LIBS) $(VL_LIBS)
  
 -cocoa.o: cocoa.m
++
 +cocoa%.o: host-cocoa/cocoa%.m
-+	$(CC) $(CFLAGS) $(DEFINES) -c -o $@ $<
++	$(CC) $(CFLAGS) $(CPPFLAGS) $(BASE_CFLAGS) -c -o $@ $<
 +
 +FS%.o: host-cocoa/FSControls/FS%.m
- 	$(CC) $(CFLAGS) $(DEFINES) -c -o $@ $<
+ 	$(CC) $(CFLAGS) $(CPPFLAGS) $(BASE_CFLAGS) -c -o $@ $<
  
  sdl.o: sdl.c keymaps.c sdl_keysym.h

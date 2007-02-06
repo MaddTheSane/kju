@@ -34,7 +34,7 @@ cp -R qemu tmp/qemu
 cd tmp/qemu
 
 #Q
-patch -p0 -u < ../../q/patches/q_host-cocoa_01.diff
+patch -p0 -u < ../../q/patches/q_host-cocoa_02.diff
 
 #rgb support for intel
 cd hw

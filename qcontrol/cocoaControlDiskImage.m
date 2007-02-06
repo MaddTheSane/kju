@@ -1,7 +1,7 @@
 /*
  * QEMU Cocoa Control Diskimage Window
  * 
- * Copyright (c) 2005, 2006 Mike Kronenberg
+ * Copyright (c) 2005 - 2007 Mike Kronenberg
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -104,13 +104,13 @@
 	}
 	
 	if (qSender) { /* sheet for EditPCPanel */
-		[ qSender setCustomDIType:[ [ NSArray arrayWithObjects:@"raw", @"qcow", nil ] objectAtIndex:[ dIFormat indexOfSelectedItem ] ] size:[ dISize intValue ] ];
+		[ qSender setCustomDIType:[ [ NSArray arrayWithObjects:@"raw", @"qcow2", nil ] objectAtIndex:[ dIFormat indexOfSelectedItem ] ] size:[ dISize intValue ] ];
 		[ self dIWindowClose:self];
 	} else { /* standalone Window */
 		NSSavePanel *sp = [ [ NSSavePanel alloc ] init ];
-		[ sp setRequiredFileType:[ [ NSArray arrayWithObjects:@"raw", @"qcow", nil ] objectAtIndex:[ dIFormat indexOfSelectedItem ] ] ];
+		[ sp setRequiredFileType:[ [ NSArray arrayWithObjects:@"raw", @"qcow2", nil ] objectAtIndex:[ dIFormat indexOfSelectedItem ] ] ];
 		[ sp beginSheetForDirectory:NSHomeDirectory()
-			file:[ NSString stringWithFormat: NSLocalizedStringFromTable(@"dIWindowCreate:file", @"Localizable", @"cocoaControlDiskImage"),[ [ NSArray arrayWithObjects:@"raw", @"qcow", nil ] objectAtIndex:[ dIFormat indexOfSelectedItem ] ] ]
+			file:[ NSString stringWithFormat: NSLocalizedStringFromTable(@"dIWindowCreate:file", @"Localizable", @"cocoaControlDiskImage"),[ [ NSArray arrayWithObjects:@"raw", @"qcow2", nil ] objectAtIndex:[ dIFormat indexOfSelectedItem ] ] ]
 			modalForWindow:dIWindow
 			modalDelegate:self
 			didEndSelector:@selector(savePanelDidEnd:returnCode:contextInfo:)
@@ -146,7 +146,7 @@
 //		NSTimer *timer = [ NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector( dIProgressbarUpdate: ) userInfo:nil repeats:YES ];
 		
 		/* create Image */
-		NSArray *arguments = [ NSArray arrayWithObjects:@"create",@"-f",[ [ NSArray arrayWithObjects:@"raw", @"qcow", nil ] objectAtIndex:[ dIFormat indexOfSelectedItem ] ],dIFileName,[ NSString stringWithFormat:@"%@M",[ dISize stringValue ] ],nil ];
+		NSArray *arguments = [ NSArray arrayWithObjects:@"create",@"-f",[ [ NSArray arrayWithObjects:@"raw", @"qcow2", nil ] objectAtIndex:[ dIFormat indexOfSelectedItem ] ],dIFileName,[ NSString stringWithFormat:@"%@M",[ dISize stringValue ] ],nil ];
 		NSTask *task;
 		task = [ [ NSTask alloc ] init ];
 		[ task setLaunchPath: [ NSString stringWithFormat:@"%@/MacOS/qemu-img", [ [ [ NSBundle mainBundle ] resourcePath ] stringByDeletingLastPathComponent ] ] ];

@@ -1,9 +1,9 @@
 /*
  * QEMU Cocoa display driver
  * 
- * Copyright (c) 2005, 2006 Pierre d'Herbemont
- *							Mike Kronenberg
- *							many code/inspiration from SDL 1.2 code (LGPL)
+ * Copyright (c) 2005 - 2007 Pierre d'Herbemont
+ *							 Mike Kronenberg
+ *							 many code/inspiration from SDL 1.2 code (LGPL)
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -92,7 +92,7 @@ kern_return_t GetBSDPath( io_iterator_t mediaIterator, char *bsdPath, CFIndex ma
 
 	if ((self = [super init])) {
 		/* set allowed filetypes */
-		fileTypes = [[NSArray arrayWithObjects:@"qcow", @"raw", @"cow", @"vmdk", @"cloop", @"img", @"iso", @"dsk", @"dmg", @"cdr", @"toast", @"flp", @"fs", nil] retain];
+		fileTypes = [[NSArray arrayWithObjects:@"qcow2", @"qcow", @"raw", @"cow", @"vmdk", @"cloop", @"img", @"iso", @"dsk", @"dmg", @"cdr", @"toast", @"flp", @"fs", nil] retain];
 
 		/* pc */
 		pcName = [@"" retain];
@@ -424,7 +424,8 @@ kern_return_t GetBSDPath( io_iterator_t mediaIterator, char *bsdPath, CFIndex ma
 	[data writeToFile: [NSString stringWithFormat: @"%@/thumbnail.png", pcPath] atomically: YES];
 
 	/* save VM */
-	qemu_savevm( [[NSString stringWithFormat: @"%@/saved.vm", pcPath] cString]);
+//	qemu_savevm( [[NSString stringWithFormat: @"%@/saved.vm", pcPath] cString]);
+	do_savevm([@"kju" cString]);
 	
 	/* hide progressWindow */
 	[progressWindow hideProgressWindow];
@@ -538,6 +539,9 @@ kern_return_t GetBSDPath( io_iterator_t mediaIterator, char *bsdPath, CFIndex ma
 			if ([[arguments objectAtIndex:i] isEqual:@"-smb"])
 				smbPath = [[NSString alloc] initWithString:[arguments objectAtIndex:i + 1]];
 			
+			if ([[arguments objectAtIndex:i] isEqual:@"-hda"])
+                if ([[arguments objectAtIndex:i+1] rangeOfString:@"qcow2"].length > 0)
+                    WMSupportsSnapshots = TRUE;
 			asprintf(&argv2[i2], "%s", [[arguments objectAtIndex:i] cString]);
 			i2++;
 		}
@@ -786,7 +790,7 @@ kern_return_t GetBSDPath( io_iterator_t mediaIterator, char *bsdPath, CFIndex ma
 	if (!pcDialogs) {
 		pcStatus = @"shutdown";
 		qemu_system_shutdown_request();
-	} else if ( [pcName isEqual:@""]) {
+	} else if ( !WMSupportsSnapshots ) {
 		NSAlert *alert = [NSAlert alertWithMessageText: NSLocalizedStringFromTable(@"shutdownPC:text:1", @"Localizable", @"cocoaQemu")
 			defaultButton: NSLocalizedStringFromTable(@"shutdownPC:defaultButton:1", @"Localizable", @"cocoaQemu")
 			alternateButton: NSLocalizedStringFromTable(@"shutdownPC:alternateButton:1", @"Localizable", @"cocoaQemu")

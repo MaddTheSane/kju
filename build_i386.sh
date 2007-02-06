@@ -32,18 +32,18 @@ cp -R qemu tmp/qemu
 cd tmp/qemu
 
 #Q
-patch -p0 -u < ../../q/patches/q_host-cocoa_01.diff
+patch -p0 -u < ../../q/patches/q_host-cocoa_02.diff
 
 #gcc4 patches
-patch -p1 -u < ../../q/patches/qemu-0.7.0-gcc4.patch
+patch -p1 -u < ../../q/patches/qemu-0.9.0-gcc4.patch
 patch -p1 -u < ../../q/patches/qemu-0.7.2-dyngen-check-stack-clobbers.patch
 patch -p1 -u < ../../q/patches/qemu-0.7.2-gcc4-opts.patch
 patch -p1 -u < ../../q/patches/qemu-0.8.0-gcc4-hacks.patch
 
 #OS X86 patches
-patch -p1 -u < ../../q/patches/qemu-0.8.0-enforce-16byte-stack-boundary.patch
-patch -p1 -u -f < ../../q/patches/qemu-0.8.0-i386-FORCE_RET.patch
-patch -p1 -u < ../../q/patches/qemu-0.8.0-osx-intel-port.patch
+patch -p1 -u < ../../q/patches/qemu-0.9.0-enforce-16byte-stack-boundary.patch
+patch -p1 -u -f < ../../q/patches/qemu-0.9.0-i386-FORCE_RET.patch
+patch -p1 -u < ../../q/patches/qemu-0.9.0-osx-intel-port.patch
 
 patch -p1 -u < ../../q/patches/qemu-0.8.0-osx-bugfix.patch
 

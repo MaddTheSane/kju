@@ -1,3 +1,7 @@
+2007-02-01  Mike Kronenberg  <mike.kronenberg@kronenberg.org>
+
+	* Fix for QEMU 0.9.0.
+	
 2006-02-12  Gwenole Beauchesne  <gb.public@free.fr>
 
 	* Port to MacOS X for Intel.
@@ -52,24 +56,16 @@ TODO:
  {
 --- qemu-0.8.0/Makefile.target.osx-intel-port	2006-02-13 01:25:58.000000000 +0100
 +++ qemu-0.8.0/Makefile.target	2006-02-13 01:25:58.000000000 +0100
-@@ -18,6 +18,9 @@ VPATH+=:$(SRC_PATH)/linux-user
- DEFINES+=-I$(SRC_PATH)/linux-user -I$(SRC_PATH)/linux-user/$(TARGET_ARCH)
+@@ -18,6 +18,9 @@ CPPFLAGS+=-I$(SRC_PATH)/linux-user -I$(SRC_PATH)/linux-user/$(TARGET_ARCH)
  endif
- CFLAGS=-Wall -O2 -g -fno-strict-aliasing
+ BASE_CFLAGS=
+ BASE_LDFLAGS=
 +ifeq ($(CONFIG_DARWIN),yes)
 +CFLAGS+=-mdynamic-no-pic
 +endif
  #CFLAGS+=-Werror
  LDFLAGS=-g
- LIBS=
-@@ -156,7 +159,6 @@ OP_CFLAGS+=-fno-reorder-blocks -fno-opti
- endif
- 
- ifeq ($(CONFIG_DARWIN),yes)
--OP_CFLAGS+= -mdynamic-no-pic
- LIBS+=-lmx
- endif
- 
+ LIBS= 
 --- qemu-0.8.0/dyngen.c.osx-intel-port	2006-02-13 01:25:58.000000000 +0100
 +++ qemu-0.8.0/dyngen.c	2006-02-13 01:25:58.000000000 +0100
 @@ -183,6 +183,20 @@ typedef struct coff_rel {
