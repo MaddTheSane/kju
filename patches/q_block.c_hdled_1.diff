@@ -1,15 +1,14 @@
---- block.c	2006-06-21 18:46:53.000000000 +0200
-+++ block2.c	2006-07-04 01:43:59.000000000 +0200
-@@ -420,6 +420,8 @@
+--- block.c	2007-02-06 02:15:39.000000000 +0100
++++ block2.c	2007-02-06 02:24:10.000000000 +0100
+@@ -497,6 +497,7 @@
+ int bdrv_read(BlockDriverState *bs, int64_t sector_num, 
+               uint8_t *buf, int nb_sectors)
+ {
++    bs->activityLED = 1;
+     BlockDriver *drv = bs->drv;
  
      if (!drv)
-         return -ENOMEDIUM;
-+        
-+    bs->activityLED = 1;
- 
-     if (sector_num == 0 && bs->boot_sector_enabled && nb_sectors > 0) {
-             memcpy(buf, bs->boot_sector_data, 512);
-@@ -454,6 +456,7 @@
+@@ -534,6 +535,7 @@
  int bdrv_write(BlockDriverState *bs, int64_t sector_num, 
                 const uint8_t *buf, int nb_sectors)
  {
@@ -17,3 +16,19 @@
      BlockDriver *drv = bs->drv;
      if (!bs->drv)
          return -ENOMEDIUM;
+@@ -1058,6 +1060,7 @@
+                                 uint8_t *buf, int nb_sectors,
+                                 BlockDriverCompletionFunc *cb, void *opaque)
+ {
++    bs->activityLED = 1;
+     BlockDriver *drv = bs->drv;
+ 
+     if (!drv)
+@@ -1078,6 +1081,7 @@
+                                  const uint8_t *buf, int nb_sectors,
+                                  BlockDriverCompletionFunc *cb, void *opaque)
+ {
++    bs->activityLED = 1;
+     BlockDriver *drv = bs->drv;
+ 
+     if (!drv)

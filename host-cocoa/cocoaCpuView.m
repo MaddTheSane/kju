@@ -1,7 +1,7 @@
 /*
  * QEMU Cocoa CpuView
  * 
- * Copyright (c) 2005, 2006 Mike Kronenberg
+ * Copyright (c) 2005 - 2007 Mike Kronenberg
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,7 +23,8 @@
  */
 
 #import "cocoaCpuView.h"
-#import "vl.h"
+#import "../vl.h"
+#import "../block_int.h"
 
 #include <mach/mach.h>
 #include <mach/mach_error.h>
@@ -33,38 +34,7 @@
 #include <mach/thread_act.h>
 #include <mach/mach_init.h>
 
-struct BlockDriverState {
-    int64_t total_sectors;
-    int read_only; /* if true, the media is read only */
-    int inserted; /* if true, the media is present */
-    int removable; /* if true, the media can be removed */
-    int locked;    /* if true, the media cannot temporarily be ejected */
-    int encrypted; /* if true, the media is encrypted */
-    int activityLED; /* if true, the media is accessed atm */
-    /* event callback when inserting/removing */
-    void (*change_cb)(void *opaque);
-    void *change_opaque;
 
-    BlockDriver *drv;
-    void *opaque;
-
-    int boot_sector_enabled;
-    uint8_t boot_sector_data[512];
-
-    char filename[1024];
-    char backing_file[1024]; /* if non zero, the image is a diff of
-                                this file image */
-    int is_temporary;
-    
-    BlockDriverState *backing_hd;
-    
-    /* NOTE: the following infos are only hints for real hardware
-       drivers. They are not used by the block driver */
-    int cyls, heads, secs, translation;
-    int type;
-    char device_name[32];
-    BlockDriverState *next;
-};
 
 @implementation cocoaCpuView
 
