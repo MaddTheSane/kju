@@ -1565,7 +1565,7 @@
 	if(data){
 		NSString *ver = [[NSString alloc] initWithBytes:[data bytes] length:[data length] encoding:NSISOLatin1StringEncoding];
 		
-		if (![ver isEqual:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]]) {
+		if ([ver compare:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]] == NSOrderedDescending) {
 			NSAlert *alert = [NSAlert alertWithMessageText: NSLocalizedStringFromTable(@"URLResourceDidFinishLoading:alertWithMessageText", @"Localizable", @"cocoaControlController")
 				defaultButton: NSLocalizedStringFromTable(@"URLResourceDidFinishLoading:defaultButton", @"Localizable", @"cocoaControlController")
 				alternateButton: NSLocalizedStringFromTable(@"URLResourceDidFinishLoading:alternateButton", @"Localizable", @"cocoaControlController")
