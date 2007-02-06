@@ -1,3 +1,8 @@
+Q-0.9.0d63
+[fix] license updates
+[fix] copyright updates
+[fix] credits updates
+
 Q-0.9.0d62
 [new] hd aio LED support
 [fix] hd/cdrom synchronous LED support
