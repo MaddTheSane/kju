@@ -32,8 +32,12 @@
     IBOutlet NSButton *buttonOk;
     IBOutlet NSButton *buttonCancel;
 	id qControl;
+	
+	NSString * additionalHardwarePath;
 }
 - (void) setQSender:(id)sender;
+- (void) setAdditionalHardwarePath:(NSString *)path;
+- (void) setOS:(int)index;
 - (NSPanel *) npaPanel;
 - (IBAction) closeNewPCAssistantPanel:(id)sender;
 - (IBAction) preparePC:(id)sender;

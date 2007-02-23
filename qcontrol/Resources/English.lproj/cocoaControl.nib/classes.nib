@@ -17,7 +17,9 @@
                 cycleWindowsBack = id; 
                 deletePC = id; 
                 editPC = id; 
+                exportThisPCToFlashDrive = id; 
                 importQemuXPCs = id; 
+                importThisPCFromFlashDrive = id; 
                 importVPC7PC = id; 
                 openDIWindow = id; 
                 openFreeOSDownloader = id; 

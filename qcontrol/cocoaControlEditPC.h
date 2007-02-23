@@ -26,7 +26,6 @@
 
 @interface cocoaControlEditPC : NSObject
 {
-	NSArray *fileTypes;
 	IBOutlet id editPCPanel;
 	IBOutlet id viewGeneral;
 	IBOutlet id viewHardware;

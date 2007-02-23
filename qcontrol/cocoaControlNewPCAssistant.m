@@ -26,9 +26,23 @@
 #import "cocoaControlController.h"
 
 @implementation cocoaControlNewPCAssistant
+
 - (void) setQSender:(id)sender
 {
     qControl = sender;
+}
+
+- (void) setAdditionalHardwarePath:(NSString *)path
+{
+    [path retain];
+    [additionalHardwarePath release];
+    additionalHardwarePath = path;
+}
+
+- (void) setOS:(int)index
+{
+    if(index < [popUpButtonOS numberOfItems] && index >= 0)
+        [popUpButtonOS selectItemAtIndex: index];
 }
 
 - (NSPanel *) npaPanel
@@ -53,7 +67,7 @@
 {
     NSMutableDictionary *thisPC = [[[NSMutableDictionary alloc] initWithObjects:[NSArray arrayWithObjects:
         [[NSMutableDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Q", @"none", [NSDate date], @"Q guest PC", nil] forKeys:[NSArray arrayWithObjects: @"Author", @"Copyright", @"Date", @"Description", nil]],
-        [[NSMutableString alloc] initWithString:@"-m 128 -net nic -net user -cdrom /dev/cdrom -boot c -localtime -smb ~/Desktop/Q Shared Files/"],
+        [[NSMutableString alloc] initWithString:@"-m 128 -net nic -net user -cdrom /dev/cdrom -boot c -localtime -smb ~/Desktop/Q Shared Files/ -hda createNew4096"],
         [[NSMutableDictionary alloc] initWithObjects:[NSArray arrayWithObjects:[textFieldName stringValue], @"shutdown", @"x86", nil] forKeys:[NSArray arrayWithObjects: @"name", @"state", @"architecture", nil]],
         [[NSMutableDictionary alloc] initWithObjects:[NSArray arrayWithObjects: nil] forKeys:[NSArray arrayWithObjects: nil]],
         @"0.2.0.Q",
@@ -62,19 +76,22 @@
    
     switch ([popUpButtonOS indexOfSelectedItem]) {
         case 0: /* DOS */
-        	[thisPC setObject:[[NSMutableString alloc] initWithString:@"-m 16 -net nic -net user -cdrom /dev/cdrom -boot c -hda createNew100"] forKey:@"Arguments"];
+        	[thisPC setObject:[[NSMutableString alloc] initWithString:[NSString stringWithFormat:@"-m 16 -net nic -net user -cdrom %@ -boot c -hda createNew100", (additionalHardwarePath) ? additionalHardwarePath : [NSString stringWithString:@"/dev/cdrom"]]] forKey:@"Arguments"];
             break;
         case 1: /* Win9x */
-        	[thisPC setObject:[[NSMutableString alloc] initWithString:@"-m 128 -net nic -net user -cdrom /dev/cdrom -boot c -localtime -smb ~/Desktop/Q Shared Files/ -soundhw sb16 -hda createNew1024"] forKey:@"Arguments"];
+        	[thisPC setObject:[[NSMutableString alloc] initWithString:[NSString stringWithFormat:@"-m 128 -net nic -net user -cdrom %@ -boot d -localtime -smb ~/Desktop/Q Shared Files/ -soundhw sb16 -hda createNew1024", (additionalHardwarePath) ? additionalHardwarePath : [NSString stringWithString:@"/dev/cdrom"]]] forKey:@"Arguments"];
             break;
         case 2: /* Win2K */
-        	[thisPC setObject:[[NSMutableString alloc] initWithString:@"-m 256 -net nic -net user -cdrom /dev/cdrom -boot c -localtime -smb ~/Desktop/Q Shared Files/ -win2k-hack -soundhw sb16"] forKey:@"Arguments"];
+        	[thisPC setObject:[[NSMutableString alloc] initWithString:[NSString stringWithFormat:@"-m 256 -net nic -net user -cdrom %@ -boot d -localtime -smb ~/Desktop/Q Shared Files/ -win2k-hack -soundhw sb16 -hda createNew4096", (additionalHardwarePath) ? additionalHardwarePath : [NSString stringWithString:@"/dev/cdrom"]]] forKey:@"Arguments"];
             break;
         case 3: /* WinXP */
-        	[thisPC setObject:[[NSMutableString alloc] initWithString:@"-m 256 -net nic -net user -cdrom /dev/cdrom -boot c -localtime -smb ~/Desktop/Q Shared Files/ -soundhw es1370"] forKey:@"Arguments"];
+        	[thisPC setObject:[[NSMutableString alloc] initWithString:[NSString stringWithFormat:@"-m 256 -net nic -net user -cdrom %@ -boot d -localtime -smb ~/Desktop/Q Shared Files/ -soundhw es1370 -hda createNew4096", (additionalHardwarePath) ? additionalHardwarePath : [NSString stringWithString:@"/dev/cdrom"]]] forKey:@"Arguments"];
             break;
         case 4: /* WinVista */
-        	[thisPC setObject:[[NSMutableString alloc] initWithString:@"-m 512 -net nic -net user -cdrom /dev/cdrom -boot c -localtime -smb ~/Desktop/Q Shared Files/ -win2k-hack -hda createNew15360"] forKey:@"Arguments"];
+        	[thisPC setObject:[[NSMutableString alloc] initWithString:[NSString stringWithFormat:@"-m 512 -net nic -net user -cdrom %@ -boot d -localtime -smb ~/Desktop/Q Shared Files/ -win2k-hack -hda createNew15360", (additionalHardwarePath) ? additionalHardwarePath : [NSString stringWithString:@"/dev/cdrom"]]] forKey:@"Arguments"];
+            break;
+        case 5: /* Live CD */
+            [thisPC setObject:[[NSMutableString alloc] initWithString:[NSString stringWithFormat:@"-m 256 -net nic -net user -cdrom %@ -boot d -localtime", (additionalHardwarePath) ? additionalHardwarePath : [NSString stringWithString:@"/dev/cdrom"]]] forKey:@"Arguments"];
             break;
         default:
             break;

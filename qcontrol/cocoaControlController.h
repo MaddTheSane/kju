@@ -1,7 +1,7 @@
 /*
  * QEMU Cocoa Control Controller
  * 
- * Copyright (c) 2005, 2006 Mike Kronenberg
+ * Copyright (c) 2005 - 2007 Mike Kronenberg
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,6 +29,8 @@
 #import "cocoaControlPreferences.h"
 #import "cocoaDownloadController.h"
 #import "QControlTableView.h"
+
+#define FILE_TYPES [NSArray arrayWithObjects:@"qcow2", @"qcow", @"raw", @"cow", @"vmdk", @"cloop", @"img", @"iso", @"dsk", @"dmg", @"cdr", @"toast", @"flp", @"fs", nil]
 
 @interface cocoaControlController : NSObject
 {
@@ -72,9 +74,6 @@
 	
 	/* newImage */
 	
-	/* NSTask specific */
-    NSMutableDictionary * pcsPipes;
-    NSMutableDictionary * pcsHandles;
 }
 /* init & dealloc */
 - (id) init;
@@ -95,6 +94,7 @@
 - (void) savePCConfiguration:(id)thisPC;
 - (void) updateThumbnails;
 - (IBAction) addPC:(id)sender;
+- (void) addPCFromDragDrop:(NSString *)path;
 - (IBAction) addPCFromAssistant:(NSMutableDictionary *)thisPC;
 - (void) deleteThisPC:(id)pc;
 - (IBAction) deletePC:(id)sender;
@@ -103,6 +103,10 @@
 - (BOOL) importFreeOSZooPC:(NSString *)name withPath:(NSString *)path;
 - (IBAction) importVPC7PC:(id)sender;
 - (IBAction) importQemuXPCs:(id)sender;
+- (void) exportPCToFlashDrive:(id)pc;
+- (IBAction) exportThisPCToFlashDrive:(id)sender;
+- (void) importPCFromFlashDrive:(NSString *)filename;
+- (IBAction) importThisPCFromFlashDrive:(id)sender;
 - (void) startThisPC:(id)pc;
 - (void) startPC:(NSString *)filename;
 - (void) tableDoubleClick:(id)sender;

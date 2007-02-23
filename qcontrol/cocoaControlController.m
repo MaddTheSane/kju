@@ -59,7 +59,7 @@
 		[self getLatestVersion];
 	}
 	
-	/* start qserver  for distributed object */
+	/* start qserver for distributed object */
 	qdoserver = [[cocoaControlDOServer alloc] init];
 	[qdoserver setSender:self];
 	
@@ -166,6 +166,9 @@
 	
 	/*loading initial Thumbnails */
 	[self updateThumbnails];
+	
+    /* register table for drag'n drop */
+	[table registerForDraggedTypes:[NSArray arrayWithObjects: NSFilenamesPboardType, nil]];
 }
 
 
@@ -356,18 +359,23 @@
         // something is wrong here :-)
 		[[thisPC objectForKey:@"PC Data"] setObject:@"shutdown" forKey:@"state"];
 		
-		// error management here //
-        NSData * pipedata;
-        //NSFileHandle * fileHandle = [pcsPipes objectForKey:[[thisPC objectForKey:@"PC Data"] objectForKey:@"name"] fileHandleForReading];
+		/* error management here - display the crash output of qemu
+		  (if the standard output is a pipe)
+		  we avoid checking the user defaults for debug option because 
+		  the user could have changed the value while running a PC
+        */
+		if([[[pcsTasks objectForKey:[[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]] standardOutput] isMemberOfClass:[NSPipe class]]) {
+
+            NSData * pipedata;
         
-        while ((pipedata = [[[[pcsTasks objectForKey:[[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]] standardOutput] fileHandleForReading] availableData]) && [pipedata length])
+            while ((pipedata = [[[[pcsTasks objectForKey:[[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]] standardOutput] fileHandleForReading] availableData]) && [pipedata length])
 		{
-            NSString * console_out = [[[NSString alloc] initWithData:pipedata encoding:NSUTF8StringEncoding] autorelease];
-            // trim string to only contain the error
-            NSArray * comps = [console_out componentsSeparatedByString:@": "];
-            NSLog(@"error: %@", console_out);
-            NSString * errormsg = [@"Error: " stringByAppendingString:[comps objectAtIndex:1]];         
-            [self standardAlert:@"Qemu unexpectedly quit" informativeText:errormsg];         
+                NSString * console_out = [[[NSString alloc] initWithData:pipedata encoding:NSUTF8StringEncoding] autorelease];
+                // trim string to only contain the error
+                NSArray * comps = [console_out componentsSeparatedByString:@": "];
+                NSString * errormsg = [@"Error: " stringByAppendingString:[comps objectAtIndex:1]];         
+                [self standardAlert:@"Qemu unexpectedly quit" informativeText:errormsg];         
+            }
         }
     }
 
@@ -383,8 +391,6 @@
 
 	/* cleanup */
     [pcsTasks removeObjectForKey:[[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]];
-	if([pcsPipes objectForKey:[[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]])
-        [pcsPipes removeObjectForKey:[[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]];
 	[thisPC release];
 	[pcsPIDs removeObjectForKey:[NSString stringWithFormat:@"%d", [[aNotification object] processIdentifier]]];
 	
@@ -615,6 +621,23 @@
 	cocoaControlNewPCAssistant *npa = [[cocoaControlNewPCAssistant alloc] init];
 	[NSBundle loadNibNamed:@"cocoaControlNewPCAssistant" owner:npa];
 	[npa setQSender:self];
+	
+	[NSApp beginSheet:[npa npaPanel]
+		modalForWindow:mainWindow 
+		modalDelegate:npa
+		didEndSelector:@selector(npaPanelDidEnd:returnCode:contextInfo:)
+		contextInfo:nil];
+}
+
+- (void) addPCFromDragDrop:(NSString *)path
+{
+//	NSLog(@"cocoaControlController: addPCFromDragDrop");
+
+	cocoaControlNewPCAssistant *npa = [[cocoaControlNewPCAssistant alloc] init];
+	[NSBundle loadNibNamed:@"cocoaControlNewPCAssistant" owner:npa];
+	[npa setQSender:self];
+	[npa setOS:5];
+	[npa setAdditionalHardwarePath: path];
 	
 	[NSApp beginSheet:[npa npaPanel]
 		modalForWindow:mainWindow 
@@ -1188,8 +1211,307 @@
 	[NSApp endSheet:progressPanel];
 	[progressPanel orderOut:self];
 	
-	/* show warining */
+	/* show warning */
 	[self standardAlert: NSLocalizedStringFromTable(@"importQemuXPCs:standardAlert:finish", @"Localizable", @"cocoaControlController") informativeText: NSLocalizedStringFromTable(@"importQemuXPCs:informativeText:finish", @"Localizable", @"cocoaControlController")];
+}
+
+-(void) exportPCToFlashDrive:(id)pc
+{
+//	NSLog(@"cocoaControlController: exportThisPCToFlashDrive");
+    // get the export path
+    int result;
+    NSSavePanel *savePanel = [[NSSavePanel alloc] init];
+	[savePanel setCanCreateDirectories:YES];
+	[savePanel setTitle: NSLocalizedStringFromTable(@"exportPCToFlashDrive:savePanel:title", @"Localizable", @"cocoaControlController")];
+	[savePanel setPrompt: NSLocalizedStringFromTable(@"exportPCToFlashDrive:savePanel:prompt", @"Localizable", @"cocoaControlController")];
+	result = [savePanel runModalForDirectory: NSOpenStepRootDirectory()
+		file:[[pc objectForKey:@"PC Data"] objectForKey:@"name"]];
+    
+    if(result != NSOKButton)
+        return;
+    
+    NSString * exportPath = [savePanel filename];
+    NSString * pkgSrcPath = [NSString stringWithFormat:@"%@/%@.qvm", [userDefaults objectForKey:@"dataPath"], [[pc objectForKey:@"PC Data"] objectForKey:@"name"]];
+    
+    /* 0. setup & show Progress panel */
+	[progressTitle setStringValue: NSLocalizedStringFromTable(@"exportPCToFlashDrive:progressPanel:title", @"Localizable", @"cocoaControlController")];
+	[progressText setStringValue: NSLocalizedStringFromTable(@"exportPCToFlashDrive:progressPanel:text", @"Localizable", @"cocoaControlController")];
+	[progressStatusText setStringValue: NSLocalizedStringFromTable(@"exportPCToFlashDrive:progressPanel:statusText1", @"Localizable", @"cocoaControlController")];
+	[progressIndicator setUsesThreadedAnimation:YES];
+	[progressIndicator setIndeterminate:NO];
+	[progressIndicator setMaxValue:100];
+	[progressIndicator setDoubleValue:10];
+	[progressIndicator startAnimation:self];
+		
+	[NSApp beginSheet:progressPanel
+		modalForWindow:mainWindow 
+		modalDelegate:nil
+		didEndSelector:nil
+		contextInfo:nil];
+
+    NSFileManager * fileManager = [NSFileManager defaultManager];
+    /* 1. get architecture and copy binary.app */
+    [progressStatusText setStringValue: NSLocalizedStringFromTable(@"exportPCToFlashDrive:progressPanel:statusText2", @"Localizable", @"cocoaControlController")];
+    NSString * srcPath = [NSString stringWithFormat:@"%@/Contents/MacOS/%@.app", [[NSBundle mainBundle] bundlePath], [cpuTypes objectForKey:[[pc objectForKey:@"PC Data"] objectForKey:@"architecture"]]];
+    NSString * destPath = [NSString stringWithFormat:@"%@.app", exportPath];
+
+    [fileManager copyPath: srcPath toPath: destPath handler: nil];
+    /* 1.2 copy q_icon_portable.icns to binary package */
+    [fileManager removeFileAtPath: [destPath stringByAppendingPathComponent:@"Contents/Resources/q_icon.icns"] handler: nil];
+    [fileManager copyPath: [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"q_icon_portable.icns"] toPath: [destPath stringByAppendingPathComponent:@"Contents/Resources/q_icon.icns"] handler: nil];
+    
+    [progressIndicator setDoubleValue:20];
+
+    /* 2. create Guest folder in binary package & copy qvm package */
+    [progressStatusText setStringValue: NSLocalizedStringFromTable(@"exportPCToFlashDrive:progressPanel:statusText3", @"Localizable", @"cocoaControlController")];
+    [fileManager createDirectoryAtPath: [destPath stringByAppendingPathComponent: @"Contents/Resources/Guest"] attributes: nil];
+    
+    /* TODO: threaded copy routine as on http://www.cocoadev.com/index.pl?FileCopyProgress */
+    [fileManager copyPath: pkgSrcPath toPath: [[destPath stringByAppendingPathComponent: @"Contents/Resources/Guest"] stringByAppendingPathComponent: [pkgSrcPath lastPathComponent]] handler: nil];
+    [progressIndicator setDoubleValue:90];
+        
+    /* 2.5 remove absolute pathnames from hda|hdb|hdc|hdd|fda|fdb|cdrom
+                copy disks outside of .qvm into .app package
+    */
+    [progressStatusText setStringValue: NSLocalizedStringFromTable(@"exportPCToFlashDrive:progressPanel:statusText4", @"Localizable", @"cocoaControlController")];
+    
+    /* reformat arguments to array containing spaces */
+    NSMutableArray *arguments = [[NSMutableArray alloc] init];
+    /* Arguments of thisPC */
+	NSArray *array = [[pc objectForKey:@"Arguments"] componentsSeparatedByString:@" "];
+	NSMutableString *option = [[NSMutableString alloc] initWithString:@""];
+	NSMutableString *argument = [[NSMutableString alloc] init];
+	int i;
+	for (i = 1; i < [array count]; i++) {
+		if ([[array objectAtIndex:i] cString][0] != '-') { // part of an argument
+			[argument appendFormat:[NSString stringWithFormat:@" %@", [array objectAtIndex:i]]];
+		} else {
+			if ([option length] > 0) {
+				if ([argument isEqual:@""]) {
+					[arguments addObject:[NSString stringWithString:option]];
+				} else {
+					[arguments addObject:[NSString stringWithString:option]];
+					[arguments addObject:[NSString stringWithString:[argument substringFromIndex:1]]];
+				}
+			}
+			[option setString:[array objectAtIndex:i]];
+			[argument setString:@""];
+		}
+	}
+	/* last Object */
+	if ([argument isEqual:@""]) {
+        [arguments addObject:[NSString stringWithString:option]];
+	} else {
+		[arguments addObject:[NSString stringWithString:option]];
+        [arguments addObject:[NSString stringWithString:[argument substringFromIndex:1]]];
+	}
+	/* end reformatting */
+    
+    /* which display ? */
+	if ([[userDefaults objectForKey:@"display"] isEqual:@"OpenGL"]) {
+	} else if ([[userDefaults objectForKey:@"display"] isEqual:@"Quartz"]) {
+		[arguments addObject: @"-cocoaquartz"];
+	} else {
+		[arguments addObject: @"-cocoaquickdraw"];
+	}
+	
+	/* name of the PC */
+	[arguments addObject: @"-cocoaname"];
+	[arguments addObject: [[pc objectForKey:@"PC Data"] objectForKey:@"name"]];	
+        
+    for(i=0; i < [arguments count]; i++) {
+        if([[arguments objectAtIndex:i] isEqualTo:@"-hda"] || [[arguments objectAtIndex:i] isEqualTo:@"-hdb"] || [[arguments objectAtIndex:i] isEqualTo:@"-hdc"] || [[arguments objectAtIndex:i] isEqualTo:@"-hdd"] || [[arguments objectAtIndex:i] isEqualTo:@"-fda"] || [[arguments objectAtIndex:i] isEqualTo:@"-fdb"] || [[arguments objectAtIndex:i] isEqualTo:@"-cdrom"]) {
+            if([[arguments objectAtIndex:i+1] isAbsolutePath]) {
+                // image resides outside of qvm, we have to copy it into app package->qvm and remove the absolute pathname
+                [progressStatusText setStringValue: NSLocalizedStringFromTable(@"exportPCToFlashDrive:progressPanel:statusText5", @"Localizable", @"cocoaControlController")];
+                [fileManager copyPath: [arguments objectAtIndex:i+1] toPath:[destPath stringByAppendingPathComponent: [[NSString stringWithFormat:@"Contents/Resources/Guest/%@", [pkgSrcPath lastPathComponent]] stringByAppendingPathComponent: [[arguments objectAtIndex:i+1] lastPathComponent]]] handler:nil];
+                [arguments replaceObjectAtIndex:i+1 withObject:[[arguments objectAtIndex:i+1] lastPathComponent]];
+            }
+        }
+    }
+    
+    /* 3. save NSMutableArray back to NSString, save arguments in a qemu-binary readable format */
+    [progressStatusText setStringValue: NSLocalizedStringFromTable(@"exportPCToFlashDrive:progressPanel:statusText6", @"Localizable", @"cocoaControlController")];
+    NSMutableString * stringArguments = [NSMutableString stringWithCapacity:10];
+    for(i=0; i< [arguments count]; i++) {
+        [stringArguments appendFormat:@" %@", [arguments objectAtIndex:i]];
+    }
+    // write arguments to file
+    if(![stringArguments writeToFile:[destPath stringByAppendingPathComponent: @"Contents/Resources/Guest/arguments"] atomically:YES encoding:NSUTF8StringEncoding error:NULL]) {
+        [self standardAlert: NSLocalizedStringFromTable(@"exportPCToFlashDrive:alert:writeToFile:messageText", @"Localizable", @"cocoaControlController") informativeText:[NSString stringWithFormat: NSLocalizedStringFromTable(@"exportPCToFlashDrive:alert:writeToFile:informativeText", @"Localizable", @"cocoaControlController"), [[pc objectForKey:@"PC Data"] objectForKey:@"name"]]];
+        // delete exported Guest PC app
+        [fileManager removeFileAtPath: destPath handler: nil];
+        /* hide panel */
+        [NSApp endSheet:progressPanel];
+        [progressPanel orderOut:self];
+        return;
+    }
+        
+    /* 4. finish */
+    [progressIndicator setDoubleValue:100];
+    [progressIndicator stopAnimation:self];
+
+	/* hide panel */
+	[NSApp endSheet:progressPanel];
+	[progressPanel orderOut:self];
+	
+	/* show finished dialog */
+	[self standardAlert: NSLocalizedStringFromTable(@"exportPCToFlashDrive:alert:exportFinished:messageText", @"Localizable", @"cocoaControlController") informativeText:[NSString stringWithFormat: NSLocalizedStringFromTable(@"exportPCToFlashDrive:alert:exportFinished:informativeText", @"Localizable", @"cocoaControlController"), [[pc objectForKey:@"PC Data"] objectForKey:@"name"]]];
+
+}
+
+- (IBAction) exportThisPCToFlashDrive:(id)sender
+{
+//	NSLog(@"cocoaControlController: exportThisPCToFlashDrive");
+
+	/* no empty line selection */
+	if ( [table numberOfSelectedRows] == 0 )
+		return;
+	
+	/* don't allow to export a running/saved pc */
+	id thisPC;
+	thisPC = [pcs objectAtIndex:[table selectedRow]];
+	
+	if (![[[thisPC objectForKey:@"PC Data"] objectForKey:@"state"] isEqual:@"shutdown"]) {
+		[self standardAlert: [NSString stringWithFormat: NSLocalizedStringFromTable(@"exportThisPCToFlashDrive:standardAlert", @"Localizable", @"cocoaControlController"),[[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]]
+			 informativeText: [NSString stringWithFormat: NSLocalizedStringFromTable(@"exportThisPCToFlashDrive:informativeText", @"Localizable", @"cocoaControlController"), [[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]]];
+		return;
+	}
+    
+    /* prepare informative alert */
+	NSAlert *alert = [NSAlert alertWithMessageText: [NSString stringWithFormat: NSLocalizedStringFromTable(@"exportThisPCToFlashDrive:alertWithMessageText", @"Localizable", @"cocoaControlController"), [[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]]
+					  defaultButton: NSLocalizedStringFromTable(@"exportThisPCToFlashDrive:defaultButton", @"Localizable", @"cocoaControlController")
+					alternateButton:NSLocalizedStringFromTable(@"exportThisPCToFlashDrive:alternateButton", @"Localizable", @"cocoaControlController")
+						otherButton:nil
+				  informativeTextWithFormat: NSLocalizedStringFromTable(@"exportThisPCToFlashDrive:informativeTextWithFormat", @"Localizable", @"cocoaControlController")];
+	
+	// display alert
+	[alert beginSheetModalForWindow:mainWindow
+				  modalDelegate:self
+				 didEndSelector:@selector(exportPCAlertDidEnd:returnCode:contextInfo:)
+				 contextInfo:thisPC];
+}
+
+- (void) exportPCAlertDidEnd:(NSAlert *)alert returnCode:(int)returnCode contextInfo:(id)contextInfo
+{
+//	NSLog(@"cocoaControlController: exportPCAlertDidEnd");
+    
+    [[alert window] orderOut:self];
+    
+    if(returnCode == NSOKButton)
+	   [self exportPCToFlashDrive:contextInfo];
+}
+
+- (void) importPCFromFlashDrive:(NSString *)filename
+{
+//	NSLog(@"cocoaControlController: importPCFromFlashDrive");
+    
+    NSFileManager * fileManager = [NSFileManager defaultManager];
+    BOOL isDir;
+    /* check for "Guest" folder inside app package */
+    if(![fileManager fileExistsAtPath: [filename stringByAppendingPathComponent:@"Contents/Resources/Guest"] isDirectory:&isDir] && isDir) {
+        [self standardAlert: NSLocalizedStringFromTable(@"importPCFromFlashDrive:alert:notFound:messageText", @"Localizable", @"cocoaControlController") informativeText: NSLocalizedStringFromTable(@"importPCFromFlashDrive:alert:notFound:informativeText", @"Localizable", @"cocoaControlController")];
+        return;
+    }
+    
+    /* search for qvm package */
+    NSString * file;
+    NSString * guestDir = [filename stringByAppendingPathComponent:@"Contents/Resources/Guest"];
+    NSDirectoryEnumerator * dirEnum = [fileManager enumeratorAtPath: guestDir];
+ 
+    BOOL foundQVM = NO;
+    while ((file = [dirEnum nextObject])) {
+        if ([[file pathExtension] isEqualToString: @"qvm"]) {
+            foundQVM = YES;
+            break;
+        }
+    }
+    
+    if(!foundQVM) {
+        [self standardAlert: NSLocalizedStringFromTable(@"importPCFromFlashDrive:alert:notFound:messageText", @"Localizable", @"cocoaControlController") informativeText: NSLocalizedStringFromTable(@"importPCFromFlashDrive:alert:notFound:informativeText", @"Localizable", @"cocoaControlController")];
+        return;
+    }
+    
+    file = [filename stringByAppendingPathComponent:[@"Contents/Resources/Guest" stringByAppendingPathComponent:file]];
+    NSLog(@"file: %@", file);
+    
+    /* ready now, show progressPanel */
+    [progressTitle setStringValue: NSLocalizedStringFromTable(@"importPCFromFlashDrive:progressPanel:title", @"Localizable", @"cocoaControlController")];
+	[progressText setStringValue: NSLocalizedStringFromTable(@"importPCFromFlashDrive:progressPanel:text", @"Localizable", @"cocoaControlController")];
+	[progressStatusText setStringValue: NSLocalizedStringFromTable(@"importPCFromFlashDrive:progressPanel:statusText1", @"Localizable", @"cocoaControlController")];
+	[progressIndicator setUsesThreadedAnimation:YES];
+	[progressIndicator setIndeterminate:NO];
+	[progressIndicator setMaxValue:100];
+	[progressIndicator setDoubleValue:10];
+	[progressIndicator startAnimation:self];
+		
+	[NSApp beginSheet:progressPanel
+		modalForWindow:mainWindow 
+		modalDelegate:nil
+		didEndSelector:nil
+		contextInfo:nil];
+		
+    /* now simply copy over .qvm package */
+    isDir = NO;
+    if(!([fileManager fileExistsAtPath:[[userDefaults objectForKey:@"dataPath"] stringByAppendingPathComponent:[file lastPathComponent]] isDirectory:&isDir] && isDir)) {
+        [fileManager copyPath: file toPath:[[userDefaults objectForKey:@"dataPath"] stringByAppendingPathComponent:[file lastPathComponent]] handler: nil];
+    } else {
+        // append "(imported)" to filename and name in configuration.plist
+        NSMutableDictionary * conf = [NSDictionary dictionaryWithContentsOfFile:[file stringByAppendingPathComponent:@"configuration.plist"]];
+        NSMutableDictionary * pcdata = [conf objectForKey:@"PC Data"];
+        [pcdata setObject:[NSString stringWithFormat:@"%@(imported)", [pcdata objectForKey:@"name"]] forKey:@"name"];
+        [conf setObject:pcdata forKey:@"PC Data"];
+        NSData *data = [NSPropertyListSerialization
+		dataFromPropertyList: conf
+		format: NSPropertyListXMLFormat_v1_0
+		errorDescription: nil];
+        [fileManager copyPath: file toPath:[[userDefaults objectForKey:@"dataPath"] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@(imported).qvm", [[file lastPathComponent] substringToIndex:[[file lastPathComponent] length]-4 ]]] handler: nil];
+        [data writeToFile:[[userDefaults objectForKey:@"dataPath"] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@(imported).qvm/configuration.plist", [[file lastPathComponent] substringToIndex:[[file lastPathComponent] length]-4 ]]] atomically:YES];
+    }
+    
+    /* finish */
+    [progressIndicator setDoubleValue:100];
+    [progressIndicator stopAnimation:self];
+    
+    /* update Table */
+	[self loadConfigurations];
+
+	/* hide panel */
+	[NSApp endSheet:progressPanel];
+	[progressPanel orderOut:self];
+	
+	/* show finished dialog */
+	[self standardAlert: NSLocalizedStringFromTable(@"importPCFromFlashDrive:alert:importFinished:messageText", @"Localizable", @"cocoaControlController") informativeText:[NSString stringWithFormat: NSLocalizedStringFromTable(@"importPCFromFlashDrive:alert:importFinished:informativeText", @"Localizable", @"cocoaControlController"), [[file lastPathComponent] substringToIndex:[[file lastPathComponent] length]-4 ]]];
+    
+}
+
+- (void) importThisPCFromFlashDriveDidEnd:(NSOpenPanel *)sheet returnCode:(int)returnCode contextInfo:(id)contextInfo
+{
+//	NSLog(@"cocoaControlController: importPCFromFlashDriveDidEnd");
+
+	/* hide Open Sheet */
+	[ sheet orderOut:self ];
+	
+	if ( returnCode == NSOKButton )
+        [self importPCFromFlashDrive:[sheet filename]];
+}
+
+- (IBAction)importThisPCFromFlashDrive:(id)sender
+{
+//	NSLog(@"cocoaControlController: importThisPCFromFlashDrive");
+    // open panel
+    NSOpenPanel *openPanel = [[NSOpenPanel alloc] init];
+	[openPanel setCanChooseDirectories:NO];
+	[openPanel setCanCreateDirectories:NO];
+	[openPanel setCanChooseFiles:YES];
+	[openPanel beginSheetForDirectory: NSOpenStepRootDirectory()
+		file:nil
+		types:[NSArray arrayWithObjects:@"app", nil]
+		modalForWindow:mainWindow
+		modalDelegate:self
+		didEndSelector:@selector(importThisPCFromFlashDriveDidEnd:returnCode:contextInfo:)
+		contextInfo:sender];
+
 }
 
 - (BOOL) addArgumentTo:(id)arguments option:(id)option argument:(id)argument filename:filename
@@ -1206,7 +1528,7 @@
 		return FALSE;
 	}
 	
-	/* do some error checking to avoid QEMU shuting down for incorrect Arguments */
+	/* do some error checking to avoid QEMU shutting down for incorrect Arguments */
 	
 	/* if files have relative Paths, we guess they are stored in .qvm */
 	if ([option isEqual:@"-hda"] || [option isEqual:@"-hdb"] || [option isEqual:@"-hdc"] || [option isEqual:@"-hdd"] || [option isEqual:@"-cdrom"]) {
@@ -1230,7 +1552,7 @@
 			[arguments addObject:[NSString stringWithString:argument]];
 		}
 		
-	/* standart */		  
+	/* standard */		  
 	} else {	
 		[arguments addObject:[NSString stringWithString:option]];
 		if (![argument isEqual:@""]) {
@@ -1376,11 +1698,15 @@
 	[task setArguments: arguments];
 	[arguments release];
 	
-	// prepare nstask output to grab exit codes
-    NSPipe * pipe = [[NSPipe alloc] init];
-
-	[task setStandardOutput: pipe];
-    [task setStandardError: pipe];
+	// check the user defaults
+	if([[userDefaults objectForKey:@"debug"] isEqual:[NSNumber numberWithBool:0]]) {
+        // prepare nstask output to grab exit codes and display a standardAlert when the qemu instance crashed
+        NSPipe * pipe = [[NSPipe alloc] init];
+        [task setStandardOutput: pipe];
+        [task setStandardError: pipe];
+        
+        [pipe release];
+    }
     
 	[task launch];
 	
@@ -1394,9 +1720,7 @@
 	/* save PID */
 	[pcsPIDs setObject:thisPC forKey:[NSString stringWithFormat:@"%d", [task processIdentifier]]];
 	[pcsTasks setObject:task forKey:[[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]];
-	[pcsPipes setObject:pipe forKey:[[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]];
 	[task release];
-	[pipe release];
 	
 	/* update Table */
 	[self loadConfigurations];
@@ -1447,6 +1771,50 @@
 	}
 	
 	return nil;
+}
+
+/* drag'n drop */
+- (NSDragOperation)tableView:(NSTableView*)tv validateDrop:(id <NSDraggingInfo>)info proposedRow:(int)row proposedDropOperation:(NSTableViewDropOperation)op 
+{
+    // Add code here to validate the drop
+    // For now we 'redirect' the drop to an empty row assuming the user wants to create a new Guest PC with a CD-ROM image
+    NSPasteboard * paste = [info draggingPasteboard];
+    [table setDropRow:[table numberOfRows] dropOperation: NSTableViewDropAbove];
+
+    if([FILE_TYPES containsObject: [[[paste propertyListForType:@"NSFilenamesPboardType"] objectAtIndex:0] pathExtension]]) {
+        return NSDragOperationEvery;
+    }
+    return NSDragOperationNone;
+}
+
+- (BOOL)tableView:(NSTableView *)aTableView acceptDrop:(id <NSDraggingInfo>)info 
+            row:(int)row dropOperation:(NSTableViewDropOperation)operation
+{
+    NSPasteboard *paste = [info draggingPasteboard];
+	NSArray *types = [NSArray arrayWithObjects: NSFilenamesPboardType, nil];
+	NSString *desiredType = [paste availableTypeFromArray:types];
+	NSData *carriedData = [paste dataForType:desiredType];
+
+	if (nil == carriedData)
+	{
+		NSRunAlertPanel(@"Paste Error", @"Sorry, but the paste operation failed", 
+			nil, nil, nil);
+		return NO;
+	}
+	else
+	{
+		if ([desiredType isEqualToString:NSFilenamesPboardType])
+		{
+			/* Live CD handling here: currently we handle the first file to be set as CD-Rom for all Operating Systems of the 'New PC Assistant' showing "Live CD" first */
+			[self addPCFromDragDrop: [[paste propertyListForType:@"NSFilenamesPboardType"] objectAtIndex:0]];
+		}
+		else
+		{
+			NSAssert(NO, @"This can't happen");
+			return NO;
+		}
+	}
+	return YES;
 }
 
 - (void) tableDoubleClick:(id)sender

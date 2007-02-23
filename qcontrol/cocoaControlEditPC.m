@@ -37,8 +37,6 @@
 
 	if ((self = [super init])) {
 		userDefaults = [NSUserDefaults standardUserDefaults];
-		fileTypes = [[NSArray arrayWithObjects:@"qcow2", @"qcow", @"raw", @"cow", @"vmdk", @"cloop", @"img", @"iso", @"dsk", @"dmg", @"cdr", @"toast", @"flp", @"fs", nil] retain];
-
 		return self;
 	}
 
@@ -49,7 +47,6 @@
 {
 //	NSLog(@"cocoaControlEditPC: dealloc");
 
-	[fileTypes release];
 	[super dealloc];
 }
 
@@ -423,12 +420,12 @@
 	}
 	directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:[[thisPC objectForKey:@"Temporary"] objectForKey:@"-cocoapath"]];
 	while ((diskImageFile = [directoryEnumerator nextObject])) {
-		if ([fileTypes containsObject:[diskImageFile pathExtension]])
+		if ([FILE_TYPES containsObject:[diskImageFile pathExtension]])
 			[popUpButtonHda insertItemWithTitle:[diskImageFile lastPathComponent] atIndex:2];
 	}
 	if([[popUpButtonHda itemAtIndex:2] isSeparatorItem])
 		[popUpButtonHda removeItemAtIndex:2];
-	[popUpButtonHda selectItemAtIndex:4];
+	[popUpButtonHda selectItemAtIndex:0];
 	
 	/* cleanup -hdb and add Harddisks located in Package to Menu */
 	while(![[popUpButtonHdb itemAtIndex:1] isSeparatorItem])
@@ -441,7 +438,7 @@
 	}
 	directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:[[thisPC objectForKey:@"Temporary"] objectForKey:@"-cocoapath"]];
 	while ((diskImageFile = [directoryEnumerator nextObject])) {
-		if ([fileTypes containsObject:[diskImageFile pathExtension]])
+		if ([FILE_TYPES containsObject:[diskImageFile pathExtension]])
 			[popUpButtonHdb insertItemWithTitle:[diskImageFile lastPathComponent] atIndex:2];
 	}
 	if([[popUpButtonHdb itemAtIndex:2] isSeparatorItem])
@@ -459,7 +456,7 @@
 	}
 	directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:[[thisPC objectForKey:@"Temporary"] objectForKey:@"-cocoapath"]];
 	while ((diskImageFile = [directoryEnumerator nextObject])) {
-		if ([fileTypes containsObject:[diskImageFile pathExtension]])
+		if ([FILE_TYPES containsObject:[diskImageFile pathExtension]])
 			[popUpButtonHdc insertItemWithTitle:[diskImageFile lastPathComponent] atIndex:2];
 	}
 	if([[popUpButtonHdc itemAtIndex:2] isSeparatorItem])
@@ -477,7 +474,7 @@
 	}
 	directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:[[thisPC objectForKey:@"Temporary"] objectForKey:@"-cocoapath"]];
 	while ((diskImageFile = [directoryEnumerator nextObject])) {
-		if ([fileTypes containsObject:[diskImageFile pathExtension]])
+		if ([FILE_TYPES containsObject:[diskImageFile pathExtension]])
 			[popUpButtonHdd insertItemWithTitle:[diskImageFile lastPathComponent] atIndex:2];
 	}
 	if([[popUpButtonHdd itemAtIndex:2] isSeparatorItem])
@@ -757,7 +754,7 @@
 	NSOpenPanel *openPanel = [[NSOpenPanel alloc] init];
 		[openPanel beginSheetForDirectory:nil
 			file:nil
-			types:fileTypes
+			types:FILE_TYPES
 			modalForWindow:editPCPanel
 			modalDelegate:self
 			didEndSelector:@selector(genericImageSelectPanelDidEnd:returnCode:contextInfo:)
