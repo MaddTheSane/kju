@@ -1,3 +1,9 @@
+Q-0.9.0d69
+[fix] Localization: nibs 2
+
+Q-0.9.0d68
+[fix] Localization: nibs 1
+
 Q-0.9.0d67
 [new] Localization: German by cordney* and Mike
 [new] Localization: French by Catios
