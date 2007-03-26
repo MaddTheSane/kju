@@ -1,0 +1,33 @@
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<title>Starting Q from the commandline</title>
+		<meta name="KEYWORDS" content="Q commandline switches">
+		<meta name="DESCRIPTION" content="Guide to start Q from the commandline. Additional switches for Q">
+		<link rel="stylesheet" href="../stylesheet.css" type="text/css">
+	</head>
+	<body>
+		<a class="qhelp" href="../Q Help.html" target="_top"><img class="icon" src="../q_icon_16.png"> Q Help</a>
+		<h2>Starting Q from the Commandline</h2>
+        Q can be started from the terminal or from scripts.<br>
+        The executable is located at Q.app/Contents/MacOS/platform-softmmu.app/Contents/MacOS/platform-softmmu<br>(where platform has to be replaced by the emulated platform, e.g. i386)<br>
+        <br>
+        Q expands the Command Line Arguments of QEMU by:
+		<ul>
+            <li>-cocoaname NAME<br>
+            this name will be displayed at the top of the Window. It is used to save the VM or the Thumbnails.
+
+            <li>-cocoapath FULLPATH<br>
+            Is used to save the VM or the Thumbnails.
+
+            <li>-cocoalivethumbnail<br>
+            Toggles Thumbnails to ON.
+
+            <li>-cocoanodialogs<br>
+            Toggles Savedialogs to OFF. You wont be able to save a VM!
+
+            <li>-cocoaopengl<br>
+            Use OpenGL to display the guest PC.
+		</ul>
+	</body>
+</html>

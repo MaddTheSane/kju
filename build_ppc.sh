@@ -42,9 +42,7 @@ cd hw
 cd ..
 
 #add 2nd Bootdevice
-cd hw
-patch -p0 -u < ../../../q/patches/qemu-2ndbootdevice_03.diff
-cd ..
+patch -p0 -u < ../../q/patches/qemu-2ndbootdevice_04.diff
 
 #add HDLED
 patch -p0 -u < ../../q/patches/q_block_int.h_hdled_1.diff

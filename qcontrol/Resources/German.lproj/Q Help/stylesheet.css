@@ -1,0 +1,44 @@
+body {
+	font-family:		Geneva, Helvetica, Arial;
+	font-size:			12px;
+}
+
+img {
+	display:			block;
+	margin:				15px 00px 20px 0px;
+	padding:			0px 10px 0px 10px;
+}
+
+img.cut {
+	border-style:		dotted;
+	border-width:		1px 0px 1px 0px;
+	border-color:		rgb(160,160,160);
+}
+
+img.icon {
+	display:			inline;
+	margin:				0px 0px -3px 0px;
+	padding:			0px;
+	border-style:		none;
+}
+
+h1,h2 {
+	font-weight:		normal;
+}
+
+a {
+	text-decoration:	none;
+}
+
+a.qhelp {
+	display:			block;
+	text-align:			right;
+}
+
+li {
+	padding-bottom:	10px;
+}
+
+td {
+    font-size:			12px;
+}

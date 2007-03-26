@@ -1,4 +1,5 @@
 include ../../tmp/qemu/config-host.mak
+OPT_LANGUAGES=French German pl
 QVERSION=$(shell svn info | grep "Revision:" | sed s/"Revision: "/""/)
 
 all: qemu-control$(EXESUF)
@@ -13,7 +14,7 @@ clean:
 app:
 	rm -rf "../$(prefix)/Q.app";
 	mkdir -p "../$(prefix)/Q.app/Contents/MacOS/";
-	mkdir -p "../$(prefix)/Q.app/Contents/Resources/English.lproj/Q Help/";
+	mkdir -p "../$(prefix)/Q.app/Contents/Resources/";
 	install -m 755 -s ../../tmp/qemu/qemu-img "../$(prefix)/Q.app/Contents/MacOS/";
 	install -m 755 -s qemu-control "../$(prefix)/Q.app/Contents/MacOS/";
 	sed 's/QEMU_VERSION/$(VERSION)/;s/QKJU_VERSION/$(QVERSION)/' Info.plist > "../$(prefix)/Q.app/Contents/Info.plist";
@@ -21,6 +22,17 @@ app:
 	cp -R Resources/* "../$(prefix)/Q.app/Contents/Resources/";
 	install -m 644 ../../tmp/qemu/qemu-doc.html "../$(prefix)/Q.app/Contents/Resources/English.lproj/Q Help/html/";
 	install -m 644 ../../tmp/qemu/qemu-tech.html "../$(prefix)/Q.app/Contents/Resources/English.lproj/Q Help/html/";
+
+	for d in $(OPT_LANGUAGES); do \
+		install -m 644 ../../tmp/qemu/qemu-doc.html "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/Q Help/html/"; \
+		install -m 644 ../../tmp/qemu/qemu-tech.html "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/Q Help/html/"; \
+		nibtool -d "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaControl.strings" "../$(prefix)/Q.app/Contents/Resources/English.lproj/cocoaControl.nib" -W "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaControl.nib"; \
+		nibtool -d "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaControlDiskImage.strings" "../$(prefix)/Q.app/Contents/Resources/English.lproj/cocoaControlDiskImage.nib" -W "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaControlDiskImage.nib"; \
+		nibtool -d "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaControlEditPC.strings" "../$(prefix)/Q.app/Contents/Resources/English.lproj/cocoaControlEditPC.nib" -W "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaControlEditPC.nib"; \
+		nibtool -d "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaControlNewPCAssistant.strings" "../$(prefix)/Q.app/Contents/Resources/English.lproj/cocoaControlNewPCAssistant.nib" -W "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaControlNewPCAssistant.nib"; \
+		nibtool -d "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaControlPreferences.strings" "../$(prefix)/Q.app/Contents/Resources/English.lproj/cocoaControlPreferences.nib" -W "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaControlPreferences.nib"; \
+		nibtool -d "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaDownload.strings" "../$(prefix)/Q.app/Contents/Resources/English.lproj/cocoaDownload.nib" -W "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaDownload.nib"; \
+        done
 
 	for d in $(TARGET_DIRS); do \
 		mkdir -p "../$(prefix)/Q.app/Contents/MacOS//"$$d".app/Contents/MacOS/"; \

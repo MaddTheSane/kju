@@ -53,9 +53,7 @@ patch -p0 -u < ../../../q/patches/q_vga.c_02.diff
 cd ..
 
 #add 2nd Bootdevice
-cd hw
-patch -p0 -u < ../../../q/patches/qemu-2ndbootdevice_03.diff
-cd ..
+patch -p0 -u < ../../q/patches/qemu-2ndbootdevice_04.diff
 
 #add HDLED
 patch -p0 -u < ../../q/patches/q_block_int.h_hdled_1.diff
@@ -66,9 +64,7 @@ cp -r ../../q/host-cocoa/ host-cocoa/
 
 
 # configure and make
-#./configure --prefix=../products/i386 --enable-cocoa --enable-adlib --cc=gcc-3.3 --disable-gcc-check
 ./configure --prefix=../products/i386 --enable-cocoa --enable-adlib --disable-gcc-check --target-list=i386-softmmu
-#./configure --prefix=../products/i386 --enable-cocoa --enable-adlib --disable-gcc-check
 #./configure --prefix=../products/i386 --enable-cocoa --enable-adlib --disable-gcc-check --target-list=i386-softmmu,ppc-softmmu,sparc-softmmu,mips-softmmu,arm-softmmu
 make
 cd ..

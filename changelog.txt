@@ -1,3 +1,10 @@
+Q-0.9.0d67
+[new] Localization: German by cordney* and Mike
+[new] Localization: French by Catios
+[fix] Localization: Polish put into .string files
+[fix] .nibs, standardized for translation
+[new] q Makefile automatically generate nibs for optional Languages
+
 Q-0.9.0d66
 [revert] NewPCAssistant: default boot from CD-Rom for Win9x - Vista
 

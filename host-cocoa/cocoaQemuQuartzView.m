@@ -1,7 +1,7 @@
 /*
  * QEMU Cocoa Quarz View
  * 
- * Copyright (c) 2006 Mike Kronenberg
+ * Copyright (c) 2006 - 2007 Mike Kronenberg
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -21,7 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
- 
+
+#include <AvailabilityMacros.h>
+
 #import "cocoaQemu.h"
 
 #import "cocoaQemuQuartzView.h"
@@ -92,8 +94,16 @@
 			kCGRenderingIntentDefault //intent
 		);
         
-        /* new selective drawing code */
-        if (CGImageCreateWithImageInRect != NULL) {
+        /* selective drawing code */
+#if (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_4)
+        if (CGImageCreateWithImageInRect == NULL) {
+        
+            /* old drawing code (draws everything) (Panther) */
+            CGContextDrawImage (viewContextRef, CGRectMake(0, 0, [self bounds].size.width, [self bounds].size.height), imageRef);
+
+#endif
+#if (MAC_OS_X_VERSION_MAX_ALLOWED >= MAC_OS_X_VERSION_10_4)
+        } else {
         
             /* new selective drawing code (draws only dirty rectangles) (Tiger) */
             const NSRect *rectList;
@@ -122,12 +132,9 @@
                 CGImageRelease (clipImageRef);
             }
             
-        } else {
-        
-            /* old drawing code (draws everything) (Panther) */
-            CGContextDrawImage (viewContextRef, CGRectMake(0, 0, [self bounds].size.width, [self bounds].size.height), imageRef);
-
         }
+#endif
+
 		CGImageRelease (imageRef);
 	}
 	
