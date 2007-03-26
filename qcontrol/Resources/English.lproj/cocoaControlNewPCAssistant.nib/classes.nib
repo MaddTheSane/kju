@@ -1,0 +1,20 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {closeNewPCAssistantPanel = id; preparePC = id; setQSender = id; }; 
+            CLASS = cocoaControlNewPCAssistant; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                buttonCancel = NSButton; 
+                buttonOk = NSButton; 
+                npaPanel = NSPanel; 
+                popUpButtonOS = NSPopUpButton; 
+                qControl = id; 
+                textFieldName = NSTextField; 
+            }; 
+            SUPERCLASS = NSObject; 
+        }
+    ); 
+    IBVersion = 1; 
+}
