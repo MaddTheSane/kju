@@ -1,3 +1,6 @@
+Q-0.9.0d70
+[fix] Localization: nibs 3
+
 Q-0.9.0d69
 [fix] Localization: nibs 2
 
