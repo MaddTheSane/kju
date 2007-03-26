@@ -1,3 +1,9 @@
+Q-0.9.0d72
+[fix] Update Changelog :)
+
+Q-0.9.0d71
+[fix] Localization: nibs 4
+
 Q-0.9.0d70
 [fix] Localization: nibs 3
 
