@@ -13,13 +13,13 @@
 		<key>736</key>
 		<string>391 369 440 427 0 0 1440 878 </string>
 		<key>930</key>
-		<string>488 415 436 339 0 0 1440 878 </string>
+		<string>422 368 436 339 0 0 1280 778 </string>
 	</dict>
 	<key>IBFramework Version</key>
 	<string>446.1</string>
 	<key>IBOpenObjects</key>
 	<array>
-		<integer>930</integer>
+		<integer>1080</integer>
 	</array>
 	<key>IBSystem Version</key>
 	<string>8P2137</string>

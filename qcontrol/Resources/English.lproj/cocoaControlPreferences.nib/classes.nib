@@ -6,6 +6,7 @@
                 cancel = id; 
                 genericFolderSelectPanel = id; 
                 ok = id; 
+                preparePreferences = id; 
                 resetDataPath = id; 
                 viewGeneral = id; 
             }; 
@@ -14,8 +15,10 @@
             OUTLETS = {
                 buttonDataPathChoose = NSButton; 
                 buttonEnableCheckForUpdates = NSButton; 
+                buttonEnableLogToConsole = NSButton; 
                 popUpButtonDisplay = NSPopUpButton; 
                 preferencesPanel = id; 
+                qControl = id; 
                 textFieldDataPath = NSTextField; 
             }; 
             SUPERCLASS = NSObject; 

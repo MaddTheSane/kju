@@ -136,6 +136,12 @@
 		[userDefaults setBool:FALSE forKey:@"enableCheckForUpdates"];
 	}
 	
+	if ([buttonEnableLogToConsole state] == NSOnState) {
+		[userDefaults setBool:TRUE forKey:@"enableLogToConsole"];
+	} else {
+		[userDefaults setBool:FALSE forKey:@"enableLogToConsole"];
+	}
+	
 	[userDefaults setObject:[textFieldDataPath stringValue] forKey:@"dataPath"];
 	
 	/* Update qControl to new datapath */
@@ -173,9 +179,15 @@
 	}
 	
 	if ([userDefaults boolForKey:@"enableCheckForUpdates"]) {
-		[buttonEnableCheckForUpdates setState:NSOnState];
+        [buttonEnableCheckForUpdates setState:NSOnState];
+    } else {
+        [buttonEnableCheckForUpdates setState:NSOffState];
+	}
+	
+    if ([userDefaults boolForKey:@"enableLogToConsole"]) {
+        [buttonEnableLogToConsole setState:NSOnState];
 	} else {
-		[buttonEnableCheckForUpdates setState:NSOffState];
+        [buttonEnableLogToConsole setState:NSOffState];
 	}
 	
 	if ([userDefaults objectForKey:@"dataPath"]) {

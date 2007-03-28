@@ -29,6 +29,7 @@
 	IBOutlet id preferencesPanel;
 	IBOutlet NSPopUpButton *popUpButtonDisplay;
 	IBOutlet NSButton *buttonEnableCheckForUpdates;
+	IBOutlet NSButton *buttonEnableLogToConsole;
 	IBOutlet NSButton *buttonDataPathChoose;
 	IBOutlet NSTextField *textFieldDataPath;
     NSUserDefaults *userDefaults;
