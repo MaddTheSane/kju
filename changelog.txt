@@ -1,3 +1,7 @@
+Q-0.9.0d75
+[fix] Export/Import Guest PC Menu Item
+[fix] Exported Guest PCs have no Dock Icon
+
 Q-0.9.0d74
 [fix] Localization: nibs 5
 

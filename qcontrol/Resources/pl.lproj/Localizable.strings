@@ -79,6 +79,61 @@
 	<string>import gościa VPC7 nie powiodła się</string>
 	<key>importVPC7PC:standardAlert:running</key>
 	<string>import gościa VPC7 nie powiodła się</string>
+	<key>exportPCToFlashDrive:savePanel:title</key>
+	<string>Export</string>
+    <key>exportPCToFlashDrive:savePanel:prompt</key>
+    <string>Export</string>
+    <key>exportPCToFlashDrive:progressPanel:title</key>
+    <string>Status</string>
+    <key>exportPCToFlashDrive:progressPanel:text</key>
+    <string>Export</string>
+    <key>exportPCToFlashDrive:progressPanel:statusText1</key>
+    <string>Exporting..</string>
+    <key>exportPCToFlashDrive:progressPanel:statusText2</key>
+    <string>Copying binary..</string>
+    <key>exportPCToFlashDrive:progressPanel:statusText3</key>
+    <string>Copying Guest PC..</string>
+    <key>exportPCToFlashDrive:progressPanel:statusText4</key>
+    <string>Writing Guest PC configuration..</string>
+    <key>exportPCToFlashDrive:progressPanel:statusText5</key>
+    <string>Copying additional Guest PC disk images..</string>
+    <key>exportPCToFlashDrive:progressPanel:statusText6</key>
+    <string>Finishing Guest PC configuration..</string>
+    <key>exportPCToFlashDrive:alert:writeToFile:messageText</key>
+    <string>Error writing configuration</string>
+    <key>exportPCToFlashDrive:alert:writeToFile:informativeText</key>
+    <string>The configuration file could not be written</string>
+    <key>exportPCToFlashDrive:alert:exportFinished:messageText</key>
+    <string>Export finished</string>
+    <key>exportPCToFlashDrive:alert:exportFinished:informativeText</key>
+    <string>Export of the Guest PC %@ is complete. You can now use it as a standalone application on any PowerPC or Intel Mac</string>
+
+    <key>exportThisPCToFlashDrive:standardAlert</key>
+    <string>The Guest PC %@ can not be exported to a Flash Drive, because it is in running or saved state</string>
+    <key>exportThisPCToFlashDrive:informativeText</key>
+    <string>First shutdown the Guest PC %@ then export it.</string>
+    <key>exportThisPCToFlashDrive:alertWithMessageText</key>
+    <string>Exporting the Guest PC %@\</string>
+    <key>exportThisPCToFlashDrive:defaultButton</key>
+    <string>OK</string>
+    <key>exportThisPCToFlashDrive:alternateButton</key>
+    <string>Cancel</string>
+    <key>exportThisPCToFlashDrive:informativeTextWithFormat</key>
+    <string>The Guest PC will now be exported to run in standalone mode. This means you can take it with you on an external storage (for example on an USB Flash Drive), plug it into any Mac and run your Guest PC out of the box.\n\nPlease note that saving/loading a Guest PC state is not available in standalone mode. This does not affect your Guest PC configuration in Q</string>
+    <key>importPCFromFlashDrive:alert:notFound:messageText</key>
+    <string>Could not find Guest PC</string>
+    <key>importPCFromFlashDrive:alert:notFound:informativeText</key>
+    <string>The file seems to be an ordinary application</string>
+    <key>importPCFromFlashDrive:progressPanel:title</key>
+    <string>Status</string>
+    <key>importPCFromFlashDrive:progressPanel:text</key>
+    <string>Import</string>
+    <key>importPCFromFlashDrive:progressPanel:statusText1</key>
+    <string>Copying Guest PC..</string>
+    <key>importPCFromFlashDrive:alert:importFinished:messageText</key>
+    <string>Import finished</string>
+    <key>importPCFromFlashDrive:alert:importFinished:informativeText</key>
+    <string>Import of the Guest PC %@ is complete. You can now run it in Q.</string>
 	<key>prepareEditPCPanel:newPC</key>
 	<string>Tworzenie PC</string>
 	<key>prepareEditPCPanel:updatePC</key>

@@ -1260,6 +1260,11 @@
     [fileManager removeFileAtPath: [destPath stringByAppendingPathComponent:@"Contents/Resources/q_icon.icns"] handler: nil];
     [fileManager copyPath: [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"q_icon_portable.icns"] toPath: [destPath stringByAppendingPathComponent:@"Contents/Resources/q_icon.icns"] handler: nil];
     
+    /* 1.3 set NSUIElement to 0 to have a Dock Icon for the Exported Guest PC */
+    NSMutableDictionary * appDict = [NSMutableDictionary dictionaryWithContentsOfFile: [destPath stringByAppendingPathComponent: @"Contents/Info.plist"]];
+    [appDict setObject:[NSNumber numberWithInt:0] forKey:@"NSUIElement"];
+    [appDict writeToFile:[destPath stringByAppendingPathComponent: @"Contents/Info.plist"] atomically: YES];
+    
     [progressIndicator setDoubleValue:20];
 
     /* 2. create Guest folder in binary package & copy qvm package */
@@ -1317,7 +1322,7 @@
 	
 	/* name of the PC */
 	[arguments addObject: @"-cocoaname"];
-	[arguments addObject: [[pc objectForKey:@"PC Data"] objectForKey:@"name"]];	
+	[arguments addObject: [[[pc objectForKey:@"PC Data"] objectForKey:@"name"] stringByAppendingString:@" (Standalone Mode)"]];	
         
     for(i=0; i < [arguments count]; i++) {
         if([[arguments objectAtIndex:i] isEqualTo:@"-hda"] || [[arguments objectAtIndex:i] isEqualTo:@"-hdb"] || [[arguments objectAtIndex:i] isEqualTo:@"-hdc"] || [[arguments objectAtIndex:i] isEqualTo:@"-hdd"] || [[arguments objectAtIndex:i] isEqualTo:@"-fda"] || [[arguments objectAtIndex:i] isEqualTo:@"-fdb"] || [[arguments objectAtIndex:i] isEqualTo:@"-cdrom"]) {
