@@ -1,3 +1,8 @@
+Q-0.9.0d77
+[fix] build_ppc.sh MACOSX_DEPLOYMENT_TARGET set to 10.3 for ppc (aka panther bug)
+[fix] build_ppc.sh/build_i386.sh --target-list updated
+[fix] NewPCAssistant: Live CD
+
 Q-0.9.0d76
 [fix] preferences: log output to console
 [fix] Localization: nibs fixes/German
