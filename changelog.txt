@@ -1,3 +1,8 @@
+Q-0.9.0d78
+[new] tools: localizationStringsUpdate
+[new] update_localization.sh scrip
+[new] editPC added -smp option
+
 Q-0.9.0d77
 [fix] build_ppc.sh MACOSX_DEPLOYMENT_TARGET set to 10.3 for ppc (aka panther bug)
 [fix] build_ppc.sh/build_i386.sh --target-list updated

@@ -44,6 +44,7 @@
 	IBOutlet NSPopUpButton *popUpButtonSmbFilesharing;
 	IBOutlet NSPopUpButton *popUpButtonVGA;
 	IBOutlet NSPopUpButton *popUpButtonCPU;
+	IBOutlet NSPopUpButton *popUpButtonSMP;
 	IBOutlet NSPopUpButton *popUpButtonFda;
 	IBOutlet NSPopUpButton *popUpButtonHda;
 	IBOutlet NSPopUpButton *popUpButtonHdb;

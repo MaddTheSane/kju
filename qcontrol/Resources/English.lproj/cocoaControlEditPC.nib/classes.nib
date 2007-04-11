@@ -50,6 +50,7 @@
                 popUpButtonHdd = NSPopUpButton; 
                 popUpButtonInitrd = NSPopUpButton; 
                 popUpButtonKernel = NSPopUpButton; 
+                popUpButtonSMP = NSPopUpButton; 
                 popUpButtonSmbFilesharing = NSPopUpButton; 
                 popUpButtonVGA = NSPopUpButton; 
                 qSender = id; 
