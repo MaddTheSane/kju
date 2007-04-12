@@ -202,5 +202,28 @@
 	<string>Główne</string>
 	<key>viewHardware:title</key>
 	<string>Q %@ - Sprzęt</string>
+	
+	<key>updateThisPC:standardAlert</key>
+	<string>The Guest PC "%@" can not be updated and compressed, because it is in running or saved state.</string>
+	<key>updateThisPC:informativeText</key>
+	<string>First shutdown the Guest PC "%@" then export it.</string>
+	<key>updateThisPC:alertWithMessageText</key>
+	<string>Update and compress Guest PC</string>
+	<key>updateThisPC:informativeTextWithFormat</key>
+	<string>All Disks of this Guest PC will be converted to qcow2 format and compressed. The disks will not be mountable on OS X. The qcow2 format ist the only format that supports the saving of a running Guest PC.</string>
+	<key>updateThisPC:defaultButton</key>
+	<string>Continue</string>
+	<key>updateThisPC:alternateButton</key>
+	<string>Cancel</string>
+	<key>updatePC:progress:title</key>
+	<string>Status</string>
+	<key>updatePC:progress:text</key>
+	<string>Convert and compress...</string>
+	<key>updatePC:progress:config</key>
+	<string>This process will take some minutes.</string>
+	<key>updatePC:standardAlert:imageConvert</key>
+	<string>Conversion of Diskimage failed</string>
+	<key>updatePC:informativeText:imageConvert</key>
+	<string>Please check the Diskimage";
 </dict>
 </plist>

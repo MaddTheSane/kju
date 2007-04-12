@@ -103,6 +103,9 @@
 - (BOOL) importFreeOSZooPC:(NSString *)name withPath:(NSString *)path;
 - (IBAction) importVPC7PC:(id)sender;
 - (IBAction) importQemuXPCs:(id)sender;
+- (void) updatePC:(id)thisPC;
+- (void) updatePCAlertDidEnd:(NSAlert *)alert returnCode:(int)returnCode contextInfo:(id)contextInfo;
+- (IBAction) updateThisPC:(id)sender;
 - (void) exportPCToFlashDrive:(id)pc;
 - (IBAction) exportThisPCToFlashDrive:(id)sender;
 - (void) importPCFromFlashDrive:(NSString *)filename;

@@ -25,6 +25,7 @@
                 openFreeOSDownloader = id; 
                 showPreferences = id; 
                 tableDoubleClick = id; 
+                updateThisPC = id; 
             }; 
             CLASS = cocoaControlController; 
             LANGUAGE = ObjC; 
