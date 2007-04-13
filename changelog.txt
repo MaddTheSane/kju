@@ -1,3 +1,7 @@
+Q-0.9.0d82
+[fix] enable log to console (cordney*)
+[fix] cocoaDownload.nib adapted for German translation
+
 Q-0.9.0d81
 [fix] "#define kju_debug 1" for verbous log messages (txs Andreas F for suggestion)
 [fix] added openbios-sparc32 to sparc package (txs Andreas F)

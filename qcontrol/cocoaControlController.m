@@ -35,9 +35,10 @@
     [[NSUserDefaults standardUserDefaults] registerDefaults:[[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:
         [NSString stringWithString:@"Quartz"], /* enable Quartz by default */
         [NSNumber numberWithBool:TRUE], /* enable search for updates */
+        [NSNumber numberWithBool:FALSE], /* disable log to console */
         [@"~/Documents/QEMU" stringByExpandingTildeInPath], /* standart path */
         nil
-    ] forKeys:[NSArray arrayWithObjects:@"display", @"enableCheckForUpdates", @"dataPath", nil]]];
+    ] forKeys:[NSArray arrayWithObjects:@"display", @"enableCheckForUpdates", @"enableLogToConsole", @"dataPath", nil]]];
     userDefaults = [NSUserDefaults standardUserDefaults];
 
     /* compatibility with old prefferences */
@@ -359,12 +360,8 @@
         // something is wrong here :-)
         [[thisPC objectForKey:@"PC Data"] setObject:@"shutdown" forKey:@"state"];
         
-        /* error management here - display the crash output of qemu
-          (if the standard output is a pipe)
-          we avoid checking the user defaults for debug option because 
-          the user could have changed the value while running a PC
-        */
-        if([[[pcsTasks objectForKey:[[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]] standardOutput] isMemberOfClass:[NSPipe class]]) {
+        /* error management here - display the crash output of qemu */
+        if(![userDefaults boolForKey:@"enableLogToConsole"]) {
 
             NSData * pipedata;
 
@@ -1838,7 +1835,7 @@
     [arguments release];
     
     // check the user defaults
-    if([[userDefaults objectForKey:@"debug"] isEqual:[NSNumber numberWithBool:0]]) {
+    if(![userDefaults boolForKey:@"enableLogToConsole"]) {
         // prepare nstask output to grab exit codes and display a standardAlert when the qemu instance crashed
         NSPipe * pipe = [[NSPipe alloc] init];
         [task setStandardOutput: pipe];
