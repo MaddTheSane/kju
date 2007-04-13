@@ -125,7 +125,7 @@ int main (int argc, const char * argv[]) {
         if (!(translationString = [translation objectForKey:key])) {
             translationString = [original objectForKey:key];
         }
-        [output appendFormat:@"/* %@ */\n\"%@\" = \"%@\"\n\n", [comments objectForKey:key], [original objectForKey:key], translationString];
+        [output appendFormat:@"/* %@ */\n\"%@\" = \"%@\";\n\n", [comments objectForKey:key], [original objectForKey:key], translationString];
     }
     written = [output writeToFile:[[[NSProcessInfo processInfo] arguments] objectAtIndex:3] atomically:NO encoding:NSUnicodeStringEncoding error:&error];
     if (!written && error) {
