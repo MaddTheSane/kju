@@ -783,7 +783,9 @@
     ] forKeys:[NSArray arrayWithObjects:@"About", @"Arguments", @"PC Data", @"Temporary", @"Version", nil]] retain];
     
     [[thisPC objectForKey:@"Temporary"] setObject:path forKey:@"-cocoapath"];
+#if kju_debug
     NSLog(@"-cocoapath: %@", path);
+#endif
     [[thisPC objectForKey:@"PC Data"] setObject:name forKey:@"name"];
     
     // TODO: use README file to get HD and other arguments 
@@ -1098,7 +1100,9 @@
         
         /* set the -cocoapath */
         [[thisPC objectForKey:@"Temporary"] setObject:[NSString stringWithFormat:@"%@/%@.qvm", [userDefaults objectForKey:@"dataPath"], name] forKey:@"-cocoapath"];
+#if kju_debug
         NSLog(@"cocoapath: %@", [[thisPC objectForKey:@"Temporary"] objectForKey:@"-cocoapath"]);
+#endif
         
         /* Create .qvm */
         [fileManager createDirectoryAtPath:[[thisPC objectForKey:@"Temporary"] objectForKey:@"-cocoapath"] attributes: nil];
@@ -1128,10 +1132,14 @@
                 [[thisPC objectForKey:@"Arguments"] appendFormat:[NSString stringWithFormat:@" -%@ %@",[hds objectAtIndex:ii], [[[qemux objectAtIndex:i] objectForKey:[hds objectAtIndex:ii]] lastPathComponent]]];
                 // copy over into .qvm
                 [fileManager copyPath:[[qemux objectAtIndex:i] objectForKey:[hds objectAtIndex:ii]] toPath:[NSString stringWithFormat:@"%@/%@",  [[thisPC objectForKey:@"Temporary"] objectForKey:@"-cocoapath"], [[[qemux objectAtIndex:i] objectForKey:[hds objectAtIndex:ii]] lastPathComponent]] handler:nil];
+#if kju_debug
                 NSLog(@"copy allowed, done.");
+#endif
             }
+#if kju_debug
             NSLog(@"hd: %@", [[qemux objectAtIndex:i] objectForKey:[hds objectAtIndex:ii]]);
             NSLog(@"copy from %@ to %@", [[qemux objectAtIndex:i] objectForKey:[hds objectAtIndex:ii]], [NSString stringWithFormat:@"%@/%@",    [[thisPC objectForKey:@"Temporary"] objectForKey:@"-cocoapath"], [[[qemux objectAtIndex:i] objectForKey:[hds objectAtIndex:ii]] lastPathComponent]]);
+#endif
         }
         
         // Boot param
@@ -1560,7 +1568,9 @@
     }
     
     file = [filename stringByAppendingPathComponent:[@"Contents/Resources/Guest" stringByAppendingPathComponent:file]];
+#if kju_debug
     NSLog(@"file: %@", file);
+#endif
     
     /* ready now, show progressPanel */
     [progressTitle setStringValue: NSLocalizedStringFromTable(@"importPCFromFlashDrive:progressPanel:title", @"Localizable", @"cocoaControlController")];
@@ -1699,7 +1709,7 @@
 
 - (void) startPC:(NSString *)filename
 {
-    NSLog(@"cocoaControlController: startPC:%@", filename);
+//  NSLog(@"cocoaControlController: startPC:%@", filename);
     
     NSData *data = [NSData dataWithContentsOfFile:[NSString stringWithFormat:@"%@/configuration.plist", filename]];
     NSMutableDictionary *thisPC;
@@ -1812,9 +1822,11 @@
         [arguments addObject: @"kju"];
     }
 
+#if kju_debug
     for (i = 0; i < [arguments count]; i++)
         NSLog(@"Argument: %@", [arguments objectAtIndex:i]);
-    
+#endif
+
     /* save Status */
     [[thisPC objectForKey:@"PC Data"] setObject:@"running" forKey:@"state"];
     [self savePCConfiguration:thisPC];

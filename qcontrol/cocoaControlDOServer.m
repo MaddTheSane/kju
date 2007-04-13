@@ -1,7 +1,7 @@
 /*
  * QEMU Cocoa Control Distributed Object Server
  * 
- * Copyright (c) 2006 Mike Kronenberg
+ * Copyright (c) 2006 - 2007 Mike Kronenberg
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,59 +34,57 @@
 
 - (id) init
 {
-//	  NSLog(@"cocoaControlDOServer: init:%@ withName:%@\n", [guest description], name);
+//    NSLog(@"cocoaControlDOServer: init:%@ withName:%@\n", [guest description], name);
 
-	[super init];
+    [super init];
 
-	NSConnection *theConnection;
-	theConnection = [NSConnection defaultConnection];
-	[theConnection setRootObject:self];
+    NSConnection *theConnection;
+    theConnection = [NSConnection defaultConnection];
+    [theConnection setRootObject:self];
 
-	if ([theConnection registerName:@"qdoserver"] == NO) {
-		NSLog(@"cocoaControlDOServer: could not establisch qcontrol server");
-	}
+    if ([theConnection registerName:@"qdoserver"] == NO) {
+        NSLog(@"cocoaControlDOServer: could not establisch qcontrol server");
+    }
 
-	guests = [[NSMutableDictionary alloc] init];
-	[guests retain];
-	
-	printf("finished init\n");
-	
-	return self;
+    guests = [[NSMutableDictionary alloc] init];
+    [guests retain];
+    
+    return self;
 }
 
 -(void) setSender:(id)sender
 {
-//	  NSLog(@"cocoaControlDOServer: setSender");
+//    NSLog(@"cocoaControlDOServer: setSender");
 
     qControl = sender;
 }
 
 - (BOOL) guestRegister: (id) guest withName: (NSString *) name
 {
-//	  NSLog(@"cocoaControlDOServer: registerGuest:%@ withName:%@\n", [guest description], name);
-	
-	if ([guests objectForKey:name] == nil) {
-		[guests setObject:guest forKey:name];
-//		NSLog(@"OK");
-		return TRUE;
-	} else {
-		NSLog(@"cocoaControlDOServer: guestRegister: failed");
-		return FALSE;
-	}
+//    NSLog(@"cocoaControlDOServer: registerGuest:%@ withName:%@\n", [guest description], name);
+    
+    if ([guests objectForKey:name] == nil) {
+        [guests setObject:guest forKey:name];
+//      NSLog(@"OK");
+        return TRUE;
+    } else {
+        NSLog(@"cocoaControlDOServer: guestRegister: failed");
+        return FALSE;
+    }
 }
 
 - (BOOL) guestUnregisterWithName: (NSString *) name
 {
-//	  NSLog(@"cocoaControlDOServer: unregisterGuestWithName:%@\n", name);
-	
-	if ([guests objectForKey:name] != nil) {
-		[guests removeObjectForKey:name];
-//		NSLog(@"OK");
-		return TRUE;
-	} else {
-		NSLog(@"cocoaControlDOServer: guestUnregisterWithName: failed");
-		return FALSE;
-	}
+//    NSLog(@"cocoaControlDOServer: unregisterGuestWithName:%@\n", name);
+    
+    if ([guests objectForKey:name] != nil) {
+        [guests removeObjectForKey:name];
+//      NSLog(@"OK");
+        return TRUE;
+    } else {
+        NSLog(@"cocoaControlDOServer: guestUnregisterWithName: failed");
+        return FALSE;
+    }
 }
 
 - (BOOL) guestSwitch: (NSString *) name fullscreen:(BOOL)fullscreen previousGuestName:(NSString *)previousGuestName
@@ -96,7 +94,7 @@
     int i;
     NSArray *keys = [guests allKeys];
     int a = [keys count] - 1;
-    
+
     if (previousGuestName) {
         for (i = 0; i < [keys count]; i++) {
             if ([[keys objectAtIndex:i] isEqual:previousGuestName]) {
@@ -110,25 +108,34 @@
             }
         }
     }
-    
+
     ProcessSerialNumber psn;
     id obj = nil;
     BOOL nFullscreen = FALSE;
-    
+
     if (a > -1) {
-		/* move QEMU to front */
-		GetProcessForPID( [[[qControl pcsTasks] objectForKey:[keys objectAtIndex:a]] processIdentifier], &psn );
-		obj = [guests objectForKey:[keys objectAtIndex:a]];
-		if ([obj fullscreen])
+        /* move QEMU to front */
+        GetProcessForPID( [[[qControl pcsTasks] objectForKey:[keys objectAtIndex:a]] processIdentifier], &psn );
+        obj = [guests objectForKey:[keys objectAtIndex:a]];
+        if ([obj fullscreen])
             nFullscreen = TRUE;
     } else
         GetProcessForPID( [[NSProcessInfo processInfo ] processIdentifier ], &psn );
-    
+
     if (fullscreen||nFullscreen) {
-        /* setup transition */        CGSConnection cid = _CGSDefaultConnection();        int transitionHandle = -1;        CGSTransitionSpec transitionSpecifications;
-        transitionSpecifications.type = 7;          //transition;
+        /* setup transition */
+        CGSConnection cid = _CGSDefaultConnection();
+        int transitionHandle = -1;
+        CGSTransitionSpec transitionSpecifications;
+
+        transitionSpecifications.type = 7;          //transition;
         transitionSpecifications.option = 2;        //option;
-        transitionSpecifications.wid = 0;           //wid        transitionSpecifications.backColour = 0;    //background color        /* freeze desktop: OSStatus CGSNewTransition(const CGSConnection cid, const CGSTransitionSpec* transitionSpecifications, int *transitionHandle) */        CGSNewTransition(cid, &transitionSpecifications, &transitionHandle);                            
+        transitionSpecifications.wid = 0;           //wid
+        transitionSpecifications.backColour = 0;    //background color
+
+        /* freeze desktop: OSStatus CGSNewTransition(const CGSConnection cid, const CGSTransitionSpec* transitionSpecifications, int *transitionHandle) */
+        CGSNewTransition(cid, &transitionSpecifications, &transitionHandle);
+
         /* change windows */
         if (nFullscreen)
             [obj guestUnhide];
@@ -142,10 +149,12 @@
             [[qControl mainWindow] orderWindow:NSWindowAbove relativeTo:[[guests objectForKey:name] guestWindowNumber]];
             SetFrontProcess( &psn );
         }
-                      
-        /* wait */        usleep(10000);
-                       
-        /* run transition: OSStatus CGSInvokeTransition(const CGSConnection cid, int transitionHandle, float duration) */        CGSInvokeTransition(cid, transitionHandle, 1.0);
+
+        /* wait */
+        usleep(10000);
+
+        /* run transition: OSStatus CGSInvokeTransition(const CGSConnection cid, int transitionHandle, float duration) */
+        CGSInvokeTransition(cid, transitionHandle, 1.0);
         
     } else {
         if (a > -1) //avoid activating "Q Control"
@@ -155,8 +164,8 @@
             SetFrontProcess( &psn );
         }
     }
-    
-	return true;
+
+    return true;
 }
 
 - (BOOL) guestSwitch: (NSString *) name fullscreen:(BOOL)fullscreen nextGuestName:(NSString *)nextGuestName
@@ -166,7 +175,7 @@
     int i;
     int a = 0;
     NSArray *keys = [guests allKeys];
-    
+
     if (nextGuestName) {
         for (i = 0; i < [keys count]; i++) {
             if ([[keys objectAtIndex:i] isEqual:nextGuestName]) {
@@ -180,25 +189,34 @@
             }
         }
     }
-    
+
     ProcessSerialNumber psn;
     id obj = nil;
     BOOL nFullscreen = FALSE;
-    
+
     if (a < [keys count]) {
-		/* move QEMU to front */
-		GetProcessForPID( [[[qControl pcsTasks] objectForKey:[keys objectAtIndex:a]] processIdentifier], &psn );
-		obj = [guests objectForKey:[keys objectAtIndex:a]];
-		if ([obj fullscreen])
+        /* move QEMU to front */
+        GetProcessForPID( [[[qControl pcsTasks] objectForKey:[keys objectAtIndex:a]] processIdentifier], &psn );
+        obj = [guests objectForKey:[keys objectAtIndex:a]];
+        if ([obj fullscreen])
             nFullscreen = TRUE;
     } else
         GetProcessForPID( [[NSProcessInfo processInfo ] processIdentifier ], &psn );
-    
+
     if (fullscreen||nFullscreen) {
-        /* setup transition */        CGSConnection cid = _CGSDefaultConnection();        int transitionHandle = -1;        CGSTransitionSpec transitionSpecifications;
-        transitionSpecifications.type = 7;          //transition;
+        /* setup transition */
+        CGSConnection cid = _CGSDefaultConnection();
+        int transitionHandle = -1;
+        CGSTransitionSpec transitionSpecifications;
+
+        transitionSpecifications.type = 7;          //transition;
         transitionSpecifications.option = 1;        //option;
-        transitionSpecifications.wid = 0;           //wid        transitionSpecifications.backColour = 0;    //background color        /* freeze desktop: OSStatus CGSNewTransition(const CGSConnection cid, const CGSTransitionSpec* transitionSpecifications, int *transitionHandle) */        CGSNewTransition(cid, &transitionSpecifications, &transitionHandle);                            
+        transitionSpecifications.wid = 0;           //wid
+        transitionSpecifications.backColour = 0;    //background color
+
+        /* freeze desktop: OSStatus CGSNewTransition(const CGSConnection cid, const CGSTransitionSpec* transitionSpecifications, int *transitionHandle) */
+        CGSNewTransition(cid, &transitionSpecifications, &transitionHandle);
+                            
         /* change windows */
         if (nFullscreen)
             [obj guestUnhide];
@@ -212,11 +230,13 @@
             [[qControl mainWindow] orderWindow:NSWindowAbove relativeTo:[[guests objectForKey:name] guestWindowNumber]];
             SetFrontProcess( &psn );
         }
-                      
-        /* wait */        usleep(10000);
-                       
-        /* run transition: OSStatus CGSInvokeTransition(const CGSConnection cid, int transitionHandle, float duration) */        CGSInvokeTransition(cid, transitionHandle, 1.0);
-        
+
+        /* wait */
+        usleep(10000);
+
+        /* run transition: OSStatus CGSInvokeTransition(const CGSConnection cid, int transitionHandle, float duration) */
+        CGSInvokeTransition(cid, transitionHandle, 1.0);
+
     } else {
         if (a < [keys count]) //avoid activating "Q Control"
             SetFrontProcess( &psn );
@@ -226,118 +246,118 @@
         }
     }
     
-	return true;
+    return true;
 }
 
 - (int) guestWindowLevel: (NSString *) guest
 {
-//	NSLog(@"cocoaControlDOServer: guestWindowLevel: %@", guest);
+//  NSLog(@"cocoaControlDOServer: guestWindowLevel: %@", guest);
 
-	id obj = [guests objectForKey:guest];
-	if (obj != nil) {
-//		NSLog(@"OK");
-		return [obj guestWindowLevel];
-	} else {
-		NSLog(@"cocoaControlDOServer: guestWindowLevel: failed");
-		return FALSE;
-	}
+    id obj = [guests objectForKey:guest];
+    if (obj != nil) {
+//      NSLog(@"OK");
+        return [obj guestWindowLevel];
+    } else {
+        NSLog(@"cocoaControlDOServer: guestWindowLevel: failed");
+        return FALSE;
+    }
 }
 
 - (int) guestWindowNumber: (NSString *) guest
 {
-//	NSLog(@"cocoaControlDOServer: guestWindowNumber: %@", guest);
+//  NSLog(@"cocoaControlDOServer: guestWindowNumber: %@", guest);
 
-	id obj = [guests objectForKey:guest];
-	if (obj != nil) {
-//		NSLog(@"OK");
-		return [obj guestWindowNumber];
-	} else {
-		NSLog(@"cocoaControlDOServer: guestWindowNumber: failed");
-		return FALSE;
-	}
+    id obj = [guests objectForKey:guest];
+    if (obj != nil) {
+//      NSLog(@"OK");
+        return [obj guestWindowNumber];
+    } else {
+//        NSLog(@"cocoaControlDOServer: guestWindowNumber: failed");
+        return FALSE;
+    }
 }
 
 - (BOOL) guestOrderFrontRegardless: (NSString *) guest
 {
-//	NSLog(@"cocoaControlDOServer: bringToFront: %@", guest);
+//  NSLog(@"cocoaControlDOServer: bringToFront: %@", guest);
 
-	id obj = [guests objectForKey:guest];
-	if (obj != nil) {
-//		NSLog(@"OK");
-		return [obj guestOrderFrontRegardless];
-	} else {
-		NSLog(@"cocoaControlDOServer: guestOrderFrontRegardless");
-		return FALSE;
-	}
+    id obj = [guests objectForKey:guest];
+    if (obj != nil) {
+//      NSLog(@"OK");
+        return [obj guestOrderFrontRegardless];
+    } else {
+        NSLog(@"cocoaControlDOServer: guestOrderFrontRegardless");
+        return FALSE;
+    }
 }
 
 - (BOOL) guestOrderWindow:(NSWindowOrderingMode)place relativeTo:(int)otherWindowNumber guest:(NSString *) guest
 {
-//	NSLog(@"cocoaControlDOServer: guestOrderWindow: %@", guest);
+//  NSLog(@"cocoaControlDOServer: guestOrderWindow: %@", guest);
 
-	id obj = [guests objectForKey:guest];
-	if (obj != nil) {
-//		NSLog(@"OK");
-		return [obj guestOrderWindow:place relativeTo:otherWindowNumber];
-	} else {
-		NSLog(@"cocoaControlDOServer: guestOrderWindow: failed");
-		return FALSE;
-	}
+    id obj = [guests objectForKey:guest];
+    if (obj != nil) {
+//      NSLog(@"OK");
+        return [obj guestOrderWindow:place relativeTo:otherWindowNumber];
+    } else {
+        NSLog(@"cocoaControlDOServer: guestOrderWindow: failed");
+        return FALSE;
+    }
 }
 
 - (BOOL) guestHide: (NSString *) guest
 {
-//	NSLog(@"cocoaControlDOServer: hide: %@", guest);
+//  NSLog(@"cocoaControlDOServer: hide: %@", guest);
 
-	id obj = [guests objectForKey:guest];
-	if (obj != nil) {
-//		NSLog(@"OK");
-		return [obj guestHide];
-	} else {
-		NSLog(@"cocoaControlDOServer: guestHide: failed");
-		return FALSE;
-	}
+    id obj = [guests objectForKey:guest];
+    if (obj != nil) {
+//      NSLog(@"OK");
+        return [obj guestHide];
+    } else {
+        NSLog(@"cocoaControlDOServer: guestHide: failed");
+        return FALSE;
+    }
 }
 
 - (BOOL) guestUnhide: (NSString *) guest
 {
-//	NSLog(@"cocoaControlDOServer: show: %@", guest);
+//  NSLog(@"cocoaControlDOServer: show: %@", guest);
 
-	id obj = [guests objectForKey:guest];
-	if (obj != nil) {
-//		NSLog(@"OK");
-		return [obj guestUnhide];
-	} else {
-		NSLog(@"cocoaControlDOServer: cocoaControlDOServer: failed");
-		return FALSE;
-	}
+    id obj = [guests objectForKey:guest];
+    if (obj != nil) {
+//      NSLog(@"OK");
+        return [obj guestUnhide];
+    } else {
+        NSLog(@"cocoaControlDOServer: cocoaControlDOServer: failed");
+        return FALSE;
+    }
 }
 
 - (BOOL) guestPause: (NSString *) guest
 {
-//	NSLog(@"cocoaControlDOServer: pause: %@", guest);
+//  NSLog(@"cocoaControlDOServer: pause: %@", guest);
 
-	id obj = [guests objectForKey:guest];
-	if (obj != nil) {
-//		NSLog(@"OK");
-		return [obj guestPause];
-	} else {
-		NSLog(@"cocoaControlDOServer: cocoaControlDOServer: failed");
-		return FALSE;
-	}
+    id obj = [guests objectForKey:guest];
+    if (obj != nil) {
+//      NSLog(@"OK");
+        return [obj guestPause];
+    } else {
+        NSLog(@"cocoaControlDOServer: cocoaControlDOServer: failed");
+        return FALSE;
+    }
 }
 
 - (BOOL) guestStop: (NSString *) guest
 {
-//	NSLog(@"cocoaControlDOServer: stop: %@", guest);
+//  NSLog(@"cocoaControlDOServer: stop: %@", guest);
 
-	id obj = [guests objectForKey:guest];
-	if (obj != nil) {
-//		NSLog(@"OK");
-		return [obj guestStop];
-	} else {
-		NSLog(@"cocoaControlDOServer: cocoaControlDOServer: failed");
-		return FALSE;
-	}
+    id obj = [guests objectForKey:guest];
+    if (obj != nil) {
+//      NSLog(@"OK");
+        return [obj guestStop];
+    } else {
+        NSLog(@"cocoaControlDOServer: cocoaControlDOServer: failed");
+        return FALSE;
+    }
 }
 @end
