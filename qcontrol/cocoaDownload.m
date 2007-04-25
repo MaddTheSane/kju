@@ -32,6 +32,7 @@
 {
     isHTTP = YES;
     isBT = NO;
+    isQVM = NO;
     
     // do initialization here...
     theDownload = nil;
@@ -66,6 +67,11 @@
     [aName retain];
     [name release];
     name = aName;
+}
+
+- (void) setQVM:(BOOL)val
+{
+    isQVM = val;
 }
 
 - (float) getExpectedData
@@ -103,6 +109,7 @@
 
 - (NSString *) getSavePath
 {
+    NSLog(@"saveP: %@", savePath);
     return savePath;
 }
 
@@ -129,8 +136,13 @@
 
 - (void) startBTDownload
 {
+    NSString * torrentPath;
     // download the torrent file
-    NSString * torrentPath = [[self createQVM] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.torrent", name]];
+    if(isQVM)
+        torrentPath = [[preferences objectForKey:@"dataPath"] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.torrent", name]];
+    else
+        torrentPath = [[self createQVM] stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.torrent", name]];
+
     // we need to temporarily save the qvm path here, cause we need it later
     savePath = torrentPath;
     [savePath retain];
@@ -188,11 +200,15 @@
 
 - (void) checkDownloadStarted
 {
+#if kju_debug
     NSLog(@"check: receivedBytes %f", receivedContentLength);
+#endif
     if(receivedContentLength > 0.0) {
         // download started
     } else {
+#if kju_debug
         NSLog(@"download cancelled.");
+#endif
         // download did not start for 60 seconds, cancel and inform the user
         NSString * errorDescription = NSLocalizedStringFromTable(@"checkDownloadStarted:errorDescription", @"Localizable", @"cocoaDownload");
         [[NSNotificationCenter defaultCenter] postNotificationName:@"DownloadDidFail" object:self userInfo:[NSDictionary dictionaryWithObject:errorDescription forKey:@"ERROR_DESCRIPTION"]];
@@ -205,8 +221,8 @@
 - (void) stopDownload
 {
     if(isHTTP) {
-        [theDownload cancel];
-        [theDownload release];
+        //[theDownload cancel];
+        //[theDownload release];
     } else if(isBT) {
         tr_torrentStop( tHandle );
         tr_torrentClose( fHandle, tHandle );
@@ -239,8 +255,13 @@
 }
 
 - (void)download:(NSURLDownload *)download decideDestinationWithSuggestedFilename:(NSString *)filename
-{    
-    NSString * destinationFilename=[[self createQVM] stringByAppendingPathComponent:filename];
+{
+    NSString * destinationFilename;
+    if(isQVM)
+        destinationFilename = [[preferences objectForKey:@"dataPath"] stringByAppendingPathComponent:filename];
+    else
+        destinationFilename=[[self createQVM] stringByAppendingPathComponent:filename];
+
     savePath = destinationFilename;
     [savePath retain];
     [download setDestination:destinationFilename allowOverwrite:YES];
@@ -260,7 +281,7 @@
     [download release];
     // we should inform the controller about this
     [[NSNotificationCenter defaultCenter] postNotificationName:@"DownloadDidFinish" object:self];
-    NSLog(@"Download did finish.");
+    //NSLog(@"Download did finish.");
 }
 
 - (void)download:(NSURLDownload *)download didFailWithError:(NSError *)error

@@ -2,6 +2,102 @@
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <array>
+    <dict>
+		<key>Author</key>
+		<string>Mike Kronenberg for kju-app.org</string>
+		<key>Category</key>
+		<string>FreeDOS</string>
+		<key>Description</key>
+		<string>FreeDOS aims to be a complete, free, 100% MS-DOS compatible operating system (mostly achieved.) Today, FreeDOS is ideal for anyone who wants to bundle a version of DOS without having to pay a royalty for use of DOS. FreeDOS will also work on old hardware, in DOS emulators, and in embedded systems. FreeDOS is also an invaluable resource for people who would like to develop their own operating system. While there are many free operating systems out there, no other free DOS-compatible operating system exists.</string>
+		<key>DownloadSize</key>
+		<string>4</string>
+		<key>DownloadURL</key>
+		<string>http://www.kberg.ch/q/guests/FreeDOS100.qvm.zip</string>
+		<key>InfopageURL</key>
+		<string>http://www.kju-app.org/proj/wiki/FreeDOS1</string>
+		<key>InstallType</key>
+		<string>Preinstalled</string>
+		<key>Name</key>
+		<string>FreeDOS</string>
+		<key>Torrent</key>
+		<integer>0</integer>
+		<key>Version</key>
+		<string>1.0</string>
+		<key>Kju</key>
+		<integer>1</integer>
+	</dict>
+	<dict>
+		<key>Author</key>
+		<string>Mike Kronenberg for kju-app.org</string>
+		<key>Category</key>
+		<string>ReactOS</string>
+		<key>Description</key>
+		<string>The ReactOS project is dedicated to making Free Software available to everyone by providing a ground-up implementation of a Microsoft Windows XP compatible operating system. ReactOS aims to achieve complete binary compatibility with both applications and device drivers meant for NT and XP operating systems, by using a similar architecture and providing a complete and equivalent public interface.</string>
+		<key>DownloadSize</key>
+		<string>20</string>
+		<key>DownloadURL</key>
+		<string>http://www.kberg.ch/q/guests/ReactOS031.qvm.zip</string>
+		<key>InfopageURL</key>
+		<string>http://www.kju-app.org/proj/wiki/ReactOS031</string>
+		<key>InstallType</key>
+		<string>Preinstalled</string>
+		<key>Name</key>
+		<string>ReactOS</string>
+		<key>Torrent</key>
+		<integer>0</integer>
+		<key>Version</key>
+		<string>0.3.1</string>
+		<key>Kju</key>
+		<integer>1</integer>
+	</dict>
+	<dict>
+		<key>Author</key>
+		<string>Mike Kronenberg for kju-app.org</string>
+		<key>Category</key>
+		<string>Ubuntu</string>
+		<key>Description</key>
+		<string>"Ubuntu" is an ancient African word, meaning "humanity to others". Ubuntu also means "I am what I am because of who we all are". The Ubuntu Linux distribution brings the spirit of Ubuntu to the software world. Ubuntu is a complete Linux-based operating system, freely available with both community and professional support. It is developed by a large community and we invite you to participate too!</string>
+		<key>DownloadSize</key>
+		<string>175</string>
+		<key>DownloadURL</key>
+		<string>http://www.kberg.ch/q/guests/Ubuntu606Server.qvm.zip</string>
+		<key>InfopageURL</key>
+		<string>http://www.kju-app.org/proj/wiki/UbuntuDapperDrakeServer</string>
+		<key>InstallType</key>
+		<string>Preinstalled</string>
+		<key>Name</key>
+		<string>Ubuntu LTS Server</string>
+		<key>Torrent</key>
+		<integer>0</integer>
+		<key>Version</key>
+		<string>6.0.6 (Dapper Drake)</string>
+		<key>Kju</key>
+		<integer>1</integer>
+	</dict>
+	<dict>
+		<key>Author</key>
+		<string>Mike Kronenberg for kju-app.org</string>
+		<key>Category</key>
+		<string>Ubuntu</string>
+		<key>Description</key>
+		<string>"Ubuntu" is an ancient African word, meaning "humanity to others". Ubuntu also means "I am what I am because of who we all are". The Ubuntu Linux distribution brings the spirit of Ubuntu to the software world. Ubuntu is a complete Linux-based operating system, freely available with both community and professional support. It is developed by a large community and we invite you to participate too!</string>
+		<key>DownloadSize</key>
+		<string>713</string>
+		<key>DownloadURL</key>
+		<string>http://www.kberg.ch/q/guests/Ubuntu610.qvm.zip</string>
+		<key>InfopageURL</key>
+		<string>http://www.kju-app.org/proj/wiki/UbuntuEdgyEft</string>
+		<key>InstallType</key>
+		<string>Preinstalled</string>
+		<key>Name</key>
+		<string>Ubuntu Desktop</string>
+		<key>Torrent</key>
+		<integer>0</integer>
+		<key>Version</key>
+		<string>6.10 (Edgy Eft)</string>
+		<key>Kju</key>
+		<integer>1</integer>
+	</dict>
 	<dict>
 		<key>Author</key>
 		<string>Jean-Michel Pouré for FreeOSZoo</string>
@@ -16,7 +112,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Darwin701-x86-20040626.tar.bz2</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>Darwin</string>
 		<key>Torrent</key>
@@ -38,7 +134,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Freebsd_5.4_current.zip</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>FreeBSD</string>
 		<key>Torrent</key>
@@ -60,7 +156,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Freebsd_6_0_x86.tar</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>FreeBSD</string>
 		<key>Torrent</key>
@@ -82,7 +178,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Freebsd_6.1rel.qcow.img20060526.tar</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>FreeBSD</string>
 		<key>Torrent</key>
@@ -104,7 +200,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Freedos-beta9rc5.tar.tar</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>FreeDOS</string>
 		<key>Torrent</key>
@@ -126,7 +222,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Arch-linux.qcow.img.20060428.tar</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>ArchLinux</string>
 		<key>Torrent</key>
@@ -148,7 +244,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Archlinux_0.7.2.zip</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>ArchLinux</string>
 		<key>Torrent</key>
@@ -170,7 +266,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Arklinux2005.2_rc2_20051001.tar</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>ArkLinux</string>
 		<key>Torrent</key>
@@ -192,7 +288,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/CentOS4image.qcow</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>CentOS</string>
 		<key>Torrent</key>
@@ -214,7 +310,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Sarge_2005_06_18.tar</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>Debian</string>
 		<key>Torrent</key>
@@ -236,7 +332,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Debian-31r1a-i386-20060325.tar</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>Debian</string>
 		<key>Torrent</key>
@@ -258,7 +354,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Eucaristos-0.0.3.img.tar.gz</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>EucaristOS</string>
 		<key>Torrent</key>
@@ -280,7 +376,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Fedora-core2-x86.tar.bz2</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>Fedora</string>
 		<key>Torrent</key>
@@ -302,7 +398,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Fedora_core_4_20051003.tar</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>Fedora</string>
 		<key>Torrent</key>
@@ -324,7 +420,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Gentoo-2006.0.qcow.img20060504.tar</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>Gentoo</string>
 		<key>Torrent</key>
@@ -346,7 +442,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Kubuntu_breezy_20051026.tar</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>Kubuntu</string>
 		<key>Torrent</key>
@@ -368,7 +464,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Mandrake-10.0-x86.tar.bz2</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>Mandrake</string>
 		<key>Torrent</key>
@@ -390,7 +486,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Slackware_10_2_20051106.tar</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>Slackware</string>
 		<key>Torrent</key>
@@ -412,7 +508,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/SUSE-9.1-personal-x86.tar.bz2</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>Suse</string>
 		<key>Torrent</key>
@@ -434,7 +530,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Suse_10rc1_20051001.tar</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>Suse</string>
 		<key>Torrent</key>
@@ -456,7 +552,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Trixbox_1.1_x86.zip</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>Trixbox</string>
 		<key>Torrent</key>
@@ -478,7 +574,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Ubuntu-warty.zoo.tar.bz2</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>Ubuntu</string>
 		<key>Torrent</key>
@@ -500,7 +596,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Ubuntu_5.10_amd64_20060314.tar</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>Ubuntu</string>
 		<key>Torrent</key>
@@ -522,7 +618,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Ubuntu-6.06-desktop-x86.qcow.img.zip</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>Ubuntu</string>
 		<key>Torrent</key>
@@ -544,7 +640,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Minix3_1_1_x86.tar</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>Minix</string>
 		<key>Torrent</key>
@@ -566,7 +662,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Netbsd_1.6.2_20040525.tar</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>NetBSD</string>
 		<key>Torrent</key>
@@ -588,7 +684,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Netbsd_2.0.2_20050512.tar</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>NetBSD</string>
 		<key>Torrent</key>
@@ -610,7 +706,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Netbsd_2_1_x86.tar</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>NetBSD</string>
 		<key>Torrent</key>
@@ -632,7 +728,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Openbsd_3.7_20050511.tar</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>OpenBSD</string>
 		<key>Torrent</key>
@@ -654,7 +750,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Openbsd_3_8.tar</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>OpenBSD</string>
 		<key>Torrent</key>
@@ -676,7 +772,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Openbsd3.9-full.zip</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>OpenBSD</string>
 		<key>Torrent</key>
@@ -698,7 +794,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Opensolaris.tar</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>OpenSolaris</string>
 		<key>Torrent</key>
@@ -720,7 +816,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Pcbsd_082_20051010.tar</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>PcBSD</string>
 		<key>Torrent</key>
@@ -742,7 +838,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Plan9_060327.zip</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>Plan9</string>
 		<key>Torrent</key>
@@ -764,7 +860,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Reactos0.2.6-REL-qemu.zip</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>ReactOS</string>
 		<key>Torrent</key>
@@ -786,7 +882,7 @@
 		<key>InfopageURL</key>
 		<string>http://www.oszoo.org/wiki/index.php/Reactos0.2.7-REL-qemu.zip</string>
 		<key>InstallType</key>
-		<string>Preconfigured</string>
+		<string>Preinstalled</string>
 		<key>Name</key>
 		<string>ReactOS</string>
 		<key>Torrent</key>

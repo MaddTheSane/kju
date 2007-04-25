@@ -35,6 +35,7 @@
     
     BOOL isHTTP;
     BOOL isBT;
+    BOOL isQVM;
     
     float receivedContentLength;
     float expectedContentLength;
@@ -59,6 +60,7 @@
 // get and set methods
 - (void) setURL:(NSString *)aURL;
 - (void) setName:(NSString *)aName;
+- (void) setQVM:(BOOL)val;
 - (NSString *) getName;
 - (NSString *) getSavePath;
 

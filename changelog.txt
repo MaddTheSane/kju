@@ -1,3 +1,8 @@
+Q-0.9.0d83
+[fix] localization: German (downloader)
+[fix] downloader: show loading progress of list
+[new] downloader: added Guest PCs from kju-app.org for download to the list
+
 Q-0.9.0d82
 [fix] enable log to console (cordney*)
 [fix] cocoaDownload.nib adapted for German translation

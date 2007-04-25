@@ -770,6 +770,13 @@
 
 - (BOOL) importFreeOSZooPC:(NSString *)name withPath:(NSString *)path
 {
+//  NSLog(@"cocoaControlController: importFreeOSZooPC");
+    if([path isEqualTo: [userDefaults objectForKey: @"dataPath"]]) {
+        // Is considered to be a qvm which was extracted directly to the dataPath directory
+        [self loadConfigurations];
+        return YES;
+    }
+        
     NSMutableDictionary * thisPC = [[[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:
         [[NSMutableDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"Q", @"none", [NSDate date], @"Q guest PC from FreeOSZoo", nil] forKeys:[NSArray arrayWithObjects: @"Author", @"Copyright", @"Date", @"Description", nil]],
         [[NSMutableString alloc] initWithString:@" -m 128 -net user -boot c -localtime -smb ~/Desktop/Q Shared Files/"],
