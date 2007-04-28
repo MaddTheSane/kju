@@ -471,7 +471,8 @@
 - (void) setFullscreen:(id)sender;
 {
 //	NSLog(@"cocoaQemuWindow: setFullscreen");
-    [pc setFullscreen:[[pc contentView] toggleFullScreen]];
+    // show hint to exit fullscreen, fast os switch, toolbar
+    NSBeginAlertSheet(NSLocalizedStringFromTable(@"cocoa_refresh:showFullscreen:standardAlert", @"Localizable", @"cocoaQemu"),NSLocalizedStringFromTable(@"cocoa_refresh:showFullscreen:defaultButton", @"Localizable", @"cocoaQemu"),nil,nil,[pc pcWindow],pc,@selector(showFullscreenAlertSheetDidEnd:returnCode:contextInfo:),nil,nil,NSLocalizedStringFromTable(@"cocoa_refresh:showFullscreen:informativeText", @"Localizable", @"cocoaQemu"));
 }
 
 @end

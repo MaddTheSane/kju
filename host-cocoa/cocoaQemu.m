@@ -234,6 +234,13 @@ kern_return_t GetBSDPath( io_iterator_t mediaIterator, char *bsdPath, CFIndex ma
 	fullscreen = val;
 }
 
+- (void) showFullscreenAlertSheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(id)contextInfo
+{
+    // return code of no interest here, we just want to have fullscreen activated
+    [sheet orderOut:self];
+    [pc setFullscreen:[[pc contentView] toggleFullScreen]];
+}
+
 - (id) fullscreenController
 {
 // NSLog(@"cocoaQemu: fullscreenController");
@@ -1165,12 +1172,18 @@ void cocoa_refresh(DisplayState *ds)
 							
 								/* toggle fullscreen */
 								case 3: /* f key */
-									[pc setFullscreen:[[pc contentView] toggleFullScreen]];
-									if([pc fullscreen]) {
+								    // show hint to exit fullscreen, fast os switch, toolbar
+									if(![pc fullscreen]) {
+									#if kju_debug
 									   NSLog(@"init FSController");
+								    #endif
+								        NSBeginAlertSheet(NSLocalizedStringFromTable(@"cocoa_refresh:showFullscreen:standardAlert", @"Localizable", @"cocoaQemu"),NSLocalizedStringFromTable(@"cocoa_refresh:showFullscreen:defaultButton", @"Localizable", @"cocoaQemu"),nil,nil,[pc pcWindow],pc,@selector(showFullscreenAlertSheetDidEnd:returnCode:contextInfo:),nil,nil,NSLocalizedStringFromTable(@"cocoa_refresh:showFullscreen:informativeText", @"Localizable", @"cocoaQemu"));
 									   [pc setFullscreenController:[[FSController alloc] initWithSender:pc]];
 								    } else {
+								    #if kju_debug
 								        NSLog(@"release FSController");
+								    #endif
+								        [pc setFullscreen:[[pc contentView] toggleFullScreen]];
 								        [[pc fullscreenController] release];
 								    }
 									return;
@@ -1292,7 +1305,12 @@ void cocoa_refresh(DisplayState *ds)
 //									break;
 								/* toggle Fullscreen */
 								case 0x21: /* 'f' key */
-									[pc setFullscreen:[[pc contentView] toggleFullScreen]];
+								    // show hint to exit fullscreen, fast os switch, toolbar
+								    if(![pc fullscreen]) {
+								        NSBeginAlertSheet(NSLocalizedStringFromTable(@"cocoa_refresh:showFullscreen:standardAlert", @"Localizable", @"cocoaQemu"),NSLocalizedStringFromTable(@"cocoa_refresh:showFullscreen:defaultButton", @"Localizable", @"cocoaQemu"),nil,nil,[pc pcWindow],pc,@selector(showFullscreenAlertSheetDidEnd:returnCode:contextInfo:),nil,nil,NSLocalizedStringFromTable(@"cocoa_refresh:showFullscreen:informativeText", @"Localizable", @"cocoaQemu"));
+								    } else {
+								        [pc setFullscreen:[[pc contentView] toggleFullScreen]];
+								    }
 									break;
 							}
 						} else {

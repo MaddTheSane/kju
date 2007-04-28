@@ -62,6 +62,7 @@ BOOL tableEnabled;
 - (void) resizeSmall; // show detailsTextView
 - (void) resizeBig; // show detailsTextView
 - (void) showAllDownloads;
+- (BOOL) checkFreeOSZooIsUp;
 - (void) prepareOSTypeSelector;
 - (IBAction) showDownloadsByType:(id)sender;
 - (void) showDetails:(int)row; // show details of selected free os

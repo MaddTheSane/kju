@@ -131,6 +131,8 @@
     
         NSArray * dlList = [self getDownloadListFromServer];
         
+        BOOL serverUp = [self checkFreeOSZooIsUp];
+        
         [statusText setStringValue: NSLocalizedStringFromTable(@"showAllDownloads:statusText2", @"Localizable", @"cocoaDownloadController")];
         [statusBar setDoubleValue:0.0];
         //[statusText setHidden:YES];
@@ -140,7 +142,16 @@
     
         // copy downloadList
         if(dlList != nil) {
-            [downloadList addObjectsFromArray:dlList];
+            // check if freeoszoo is up, else only add the kju-app guests
+            if(serverUp) {
+                [downloadList addObjectsFromArray:dlList];
+            } else {
+            int i;
+                for (i=0; i < [dlList count]; i++) {
+                    if([[dlList objectAtIndex:i] valueForKey:@"Kju"] == [NSNumber numberWithInt:1])
+                        [downloadList addObject: [dlList objectAtIndex:i]];
+                }
+            }
             [self prepareOSTypeSelector];
             [self showWindow];
         } else {
@@ -162,6 +173,20 @@
     if([self returnShowsDetails]) [self showDetails:[table selectedRow]];
     
     [pool release];	
+}
+
+- (BOOL) checkFreeOSZooIsUp
+{
+    BOOL isUp = NO;
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL: [NSURL URLWithString:@"http://oszoo.org"]];
+    [request setHTTPMethod:@"HEAD"];
+    NSHTTPURLResponse *response = nil;
+    [NSURLConnection sendSynchronousRequest:request
+                              returningResponse:&response
+                                          error:NULL];
+    if ((response != nil) && ([response statusCode] == 200))
+        isUp = YES;
+    return isUp;
 }
 
 - (void) listDownloadFailedAlertSheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(id)contextInfo
