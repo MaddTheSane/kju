@@ -1,3 +1,8 @@
+Q-0.9.0d85
+[fix] localization: English (host-cocoa)
+[fix] localization: German (host-cocoa)
+[fix] localization: French (host-cocoa)
+
 Q-0.9.0d84
 [fix] downloader: check if freeoszoo is up, else show only kju-app guests
 [new] hint for keyboard shortcuts when entering fullscreen mode
