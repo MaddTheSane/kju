@@ -36,15 +36,18 @@ cd tmp/qemu
 #Q
 patch -p0 -u < ../../q/patches/q_host-cocoa_02.diff
 
-#rgb support for intel
+#qemu hotfix for qcow2
+patch -p0 -u < ../../q/patches/qemu-0.9.0-qcow2.diff
+
+#qemu rgb support for intel
 cd hw
 #patch -p0 -u < ../../../q/patches/q_vga.c_02.diff
 cd ..
 
-#add 2nd Bootdevice
+#qemu add 2nd Bootdevice
 patch -p0 -u < ../../q/patches/qemu-2ndbootdevice_04.diff
 
-#add HDLED
+#qemu add HDLED
 patch -p0 -u < ../../q/patches/q_block_int.h_hdled_1.diff
 patch -p0 -u < ../../q/patches/q_block.c_hdled_1.diff
 
