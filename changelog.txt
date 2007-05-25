@@ -1,3 +1,9 @@
+Q-0.9.0d88
+[fix] changelog update
+
+Q-0.9.0d87
+[fix] downloader: commited updated nib file now
+
 Q-0.9.0d86
 [fix] backport of qemu qcow2 fix
 [fix] prepare.sh qemu cvs logout by tag instead by date
