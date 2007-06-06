@@ -40,110 +40,57 @@
 
 - (void) encodeWithCoder:(NSCoder *) coder
 {
-//	NSLog(@"cocoaCpuView: encodeWithCoder");
+//  NSLog(@"cocoaCpuView: encodeWithCoder");
 
-	[super encodeWithCoder:coder];
-	[coder encodeObject: [self image] forKey:@"regularImage"];
+    [super encodeWithCoder:coder];
+    [coder encodeObject: [self image] forKey:@"regularImage"];
 }
 
 - (id) initWithCoder:(NSCoder *) coder
 {
-//	NSLog(@"cocoaCpuView: initWithCoder");
+//  NSLog(@"cocoaCpuView: initWithCoder");
 
-	if ((self = [super initWithCoder:coder])) {
-		regularImage = [[coder decodeObjectForKey:@"regularImage"] retain];
-		smallImage = nil;
-		ctlSize = NSRegularControlSize;
-		
-		return self;
-	}
-	return nil;
+    if ((self = [super initWithCoder:coder])) {
+        regularImage = [[coder decodeObjectForKey:@"regularImage"] retain];
+        smallImage = nil;
+        ctlSize = NSRegularControlSize;
+        
+        return self;
+    }
+    return nil;
 }
 
 - (id) initWithImage:(NSImage *) image
 {
-//	NSLog(@"cocoaPopUpView: initWithImage");
+//  NSLog(@"cocoaPopUpView: initWithImage");
 
-	if( ( self = [super initWithFrame:NSMakeRect(0.,0.,[image size].width,[image size].height)] ) ) {
-		[self setImage:image];
-		return self;
-	}
-	
-	return nil;
+    if( ( self = [super initWithFrame:NSMakeRect(0.,0.,[image size].width,[image size].height)] ) ) {
+        [self setImage:image];
+        return self;
+    }
+    
+    return nil;
 }
 
 - (void) dealloc
 {
-//	NSLog(@"cocoaCpuView: dealloc");
+//  NSLog(@"cocoaCpuView: dealloc");
 
-	[regularImage release];
-	[smallImage release];
+    [regularImage release];
+    [smallImage release];
 
-	regularImage = nil;
-	smallImage = nil;
+    regularImage = nil;
+    smallImage = nil;
 
-	[super dealloc];
+    [super dealloc];
 }
 
 - (void) drawRect:(NSRect) rect
 {
-//	NSLog(@"cocoaCpuView: drawRect");
-	
-    NSBezierPath* path = [NSBezierPath bezierPath];
-	
-	/* HD Activity */
-	BlockDriverState *bs;
-	bs = bdrv_find([@"hda" cString]);
-	if (bs) {
-        path = [NSBezierPath bezierPath];
-        if( ctlSize == NSRegularControlSize ) {
-            [path setLineWidth:2.0];
-            [path appendBezierPathWithOvalInRect:NSMakeRect(1,1,16,16)];
-        } else {
-            [path appendBezierPathWithOvalInRect:NSMakeRect(1,1,12,12)];
-        }
-        [[NSColor blackColor] setStroke];
-        if (bs->activityLED) {
-            [[NSColor greenColor] setFill];
-            bs->activityLED = 0;
-        } else {
-            [[NSColor yellowColor] setFill];
-        }
-        [path fill];
-        [path stroke];
-	}
-	
-	/* CD-ROM Activity */
-//	BlockDriverState *bs;
-	bs = bdrv_find([@"cdrom" cString]);
-	if (bs) {
-        path = [NSBezierPath bezierPath];
-        if( ctlSize == NSRegularControlSize ) {
-            [path setLineWidth:2.0];
-            [path appendBezierPathWithOvalInRect:NSMakeRect(39,1,16,16)];
-        } else {
-            [path appendBezierPathWithOvalInRect:NSMakeRect(29,1,12,12)];
-        }
-        [[NSColor blackColor] setStroke];
-        if (bs->activityLED) {
-            [[NSColor greenColor] setFill];
-            bs->activityLED = 0;
-        } else {
-            [[NSColor yellowColor] setFill];
-        }
-        [path fill];
-        [path stroke];
-        path = [NSBezierPath bezierPath];
-        if( ctlSize == NSRegularControlSize ) {
-            [path appendBezierPathWithOvalInRect:NSMakeRect(44,6,6,6)];
-        } else {
-            [path appendBezierPathWithOvalInRect:NSMakeRect(33,5,4,4)];
-        }
-        [[NSColor blackColor] setFill];
-        [path fill];
-	}
-	 
+//  NSLog(@"cocoaCpuView: drawRect");
+
     /* CPU Activity */
+    NSBezierPath* path = [NSBezierPath bezierPath];
     kern_return_t error;    
     struct thread_basic_info tbi;
     unsigned int thread_info_count;
@@ -180,111 +127,164 @@
 #ifdef QDEBUG
         if (error != KERN_SUCCESS)
             NSLog(@"Call to thread_info() failed");
-#endif	
+#endif  
         cpuUsage += tbi.cpu_usage;
     }
     cpuUsage = cpuUsage * 0.05;
 
-	[[NSColor blackColor] set]; 
-	path = [NSBezierPath bezierPath];
+    [[NSColor blackColor] set]; 
+    path = [NSBezierPath bezierPath];
 
-	if( ctlSize == NSRegularControlSize ) {
-		[regularImage compositeToPoint:NSMakePoint(12,0) operation:NSCompositeSourceOver];
-		[path moveToPoint:NSMakePoint(28, 0)];
-		[path lineToPoint:NSMakePoint(28. - cos(pi / 180. * (65. + cpuUsage)) * 28., sin(pi / 180. * (65. + cpuUsage)) * 28.)];
-	} else {
-		[smallImage compositeToPoint:NSMakePoint(9,0) operation:NSCompositeSourceOver];
-		[path moveToPoint:NSMakePoint(21, 0)];
-		[path lineToPoint:NSMakePoint(21. - cos(pi / 180. * (65. + cpuUsage)) * 20., sin(pi / 180. * (65. + cpuUsage)) * 20.)];
-	}
-	[path stroke];
-	
+    if( ctlSize == NSRegularControlSize ) {
+        [regularImage compositeToPoint:NSMakePoint(0,0) operation:NSCompositeSourceOver]; //(12,0)
+        [path moveToPoint:NSMakePoint(16, 1)];
+        [path lineToPoint:NSMakePoint(16. - cos(pi / 180. * (65. + cpuUsage)) * 16., sin(pi / 180. * (65. + cpuUsage)) * 29.)];
+    } else {
+        [smallImage compositeToPoint:NSMakePoint(0,0) operation:NSCompositeSourceOver]; //(9,0)
+        [path moveToPoint:NSMakePoint(12, 2)];
+        [path lineToPoint:NSMakePoint(12. - cos(pi / 180. * (65. + cpuUsage)) * 11., sin(pi / 180. * (65. + cpuUsage)) * 22.)];
+    }
+    [path stroke];
+
+
+    /* Drive Activity Indicator */
+    BOOL DrivesAreActive = FALSE;
+    BlockDriverState *bs;
+
+    /* hda */
+    bs = bdrv_find([@"hda" cString]);
+    if (bs) {
+        if (bs->activityLED) {
+            DrivesAreActive = YES;
+            bs->activityLED = 0;
+        }
+    }
+
+    /* CD-ROM */
+    bs = bdrv_find([@"cdrom" cString]);
+    if (bs) {
+        if (bs->activityLED) {
+            DrivesAreActive = YES;
+            bs->activityLED = 0;
+        }
+    }
+
+    /* hdc */
+    bs = bdrv_find([@"hdc" cString]);
+    if (bs) {
+        if (bs->activityLED) {
+            DrivesAreActive = YES;
+            bs->activityLED = 0;
+        }
+    }
+
+    /* hdd */
+    bs = bdrv_find([@"hdd" cString]);
+    if (bs) {
+        if (bs->activityLED) {
+            DrivesAreActive = YES;
+            bs->activityLED = 0;
+        }
+    }
+
+    /* draw Indicator */
+    if (DrivesAreActive) {
+//        [[NSColor yellowColor] setFill]; //E3BD00 //D9D401
+        [[NSColor colorWithDeviceRed:.89 green:.74 blue:.0 alpha:1.] setFill];
+    } else {
+        [[NSColor blackColor] setFill];
+    }
+    if( ctlSize == NSRegularControlSize ) {
+        NSRectFill(NSMakeRect(3,2,26,2));
+    } else {
+        NSRectFill(NSMakeRect(2,2,20,2));
+    }
 }
 
 - (void) mouseDown:(NSEvent *) theEvent
 {
-//	NSLog(@"cocoaCpuView: mouseDown");
+//  NSLog(@"cocoaCpuView: mouseDown");
 
 }
 
 - (NSControlSize) controlSize
 {
-//	NSLog(@"cocoaCpuView: controlSize");
+//  NSLog(@"cocoaCpuView: controlSize");
 
-	return ( ctlSize ? ctlSize : NSRegularControlSize );
+    return ( ctlSize ? ctlSize : NSRegularControlSize );
 }
 
 - (void) setControlSize:(NSControlSize) controlSize {
-	if( controlSize == NSRegularControlSize ) {
-		[toolbarItem setMinSize:NSMakeSize( 56., 32. )];
-		[toolbarItem setMaxSize:NSMakeSize( 56., 32. )];
-	} else if( controlSize == NSSmallControlSize ) {
-		[toolbarItem setMinSize:NSMakeSize( 42., 24. )];
-		[toolbarItem setMaxSize:NSMakeSize( 42., 24. )];
-	}
-	ctlSize = controlSize;
+    if( controlSize == NSRegularControlSize ) {
+        [toolbarItem setMinSize:NSMakeSize( 32., 32. )];
+        [toolbarItem setMaxSize:NSMakeSize( 32., 32. )];
+    } else if( controlSize == NSSmallControlSize ) {
+        [toolbarItem setMinSize:NSMakeSize( 24., 24. )];
+        [toolbarItem setMaxSize:NSMakeSize( 24., 24. )];
+    }
+    ctlSize = controlSize;
 }
 - (NSImage *) image;
 {
-//	NSLog(@"cocoaPopUpView: image");
+//  NSLog(@"cocoaPopUpView: image");
 
-	return regularImage;
+    return regularImage;
 }
 
 - (void) setImage:(NSImage *) image
 {
-//	NSLog(@"cocoaPopUpView: setImage");
+//  NSLog(@"cocoaPopUpView: setImage");
 
-	int i;
-	BOOL g = false;
-	BOOL s = false;
+    int i;
+    BOOL g = false;
+    BOOL s = false;
 
-	NSArray *reps = [image representations];
-	for (i=0; i<[reps count]; i++) {
-		if ([[reps objectAtIndex:i] pixelsHigh] == 32) {
-			[regularImage autorelease];
-			regularImage = [[NSImage alloc] initWithSize:NSMakeSize( 32., 32. )];
-			[regularImage addRepresentation:[reps objectAtIndex:i]];
-			g = true;
-		} else if ([[reps objectAtIndex:i] pixelsHigh] == 24) {
-			[smallImage autorelease];
-			smallImage = [[NSImage alloc] initWithSize:NSMakeSize( 24., 24. )];
-			[smallImage addRepresentation:[reps objectAtIndex:i]];
-			s = true;
-		}
-	}
-	
-	if (!g) {
-		[regularImage autorelease];
-		regularImage = [image copy];
-	}
-	
-	if (!s) {
-		NSImageRep *sourceImageRep = [image bestRepresentationForDevice:nil];
-		[smallImage autorelease];
-		smallImage = [[NSImage alloc] initWithSize:NSMakeSize( 24., 24. )];
-		[smallImage lockFocus];
-		[[NSGraphicsContext currentContext] setImageInterpolation:NSImageInterpolationHigh];
-		[sourceImageRep drawInRect:NSMakeRect( 0., 0., 24., 24. )];
-		[smallImage unlockFocus];
-	}
+    NSArray *reps = [image representations];
+    for (i=0; i<[reps count]; i++) {
+        if ([[reps objectAtIndex:i] pixelsHigh] == 32) {
+            [regularImage autorelease];
+            regularImage = [[NSImage alloc] initWithSize:NSMakeSize( 32., 32. )];
+            [regularImage addRepresentation:[reps objectAtIndex:i]];
+            g = true;
+        } else if ([[reps objectAtIndex:i] pixelsHigh] == 24) {
+            [smallImage autorelease];
+            smallImage = [[NSImage alloc] initWithSize:NSMakeSize( 24., 24. )];
+            [smallImage addRepresentation:[reps objectAtIndex:i]];
+            s = true;
+        }
+    }
+    
+    if (!g) {
+        [regularImage autorelease];
+        regularImage = [image copy];
+    }
+    
+    if (!s) {
+        NSImageRep *sourceImageRep = [image bestRepresentationForDevice:nil];
+        [smallImage autorelease];
+        smallImage = [[NSImage alloc] initWithSize:NSMakeSize( 24., 24. )];
+        [smallImage lockFocus];
+        [[NSGraphicsContext currentContext] setImageInterpolation:NSImageInterpolationHigh];
+        [sourceImageRep drawInRect:NSMakeRect( 0., 0., 24., 24. )];
+        [smallImage unlockFocus];
+    }
 }
 
 - (NSToolbarItem *) toolbarItem
 {
-//	NSLog(@"cocoaCpuView: toolbarItem");
+//  NSLog(@"cocoaCpuView: toolbarItem");
 
-	return [[toolbarItem retain] autorelease];
+    return [[toolbarItem retain] autorelease];
 }
 
 - (void) setToolbarItem:(NSToolbarItem *) item {
-	toolbarItem = item;
+    toolbarItem = item;
 }
 
 - (void) updateToolbarItem:(NSTimer*) timer
 {
-//	NSLog(@"cocoaCpuView: updateToolbarItem");
+//  NSLog(@"cocoaCpuView: updateToolbarItem");
 
-	[self setNeedsDisplay:YES];
+    [self setNeedsDisplay:YES];
 }
 @end

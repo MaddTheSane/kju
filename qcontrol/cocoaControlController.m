@@ -589,11 +589,11 @@
 {
     return [NSArray arrayWithObjects:
         @"newPCIdentifier",
-        @"editPCIdentifier",
-        @"startPCIdentifier",
-        NSToolbarFlexibleSpaceItemIdentifier,
-        //      NSToolbarCustomizeToolbarItemIdentifier,
-        @"removePCIdentifier",
+//        @"editPCIdentifier",
+//        @"startPCIdentifier",
+//        NSToolbarFlexibleSpaceItemIdentifier,
+//      NSToolbarCustomizeToolbarItemIdentifier,
+//        @"removePCIdentifier",
         nil];
 }
 

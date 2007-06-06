@@ -1,3 +1,8 @@
+Q-0.9.0d89
+[new] new icons (Andi)
+[fix] CpuView adapted to new icons
+[fix] new default icon set for qControl
+
 Q-0.9.0d88
 [fix] changelog update
 
