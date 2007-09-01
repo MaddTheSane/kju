@@ -74,7 +74,7 @@
         [viewNetwork removeFromSuperview];
     }
     
-    [editPCPanel setTitle:[NSString stringWithFormat: NSLocalizedStringFromTable(@"viewGeneral:title", @"Localizable", @"cocoaControlEditPC"), [[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]]];
+    [editPCPanel setTitle:[NSString stringWithFormat: NSLocalizedStringFromTable(@"editPCviewGeneral:title", @"Localizable", @"cocoaControlEditPC"), [[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]]];
     [editPCPanel setFrame:NSMakeRect(
         [editPCPanel frame].origin.x,
         [editPCPanel frame].origin.y + [editPCPanel frame].size.height - [viewGeneral bounds].size.height - 140,
@@ -1111,7 +1111,8 @@
     [[thisPC objectForKey:@"Arguments"] appendFormat:@"%@",[self constructFirewallArguments]];
 
     /* qemu arguments */
-    [[thisPC objectForKey:@"Arguments"] appendFormat:@" %@",[textFieldArguments stringValue]];
+    if ([[textFieldArguments stringValue] length] > 0) 
+        [[thisPC objectForKey:@"Arguments"] appendFormat:@" %@",[textFieldArguments stringValue]];
 
     /* save PC */
     [qSender savePCConfiguration:thisPC];
