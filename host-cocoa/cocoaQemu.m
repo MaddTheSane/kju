@@ -99,6 +99,7 @@ kern_return_t GetBSDPath( io_iterator_t mediaIterator, char *bsdPath, CFIndex ma
 		pcWindowName = [[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"] retain];
 		pcPath = [[@"~/Documents/QEMU/temp.qvm" stringByExpandingTildeInPath] retain];
 		pcTimer = [NSTimer scheduledTimerWithTimeInterval:10 target:self selector:@selector( liveThumbnail ) userInfo:nil repeats:YES];
+		[self liveThumbnail];
 		pcDialogs = YES;
 		pc = self;
 
@@ -837,6 +838,7 @@ kern_return_t GetBSDPath( io_iterator_t mediaIterator, char *bsdPath, CFIndex ma
 	else if (returnCode == NSAlertOtherReturn)
 	{
 		pcStatus = @"shutdown";
+		if([[NSFileManager defaultManager] fileExistsAtPath: [NSString stringWithFormat: @"%@/thumbnail.png", pcPath]]) [[NSFileManager defaultManager] removeFileAtPath: [NSString stringWithFormat: @"%@/thumbnail.png", pcPath] handler: nil];
 		qemu_system_shutdown_request();
 		vm_start();
 	}
@@ -856,6 +858,7 @@ kern_return_t GetBSDPath( io_iterator_t mediaIterator, char *bsdPath, CFIndex ma
 	{
 		if ( [pcStatus isEqual: @"running"] )
 			pcStatus = @"shutdown";
+			if([[NSFileManager defaultManager] fileExistsAtPath: [NSString stringWithFormat: @"%@/thumbnail.png", pcPath]]) [[NSFileManager defaultManager] removeFileAtPath: [NSString stringWithFormat: @"%@/thumbnail.png", pcPath] handler: nil];
 		qemu_system_shutdown_request();
 		vm_start();
 	}
