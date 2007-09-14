@@ -21,7 +21,9 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
- 
+
+#import "../host-cocoa/CGSPrivate.h"
+
 #import "cocoaControlController.h"
 #import "cocoaControlDiskImage.h"
 #import "cocoaControlNewPCAssistant.h"
@@ -222,7 +224,7 @@
             ProcessSerialNumber psn;
             GetProcessForPID( [[pcsTasks objectForKey:[pcsWindows objectAtIndex:0]] processIdentifier], &psn );
             SetFrontProcess( &psn );
-            aboveWindowNumber = [qdoserver guestWindowNumber:[pcsWindows objectAtIndex:0]];;
+            aboveWindowNumber = [qdoserver guestWindowNumber:[pcsWindows objectAtIndex:0]];
         }
 
         /* set other Windows */
@@ -236,6 +238,41 @@
         }
 
         [pcsWindows removeAllObjects];
+
+        /* is there a current FS guest? */
+        if ([qdoserver lastGuestDeactivated]) {
+
+             /* setup transition */
+            CGSConnection cid = _CGSDefaultConnection();
+            int transitionHandle = -1;
+            CGSTransitionSpec transitionSpecifications;
+
+            transitionSpecifications.type = 7;          //transition;
+            transitionSpecifications.option = 8;        //option;
+            transitionSpecifications.wid = 0;           //wid
+            transitionSpecifications.backColour = 0;    //background color
+
+            /* freeze desktop: OSStatus CGSNewTransition(const CGSConnection cid, const CGSTransitionSpec* transitionSpecifications, int *transitionHandle) */
+            CGSNewTransition(cid, &transitionSpecifications, &transitionHandle);
+
+            /* change monitor */
+            [qdoserver guestUnhide:[qdoserver lastGuestDeactivated]]; //show hidden window
+
+            /* make us front */
+            ProcessSerialNumber psn;
+            GetProcessForPID( [[pcsTasks objectForKey:[qdoserver lastGuestDeactivated]] processIdentifier], &psn );
+            SetFrontProcess( &psn );
+
+            /* wait */
+            usleep(10000);
+
+            /* run transition: OSStatus CGSInvokeTransition(const CGSConnection cid, int transitionHandle, float duration) */
+            CGSInvokeTransition(cid, transitionHandle, 1.0);
+
+            /* reset lastGuest */
+            [qdoserver guestDeactivated:nil];
+
+        }
     }
 }
 
@@ -310,9 +347,9 @@
 - (IBAction) qemuWindowMoveToFront:(id)sender
 {
 //  NSLog(@"cocoaControlController: qemuWindowMoveToFront");
-    
+
     ProcessSerialNumber psn;
-    
+
     /* move a QEMU to front */
     GetProcessForPID( [sender tag], &psn );
     SetFrontProcess( &psn );
@@ -359,8 +396,9 @@
     } else {
         // something is wrong here :-)
         [[thisPC objectForKey:@"PC Data"] setObject:@"shutdown" forKey:@"state"];
-        
-        /* error management here - display the crash output of qemu */
+
+        /* error management here */
+        /* display the crash output of qemu */
         if(![userDefaults boolForKey:@"enableLogToConsole"]) {
 
             NSData * pipedata;
@@ -374,6 +412,11 @@
                 [self standardAlert:@"Qemu unexpectedly quit" informativeText:errormsg];
             }
         }
+    }
+
+    /* remove stray guest from qdoserver */
+    if ([[qdoserver guests] objectForKey:[[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]]) {
+        [qdoserver guestUnregisterWithName:[[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]];
     }
 
     /* Save Data */
@@ -679,13 +722,13 @@
     /* don't allow to edit a running/saved pc */
     id thisPC;
     thisPC = [pcs objectAtIndex:[table selectedRow]];
-
+/*
     if (![[[thisPC objectForKey:@"PC Data"] objectForKey:@"state"] isEqual:@"shutdown"]) {
         [self standardAlert: [NSString stringWithFormat: NSLocalizedStringFromTable(@"editPC:standardAlert", @"Localizable", @"cocoaControlController"),[[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]]
              informativeText: [NSString stringWithFormat: NSLocalizedStringFromTable(@"editPC:informativeText", @"Localizable", @"cocoaControlController"), [[thisPC objectForKey:@"PC Data"] objectForKey:@"name"]]];
         return;
     }
-
+*/
     [self editThisPC:thisPC];
 }
 
@@ -1960,6 +2003,18 @@
     return YES;
 }
 
+- (NSString *)tableView:(NSTableView *)aTableView toolTipForCell:(NSCell *)cell rect:(NSRectPointer)rect tableColumn:(NSTableColumn *)aTableColumn row:(int)rowIndex mouseLocation:(NSPoint)mouseLocation {
+/*
+    if ([cell isKindOfClass:[NSTextFieldCell class]]) {
+        if ([[cell attributedStringValue] size].width > rect->size.width) {
+            return [cell stringValue];
+        }
+    }
+    return nil;
+*/
+    return [[pcs objectAtIndex:rowIndex] objectForKey:@"Arguments"];
+}
+
 - (void) tableDoubleClick:(id)sender
 {
 //  NSLog(@"cocoaControlController: tableDoubleClick");
@@ -1995,7 +2050,11 @@
 {
 //  NSLog(@"cocoaControlController: stopThisPC");
 
-    if (![qdoserver guestStop:[[pc objectForKey:@"PC Data"] objectForKey:@"name"]]) { //if we can't shutdown the guest in normal manner, use force
+    /* check if task is running and we can handle it of the qdoserver */
+    if ([[pcsTasks objectForKey:[[pc objectForKey:@"PC Data"] objectForKey:@"name"]] isRunning] && ([[qdoserver guests] objectForKey:[[pc objectForKey:@"PC Data"] objectForKey:@"name"]] != nil)) { //we try a gentle shudown
+        [qdoserver guestStop:[[pc objectForKey:@"PC Data"] objectForKey:@"name"]];
+    } else { //use force
+        [qdoserver guestUnregisterWithName:[[pc objectForKey:@"PC Data"] objectForKey:@"name"]]; //remove us from the dOServer
         [[pcsTasks objectForKey:[[pc objectForKey:@"PC Data"] objectForKey:@"name"]] terminate]; //this sends sigterm, maybe we need something stronger here: "bin kill -9"
     }
 }

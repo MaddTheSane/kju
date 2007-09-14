@@ -1,7 +1,7 @@
 /*
  * QEMU Cocoa Control Distributed Object Server
  * 
- * Copyright (c) 2006 Mike Kronenberg
+ * Copyright (c) 2006 - 2007 Mike Kronenberg
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -43,12 +43,14 @@
 - (BOOL) guestUnregisterWithName: (bycopy NSString *) name;
 - (BOOL) guestSwitch: (bycopy NSString *) name fullscreen:(BOOL)fullscreen previousGuestName:(bycopy NSString *)previousGuestName;
 - (BOOL) guestSwitch: (bycopy NSString *) name fullscreen:(BOOL)fullscreen nextGuestName:(bycopy NSString *)nextGuestName;
+- (BOOL) guestDeactivated: (bycopy NSString *) name;
 @end
  
  
  
 @interface cocoaControlDOServer : NSObject <cocoaControlDOServerProto> {
     id qControl;
+    id lastGuestDeactivated;
     NSMutableDictionary * guests;
 }
 - (id) init;
@@ -57,6 +59,7 @@
 - (BOOL) guestUnregisterWithName: (NSString *)name;
 - (BOOL) guestSwitch: (NSString *) name fullscreen:(BOOL)fullscreen previousGuestName:(NSString *)previousGuestName;
 - (BOOL) guestSwitch: (NSString *) name fullscreen:(BOOL)fullscreen nextGuestName:(NSString *)nextGuestName;
+- (BOOL) guestDeactivated: (bycopy NSString *) name;
 - (int) guestWindowLevel: (NSString *) guest;
 - (int) guestWindowNumber: (NSString *) guest;
 - (BOOL) guestOrderFrontRegardless: (NSString *) guest;
@@ -65,4 +68,6 @@
 - (BOOL) guestUnhide: (NSString *) guest;
 - (BOOL) guestPause: (NSString *) guest;
 - (BOOL) guestStop: (NSString *) guest;
+- (id) lastGuestDeactivated;
+- (NSMutableDictionary *) guests;
 @end

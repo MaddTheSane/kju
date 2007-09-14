@@ -34,7 +34,7 @@
 
 - (id) init
 {
-//    NSLog(@"cocoaControlDOServer: init:%@ withName:%@\n", [guest description], name);
+//    NSLog(@"cocoaControlDOServer: init");
 
     [super init];
 
@@ -48,8 +48,21 @@
 
     guests = [[NSMutableDictionary alloc] init];
     [guests retain];
-    
+
     return self;
+}
+
+- (void) dealloc
+{
+//    NSLog(@"cocoaControlDOServer: dealloc");
+
+    [guests release];
+
+    if (lastGuestDeactivated) {
+        [lastGuestDeactivated release];
+    }
+
+    [super dealloc];
 }
 
 -(void) setSender:(id)sender
@@ -79,7 +92,6 @@
     
     if ([guests objectForKey:name] != nil) {
         [guests removeObjectForKey:name];
-//      NSLog(@"OK");
         return TRUE;
     } else {
         NSLog(@"cocoaControlDOServer: guestUnregisterWithName: failed");
@@ -129,7 +141,7 @@
         CGSTransitionSpec transitionSpecifications;
 
         transitionSpecifications.type = 7;          //transition;
-        transitionSpecifications.option = 2;        //option;
+        transitionSpecifications.option = 0;        //option;
         transitionSpecifications.wid = 0;           //wid
         transitionSpecifications.backColour = 0;    //background color
 
@@ -210,7 +222,7 @@
         CGSTransitionSpec transitionSpecifications;
 
         transitionSpecifications.type = 7;          //transition;
-        transitionSpecifications.option = 1;        //option;
+        transitionSpecifications.option = 8;        //option;
         transitionSpecifications.wid = 0;           //wid
         transitionSpecifications.backColour = 0;    //background color
 
@@ -247,6 +259,24 @@
     }
     
     return true;
+}
+
+/* NEED SOME DOXYGEN HERE */
+- (BOOL) guestDeactivated: (bycopy NSString *) name
+{
+//    NSLog(@"cocoaControlDOServer: guestDeactivated: %@", name);
+
+    if (lastGuestDeactivated) {
+        [lastGuestDeactivated release];
+    }
+    if (name) {
+        lastGuestDeactivated = [NSString stringWithString:name];
+        [lastGuestDeactivated retain];
+    } else {
+        lastGuestDeactivated = nil;
+    }
+
+    return TRUE;
 }
 
 - (int) guestWindowLevel: (NSString *) guest
@@ -353,11 +383,27 @@
 
     id obj = [guests objectForKey:guest];
     if (obj != nil) {
-//      NSLog(@"OK");
         return [obj guestStop];
     } else {
         NSLog(@"cocoaControlDOServer: cocoaControlDOServer: failed");
         return FALSE;
     }
+}
+
+- (id) lastGuestDeactivated
+{
+//  NSLog(@"cocoaControlDOServer: lastGuestDeactivated: %@", lastGuestDeactivated);
+
+    if (lastGuestDeactivated) {
+        if ([[guests objectForKey:lastGuestDeactivated] fullscreen]) {
+            return lastGuestDeactivated;
+        }
+    }
+    return nil;
+}
+
+- (NSMutableDictionary *) guests
+{
+    return guests;
 }
 @end
