@@ -34,8 +34,11 @@ cd tmp/qemu
 #Q
 patch -p0 -u < ../../q/patches/q_host-cocoa_02.diff
 
-#qemu hotfix for qcow2
+#qemu cvs backport for qcow2
 patch -p0 -u < ../../q/patches/qemu-0.9.0-qcow2.diff
+
+#qemu cvs backport rgb support for bigendian
+patch -p1 -u < ../../q/patches/qemu-0.9.0-big_endian_display4.diff
 
 #qemu gcc4 patches
 patch -p1 -u < ../../q/patches/qemu-0.9.0-gcc4.patch
@@ -49,11 +52,6 @@ patch -p1 -u -f < ../../q/patches/qemu-0.9.0-i386-FORCE_RET.patch
 patch -p1 -u < ../../q/patches/qemu-0.9.0-osx-intel-port.patch
 
 patch -p1 -u < ../../q/patches/qemu-0.8.0-osx-bugfix.patch
-
-#qemu rgb support for intel
-cd hw
-patch -p0 -u < ../../../q/patches/q_vga.c_02.diff
-cd ..
 
 #qemu add 2nd Bootdevice
 patch -p0 -u < ../../q/patches/qemu-2ndbootdevice_04.diff

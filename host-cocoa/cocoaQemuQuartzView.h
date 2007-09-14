@@ -1,7 +1,7 @@
 /*
  * QEMU Cocoa Quarz View
  * 
- * Copyright (c) 2006 Mike Kronenberg
+ * Copyright (c) 2006 - 2007    Mike Kronenberg
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,17 +29,21 @@
 
 @interface cocoaQemuQuartzView : NSView
 {
-	id pc;
-	cocoaQemuWindow *FullScreenWindow;
-	CGDataProviderRef dataProviderRef;
-	void *screen_pixels;
-	DisplayState current_ds;
-	BOOL fullscreen;
-	BOOL drag;
+    id pc;
+    float cx,cy,cw,ch,cdx,cdy;
+    cocoaQemuWindow *FullScreenWindow;
+    CGDataProviderRef dataProviderRef;
+    void *screen_pixels;
+    DisplayState current_ds;
+    BOOL fullscreen;
+    BOOL drag;
 }
 - (id)initWithFrame:(NSRect)frameRect sender:(id)sender;
 - (BOOL) toggleFullScreen;
 - (void) resizeContent:(DisplayState *)ds width:(int)w height:(int)h;
 - (NSImage *) screenshot:(NSSize)size;
+- (void) setContentDimensions;
+- (float) cdx;
+- (float) cdy;
 @end
 

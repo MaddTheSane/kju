@@ -1,7 +1,7 @@
 /*
  * Q Control Controller
  * 
- * Copyright (c) 2006 Mike Kronenberg, inspired by transmission
+ * Copyright (c) 2006 - 2007 Mike Kronenberg, inspired by transmission
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -83,8 +83,7 @@
                     clicked = TRUE;
                 break;
                 case 4: /* edit */
-                    if ([[[thisPC objectForKey:@"PC Data"] objectForKey:@"state"] isEqual:@"shutdown"])
-                        clicked = TRUE;
+                    clicked = TRUE;
                 break;
             }
         }
@@ -129,17 +128,14 @@
                         [qControl startThisPC:thisPC];
                     else if ([[[thisPC objectForKey:@"PC Data"] objectForKey:@"state"] isEqual:@"running"])
                         [qControl pauseThisPC:thisPC];
-//                    else if ([[[thisPC objectForKey:@"PC Data"] objectForKey:@"state"] isEqual:@"paused"])
-//                        [qControl unpauseThisPC:thisPC];
                 break;
                 case 4: /* edit */
-                    if ([[[thisPC objectForKey:@"PC Data"] objectForKey:@"state"] isEqual:@"shutdown"])
-                        [qControl editThisPC:thisPC];
+                    [qControl editThisPC:thisPC];
                 break;
             }
         }
     }
-            
+
     pointClicked = NSZeroPoint;
     [self display];
     
@@ -150,17 +146,17 @@
 - (void) drawRect: (NSRect) rect
 {
 //	NSLog(@"QControlTableView: drawRect");
-    
+
     NSRect cellRect;
     NSPoint point;
     id thisPC;
     NSImage *image;
     float qFraction;
     int i;
-    
-    
+
+
     [super drawRect: rect];
-    
+
     for (i = 0; i < [[qControl pcs] count]; i++) {
         thisPC = [[qControl pcs] objectAtIndex:i];
         cellRect = [self frameOfCellAtColumn:1 row:i];

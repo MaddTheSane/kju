@@ -1,3 +1,21 @@
+Q-0.9.0d94
+[fix] updated branch 0_9_0 with all fixes from 93
+[fix] Q icon
+
+Q-0.9.0d93
+[fix] remove crashed/stray guests from doServer (#15)
+[fix] Q Control: StopPC Icon is a forcequit if task is not responding or doServer is not responding (#15)
+[fix] Fullscreen: alt-tabing back to Q brings you back to FS Guest (#32)
+[fix] Fullscreen: switching animation always vertical
+[fix] Fullscreen: honor aspect ratio, only factors of 1/1.25/1.5/1.75/2.0/3.0/4.0... (#18)
+[fix] doServer: added missing dealloc
+[fix] quartz: panther compiling
+[fix] quartz: small drawspeed improvements
+[fix] backport bgr support for bigendians (andreasf) (#14)
+[new] Q Control: EditPC can be used (read only) when guest is running (#23)
+[new] Q Control: commandline as tooltips of guests (#23)
+[new] Q icon
+
 Q-0.9.0d92
 [fix] ARM emulation on Q GUI breaks (Chocobo) (#17)
 [fix] Editing a PC inserts incorrect spaces into argument (andreasf) (#13)

@@ -1,8 +1,8 @@
 /*
  * QEMU Cocoa openGL View
  * 
- * Copyright (c) 2005, 2006 Mike Kronenberg
- *                          Peter Stewart
+ * Copyright (c) 2005 - 2007    Mike Kronenberg
+ *                              Peter Stewart
  * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,19 +34,21 @@
 
 @interface cocoaQemuOpenGLView : NSOpenGLView
 {
-	id pc;
-	cocoaQemuWindow *FullScreenWindow;
-	DisplayState current_ds;
-	BOOL fullscreen;
-	BOOL drag;
-	GLint screen_tex;
-	GLuint display_list_tex;
-	GLuint display_list_tmb;
+    id pc;
+    float cx,cy,cw,ch,cdx,cdy;
+    cocoaQemuWindow *FullScreenWindow;
+    DisplayState current_ds;
+    BOOL fullscreen;
+    BOOL drag;
+    GLint screen_tex;
+    GLuint display_list_tex;
+    GLuint display_list_tmb;
 }
 - (id)initWithFrame:(NSRect)frameRect sender:(id)sender;
 - (BOOL) toggleFullScreen;
 - (void) drawContent:(DisplayState *)ds;
 - (void) resizeContent:(DisplayState *)ds width:(int)w height:(int)h;
 - (NSImage *) screenshot:(NSSize)size;
+- (void) setContentDimensions;
 @end
 

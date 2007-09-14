@@ -540,6 +540,13 @@
     } else {
         [buttonOk setTitle: NSLocalizedStringFromTable(@"prepareEditPCPanel:updatePC", @"Localizable", @"cocoaControlEditPC")];
     }
+
+    //Do not allow editing while PC is running
+    if (![[[thisPC objectForKey:@"PC Data"] objectForKey:@"state"] isEqual:@"shutdown"]) {
+        [buttonOk setEnabled:FALSE];
+    } else {
+        [buttonOk setEnabled:TRUE];
+    }
 }
 
 -(void) awakeFromNib
