@@ -1273,9 +1273,9 @@ void cocoa_refresh(DisplayState *ds)
 
                                         transitionSpecifications.type = 9; //transition;
                                         if (keycode - 0x02 == 0)
-                                            transitionSpecifications.option = 1; //option;
+                                            transitionSpecifications.option=CGSLeft | (1<<7); //option;
                                         else
-                                            transitionSpecifications.option = 2; //option;
+                                            transitionSpecifications.option=CGSRight | (1<<7); //option;
                                         transitionSpecifications.wid = [[pc pcWindow] windowNumber]; //wid
                                         transitionSpecifications.backColour = 0; //background color
 
