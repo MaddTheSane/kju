@@ -12,7 +12,7 @@
 		<key>DownloadSize</key>
 		<string>4</string>
 		<key>DownloadURL</key>
-		<string>http://www.kberg.ch/q/guests/FreeDOS100.qvm.zip</string>
+		<string>http://www.kju-app.org/kju/guests/FreeDOS100.qvm.zip</string>
 		<key>InfopageURL</key>
 		<string>http://www.kju-app.org/proj/wiki/FreeDOS1</string>
 		<key>InstallType</key>
@@ -36,7 +36,7 @@
 		<key>DownloadSize</key>
 		<string>20</string>
 		<key>DownloadURL</key>
-		<string>http://www.kberg.ch/q/guests/ReactOS031.qvm.zip</string>
+		<string>http://www.kju-app.org/kju/guests/ReactOS031.qvm.zip</string>
 		<key>InfopageURL</key>
 		<string>http://www.kju-app.org/proj/wiki/ReactOS031</string>
 		<key>InstallType</key>
@@ -60,7 +60,7 @@
 		<key>DownloadSize</key>
 		<string>175</string>
 		<key>DownloadURL</key>
-		<string>http://www.kberg.ch/q/guests/Ubuntu606Server.qvm.zip</string>
+		<string>http://www.kju-app.org/kju/guests/Ubuntu606Server.qvm.zip</string>
 		<key>InfopageURL</key>
 		<string>http://www.kju-app.org/proj/wiki/UbuntuDapperDrakeServer</string>
 		<key>InstallType</key>
@@ -84,7 +84,7 @@
 		<key>DownloadSize</key>
 		<string>713</string>
 		<key>DownloadURL</key>
-		<string>http://www.kberg.ch/q/guests/Ubuntu610.qvm.zip</string>
+		<string>http://www.kju-app.org/kju/guests/Ubuntu610.qvm.zip</string>
 		<key>InfopageURL</key>
 		<string>http://www.kju-app.org/proj/wiki/UbuntuEdgyEft</string>
 		<key>InstallType</key>
