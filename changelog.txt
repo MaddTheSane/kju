@@ -1,3 +1,7 @@
+Q-0.9.1d101
+[fix] include network cards bios in .app (#74)
+[fix] ibtool fixes (#67)
+
 Q-0.9.1d100
 [fix] 0.9.1 always_inline fix (#73)
 [fix] 0.9.1 gcc4 fixes (#72)

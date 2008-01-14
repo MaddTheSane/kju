@@ -26,12 +26,12 @@ app:
 	for d in $(OPT_LANGUAGES); do \
 		install -m 644 ../../tmp/qemu/qemu-doc.html "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/Q Help/html/"; \
 		install -m 644 ../../tmp/qemu/qemu-tech.html "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/Q Help/html/"; \
-		nibtool -d "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaControl.strings" "../$(prefix)/Q.app/Contents/Resources/English.lproj/cocoaControl.nib" -W "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaControl.nib"; \
-		nibtool -d "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaControlDiskImage.strings" "../$(prefix)/Q.app/Contents/Resources/English.lproj/cocoaControlDiskImage.nib" -W "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaControlDiskImage.nib"; \
-		nibtool -d "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaControlEditPC.strings" "../$(prefix)/Q.app/Contents/Resources/English.lproj/cocoaControlEditPC.nib" -W "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaControlEditPC.nib"; \
-		nibtool -d "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaControlNewPCAssistant.strings" "../$(prefix)/Q.app/Contents/Resources/English.lproj/cocoaControlNewPCAssistant.nib" -W "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaControlNewPCAssistant.nib"; \
-		nibtool -d "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaControlPreferences.strings" "../$(prefix)/Q.app/Contents/Resources/English.lproj/cocoaControlPreferences.nib" -W "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaControlPreferences.nib"; \
-		nibtool -d "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaDownload.strings" "../$(prefix)/Q.app/Contents/Resources/English.lproj/cocoaDownload.nib" -W "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaDownload.nib"; \
+		ibtool --strings-file "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaControl.ibtool.strings" "../$(prefix)/Q.app/Contents/Resources/English.lproj/cocoaControl.nib" --write "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaControl.nib"; \
+		ibtool --strings-file "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaControlDiskImage.ibtool.strings" "../$(prefix)/Q.app/Contents/Resources/English.lproj/cocoaControlDiskImage.nib" --write "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaControlDiskImage.nib"; \
+		ibtool --strings-file "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaControlEditPC.ibtool.strings" "../$(prefix)/Q.app/Contents/Resources/English.lproj/cocoaControlEditPC.nib" --write "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaControlEditPC.nib"; \
+		ibtool --strings-file "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaControlNewPCAssistant.ibtool.strings" "../$(prefix)/Q.app/Contents/Resources/English.lproj/cocoaControlNewPCAssistant.nib" --write "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaControlNewPCAssistant.nib"; \
+		ibtool --strings-file "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaControlPreferences.ibtool.strings" "../$(prefix)/Q.app/Contents/Resources/English.lproj/cocoaControlPreferences.nib" --write "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaControlPreferences.nib"; \
+		ibtool --strings-file "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaDownload.ibtool.strings" "../$(prefix)/Q.app/Contents/Resources/English.lproj/cocoaDownload.nib" --write "../$(prefix)/Q.app/Contents/Resources/"$$d".lproj/cocoaDownload.nib"; \
 		done
 
 	for d in $(TARGET_DIRS); do \
@@ -66,7 +66,9 @@ app:
 		install -m 644 ../../tmp/qemu/pc-bios/vgabios.bin "../$(prefix)/Q.app/Contents/MacOS/"$$d".app/Contents/Resources/qemu/"; \
 		install -m 644 ../../tmp/qemu/pc-bios/vgabios-cirrus.bin "../$(prefix)/Q.app/Contents/MacOS/"$$d".app/Contents/Resources/qemu/"; \
 		install -m 644 ../../tmp/qemu/pc-bios/video.x "../$(prefix)/Q.app/Contents/MacOS/"$$d".app/Contents/Resources/qemu/"; \
-		install -m 644 ../../tmp/qemu/pc-bios/linux_boot.bin "../$(prefix)/Q.app/Contents/MacOS/"$$d".app/Contents/Resources/qemu/"; \
+		install -m 644 ../../tmp/qemu/pc-bios/pxe-ne2k_pci.bin "../$(prefix)/Q.app/Contents/MacOS/"$$d".app/Contents/Resources/qemu/"; \
+		install -m 644 ../../tmp/qemu/pc-bios/pxe-pcnet.bin "../$(prefix)/Q.app/Contents/MacOS/"$$d".app/Contents/Resources/qemu/"; \
+		install -m 644 ../../tmp/qemu/pc-bios/pxe-rtl8139.bin "../$(prefix)/Q.app/Contents/MacOS/"$$d".app/Contents/Resources/qemu/"; \
 		done
 
 # generate OS X .app Packages and install it to /applications
