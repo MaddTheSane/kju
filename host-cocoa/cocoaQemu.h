@@ -36,7 +36,7 @@
 #import <OpenGL/CGLCurrent.h>
 #import <OpenGL/CGLContext.h>
 
-#import "../vl.h"
+#import "../qemu-common.h"
 #import "../../../q/qcontrol/cocoaControlDOServer.h"
 #import "cocoaQemuProgressWindow.h"
 #import "cocoaQemuOpenGLView.h"

@@ -29,7 +29,6 @@
 #import "cocoaQemuQuickDrawView.h"
 #import "cocoaPopUpView.h"
 #import "cocoaCpuView.h"
-#import "vl.h"
 #import "CGSPrivate.h"
 
 

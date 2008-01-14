@@ -25,6 +25,7 @@
  */
 
 #import "cocoaQemu.h"
+#import "sysemu.h"
 
 #import "cocoaQemuOpenGLView.h"
 #import "cocoaQemuQuartzView.h"

@@ -23,7 +23,7 @@
  */
 
 #import "cocoaCpuView.h"
-#import "../vl.h"
+#import "../qemu-common.h"
 #import "../block_int.h"
 
 #include <mach/mach.h>

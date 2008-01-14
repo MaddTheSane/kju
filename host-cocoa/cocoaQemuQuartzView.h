@@ -24,7 +24,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "vl.h"
+#import "console.h"
 #import "cocoaQemuWindow.h"
 
 @interface cocoaQemuQuartzView : NSView

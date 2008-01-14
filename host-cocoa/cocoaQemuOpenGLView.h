@@ -27,7 +27,7 @@
 #import <OpenGL/CGLCurrent.h>
 #import <OpenGL/CGLContext.h>
 
-#import "vl.h"
+#import "console.h"
 #import "cocoaQemuWindow.h"
 
 #define SCREEN_BPP 32
