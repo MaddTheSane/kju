@@ -34,27 +34,23 @@ cd tmp/qemu
 #Q
 patch -p0 -u < ../../q/patches/q_host-cocoa_02.diff
 
-#qemu cvs backport for qcow2
-patch -p0 -u < ../../q/patches/qemu-0.9.0-qcow2.diff
-
-#qemu cvs backport rgb support for bigendian
-patch -p1 -u < ../../q/patches/qemu-0.9.0-big_endian_display4.diff
+#qemu cvs backport for 0.9.1
+patch -p0 -u < ../../q/patches/Leopard-dyngen.dSYM.diff
+patch -p0 -u < ../../q/patches/qemu-img-CF+IO.diff
 
 #qemu gcc4 patches
-patch -p1 -u < ../../q/patches/qemu-0.9.0-gcc4.patch
+patch -p1 -u < ../../q/patches/qemu-0.9.1-gcc4.patch
 patch -p1 -u < ../../q/patches/qemu-0.7.2-dyngen-check-stack-clobbers.patch
-patch -p1 -u < ../../q/patches/qemu-0.7.2-gcc4-opts.patch
-patch -p1 -u < ../../q/patches/qemu-0.8.0-gcc4-hacks.patch
+patch -p1 -u < ../../q/patches/qemu-0.9.1-gcc4-opts.patch
+patch -p1 -u < ../../q/patches/qemu-0.9.1-gcc4-hacks.patch
 
 #qemu OS X86 patches
-patch -p1 -u < ../../q/patches/qemu-0.9.0-enforce-16byte-stack-boundary.patch
+patch -p1 -u < ../../q/patches/qemu-0.9.1-enforce-16byte-stack-boundary.patch
 patch -p1 -u -f < ../../q/patches/qemu-0.9.0-i386-FORCE_RET.patch
-patch -p1 -u < ../../q/patches/qemu-0.9.0-osx-intel-port.patch
+patch -p1 -u < ../../q/patches/qemu-0.9.1-osx-intel-port.patch
 
-patch -p1 -u < ../../q/patches/qemu-0.8.0-osx-bugfix.patch
-
-#qemu add 2nd Bootdevice
-patch -p0 -u < ../../q/patches/qemu-2ndbootdevice_04.diff
+patch -p1 -u < ../../q/patches/qemu-0.9.1-osx-bugfix.patch
+patch -p1 -u < ../../q/patches/qemu-0.9.1-always_inline.patch
 
 #qemu add HDLED
 patch -p0 -u < ../../q/patches/q_block_int.h_hdled_1.diff

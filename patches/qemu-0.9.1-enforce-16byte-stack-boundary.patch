@@ -1,3 +1,7 @@
+2008-01-12  Mike kronenberg  <mike.kronenberg@kronenberg.org>
+
+	* Fix for QEMU 0.9.1.
+	
 2007-02-01  Mike kronenberg  <mike.kronenberg@kronenberg.org>
 
 	* Fix for QEMU 0.9.0.
@@ -14,6 +18,6 @@
  HELPER_CFLAGS+=-fomit-frame-pointer
 -OP_CFLAGS+=-mpreferred-stack-boundary=2 -fomit-frame-pointer
 +OP_CFLAGS+=-fomit-frame-pointer
- ifeq ($(HAVE_GCC3_OPTIONS),yes)
- OP_CFLAGS+= -falign-functions=0 -fno-gcse
- else
+ ifdef TARGET_GPROF
+ USE_I386_LD=y
+ endif

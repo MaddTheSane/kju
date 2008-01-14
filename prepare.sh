@@ -7,10 +7,10 @@ cp Transmission/mk/lib.mk Transmission/libtransmission/Makefile
 
 #get/update QEMU
 export CVS_RSH="ssh"
-cvs -z3 -d:pserver:anonymous@cvs.savannah.nongnu.org:/sources/qemu co -r "release_0_9_0" qemu
+cvs -z3 -d:pserver:anonymous@cvs.savannah.nongnu.org:/sources/qemu co -r "release_0_9_1" qemu
 
 #get/update [kju:]
-svn co http://www.kju-app.org/svn/q/trunk q
+svn co http://www.kju-app.org/svn/q/branches/0_9_1 q
 
 mkdir products
 mkdir products/i386

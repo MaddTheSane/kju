@@ -1,3 +1,7 @@
+Q-0.9.1d100
+[fix] 0.9.1 always_inline fix (#73)
+[fix] 0.9.1 gcc4 fixes (#72)
+
 Q-0.9.1d99
 [fix] 0.9.1 host-cocoa fix for QEMU 0.9.1 (andreasf) (#70)
 [fix] 0.9.1 hd-led patch fix for QEMU 0.9.1 (andreasf) (#69)

@@ -1,3 +1,7 @@
+2008-01-12  Mike Kronenberg  <mike.kronenberg@kronenberg.org>
+
+	* cpu-exec.c: Fix for QEMU 0.9.1.
+
 2005-11-11  Gwenole Beauchesne  <gbeauchesne@mandriva.com>
 
 	* Globaaly save %ebx, %esi, %edi on entry to generated
@@ -19,9 +23,9 @@
 +                              "pop %%esi\n"
 +                              "pop %%ebx\n"
 +                              : : "r" (gen_func) : "ebx", "esi", "edi");
- #elif defined(TARGET_I386) && defined(USE_CODE_COPY)
- {
-     if (!(tb->cflags & CF_CODE_COPY)) {
+ #elif defined(__ia64)
+ 		struct fptr {
+ 			void *ip;
 --- qemu-0.7.2/Makefile.target.gcc4-opts	2005-11-11 16:26:33.000000000 +0100
 +++ qemu-0.7.2/Makefile.target	2005-11-11 17:59:56.000000000 +0100
 @@ -65,6 +65,10 @@ OP_CFLAGS+= -falign-functions=0 -fno-gcs

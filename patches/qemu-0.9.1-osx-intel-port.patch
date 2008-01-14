@@ -1,3 +1,8 @@
+2008-01-12  Mike Kronenberg  <mike.kronenberg@kronenberg.org>
+
+	* dyngen.c fix for QEMU 0.9.1.
+	* dyngen-exec.h fix for QEMU 0.9.1.
+	
 2007-02-01  Mike Kronenberg  <mike.kronenberg@kronenberg.org>
 
 	* Fix for QEMU 0.9.0.
@@ -94,11 +99,11 @@ TODO:
      unsigned int tocindex, symindex, size;
      const char *name = 0;
 +	int section_type;
-     
+
      /* Sanity check */
      if(!( address >= sec_hdr->addr && address < (sec_hdr->addr + sec_hdr->size) ) )
          return (char*)0;
--		
+-
 -	if( sec_hdr->flags & S_SYMBOL_STUBS ){
 +
 +	section_type = sec_hdr->flags & SECTION_TYPE;
@@ -106,7 +111,7 @@ TODO:
  		size = sec_hdr->reserved2;
  		if(size == 0)
  		    error("size = 0");
--		
+-
  	}
 -	else if( sec_hdr->flags & S_LAZY_SYMBOL_POINTERS ||
 -	            sec_hdr->flags & S_NON_LAZY_SYMBOL_POINTERS)
@@ -116,13 +121,13 @@ TODO:
  	else
 -		return 0;
 +		return NULL;
- 		
+
      /* Compute our index in toc */
  	tocindex = (address - sec_hdr->addr)/size;
 @@ -1030,8 +1045,27 @@ static const char * get_reloc_name(EXE_R
  	/* init the slide value */
  	*sslide = 0;
- 	
+ 
 -	if(R_SCATTERED & rel->r_address)
 -		return (char *)find_reloc_name_given_its_address(sca_rel->r_value);
 +	if (R_SCATTERED & rel->r_address) {
@@ -164,7 +169,7 @@ TODO:
 -	if(rel->r_pcrel)
 +	if(rel->r_pcrel) {
  		sectoffset += rel->r_address;
--			
+-
 -	if (rel->r_type == PPC_RELOC_BR24)
 +#ifdef HOST_I386
 +        sectoffset += (1 << rel->r_length);
@@ -178,11 +183,11 @@ TODO:
 @@ -1122,7 +1163,7 @@ int load_object(const char *filename)
          error("bad Mach header");
      }
-     
+ 
 -    if (mach_hdr.cputype != CPU_TYPE_POWERPC)
 +    if (!mach_check_cputype(mach_hdr.cputype))
          error("Unsupported CPU");
-         
+ 
      if (mach_hdr.filetype != MH_OBJECT)
 @@ -2413,6 +2454,82 @@ void gen_code(const char *name, host_ulo
          /* patch relocations */
@@ -264,7 +269,7 @@ TODO:
 +                    }
 +                }
 +#else
-                 char name[256];
+                 char relname[256];
                  int type;
                  int addend;
 @@ -2482,6 +2599,7 @@ void gen_code(const char *name, host_ulo
@@ -277,7 +282,7 @@ TODO:
                      int op;
 --- qemu-0.8.0/dyngen-exec.h.osx-intel-port	2006-02-13 01:25:58.000000000 +0100
 +++ qemu-0.8.0/dyngen-exec.h	2006-02-13 01:25:58.000000000 +0100
-@@ -215,9 +215,16 @@ extern int __op_jmp0, __op_jmp1, __op_jm
+@@ -215,8 +215,15 @@ extern int __op_jmp0, __op_jmp1, __op_jm
  #define EXIT_TB() asm volatile ("hlt")
  /* Dyngen will replace cli with 0x9e (jmp). 
     We generate the offset manually.  */
@@ -289,9 +294,8 @@ TODO:
 +#else
  #define GOTO_LABEL_PARAM(n) \
    asm volatile ("cli;.long " ASM_NAME(__op_gen_label) #n " - 1f;1:")
- #endif
 +#endif
- #ifdef __x86_64__
+ #elif defined(__x86_64__)
  /* The same as i386.  */
  #define EXIT_TB() asm volatile ("hlt")
 --- qemu-0.8.0/exec-all.h.osx-intel-port	2006-02-13 01:25:58.000000000 +0100

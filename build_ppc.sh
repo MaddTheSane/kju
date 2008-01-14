@@ -36,14 +36,10 @@ cd tmp/qemu
 #Q
 patch -p0 -u < ../../q/patches/q_host-cocoa_02.diff
 
-#qemu cvs backport for qcow2
-patch -p0 -u < ../../q/patches/qemu-0.9.0-qcow2.diff
-
-#qemu cvs backport rgb support for bigendian
-patch -p1 -u < ../../q/patches/qemu-0.9.0-big_endian_display4.diff
-
-#qemu add 2nd Bootdevice
-patch -p0 -u < ../../q/patches/qemu-2ndbootdevice_04.diff
+#qemu cvs backport for 0.9.1
+patch -p0 -u < ../../q/patches/Leopard-dyngen.dSYM.diff
+patch -p0 -u < ../../q/patches/qemu-img-CF+IO.diff
+patch -p1 -u < ../../q/patches/qemu-0.9.1-always_inline.patch
 
 #qemu add HDLED
 patch -p0 -u < ../../q/patches/q_block_int.h_hdled_1.diff

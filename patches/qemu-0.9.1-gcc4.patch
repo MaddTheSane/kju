@@ -1,8 +1,13 @@
+2008-01-12  Mike Kronenberg  <mike.kronenberg@kronenberg.org>
+
+	* dyngen-exec.h: Fix for QEMU 0.9.1.
+	* dyngen-c.h: Fix for QEMU 0.9.1.
+
 2007-02-01  Mike Kronenberg  <mike.kronenberg@kronenberg.org>
 
 	* target-ppc/exec.h: Fix for QEMU 0.9.0.
 	* dyngen-exec.h: Fix for QEMU 0.9.0.
-	
+
 2005-06-02  Gwenole Beauchesne  <gbeauchesne@mandriva.com>
 
 	* dyngen.c (trace_i386_insn): Fix push/imul case with 8-bit
@@ -14,7 +19,7 @@
 
 --- qemu-0.7.0/target-ppc/exec.h.gcc4	2005-04-27 22:52:05.000000000 +0200
 +++ qemu-0.7.0/target-ppc/exec.h	2005-06-02 21:41:51.000000000 +0200
-@@ -33,11 +33,7 @@ #define FT0 (env->ft0)
+@@ -64,11 +64,7 @@ #define FT0 (env->ft0)
  #define FT1 (env->ft1)
  #define FT2 (env->ft2)
  
@@ -29,7 +34,7 @@
  #include "exec-all.h"
 --- qemu-0.7.0/dyngen-exec.h.gcc4	2005-04-27 22:52:05.000000000 +0200
 +++ qemu-0.7.0/dyngen-exec.h	2005-06-02 21:41:51.000000000 +0200
-@@ -155,7 +155,12 @@ extern int printf(const char *, ...);
+@@ -194,7 +194,12 @@ extern int printf(const char *, ...);
  #endif
  
  /* force GCC to generate only one epilog at the end of the function */
@@ -42,10 +47,10 @@
  
  #ifndef OPPROTO
  #define OPPROTO
-@@ -205,12 +210,19 @@ extern int __op_jmp0, __op_jmp1, __op_jm
+@@ -251,10 +256,17 @@ extern int __op_jmp0, __op_jmp1, __op_jm
  #endif
  
- #ifdef __i386__
+ #if defined(__i386__)
 -#define EXIT_TB() asm volatile ("ret")
 -#define GOTO_LABEL_PARAM(n) asm volatile ("jmp " ASM_NAME(__op_gen_label) #n)
 +/* Dyngen will replace hlt instructions with a ret instruction.  Inserting a
@@ -55,16 +60,14 @@
 +   We generate the offset manually.  */
 +#define GOTO_LABEL_PARAM(n) \
 +  asm volatile ("cli;.long " ASM_NAME(__op_gen_label) #n " - 1f;1:")
- #endif
- #ifdef __x86_64__
+ #elif defined(__x86_64__)
 -#define EXIT_TB() asm volatile ("ret")
 -#define GOTO_LABEL_PARAM(n) asm volatile ("jmp " ASM_NAME(__op_gen_label) #n)
 +/* The same as i386.  */
 +#define EXIT_TB() asm volatile ("hlt")
 +#define GOTO_LABEL_PARAM(n) \
 +  asm volatile ("cli;.long " ASM_NAME(__op_gen_label) #n " - 1f;1:")
- #endif
- #ifdef __powerpc__
+ #elif defined(__powerpc__)
  #define EXIT_TB() asm volatile ("blr")
 --- qemu-0.7.0/dyngen.c.gcc4	2005-04-27 22:52:05.000000000 +0200
 +++ qemu-0.7.0/dyngen.c	2005-06-02 22:25:06.000000000 +0200
@@ -765,7 +768,7 @@
 +        retpos = trace_i386_op(name, p_start, &len, &patch_bytes, exit_addrs);
          copy_size = len;
      }
--#endif    
+-#endif
  #elif defined(HOST_PPC)
      {
          uint8_t *p;
