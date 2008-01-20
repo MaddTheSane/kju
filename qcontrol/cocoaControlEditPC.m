@@ -1116,7 +1116,8 @@
     // first save to configuration.plist, then add to arguments
     [self saveFirewallPortList];
     [[thisPC objectForKey:@"Arguments"] appendFormat:@"%@",[self constructFirewallArguments]];
-
+    
+    
     /* qemu arguments */
     if ([[textFieldArguments stringValue] length] > 0) 
         [[thisPC objectForKey:@"Arguments"] appendFormat:@" %@",[textFieldArguments stringValue]];
@@ -1202,6 +1203,7 @@
 
 - (void)initFirewallSettings
 {
+    //NSLog(@"cocoaControlEditPC: initFirewallSettings");
     firewallPortTableEnabled = YES;
     if(firewallPortList == nil) {
         firewallPortList = [[[NSMutableArray alloc] init] retain];
@@ -1254,10 +1256,14 @@
 
 - (IBAction) startShowNewPort:(id)sender
 {
+    //NSLog(@"cocoaControlEditPC: startShowNewPort");
+
     [self startEditPort:YES];
 }
 - (IBAction) startShowEditPort:(id)sender
 {
+    //NSLog(@"cocoaControlEditPC: startShowEditPort");
+
     int restrictedPort = 0;
     NSArray * additionalPorts = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"fw-additionals" ofType:@"plist"]];
     if([firewallPortTable selectedRow] >= 0) {
@@ -1298,6 +1304,8 @@
 
 - (void) startEditPort:(BOOL)newPort
 {  
+    //NSLog(@"cocoaControlEditPC: startEditPort");
+
     /*[firewallPortPanel setFrame:NSMakeRect(
         [firewallPortPanel frame].origin.x,
         [firewallPortPanel frame].origin.y - 263,
@@ -1350,6 +1358,8 @@
 
 - (IBAction) deletePort:(id)sender
 {
+    //NSLog(@"cocoaControlEditPC: deletePort");
+
     // check if port is a default port
     if([firewallPortTable selectedRow] >= 0 && [firewallPortTable selectedRow] < [[NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"fw-defaults" ofType:@"plist"]] count]) {
         NSAlert *alert = [NSAlert alertWithMessageText: NSLocalizedStringFromTable(@"deletePort:AlertSheet:messageText", @"Localizable", @"cocoaControlEditPC")
@@ -1368,6 +1378,8 @@
 
 - (IBAction) setAdditionalPort:(id)sender
 {
+    //NSLog(@"cocoaControlEditPC: setAdditionalPort");
+
     // load data from fw-additionals.plist
     if ([popUpButtonFirewallAdditionalPorts indexOfSelectedItem] <= ([popUpButtonFirewallAdditionalPorts numberOfItems] - 3)) {
         // only sets from fw-additionals are loaded here..
@@ -1412,6 +1424,8 @@
 
 - (IBAction) saveNewPort:(id)sender
 {
+    //NSLog(@"cocoaControlEditPC: saveNewPort");
+
     if([self checkPort:YES] == YES) {
         NSMutableDictionary * portDict;
         if ([popUpButtonFirewallAdditionalPorts indexOfSelectedItem] <= ([popUpButtonFirewallAdditionalPorts numberOfItems] - 3)) {
@@ -1426,9 +1440,13 @@
             // tcp only
             [portDict setObject:[textFieldFirewallPortHostPorts stringValue] forKey:@"TCP-Ports-Host"];
             [portDict setObject:[textFieldFirewallPortGuestPorts stringValue] forKey:@"TCP-Ports-Guest"];
+            [portDict setObject: @"" forKey:@"UDP-Ports-Host"];
+            [portDict setObject: @"" forKey:@"UDP-Ports-Guest"];
         } else if([popUpButtonFirewallServiceType indexOfSelectedItem] == 1) {
             // udp only
-            [portDict setObject:[textFieldFirewallPortHostPorts stringValue] forKey:@"UDP-Ports-Host"];
+            [portDict setObject: @"" forKey:@"TCP-Ports-Host"];
+            [portDict setObject:[textFieldFirewallPortGuestPorts stringValue] forKey:@"TCP-Ports-Guest"];
+            [portDict setObject: @"" forKey:@"UDP-Ports-Host"];
             [portDict setObject:[textFieldFirewallPortGuestPorts stringValue] forKey:@"UDP-Ports-Guest"];
         } else if([popUpButtonFirewallServiceType indexOfSelectedItem] == 2) {
             // tcp and udp
@@ -1448,6 +1466,8 @@
 
 - (IBAction) saveEditPort:(id)sender
 {
+    //NSLog(@"cocoaControlEditPC: saveEditPort");
+
     if([self checkPort:NO] == YES) {
         // save to edited port
         int selectedPort = [firewallPortTable selectedRow];
@@ -1458,8 +1478,12 @@
             // tcp only
             [portDict setObject:[textFieldFirewallPortHostPorts stringValue] forKey:@"TCP-Ports-Host"];
             [portDict setObject:[textFieldFirewallPortGuestPorts stringValue] forKey:@"TCP-Ports-Guest"];
+            [portDict setObject: @"" forKey:@"UDP-Ports-Host"];
+            [portDict setObject: @"" forKey:@"UDP-Ports-Guest"];
         } else if([popUpButtonFirewallServiceType indexOfSelectedItem] == 1) {
             // udp only
+            [portDict setObject: @"" forKey:@"TCP-Ports-Host"];
+            [portDict setObject: @"" forKey:@"TCP-Ports-Guest"];
             [portDict setObject:[textFieldFirewallPortHostPorts stringValue] forKey:@"UDP-Ports-Host"];
             [portDict setObject:[textFieldFirewallPortGuestPorts stringValue] forKey:@"UDP-Ports-Guest"];
         } else if([popUpButtonFirewallServiceType indexOfSelectedItem] == 2) {
@@ -1479,6 +1503,8 @@
 
 - (BOOL) checkPort:(BOOL)newPort
 {
+    //NSLog(@"cocoaControlEditPC: checkPort");
+
     if([[textFieldFirewallPortName stringValue] isEqualToString:@""]) {
         // name empty
         [textFieldFirewallPortError setStringValue: NSLocalizedStringFromTable(@"checkPort:textFieldFirewallPortError:name", @"Localizable", @"cocoaControlEditPC")];
@@ -1561,6 +1587,8 @@
 
 - (IBAction) endEditPort:(id)sender
 {
+    //NSLog(@"cocoaControlEditPC: endEditPort");
+
     // reset
     [textFieldFirewallPortName setStringValue:@""];
     [textFieldFirewallPortHostPorts setStringValue:@""];
@@ -1582,10 +1610,12 @@
 
 - (void) saveFirewallPortList
 {
+    //NSLog(@"cocoaControlEditPC: saveFirewallPortList");
+
     // save the ports in configuration.plist
     // enumerate through entries and check for defaults, when enabled => save
     NSArray * firewallDefaults = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"fw-defaults" ofType:@"plist"]];
-    NSMutableArray * customPorts = [NSMutableArray arrayWithCapacity:10];
+    NSMutableArray * customPorts = [[NSMutableArray arrayWithCapacity:10] retain];
     int i;
     int ii;
     int found = 0;
@@ -1602,15 +1632,23 @@
         }
         if(found == 0) {
             // port is not default port, save to conf.plist regardless of Enabled
-            [customPorts addObject:[firewallPortList objectAtIndex:i]];
+            if ([firewallPortList count] > i)
+                [customPorts addObject:[firewallPortList objectAtIndex:i]];
+            else
+                NSLog(@"Index overflow: %d out of bounds (%d)", i, [firewallPortList count]);
         }
         found = 0;
     }
-    [thisPC setObject:[NSDictionary dictionaryWithObject:customPorts forKey:@"Redirect"] forKey:@"Network"];
+    if([customPorts count] > 0)
+        [thisPC setObject: [NSDictionary dictionaryWithObject: customPorts forKey:@"Redirect"] forKey:@"Network"];
+    else
+        NSLog(@"Index overflow: out of bounds (%d)", [customPorts count]);
 }
 
 - (NSString *) constructFirewallArguments
 {
+    //NSLog(@"cocoaControlEditPC: constructFirewallArguments");
+    
     NSArray * portlist = [[thisPC objectForKey:@"Network"] objectForKey:@"Redirect"];
     NSMutableString * arguments = [NSMutableString stringWithCapacity:10];
 
@@ -1633,13 +1671,13 @@
 
             for(ii=0; ii<[seperatedA count]; ii++) {
             // tcp/udp
+                        
             id tp = [typeA objectAtIndex:ii];
-            id hc = [[seperatedA objectAtIndex:ii] objectAtIndex:0];
-            id hh = [[seperatedA objectAtIndex:ii] objectAtIndex:1];
-            id gc = [[seperatedA objectAtIndex:ii] objectAtIndex:2];
-            id gh = [[seperatedA objectAtIndex:ii] objectAtIndex:3];
-
-
+            id hc = ([[seperatedA objectAtIndex:ii] objectAtIndex:0] != nil) ? [[seperatedA objectAtIndex:ii] objectAtIndex:0] : [NSArray array];
+            id hh = ([[seperatedA objectAtIndex:ii] objectAtIndex:1] != nil) ? [[seperatedA objectAtIndex:ii] objectAtIndex:1] : [NSArray array];
+            id gc = ([[seperatedA objectAtIndex:ii] objectAtIndex:2] != nil) ? [[seperatedA objectAtIndex:ii] objectAtIndex:2] : [NSArray array];
+            id gh = ([[seperatedA objectAtIndex:ii] objectAtIndex:3] != nil) ? [[seperatedA objectAtIndex:ii] objectAtIndex:3] : [NSArray array];
+    
             /* comma code */
             if([hc count] > 1 && [gc count] > 1) {
                 // both seperated by comma
@@ -1671,7 +1709,7 @@
                     [arguments appendString:[NSString stringWithFormat:@" -redir %@:%@::%@",tp, [hc objectAtIndex:j], [gc objectAtIndex:0]]];
                     }
             }
-
+            
             /* haifin code */
             if([hh count] > 1 && [gh count] > 1) {
                 // both seperated by haifin
@@ -1700,7 +1738,7 @@
                     j++;
                     }
             }
-
+            
             /* only one=>one port code */
             // check also for empty port ranges, because componentsSeperatedByString: returns count 1 even from an empty string
             if(([hh count] == 1 && [gh count] == 1) && ([hc count] == 1 && [gc count] == 1)) {
