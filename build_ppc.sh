@@ -12,7 +12,8 @@ cd ..
 rm -r -f tmp/qemu
 rm -r -f products/ppc/Q.app
 
-
+#to build on gcc 3.3 xcode3 from leopard, we need some custom includes
+export CFLAGS="-isystem /Developer/SDKs/MacOSX10.4u.sdk/usr/include -I/Developer/SDKs/MacOSX10.5.sdk/usr/include/gcc/darwin/3.3 -I/Developer/SDKs/MacOSX10.4u.sdk/usr/include -F/Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks"
 
 #make libtransmission
 cd Transmission
