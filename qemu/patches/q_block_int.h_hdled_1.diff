@@ -1,0 +1,15 @@
+Index: block_int.h
+===================================================================
+RCS file: /sources/qemu/qemu/block_int.h,v
+retrieving revision 1.16
+diff -u -r1.16 block_int.h
+--- block_int.h	24 Dec 2007 16:10:43 -0000	1.16
++++ block_int.h	8 Jan 2008 15:32:29 -0000
+@@ -96,6 +96,7 @@
+     int removable; /* if true, the media can be removed */
+     int locked;    /* if true, the media cannot temporarily be ejected */
+     int encrypted; /* if true, the media is encrypted */
++    int activityLED; /* if true, the media is accessed atm */
+     int sg;        /* if true, the device is a /dev/sg* */
+     /* event callback when inserting/removing */
+     void (*change_cb)(void *opaque);

@@ -1,0 +1,17 @@
+//
+// Prefix header for all source files of the 'Q' target in the 'Q' project
+//
+
+#ifdef __OBJC__
+    #import <Cocoa/Cocoa.h>
+#endif
+
+//#define DEBUG
+#ifdef DEBUG
+#define Q_DEBUG(...)  { (void) NSLog (@"[%@ %@] (%D)", [[NSString stringWithFormat:@"%s", __FILE__] lastPathComponent], [NSString stringWithFormat:__VA_ARGS__], __LINE__); }
+#else
+#define Q_DEBUG(...)  ((void) 0)
+#endif
+
+
+#define cgrect(nsrect) (*(CGRect *)&(nsrect))

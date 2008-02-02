@@ -1,0 +1,651 @@
+// !$*UTF8*$!
+{
+	27210CC50D51A0310067EBF6 /* QDocumentOpenGLView.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {771, 1484}}";
+			sepNavSelRange = "{2335, 0}";
+			sepNavVisRange = "{1676, 1199}";
+			sepNavWindowFrame = "{{9, 44}, {830, 834}}";
+		};
+	};
+	27210CC60D51A0310067EBF6 /* QDocumentOpenGLView.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1190, 15820}}";
+			sepNavSelRange = "{16761, 0}";
+			sepNavVisRange = "{16596, 1027}";
+			sepNavWindowFrame = "{{382, 44}, {1057, 834}}";
+		};
+	};
+	273B965C0CC1E19E0006BD99 /* English */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {2822, 1344}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 4023}";
+			sepNavVisRect = "{{0, 0}, {670, 749}}";
+			sepNavWindowFrame = "{{15, 39}, {773, 834}}";
+		};
+	};
+	273B989F0CC2ABCC0006BD99 /* CGSPrivate.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {714, 3164}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{1269, 1815}";
+			sepNavWindowFrame = "{{15, 39}, {773, 834}}";
+		};
+	};
+	274EB4390D37CCF600E1A75D /* QDocumentWindowController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {990, 1358}}";
+			sepNavSelRange = "{3251, 0}";
+			sepNavVisRange = "{832, 1335}";
+			sepNavWindowFrame = "{{0, 44}, {1049, 834}}";
+		};
+	};
+	274EB43A0D37CCF600E1A75D /* QDocumentTaskController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {2018, 3584}}";
+			sepNavSelRange = "{7926, 0}";
+			sepNavVisRange = "{6215, 2349}";
+			sepNavWindowFrame = "{{355, 44}, {858, 834}}";
+		};
+	};
+	274EB43B0D37CCF600E1A75D /* QDocumentWindowController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {705, 706}}";
+			sepNavSelRange = "{1262, 0}";
+			sepNavVisRange = "{0, 1443}";
+			sepNavWindowFrame = "{{15, 39}, {764, 834}}";
+		};
+	};
+	274EB43C0D37CCF600E1A75D /* QDocumentTaskController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {705, 706}}";
+			sepNavSelRange = "{32, 0}";
+			sepNavVisRange = "{0, 1501}";
+			sepNavWindowFrame = "{{15, 39}, {764, 834}}";
+		};
+	};
+	274EB43F0D37CCF600E1A75D /* QDocumentDistributedObject.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {740, 2828}}";
+			sepNavSelRange = "{1251, 0}";
+			sepNavVisRange = "{0, 2168}";
+			sepNavWindowFrame = "{{620, 44}, {764, 834}}";
+		};
+	};
+	274EB4400D37CCF600E1A75D /* QDocumentDistributedObject.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {705, 1148}}";
+			sepNavSelRange = "{0, 1164}";
+			sepNavVisRange = "{0, 1830}";
+			sepNavWindowFrame = "{{15, 39}, {764, 834}}";
+		};
+	};
+	274EB4430D37CCF600E1A75D /* QDocument.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1388, 11690}}";
+			sepNavSelRange = "{17896, 0}";
+			sepNavVisRange = "{16638, 1396}";
+			sepNavWindowFrame = "{{221, 44}, {764, 834}}";
+		};
+	};
+	274EB4440D37CCF600E1A75D /* QDocument.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {488, 2268}}";
+			sepNavSelRange = "{1241, 0}";
+			sepNavVisRange = "{0, 1714}";
+			sepNavWindowFrame = "{{-1, 44}, {527, 834}}";
+		};
+	};
+	274EB45A0D37CE1D00E1A75D /* QApplicationController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1088, 2380}}";
+			sepNavSelRange = "{1159, 0}";
+			sepNavVisRange = "{4457, 1341}";
+			sepNavWindowFrame = "{{130, 44}, {764, 834}}";
+		};
+	};
+	274EB45B0D37CE1D00E1A75D /* QApplicationController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {705, 706}}";
+			sepNavSelRange = "{0, 1159}";
+			sepNavVisRange = "{0, 1390}";
+			sepNavWindowFrame = "{{15, 44}, {764, 834}}";
+		};
+	};
+	274EB45C0D37CE1D00E1A75D /* QApplication.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {774, 1400}}";
+			sepNavSelRange = "{2246, 0}";
+			sepNavVisRange = "{1721, 1001}";
+			sepNavWindowFrame = "{{328, 44}, {764, 834}}";
+		};
+	};
+	274EB45D0D37CE1D00E1A75D /* QApplication.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {705, 706}}";
+			sepNavSelRange = "{19, 0}";
+			sepNavVisRange = "{0, 1364}";
+			sepNavWindowFrame = "{{734, 44}, {764, 834}}";
+		};
+	};
+	274EB4950D37D1B800E1A75D /* QControlTableView.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {705, 706}}";
+			sepNavSelRange = "{16, 0}";
+			sepNavVisRange = "{0, 1456}";
+			sepNavWindowFrame = "{{15, 39}, {764, 834}}";
+		};
+	};
+	274EB4960D37D1B800E1A75D /* QControlTableView.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {705, 4060}}";
+			sepNavSelRange = "{16, 0}";
+			sepNavVisRange = "{0, 1944}";
+			sepNavWindowFrame = "{{98, 44}, {764, 834}}";
+		};
+	};
+	274EB49B0D37D21100E1A75D /* QControlController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {705, 1918}}";
+			sepNavSelRange = "{1387, 0}";
+			sepNavVisRange = "{0, 1753}";
+			sepNavWindowFrame = "{{7, 44}, {764, 834}}";
+		};
+	};
+	274EB49C0D37D21100E1A75D /* QControlController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1047, 7434}}";
+			sepNavSelRange = "{701, 0}";
+			sepNavVisRange = "{160, 1815}";
+			sepNavWindowFrame = "{{579, 44}, {1106, 834}}";
+		};
+	};
+	274EB4A20D381F2100E1A75D /* QControlTableViewController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1047, 706}}";
+			sepNavSelRange = "{1458, 0}";
+			sepNavVisRange = "{0, 1700}";
+			sepNavWindowFrame = "{{68, -78}, {1106, 834}}";
+		};
+	};
+	274EB4A30D381F2100E1A75D /* QControlTableViewController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1592, 4592}}";
+			sepNavSelRange = "{11875, 0}";
+			sepNavVisRange = "{10824, 2463}";
+			sepNavWindowFrame = "{{324, 44}, {1106, 834}}";
+		};
+	};
+	275D5ECF0D411D3B0061152C /* QButtonCell.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {722, 706}}";
+			sepNavSelRange = "{18, 0}";
+			sepNavVisRange = "{0, 1545}";
+			sepNavWindowFrame = "{{10, 44}, {620, 834}}";
+		};
+	};
+	275D5ED00D411D3B0061152C /* QButtonCell.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1034, 1890}}";
+			sepNavSelRange = "{18, 0}";
+			sepNavVisRange = "{0, 1848}";
+			sepNavWindowFrame = "{{306, 44}, {620, 834}}";
+		};
+	};
+	276D55600CB2492F00AE5D98 /* Q */ = {
+		isa = PBXExecutable;
+		activeArgIndices = (
+		);
+		argumentStrings = (
+		);
+		autoAttachOnCrash = 1;
+		breakpointsEnabled = 0;
+		configStateDict = {
+		};
+		customDataFormattersEnabled = 1;
+		debuggerPlugin = GDBDebugging;
+		disassemblyDisplayState = 0;
+		dylibVariantSuffix = "";
+		enableDebugStr = 1;
+		environmentEntries = (
+		);
+		executableSystemSymbolLevel = 0;
+		executableUserSymbolLevel = 0;
+		libgmallocEnabled = 0;
+		name = Q;
+		savedGlobals = {
+		};
+		sourceDirectories = (
+		);
+		variableFormatDictionary = {
+		};
+	};
+	276D556C0CB2494E00AE5D98 /* Source Control */ = {
+		isa = PBXSourceControlManager;
+		fallbackIsa = XCSourceControlManager;
+		isSCMEnabled = 0;
+		scmConfiguration = {
+		};
+		scmType = "";
+	};
+	276D556D0CB2494E00AE5D98 /* Code sense */ = {
+		isa = PBXCodeSenseManager;
+		indexTemplatePath = "";
+	};
+	279547B20D3B866000CB2BE3 /* QWindow.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1047, 706}}";
+			sepNavSelRange = "{14, 0}";
+			sepNavVisRange = "{0, 1398}";
+			sepNavWindowFrame = "{{13, 39}, {1106, 834}}";
+		};
+	};
+	279547B30D3B866000CB2BE3 /* QWindow.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1047, 2744}}";
+			sepNavSelRange = "{2683, 35}";
+			sepNavVisRange = "{1165, 2619}";
+			sepNavWindowFrame = "{{337, 44}, {1106, 834}}";
+		};
+	};
+	27A2546B0D45F26D006BDDD5 /* QQvmManager.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {714, 706}}";
+			sepNavSelRange = "{1388, 0}";
+			sepNavVisRange = "{0, 1451}";
+			sepNavWindowFrame = "{{685, 44}, {773, 834}}";
+		};
+	};
+	27A2546C0D45F26D006BDDD5 /* QQvmManager.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1196, 4550}}";
+			sepNavSelRange = "{7118, 0}";
+			sepNavVisRange = "{6269, 1618}";
+			sepNavWindowFrame = "{{43, 44}, {830, 834}}";
+		};
+	};
+	27A258CE0D479EA1006BDDD5 /* QDocumentEditVMController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {714, 1232}}";
+			sepNavSelRange = "{2658, 0}";
+			sepNavVisRange = "{621, 1449}";
+			sepNavWindowFrame = "{{132, 44}, {773, 834}}";
+		};
+	};
+	27A258CF0D479EA1006BDDD5 /* QDocumentEditVMController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {812, 2856}}";
+			sepNavSelRange = "{1789, 0}";
+			sepNavVisRange = "{1717, 1010}";
+			sepNavWindowFrame = "{{658, 44}, {773, 834}}";
+		};
+	};
+	27C978840CC3BE4B00A5F3AF /* FSController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {714, 706}}";
+			sepNavSelRange = "{72, 0}";
+			sepNavVisRange = "{0, 1362}";
+			sepNavWindowFrame = "{{15, 39}, {773, 834}}";
+		};
+	};
+	27C978850CC3BE4B00A5F3AF /* FSController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {774, 1120}}";
+			sepNavSelRange = "{1264, 0}";
+			sepNavVisRange = "{43, 1454}";
+			sepNavVisRect = "{{0, 404}, {662, 590}}";
+			sepNavWindowFrame = "{{15, 39}, {773, 834}}";
+		};
+	};
+	27C978860CC3BE4B00A5F3AF /* FSRoundedView.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {714, 706}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{0, 312}";
+			sepNavWindowFrame = "{{15, 39}, {773, 834}}";
+		};
+	};
+	27C978870CC3BE4B00A5F3AF /* FSRoundedView.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {714, 882}}";
+			sepNavSelRange = "{272, 0}";
+			sepNavVisRange = "{84, 1695}";
+			sepNavWindowFrame = "{{15, 39}, {773, 834}}";
+		};
+	};
+	27C978880CC3BE4B00A5F3AF /* FSToolbarController.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {818, 812}}";
+			sepNavSelRange = "{7, 0}";
+			sepNavVisRange = "{0, 1808}";
+			sepNavWindowFrame = "{{15, 39}, {773, 834}}";
+		};
+	};
+	27C978890CC3BE4B00A5F3AF /* FSToolbarController.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {774, 3612}}";
+			sepNavSelRange = "{1300, 0}";
+			sepNavVisRange = "{984, 842}";
+			sepNavVisRect = "{{0, 717}, {794, 590}}";
+			sepNavWindowFrame = "{{15, 39}, {773, 834}}";
+		};
+	};
+	27C9788A0CC3BE4B00A5F3AF /* FSTransparentButton.h */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {714, 706}}";
+			sepNavSelRange = "{77, 0}";
+			sepNavVisRange = "{0, 1330}";
+			sepNavWindowFrame = "{{15, 39}, {773, 834}}";
+		};
+	};
+	27C9788B0CC3BE4B00A5F3AF /* FSTransparentButton.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {714, 706}}";
+			sepNavSelRange = "{1373, 0}";
+			sepNavVisRange = "{0, 1460}";
+			sepNavWindowFrame = "{{15, 39}, {773, 834}}";
+		};
+	};
+	27F392650D527C37006BB8BE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 27210CC60D51A0310067EBF6 /* QDocumentOpenGLView.m */;
+		name = "QDocumentOpenGLView.m: 633";
+		rLen = 0;
+		rLoc = 27004;
+		rType = 0;
+		vrLen = 2666;
+		vrLoc = 23683;
+	};
+	27F392670D527C37006BB8BE /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 27F392680D527C37006BB8BE /* boards.h */;
+		name = "boards.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1144;
+		vrLoc = 902;
+	};
+	27F392680D527C37006BB8BE /* boards.h */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.h;
+		name = boards.h;
+		path = "/Users/mike/Documents/Xcode Projects/Q/qemu/qemu/hw/boards.h";
+		sourceTree = "<absolute>";
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {771, 1386}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{902, 1093}";
+		};
+	};
+	27F921000D53E50200C28DF8 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 27F921010D53E50200C28DF8 /* cocoa.m */;
+		rLen = 0;
+		rLoc = 2147483647;
+		rType = 0;
+	};
+	27F921010D53E50200C28DF8 /* cocoa.m */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.objc;
+		name = cocoa.m;
+		path = /Users/mike/Documents/Qemu091TCG/patches/cocoa.m;
+		sourceTree = "<absolute>";
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1442, 14588}}";
+			sepNavSelRange = "{18105, 75}";
+			sepNavVisRange = "{17422, 2196}";
+			sepNavWindowFrame = "{{-23, 44}, {830, 834}}";
+		};
+	};
+	27F921280D53EA4A00C28DF8 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 27A258CF0D479EA1006BDDD5 /* QDocumentEditVMController.m */;
+	};
+	27F9212F0D53EA8D00C28DF8 /* PBXBookmark */ = {
+		isa = PBXBookmark;
+		fRef = 274EB43F0D37CCF600E1A75D /* QDocumentDistributedObject.m */;
+	};
+	27F922B80D540D3800C28DF8 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 27F922B90D540D3800C28DF8 /* MyOpenGLView.m */;
+		rLen = 0;
+		rLoc = 2147483647;
+		rType = 0;
+	};
+	27F922B90D540D3800C28DF8 /* MyOpenGLView.m */ = {
+		isa = PBXFileReference;
+		lastKnownFileType = sourcecode.c.objc;
+		name = MyOpenGLView.m;
+		path = "/Users/mike/Documents/Xcode Projects/hl2hm/MyOpenGLView.m";
+		sourceTree = "<absolute>";
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {990, 9576}}";
+			sepNavSelRange = "{7981, 84}";
+			sepNavVisRange = "{7724, 2490}";
+			sepNavWindowFrame = "{{15, 39}, {1049, 834}}";
+		};
+	};
+	27F922BC0D540D3800C28DF8 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 27210CC50D51A0310067EBF6 /* QDocumentOpenGLView.h */;
+		name = "QDocumentOpenGLView.h: 98";
+		rLen = 17;
+		rLoc = 2754;
+		rType = 0;
+		vrLen = 1146;
+		vrLoc = 1692;
+	};
+	27F9236A0D5419C500C28DF8 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 27210CC60D51A0310067EBF6 /* QDocumentOpenGLView.m */;
+		name = "QDocumentOpenGLView.m: 406";
+		rLen = 0;
+		rLoc = 16761;
+		rType = 0;
+		vrLen = 1027;
+		vrLoc = 16596;
+	};
+	27F9236B0D5419C500C28DF8 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 27F9236C0D5419C500C28DF8 /* MyOpenGLView.m */;
+		name = "MyOpenGLView.m: 256";
+		rLen = 84;
+		rLoc = 7981;
+		rType = 0;
+		vrLen = 2490;
+		vrLoc = 7724;
+	};
+	27F9236C0D5419C500C28DF8 /* MyOpenGLView.m */ = {
+		isa = PBXFileReference;
+		name = MyOpenGLView.m;
+		path = "/Users/mike/Documents/Xcode Projects/hl2hm/MyOpenGLView.m";
+		sourceTree = "<absolute>";
+	};
+	27F9236D0D5419C500C28DF8 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 27210CC50D51A0310067EBF6 /* QDocumentOpenGLView.h */;
+		name = "QDocumentOpenGLView.h: 80";
+		rLen = 0;
+		rLoc = 2335;
+		rType = 0;
+		vrLen = 1199;
+		vrLoc = 1676;
+	};
+	27F9236E0D5419C500C28DF8 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 27F9236F0D5419C500C28DF8 /* cocoa.m */;
+		name = "cocoa.m: 453";
+		rLen = 75;
+		rLoc = 18105;
+		rType = 0;
+		vrLen = 2196;
+		vrLoc = 17422;
+	};
+	27F9236F0D5419C500C28DF8 /* cocoa.m */ = {
+		isa = PBXFileReference;
+		name = cocoa.m;
+		path = /Users/mike/Documents/Qemu091TCG/patches/cocoa.m;
+		sourceTree = "<absolute>";
+	};
+	27F923700D5419C500C28DF8 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 274EB43F0D37CCF600E1A75D /* QDocumentDistributedObject.m */;
+		name = "QDocumentDistributedObject.m: 27";
+		rLen = 0;
+		rLoc = 1251;
+		rType = 0;
+		vrLen = 2168;
+		vrLoc = 0;
+	};
+	27F923710D5419C500C28DF8 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 27A258CF0D479EA1006BDDD5 /* QDocumentEditVMController.m */;
+		name = "QDocumentEditVMController.m: 59";
+		rLen = 0;
+		rLoc = 1789;
+		rType = 0;
+		vrLen = 1010;
+		vrLoc = 1717;
+	};
+	27F923720D5419C500C28DF8 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = 27F923730D5419C500C28DF8 /* boards.h */;
+		name = "boards.h: 1";
+		rLen = 0;
+		rLoc = 0;
+		rType = 0;
+		vrLen = 1144;
+		vrLoc = 902;
+	};
+	27F923730D5419C500C28DF8 /* boards.h */ = {
+		isa = PBXFileReference;
+		name = boards.h;
+		path = "/Users/mike/Documents/Xcode Projects/Q/qemu/qemu/hw/boards.h";
+		sourceTree = "<absolute>";
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {771, 1386}}";
+			sepNavSelRange = "{0, 0}";
+			sepNavVisRange = "{902, 1144}";
+			sepNavWindowFrame = "{{0, 44}, {830, 834}}";
+		};
+	};
+	2A37F4A9FDCFA73011CA2CEA /* Project object */ = {
+		activeArchitecture = i386;
+		activeBuildConfigurationName = Debug;
+		activeExecutable = 276D55600CB2492F00AE5D98 /* Q */;
+		activeTarget = 8D15AC270486D014006FF6A4 /* Q */;
+		addToTargets = (
+			8D15AC270486D014006FF6A4 /* Q */,
+		);
+		breakpoints = (
+		);
+		codeSenseManager = 276D556D0CB2494E00AE5D98 /* Code sense */;
+		executables = (
+			276D55600CB2492F00AE5D98 /* Q */,
+		);
+		expressions = (
+			"((self)->document)->configuration",
+		);
+		perUserDictionary = {
+			PBXConfiguration.PBXFileTableDataSource3.PBXFileTableDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					267,
+					20,
+					48,
+					43,
+					43,
+					20,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+					PBXFileDataSource_Target_ColumnID,
+				);
+			};
+			PBXConfiguration.PBXTargetDataSource.PBXTargetDataSource = {
+				PBXFileTableDataSourceColumnSortingDirectionKey = "-1";
+				PBXFileTableDataSourceColumnSortingKey = PBXFileDataSource_Filename_ColumnID;
+				PBXFileTableDataSourceColumnWidthsKey = (
+					20,
+					227,
+					60,
+					20,
+					48,
+					43,
+					43,
+				);
+				PBXFileTableDataSourceColumnsKey = (
+					PBXFileDataSource_FiletypeID,
+					PBXFileDataSource_Filename_ColumnID,
+					PBXTargetDataSource_PrimaryAttribute,
+					PBXFileDataSource_Built_ColumnID,
+					PBXFileDataSource_ObjectSize_ColumnID,
+					PBXFileDataSource_Errors_ColumnID,
+					PBXFileDataSource_Warnings_ColumnID,
+				);
+			};
+			PBXPerProjectTemplateStateSaveDate = 223600222;
+			PBXWorkspaceStateSaveDate = 223600222;
+		};
+		perUserProjectItems = {
+			27F392650D527C37006BB8BE /* PBXTextBookmark */ = 27F392650D527C37006BB8BE /* PBXTextBookmark */;
+			27F392670D527C37006BB8BE /* PBXTextBookmark */ = 27F392670D527C37006BB8BE /* PBXTextBookmark */;
+			27F921000D53E50200C28DF8 /* PBXTextBookmark */ = 27F921000D53E50200C28DF8 /* PBXTextBookmark */;
+			27F921280D53EA4A00C28DF8 /* PBXBookmark */ = 27F921280D53EA4A00C28DF8 /* PBXBookmark */;
+			27F9212F0D53EA8D00C28DF8 /* PBXBookmark */ = 27F9212F0D53EA8D00C28DF8 /* PBXBookmark */;
+			27F922B80D540D3800C28DF8 /* PBXTextBookmark */ = 27F922B80D540D3800C28DF8 /* PBXTextBookmark */;
+			27F922BC0D540D3800C28DF8 /* PBXTextBookmark */ = 27F922BC0D540D3800C28DF8 /* PBXTextBookmark */;
+			27F9236A0D5419C500C28DF8 /* PBXTextBookmark */ = 27F9236A0D5419C500C28DF8 /* PBXTextBookmark */;
+			27F9236B0D5419C500C28DF8 /* PBXTextBookmark */ = 27F9236B0D5419C500C28DF8 /* PBXTextBookmark */;
+			27F9236D0D5419C500C28DF8 /* PBXTextBookmark */ = 27F9236D0D5419C500C28DF8 /* PBXTextBookmark */;
+			27F9236E0D5419C500C28DF8 /* PBXTextBookmark */ = 27F9236E0D5419C500C28DF8 /* PBXTextBookmark */;
+			27F923700D5419C500C28DF8 /* PBXTextBookmark */ = 27F923700D5419C500C28DF8 /* PBXTextBookmark */;
+			27F923710D5419C500C28DF8 /* PBXTextBookmark */ = 27F923710D5419C500C28DF8 /* PBXTextBookmark */;
+			27F923720D5419C500C28DF8 /* PBXTextBookmark */ = 27F923720D5419C500C28DF8 /* PBXTextBookmark */;
+		};
+		sourceControlManager = 276D556C0CB2494E00AE5D98 /* Source Control */;
+		userBuildSettings = {
+		};
+	};
+	2A37F4B0FDCFA73011CA2CEA /* main.m */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {452, 371}}";
+			sepNavSelRange = "{191, 0}";
+			sepNavVisRange = "{0, 251}";
+			sepNavVisRect = "{{0, 61}, {653, 149}}";
+		};
+	};
+	32DBCF750370BD2300C91783 /* Q_Prefix.pch */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1135, 706}}";
+			sepNavSelRange = "{136, 0}";
+			sepNavVisRange = "{0, 430}";
+			sepNavVisRect = "{{0, 0}, {1155, 725}}";
+			sepNavWindowFrame = "{{132, 44}, {1194, 834}}";
+		};
+	};
+	8D15AC270486D014006FF6A4 /* Q */ = {
+		activeExec = 0;
+		executables = (
+			276D55600CB2492F00AE5D98 /* Q */,
+		);
+	};
+	8D15AC360486D014006FF6A4 /* Info.plist */ = {
+		uiCtxt = {
+			sepNavIntBoundsRect = "{{0, 0}, {1047, 728}}";
+			sepNavSelRange = "{1357, 0}";
+			sepNavVisRange = "{39, 1348}";
+			sepNavVisRect = "{{0, 0}, {724, 1071}}";
+			sepNavWindowFrame = "{{15, 39}, {1106, 834}}";
+		};
+	};
+}
