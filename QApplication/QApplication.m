@@ -25,7 +25,6 @@
 #import "QApplication.h"
 
 #import "../QDocument/QDocument.h"
-#import "../QDocument/QDocumentQuartzView.h"
 #import "../FSControls/FSController.h"
 
 

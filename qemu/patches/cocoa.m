@@ -260,7 +260,7 @@ static void getCpuIdeActivity() {
 
 static void cocoa_update(DisplayState *ds, int x, int y, int w, int h)
 {
-	Q_DEBUG("qemu_cocoa: cocoa_update x=%d y=%d w=%d h=%d", x, y, w, h)
+	Q_DEBUG("qemu_cocoa: cocoa_update x=%d y=%d w=%d h=%d", x, y, w, h);
 
 
 /*
@@ -280,7 +280,7 @@ static void cocoa_update(DisplayState *ds, int x, int y, int w, int h)
 
 static void cocoa_resize(DisplayState *ds, int w, int h)
 {
-	Q_DEBUG("qemu_cocoa: cocoa_resize w=%d h=%d", w, h)
+	Q_DEBUG("qemu_cocoa: cocoa_resize w=%d h=%d", w, h);
 
 
     static void *screen_pixels;
@@ -320,7 +320,7 @@ static void cocoa_resize(DisplayState *ds, int w, int h)
 
 static void cocoa_refresh(DisplayState *ds)
 {
-	Q_DEBUG("qemu_cocoa: cocoa_refresh")
+	Q_DEBUG("qemu_cocoa: cocoa_refresh");
 
     // update vga state
     vga_hw_update();
@@ -422,7 +422,7 @@ static void cocoa_refresh(DisplayState *ds)
 
 static void cocoa_cleanup(void) 
 {
-	Q_DEBUG("qemu_cocoa: cocoa_cleanup")
+	Q_DEBUG("qemu_cocoa: cocoa_cleanup");
 
 }
 
@@ -430,7 +430,7 @@ static void cocoa_cleanup(void)
 
 void cocoa_display_init(DisplayState *ds, int full_screen)
 {
-Q_DEBUG("qemu_cocoa: cocoa_display_init")
+Q_DEBUG("qemu_cocoa: cocoa_display_init");
 
     // register vga outpu callbacks
     ds->dpy_update = cocoa_update;
@@ -472,7 +472,7 @@ Q_DEBUG("qemu_cocoa: cocoa_display_init")
 @implementation QemuCocoaAppController
 - (void)applicationDidFinishLaunching: (NSNotification *) note
 {
-	Q_DEBUG("qemu_cocoa: applicationDidFinishLaunching")
+	Q_DEBUG("qemu_cocoa: applicationDidFinishLaunching");
 
 
     uniqueDocumentID = gArgv[gArgc - 1];
@@ -499,7 +499,7 @@ Q_DEBUG("qemu_cocoa: cocoa_display_init")
 
 - (void)applicationWillTerminate:(NSNotification *)aNotification
 {
-	Q_DEBUG("qemu_cocoa: applicationWillTerminate")
+	Q_DEBUG("qemu_cocoa: applicationWillTerminate");
 
     // unregister
     [qDocument qemuUnRegister:self];
@@ -517,7 +517,7 @@ Q_DEBUG("qemu_cocoa: cocoa_display_init")
 
 - (void)startEmulationWithArgc:(int)argc argv:(char**)argv
 {
-	Q_DEBUG("qemu_cocoa: startEmulationWithArgc: %D", argc)
+	Q_DEBUG("qemu_cocoa: startEmulationWithArgc: %D", argc);
 
     int status;
     status = qemu_main(argc, argv);
