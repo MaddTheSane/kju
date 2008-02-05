@@ -257,6 +257,15 @@ int cocoa_keycode_to_qemu(int keycode)
     [super dealloc];
 }
 
+- (void)reshape
+{
+	Q_DEBUG(@"reshape");
+	
+	[[self openGLContext] makeCurrentContext];
+	[self setFrame:NSMakeRect(displayProperties.x, displayProperties.y, displayProperties.width, displayProperties.height)];
+    glViewport(0.0, 0.0, displayProperties.width, displayProperties.height);
+}
+
 - (void)awakeFromNib
 {
 	Q_DEBUG(@"awakeFromNib");
@@ -510,11 +519,11 @@ int cocoa_keycode_to_qemu(int keycode)
 
 - (void) updateSavedImage:(id)sender
 {
-	Q_DEBUG(@"loadTextures");
-	
-	
+	Q_DEBUG(@"updateSavedImage");
+
+
 	[[self openGLContext] makeCurrentContext];
-	
+
 	// remove old texture
 	if( textures[QDocumentOpenGLTextureSavedImage] != 0) {
 		glDeleteTextures(1, &textures[QDocumentOpenGLTextureSavedImage]);
@@ -532,6 +541,10 @@ int cocoa_keycode_to_qemu(int keycode)
 - (NSImage *) screenshot:(NSSize)size
 {
 	Q_DEBUG(@"screenshot NSSize(%f,  %f)", size.width, size.height);
+
+	// if no size is set, make fullsize shot */ 
+	if (size.width == 0 || !size.height == 0) 
+		size = [self bounds].size;
 
 	NSBitmapImageRep* sBitmapImageRep = [[[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL
 		pixelsWide:size.width
@@ -647,11 +660,8 @@ int cocoa_keycode_to_qemu(int keycode)
 		displayProperties.x = 0.0;//rect.origin.x;//([self bounds].size.width - cw) / 2.0;
 		displayProperties.y = ICON_BAR_HEIGHT;//([self bounds].size.height - ch) / 2.0;
 	}
-	[self setFrame:NSMakeRect(displayProperties.x, displayProperties.y, displayProperties.width, displayProperties.height)];
 
-    [[self openGLContext] makeCurrentContext];
-    glViewport(0.0, 0.0, displayProperties.width, displayProperties.height);
-    [self display];
+    [self update];
 }
 
 - (void) setFullScreen

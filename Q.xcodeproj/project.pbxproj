@@ -6,6 +6,20 @@
 	objectVersion = 42;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		2796F6680D58E9E8006DA3A0 /* qemu */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 2796F66B0D58EA06006DA3A0 /* Build configuration list for PBXAggregateTarget "qemu" */;
+			buildPhases = (
+				2796F6670D58E9E8006DA3A0 /* ShellScript */,
+			);
+			dependencies = (
+			);
+			name = qemu;
+			productName = qemu;
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		27210CC70D51A0310067EBF6 /* QDocumentOpenGLView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27210CC60D51A0310067EBF6 /* QDocumentOpenGLView.m */; };
 		27210CD80D51A2360067EBF6 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27210CD70D51A2360067EBF6 /* OpenGL.framework */; };
@@ -67,6 +81,16 @@
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		2796F66C0D58EA50006DA3A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2A37F4A9FDCFA73011CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2796F6680D58E9E8006DA3A0 /* qemu */;
+			remoteInfo = qemu;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		274EB3F40D37C71900E1A75D /* Copy Frameworks */ = {
@@ -384,6 +408,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				2796F66D0D58EA50006DA3A0 /* PBXTargetDependency */,
 			);
 			name = Q;
 			productInstallPath = "$(HOME)/Applications";
@@ -404,6 +429,7 @@
 			projectRoot = "";
 			targets = (
 				8D15AC270486D014006FF6A4 /* Q */,
+				2796F6680D58E9E8006DA3A0 /* qemu */,
 			);
 		};
 /* End PBXProject section */
@@ -453,6 +479,22 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		2796F6670D58E9E8006DA3A0 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#I would preffer this in \"build\", but XCode 3 does not allow Makefiles inside \"build\" so we go with /tmp and clean it up\nQEMUPATCHDIRECTORY=\"/tmp\"\nQEMUROOT=\"$SRCROOT/qemu\"\n\n#check if a built version already exists, else copy, patch, build and cleanup sources\ntest -e \"$TARGET_TEMP_DIR/i386-softmmu/qemu\" || {\n\trm -rf \"$QEMUPATCHDIRECTORY/qemu\" > /dev/null\n\tmkdir -p \"$QEMUPATCHDIRECTORY\"\n\tcp -r \"qemu/qemu\" \"$QEMUPATCHDIRECTORY\"\n\tcd \"$QEMUPATCHDIRECTORY/qemu\"\n\n\tif test $(echo $MACHTYPE | grep powerpc); then\n\t\t# add patches for PPC\n\t\techo \"PPC\" > /dev/null\n\telse\n\t\t# add patches for Intel\n\t\tpatch -p1 -u < \"$QEMUROOT/patches/qemu-0.9.1-gcc4.patch\"\n\t\tpatch -p1 -u < \"$QEMUROOT/patches/qemu-0.7.2-dyngen-check-stack-clobbers.patch\"\n\t\tpatch -p1 -u < \"$QEMUROOT/patches/qemu-0.9.1-gcc4-opts.patch\"\n\t\tpatch -p1 -u < \"$QEMUROOT/patches/qemu-0.9.1-gcc4-hacks.patch\"\n\t\tpatch -p1 -u < \"$QEMUROOT/patches/qemu-0.9.1-enforce-16byte-stack-boundary.patch\"\n\t\tpatch -p1 -u -f < \"$QEMUROOT/patches/qemu-0.9.0-i386-FORCE_RET.patch\"\n\t\tpatch -p1 -u < \"$QEMUROOT/patches/qemu-0.9.1-osx-intel-port.patch\"\n\t\tpatch -p1 -u < \"$QEMUROOT/patches/qemu-0.9.1-osx-bugfix.patch\"\n\tfi\n\n\t# Q ***** Leopard patches\n\tpatch -p0 -u < \"$QEMUROOT/patches/Leopard-dyngen.dSYM.diff\"\n\tpatch -p0 -u < \"$QEMUROOT/patches/qemu-img-CF+IO.diff\"\n\tpatch -p1 -u < \"$QEMUROOT/patches/qemu-0.9.1-always_inline.patch\"\n\n\t# Q ***** add 2nd Bootdevice\n\t#patch -p0 -u <   \"$QEMUROOT/patches/qemu-2ndbootdevice_04.diff\"\n\n\t# Q ***** use custom cocoa.m\n\tcp \"$QEMUROOT/patches/cocoa.m\" \"$QEMUPATCHDIRECTORY/qemu/cocoa.m\"\n\n\tpatch -p0 -u < \"$QEMUROOT/patches/q_block_int.h_hdled_1.diff\"\n\tpatch -p0 -u < \"$QEMUROOT/patches/q_block.c_hdled_1.diff\"\n\n\tmkdir -p \"$TARGET_TEMP_DIR\"\n\tcd \"$TARGET_TEMP_DIR\"\n\n\t# build only for i386 by default\n\t\"$QEMUPATCHDIRECTORY/qemu/./configure\" --prefix=.. --enable-cocoa --enable-adlib --disable-gcc-check --target-list=i386-softmmu\n\n\t# uncomment if you want to build all targets\n\t#\"$QEMUPATCHDIRECTORY/qemu/./configure\" --prefix=../products/i386 --enable-cocoa --enable-adlib --disable-gcc-check --target-list=i386-softmmu,ppc-softmmu,sparc-softmmu,mips-softmmu,arm-softmmu\n\n\t#make\n\tmake\n\n\t#backup bios files\n\tmkdir -p \"$TARGET_TEMP_DIR/pc-bios/\"\n\tcd \"$QEMUPATCHDIRECTORY/qemu/pc-bios/\"\n\tcp *.bin \"$TARGET_TEMP_DIR/pc-bios/\"\n\tcd -\n\n\t#cleanup\n\trm -rf \"$QEMUPATCHDIRECTORY/qemu\" > /dev/null\n}\n\n#create and copy qemu bins\nrm -rf   \"$BUILD_DIR/$CONFIGURATION/Q.app/Contents/Resources/bin/*-softmmu\" > /dev/null\nmkdir -p \"$BUILD_DIR/$CONFIGURATION/Q.app/Contents/Resources/bin/\"\ncp \"$TARGET_TEMP_DIR/i386-softmmu/qemu\" \"$BUILD_DIR/$CONFIGURATION/Q.app/Contents/Resources/bin/i386-softmmu\"\n\n#create and copy bios\nrm -rf   \"$BUILD_DIR/$CONFIGURATION/Q.app/Contents/Resources/share/qemu\" > /dev/null\nmkdir -p \"$BUILD_DIR/$CONFIGURATION/Q.app/Contents/Resources/share/qemu/\"\ncd \"$TARGET_TEMP_DIR/pc-bios/\"\ncp *.bin \"$BUILD_DIR/$CONFIGURATION/Q.app/Contents/Resources/share/qemu/\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		8D15AC300486D014006FF6A4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -481,6 +523,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2796F66D0D58EA50006DA3A0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2796F6680D58E9E8006DA3A0 /* qemu */;
+			targetProxy = 2796F66C0D58EA50006DA3A0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		089C165FFE840EACC02AAC07 /* InfoPlist.strings */ = {
@@ -534,6 +584,27 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		2796F6690D58E9E8006DA3A0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				PRODUCT_NAME = qemu;
+			};
+			name = Debug;
+		};
+		2796F66A0D58E9E8006DA3A0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				PRODUCT_NAME = qemu;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 		C05733C808A9546B00998B17 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -610,6 +681,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		2796F66B0D58EA06006DA3A0 /* Build configuration list for PBXAggregateTarget "qemu" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2796F6690D58E9E8006DA3A0 /* Debug */,
+				2796F66A0D58E9E8006DA3A0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		C05733C708A9546B00998B17 /* Build configuration list for PBXNativeTarget "Q" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

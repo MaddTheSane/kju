@@ -25,6 +25,7 @@
 #import "QApplication.h"
 
 #import "../QDocument/QDocument.h"
+#import "../QDocument/QDocumentOpenGLView.h"
 #import "../FSControls/FSController.h"
 
 
@@ -70,7 +71,7 @@
 
             // fullscreen toolbar
             case 11: // cmd+b
-                if ([[document screenView] fullscreen]) {
+                if ([[document screenView] isFullscreen]) {
                     [[[document screenView] fullscreenController] toggleToolbar];
                 }
                 break;
