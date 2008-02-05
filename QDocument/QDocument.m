@@ -179,8 +179,9 @@
 
     [super windowControllerDidLoadNib:aController];
     // Add any code here that needs to be executed once the windowController has loaded the document's window.
-    [screenView updateSavedImage:self];
-	
+
+//	[screenView updateSavedImage:self];
+
 	// Tiger compatible custom butoonCell
 	[buttonEdit setCell:[[[QButtonCell alloc] initImageCell:[[buttonEdit cell] image] buttonType:QButtonCellAlone target:[[buttonEdit cell] target] action:[[buttonEdit cell] action]] autorelease]];
 	[buttonFloppy setCell:[[[QButtonCell alloc] initImageCell:[[buttonFloppy cell] image] buttonType:QButtonCellLeft target:[[buttonFloppy cell] target] action:[[buttonFloppy cell] action]] autorelease]];
@@ -465,18 +466,12 @@
         if (returnCode == NSAlertDefaultReturn) { // save and shutdown
 			[self setVMState:QDocumentSaving];
             [distributedObject setCommand:'Z' arg1:0 arg2:0 arg3:0 arg4:0];
-/*
-			[screenView lockFocus];
-			bitmapImageRep = [[NSBitmapImageRep alloc] initWithFocusedViewRect:[screenView bounds]];
-			[screenView unlockFocus];
-*/
 			bitmapImageRep = [[[screenView screenshot:NSMakeSize(0,0)] representations] objectAtIndex:0];
 			data =[bitmapImageRep representationUsingType: NSPNGFileType properties: nil];
 			fileManager = [NSFileManager defaultManager];
 			if(![fileManager fileExistsAtPath: [NSString stringWithFormat: @"%@/QuickLook", [[[configuration objectForKey:@"Temporary"] objectForKey:@"URL"] path]]])
 				[fileManager createDirectoryAtPath: [NSString stringWithFormat: @"%@/QuickLook", [[[configuration objectForKey:@"Temporary"] objectForKey:@"URL"] path]] withIntermediateDirectories: NO attributes: nil error: NULL];
 			[data writeToFile: [NSString stringWithFormat: @"%@/QuickLook/Thumbnail.png", [[[configuration objectForKey:@"Temporary"] objectForKey:@"URL"] path]] atomically: YES];
-//            [bitmapImageRep release];
 			[screenView updateSavedImage:self];
         } else if (returnCode == NSAlertOtherReturn) { // shutdown
 			[distributedObject setCommand:'Q' arg1:0 arg2:0 arg3:0 arg4:0];

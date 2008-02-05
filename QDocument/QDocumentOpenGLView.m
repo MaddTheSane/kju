@@ -246,8 +246,13 @@ int cocoa_keycode_to_qemu(int keycode)
     // disabnle drag'n'drop
     [self unregisterDraggedTypes];
 
-    if (screenBuffer)
-        munmap(screenBuffer, screenProperties.width * 4 * screenProperties.height);
+    if (screenProperties.screenBufferSize > 0) {
+		if (munmap(screenBuffer, screenProperties.screenBufferSize) == -1) {
+			int errsv = errno;
+			NSLog(@"QDocumentOpenGLView: dealloc: could not munmap:  errno(%D) - %s", errsv, strerror(errsv));
+			screenProperties.screenBufferSize;
+		}
+	}
 
     [super dealloc];
 }
@@ -255,16 +260,20 @@ int cocoa_keycode_to_qemu(int keycode)
 - (void)awakeFromNib
 {
 	Q_DEBUG(@"awakeFromNib");
-	
-    // set screen properties and resize to initial value
+
+	// set screen properties and resize to initial value
     screenProperties.bitsPerComponent = 8;
     screenProperties.bitsPerPixel = 32;
 	screenProperties.width = 640;
 	screenProperties.height = 480;
+	screenProperties.screenBufferSize = 0;
 	
 	displayProperties.zoom = 1.0;
-
-	[self resizeContentToWidth:screenProperties.width height:screenProperties.height];
+	
+	// initialize OpenGL and load play overlay
+	[self prepareOpenGL];
+	[self updateSavedImage:self];
+	textures[QDocumentOpenGLTextureOverlay] = [self createTextureFromImagePath:[NSString stringWithFormat:@"%@/q_overlay_play.png", [[NSBundle mainBundle] resourcePath]]];
 
     // enable drag'n'drop for files
     [self registerForDraggedTypes:[NSArray arrayWithObjects:NSFilenamesPboardType, nil]];
@@ -272,9 +281,6 @@ int cocoa_keycode_to_qemu(int keycode)
     // QEMU state
     mouseGrabed = FALSE; // we start non grabbed
     is_graphic_console = TRUE; // we start in grafic mode
-	
-	// load Texture
-	[self loadOverlay];
 }
 
 - (void) openGLDrawRect:(NSRect) rect inRect:(NSRect) vPortRect
@@ -298,15 +304,35 @@ int cocoa_keycode_to_qemu(int keycode)
 	float onePixel[2];
     onePixel[0] = 2.0 / displayProperties.width;
     onePixel[1] = 2.0 / displayProperties.height;
+	
+	if ([document VMState] == QDocumentSaved) {
 
-    if ((int)screenBuffer != -1) {
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClearColor(1.0, 1.0, 1.0, 1.0);
 
-		// remove old texture
-		if( screen_tex != 0) {
-			glDeleteTextures(1, &screen_tex);
+		// draw saved image
+		if (textures[QDocumentOpenGLTextureSavedImage] != 0) {
+			glEnable(GL_TEXTURE_RECTANGLE_ARB);
+			glBindTexture(GL_TEXTURE_RECTANGLE_ARB, textures[QDocumentOpenGLTextureSavedImage]); // Select the Texture
+			glBegin(GL_QUADS);
+			{
+			glTexCoord2f((GLfloat)screenProperties.width, (GLfloat)screenProperties.height); glVertex2f(1.0f, -1.0f);
+			glTexCoord2f(0.0f, (GLfloat)screenProperties.height); glVertex2f(-1.0f, -1.0f);
+			glTexCoord2f(0.0f, 0.0f); glVertex2f(-1.0f, 1.0f);
+			glTexCoord2f((GLfloat)screenProperties.width, 0.0f); glVertex2f(1.0f, 1.0f);
+			}
+			glEnd();
+			glDisable(GL_TEXTURE_RECTANGLE_ARB);
 		}
 
-		screen_tex = 1;
+    } else if ((int)screenBuffer != -1) {
+
+		// remove old texture
+		if( textures[QDocumentOpenGLTextureScreen] != 0) {
+			glDeleteTextures(1, &textures[QDocumentOpenGLTextureScreen]);
+		}
+
+		textures[QDocumentOpenGLTextureScreen] = 1;
 		
 		//calculate the texure rect
 		NSRect clipRect;
@@ -331,7 +357,7 @@ int cocoa_keycode_to_qemu(int keycode)
 		glPixelStorei(GL_UNPACK_ROW_LENGTH, screenProperties.width); // Sets the appropriate unpacking row length for the bitmap.
 		glPixelStorei(GL_UNPACK_ALIGNMENT, 1); // Sets the byte-aligned unpacking that's needed for bitmaps that are 3 bytes per pixel.
 
-		glBindTexture (GL_TEXTURE_RECTANGLE_ARB, screen_tex); // Binds the texture name to the texture target.
+		glBindTexture (GL_TEXTURE_RECTANGLE_ARB, textures[QDocumentOpenGLTextureScreen]); // Binds the texture name to the texture target.
 		glTexParameteri(GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MIN_FILTER, GL_LINEAR); // Sets filtering so that it does not use a mipmap, which would be redundant for the texture rectangle extension
 
 		// optimize loading of texture
@@ -357,19 +383,13 @@ int cocoa_keycode_to_qemu(int keycode)
 
 		glBegin(GL_QUADS);
 		{
-		glTexCoord2f(0.0f, 0.0f);
-		glVertex2f(-1.0f, (GLfloat)(onePixel[1] * (rect.origin.y + rect.size.height) - 1.0));
-
-		glTexCoord2f(0.0f, (GLfloat)clipRect.size.height);
-		glVertex2f(-1.0f, (GLfloat)(onePixel[1] * rect.origin.y - 1.0));
-
-		glTexCoord2f((GLfloat)clipRect.size.width, (GLfloat)clipRect.size.height);
-		glVertex2f(1.0f, (GLfloat)(onePixel[1] * rect.origin.y - 1.0));
-
-		glTexCoord2f((GLfloat)clipRect.size.width, 0.0f);
-		glVertex2f(1.0f, (GLfloat)(onePixel[1] * (rect.origin.y + rect.size.height) - 1.0));
+		glTexCoord2f(0.0f, 0.0f); glVertex2f(-1.0f, (GLfloat)(onePixel[1] * (rect.origin.y + rect.size.height) - 1.0));
+		glTexCoord2f(0.0f, (GLfloat)clipRect.size.height); glVertex2f(-1.0f, (GLfloat)(onePixel[1] * rect.origin.y - 1.0));
+		glTexCoord2f((GLfloat)clipRect.size.width, (GLfloat)clipRect.size.height); glVertex2f(1.0f, (GLfloat)(onePixel[1] * rect.origin.y - 1.0));
+		glTexCoord2f((GLfloat)clipRect.size.width, 0.0f); glVertex2f(1.0f, (GLfloat)(onePixel[1] * (rect.origin.y + rect.size.height) - 1.0));
 		}
 		glEnd();
+		glDisable( GL_TEXTURE_RECTANGLE_ARB );
 
 	} else {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -382,96 +402,136 @@ int cocoa_keycode_to_qemu(int keycode)
 		glColor3f([rgbColor redComponent], [rgbColor greenComponent], [rgbColor blueComponent]);
 
 		glBegin(GL_QUAD_STRIP);
-
-		glVertex2f(-1.0, -1.0);
-		glVertex2f(3 * onePixel[0] - 1, 3 * onePixel[1] - 1);
-
-		glVertex2f(1.0, -1.0);
-		glVertex2f((rect.size.width - 3) * onePixel[0] - 1, 3 * onePixel[1] - 1);
-
-		glVertex2f(1.0, 1.0);
-		glVertex2f(([self bounds].size.width - 3) * onePixel[0] - 1, ([self bounds].size.height - 3) * onePixel[1] - 1);
-
-		glVertex2f(-1.0, 1.0);
-		glVertex2f(3 * onePixel[0] - 1, ([self bounds].size.height - 3) * onePixel[1] - 1);
-
-		glVertex2f(-1.0, -1.0);
-		glVertex2f(3 * onePixel[0] - 1, 3 * onePixel[1] - 1);
-
+		{
+		glVertex2f(-1.0, -1.0); glVertex2f(3 * onePixel[0] - 1, 3 * onePixel[1] - 1);
+		glVertex2f(1.0, -1.0); glVertex2f((rect.size.width - 3) * onePixel[0] - 1, 3 * onePixel[1] - 1);
+		glVertex2f(1.0, 1.0); glVertex2f(([self bounds].size.width - 3) * onePixel[0] - 1, ([self bounds].size.height - 3) * onePixel[1] - 1);
+		glVertex2f(-1.0, 1.0); glVertex2f(3 * onePixel[0] - 1, ([self bounds].size.height - 3) * onePixel[1] - 1);
+		glVertex2f(-1.0, -1.0); glVertex2f(3 * onePixel[0] - 1, 3 * onePixel[1] - 1);
+		}
 		glEnd();
 	}
-/*
+
 	// play overlay
 	if ([document VMState] != QDocumentRunning) {
 
+		// draw background
 		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA,GL_ONE);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 		glBegin(GL_QUADS);
 		{
-		glColor4f(1.0f, 1.0f, 1.0f, 0.25f);
+		glColor4f(1.0f, 1.0f, 1.0f, .25f);
 		glVertex2f(-1.0, -1.0);
 		glVertex2f(1.0, -1.0);
 		glVertex2f(1.0, 1.0);
 		glVertex2f(-1.0, 1.0);
 		}
 		glEnd();
-		glDisable(GL_BLEND);
 
-		glBindTexture(GL_TEXTURE_2D, overlay_tex); // Select the Texture
+		// draw overlay
+		glEnable(GL_TEXTURE_RECTANGLE_ARB);
+		glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+		glBindTexture(GL_TEXTURE_RECTANGLE_ARB, textures[QDocumentOpenGLTextureOverlay]); // Select the Texture
 		glBegin(GL_QUADS);
 		{
-		glTexCoord2f(0.0f, 0.0f);
-		glVertex2f(-onePixel[0] * 100.0f, onePixel[1] * 100.0f);
-
-		glTexCoord2f(0.0f, 200.0f);
-		glVertex2f(-onePixel[0] * 100.0f, -onePixel[1] * 100.0f);
-
-		glTexCoord2f(200.0f, 200.0f);
-		glVertex2f(onePixel[0] * 100.0f, -onePixel[1] * 100.0f);
-
-		glTexCoord2f(200.0f, 0.0f);
-		glVertex2f(onePixel[0] * 100.0f, onePixel[1] * 100.0f);
+		glTexCoord2f(0.0f, 200.0f); glVertex2f(-onePixel[0] * 100.0f, -onePixel[1] * 100.0f);
+		glTexCoord2f(200.0f, 200.0f); glVertex2f(onePixel[0] * 100.0f, -onePixel[1] * 100.0f);
+		glTexCoord2f(200.0f, 0.0f); glVertex2f(onePixel[0] * 100.0f, onePixel[1] * 100.0f);
+		glTexCoord2f(0.0f, 0.0f); glVertex2f(-onePixel[0] * 100.0f, onePixel[1] * 100.0f);
 		}
 		glEnd();
+		glDisable(GL_BLEND);
+		glDisable(GL_TEXTURE_RECTANGLE_ARB);
+
 	}
-*/
+
     glFlush();
 }
 
 
 
 #pragma mark saved image and screenshots
+- (GLuint) createTextureFromImagePath:(NSString *)path
+{
+	Q_DEBUG(@"loadTextureFromImagePath: %@", path);
+
+	GLuint texture;
+	CGImageSourceRef sourceRef;
+	CGImageRef imageRef;
+	CGColorSpaceRef colorSpaceRef;
+	CGContextRef contextRef;
+	void * textureData;
+	CGRect textureRect;
+	size_t textureWidth;
+	size_t textureHeight;
+
+	sourceRef = CGImageSourceCreateWithURL((CFURLRef)[NSURL fileURLWithPath:path], NULL);
+	if (!sourceRef)
+		return 0;
+
+	imageRef = CGImageSourceCreateImageAtIndex(sourceRef, 0, NULL);
+	textureWidth = CGImageGetWidth(imageRef);
+    textureHeight = CGImageGetHeight(imageRef);
+	textureRect = CGRectMake(0, 0, textureWidth, textureHeight);
+	textureData = calloc(textureWidth * 4, textureHeight);
+	colorSpaceRef = CGColorSpaceCreateDeviceRGB();
+	contextRef = CGBitmapContextCreate (textureData, textureWidth, textureHeight, 8, textureWidth*4, colorSpaceRef, kCGImageAlphaPremultipliedLast);
+
+	CGContextDrawImage(contextRef, textureRect, imageRef);
+	CGContextRelease(contextRef);
+	CFRelease(imageRef);
+	CFRelease(sourceRef);
+
+	glPixelStorei(GL_UNPACK_ROW_LENGTH, textureWidth);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_RECTANGLE_ARB, texture);
+	glTexParameteri(GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexImage2D(
+		GL_TEXTURE_RECTANGLE_ARB,
+		0,
+		GL_RGBA8,
+		textureWidth,
+		textureHeight,
+		0,
+#if __LITTLE_ENDIAN__
+		GL_RGBA,
+		GL_UNSIGNED_BYTE,
+#else
+		GL_BGRA,
+		GL_UNSIGNED_INT_8_8_8_8_REV,
+#endif
+		textureData);
+
+	free(textureData);
+
+	return texture;
+}
+
 - (void) updateSavedImage:(id)sender
 {
-	Q_DEBUG(@"setSavedImage");
-
-	CGImageSourceRef sourceRef;
-	NSURL *url;
+	Q_DEBUG(@"loadTextures");
 	
-	if (savedImageRef)
-		CGImageRelease(savedImageRef);
-
-	url = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/QuickLook/Thumbnail.png", [[[[document configuration] objectForKey:@"Temporary"] objectForKey:@"URL"] path]]];
-	sourceRef = CGImageSourceCreateWithURL((CFURLRef)url, NULL);
-	if (sourceRef) {
-		savedImageRef = CGImageSourceCreateImageAtIndex(sourceRef, 0, NULL);
-		CFRelease(sourceRef);
-
-		if (savedImageRef) {
-			screenProperties.width = CGImageGetWidth(savedImageRef);
-			screenProperties.height = CGImageGetHeight(savedImageRef);
-			[self resizeContentToWidth:screenProperties.width height:screenProperties.height];
-		}
+	
+	[[self openGLContext] makeCurrentContext];
+	
+	// remove old texture
+	if( textures[QDocumentOpenGLTextureSavedImage] != 0) {
+		glDeleteTextures(1, &textures[QDocumentOpenGLTextureSavedImage]);
 	}
+
+	textures[QDocumentOpenGLTextureSavedImage] = [self createTextureFromImagePath:[NSString stringWithFormat:@"%@/QuickLook/Thumbnail.png", [[[[document configuration] objectForKey:@"Temporary"] objectForKey:@"URL"] path]]];
+	if (textures[QDocumentOpenGLTextureSavedImage] != 0) {
+		glBindTexture(GL_TEXTURE_RECTANGLE_ARB, textures[QDocumentOpenGLTextureSavedImage]);
+		glGetTexLevelParameteriv( GL_TEXTURE_RECTANGLE_ARB, 0, GL_TEXTURE_WIDTH, (GLint*)&screenProperties.width );
+		glGetTexLevelParameteriv( GL_TEXTURE_RECTANGLE_ARB, 0, GL_TEXTURE_HEIGHT, (GLint*)&screenProperties.height ); 	
+	}
+	[self resizeContentToWidth:screenProperties.width height:screenProperties.height];
 }
 
 - (NSImage *) screenshot:(NSSize)size
 {
-//	NSLog(@"quartzView: Thumbnail width:%d height:%d\n", (int)size.width, (int)size.height);
-
-	/* if no size is set, make fullsize shot */
-	if (!size.width || !size.height)
-		size = [self bounds].size;
+	Q_DEBUG(@"screenshot NSSize(%f,  %f)", size.width, size.height);
 
 	NSBitmapImageRep* sBitmapImageRep = [[[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL
 		pixelsWide:size.width
@@ -524,59 +584,6 @@ int cocoa_keycode_to_qemu(int keycode)
 	[image unlockFocus];
 
 	return image;
-}
-
-- (void) loadOverlay
-{
-/*
-	CGImageSourceRef sourceRef;
-	NSURL *url;
-	CGImageRef overlayImageRef;
-	url = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/q_overlay_play.png", [[NSBundle mainBundle] resourcePath]]];
-	sourceRef = CGImageSourceCreateWithURL((CFURLRef)url, NULL);
-	if (sourceRef) {
-		overlayImageRef = CGImageSourceCreateImageAtIndex(sourceRef, 0, NULL);
-		CFRelease(sourceRef);
-
-		size_t width = CGImageGetWidth(overlayImageRef);
-		size_t height = CGImageGetHeight(overlayImageRef);
-		CGRect rect = {{0, 0}, {width, height}};
-		void * myData = calloc(width * 4, height);
-		CGColorSpaceRef space = CGColorSpaceCreateDeviceRGB();
-		CGContextRef myBitmapContext = CGBitmapContextCreate (myData,
-			width, height, 8,
-			width*4, space,
-			kCGImageAlphaPremultipliedFirst);
-		CGContextDrawImage(myBitmapContext, rect, overlayImageRef);
-		CGContextRelease(myBitmapContext);
-
-		glPixelStorei(GL_UNPACK_ROW_LENGTH, width);
-		glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-		glGenTextures(1, &overlay_tex);
-		glBindTexture(GL_TEXTURE_RECTANGLE_ARB, overlay_tex);
-		glTexParameteri(GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexImage2D(GL_TEXTURE_RECTANGLE_ARB, 0, GL_RGBA8, width, height, 0, GL_BGRA_EXT, GL_UNSIGNED_INT_8_8_8_8_REV, myData);
-		free(myData);
-	}
-*/
-	NSImage *overlay = [NSImage imageNamed:@"q_overlay_play.png"];
-	NSBitmapImageRep *bitmapImageRep = [[overlay representations] objectAtIndex:0];
-
-	glGenTextures(1, &overlay_tex);					//Create The Texture
-	glBindTexture(GL_TEXTURE_2D, overlay_tex);		//Typical Texture Generation Using Data From The Bitmap
-	glTexImage2D(									//Generate The Texture
-		GL_TEXTURE_2D,								//kind of texture
-		0,											//Level of detail
-		[bitmapImageRep samplesPerPixel],		//Number of Data Components (rgb/rgba etc)
-		[bitmapImageRep bytesPerRow] / [bitmapImageRep samplesPerPixel],	//width
-		[bitmapImageRep bytesPerPlane] / [bitmapImageRep bytesPerRow],	//height
-		0,											//border width
-		GL_RGBA,									//color components order
-		GL_UNSIGNED_BYTE,							//kind of data
-		[bitmapImageRep bitmapData]			//pointer to data
-	);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR); //Linear Filtering
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR); //Linear Filtering
 }
 
 
@@ -643,8 +650,8 @@ int cocoa_keycode_to_qemu(int keycode)
 	[self setFrame:NSMakeRect(displayProperties.x, displayProperties.y, displayProperties.width, displayProperties.height)];
 
     [[self openGLContext] makeCurrentContext];
-    glViewport(0, 0, displayProperties.width, displayProperties.height);
-    [self update];
+    glViewport(0.0, 0.0, displayProperties.width, displayProperties.height);
+    [self display];
 }
 
 - (void) setFullScreen
@@ -750,15 +757,31 @@ int cocoa_keycode_to_qemu(int keycode)
 
     // screenbuffer with mmap
     int fd;
-    if (screenBuffer)
-        munmap(screenBuffer, screenProperties.width * 4 * screenProperties.height);
+    if (screenProperties.screenBufferSize > 0) {
+        if (munmap(screenBuffer, screenProperties.screenBufferSize) == -1) {
+			int errsv = errno;
+			NSLog(@"QDocumentOpenGLView: resizeContent: could not munmap:  errno(%D) - %s", errsv, strerror(errsv));
+			screenProperties.screenBufferSize;
+			return;
+		}
+	}
     fd = open([[NSString stringWithFormat:@"/private/tmp/qDocument_%D.vga", [document uniqueDocumentID]] cString], O_RDONLY); // open file
-    if(fd == -1)
-        NSLog(@"QDocumentQuartzView: resizeContent: could not open '/private/tmp/qDocument_%D.vga'", [document uniqueDocumentID]);
-    screenBuffer = mmap(0, w * 4 * h, PROT_READ, MAP_FILE|MAP_SHARED, fd, 0);
-    if(!screenBuffer)
-        NSLog(@"QDocumentQuartzView: resizeContent: could not mmap '/private/tmp/qDocument_%D.vga'", [document uniqueDocumentID]);
-    close(fd);
+    if(fd == -1) {
+		int errsv = errno;
+        NSLog(@"QDocumentOpenGLView: resizeContent: could not open '/private/tmp/qDocument_%D.vga': errno(%D) - %s", [document uniqueDocumentID], errsv, strerror(errsv));
+		screenProperties.screenBufferSize = 0;
+		return;
+    }
+	screenProperties.screenBufferSize = w * 4 * h;
+	screenBuffer = mmap(0, screenProperties.screenBufferSize, PROT_READ, MAP_FILE|MAP_SHARED, fd, 0);
+    if(screenBuffer == MAP_FAILED) {
+		int errsv = errno;
+        NSLog(@"QDocumentOpenGLView: resizeContent: could not mmap '/private/tmp/qDocument_%D.vga': errno(%D) - %s", [document uniqueDocumentID], errsv, strerror(errsv));
+		screenProperties.screenBufferSize = 0;
+		close(fd);
+		return;
+    }
+	close(fd);
 
     // update screen state
     screenProperties.width = w;

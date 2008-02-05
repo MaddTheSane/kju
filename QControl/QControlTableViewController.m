@@ -247,7 +247,6 @@
 	QDocument *qDocument;
 	NSImage *thumbnail;
 	NSImage *savedImage;
-//	NSBitmapImageRep *bitmapImageRep;
 	
 	updateAll = FALSE;
 
@@ -261,23 +260,27 @@
 
 		qDocument = [[NSDocumentController sharedDocumentController] documentForURL:[[[[qControl VMs] objectAtIndex:i] objectForKey:@"Temporary"] objectForKey:@"URL"]];
         if (qDocument) {
-			thumbnail = [[[NSImage alloc] initWithSize:NSMakeSize(100.0,  75.0)] autorelease];
-/*			if ([[[qDocument screenView] window] isVisible]) { // can't lockfocus on hidden/offscreen view
-
-				[[qDocument screenView] lockFocus];
-				bitmapImageRep = [[NSBitmapImageRep alloc] initWithFocusedViewRect:[[qDocument screenView] bounds]];
-				[[qDocument screenView] unlockFocus];
-				[thumbnail lockFocus];
-				[bitmapImageRep drawInRect:NSMakeRect(0.0, 0.0, 100.0, 75.0)];
-				[thumbnail unlockFocus];
-*/
-				thumbnail= [(QDocumentOpenGLView *)[qDocument screenView] screenshot:NSMakeSize(100.0, 75.0)];
-//			}
-			if (updateAll) {
-				[VMsImages addObject:thumbnail];
-				NSLog(@"UA");
-			} else {/*if ([[[qDocument screenView] window] isVisible]) { // can't lockfocus on hidden/offscreen view, so keep old image*/
-				[VMsImages replaceObjectAtIndex:i withObject:thumbnail];
+			switch ([qDocument VMState]) {
+				case QDocumentPaused:
+				case QDocumentRunning:
+				case QDocumentSaving:
+					thumbnail = [(QDocumentOpenGLView *)[qDocument screenView] screenshot:NSMakeSize(100.0, 75.0)];
+					[VMsImages replaceObjectAtIndex:i withObject:thumbnail];
+					break;
+				default:
+					if (updateAll) {
+						savedImage = [[[NSImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/QuickLook/Thumbnail.png", [[[[[qControl VMs] objectAtIndex:i] objectForKey:@"Temporary"] objectForKey:@"URL"] path]]] autorelease];
+						if (savedImage) {
+							thumbnail = [[[NSImage alloc] initWithSize:NSMakeSize(100.0,  75.0)] autorelease];
+							[thumbnail lockFocus];
+							[savedImage drawInRect:NSMakeRect(0.0, 0.0, 100.0, 75.0) fromRect:NSMakeRect(0.0, 0.0, [savedImage size].width, [savedImage size].height) operation:NSCompositeSourceOver fraction:1.0];
+							[thumbnail unlockFocus];
+						} else {
+							[VMsImages addObject:[NSImage imageNamed: @"q_table_shutdown.png"]];
+						}
+						[VMsImages addObject:thumbnail];
+					}
+					break;
 			}
         } else if (updateAll) {
 			if ([[[[[qControl VMs] objectAtIndex:i] objectForKey:@"PC Data"] objectForKey:@"state"] isEqual:@"saved"]) {

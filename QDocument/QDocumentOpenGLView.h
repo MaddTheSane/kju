@@ -41,6 +41,7 @@ typedef struct {
 	int height;
 	int bitsPerComponent;
 	int bitsPerPixel;
+	size_t screenBufferSize;
 } QScreen;
 
 typedef struct {
@@ -53,19 +54,23 @@ typedef struct {
     float zoom;
 } QDisplayProperties;
 
+typedef enum {
+	QDocumentOpenGLTextureScreen = 0,
+	QDocumentOpenGLTextureOverlay = 1,
+	QDocumentOpenGLTextureSavedImage = 2
+} QDocumentOpenGLTextures;
+
 @interface QDocumentOpenGLView : NSOpenGLView
 {
     IBOutlet QDocument *document;
     IBOutlet NSWindow *normalWindow;
-	CGImageRef savedImageRef;
     NSWindow *fullScreenWindow;
     QScreen screenProperties;
     QDisplayProperties displayProperties;
     void *screenBuffer;
     id fullscreenController;
 
-	GLuint screen_tex;
-	GLuint overlay_tex;
+	GLuint textures[3];
 
     int modifiers_state[256];
     BOOL is_graphic_console;
@@ -75,9 +80,9 @@ typedef struct {
     BOOL tablet_enabled;
 }
 // saved image and screenshot
+- (GLuint) createTextureFromImagePath:(NSString *)path;
 - (void) updateSavedImage:(id)sender;
 - (NSImage *) screenshot:(NSSize)size;
-- (void) loadOverlay;
 
 // QEMU
 - (void) grabMouse;
