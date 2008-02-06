@@ -93,7 +93,7 @@
         [self display];
     else {
         pointClicked = NSZeroPoint;
-        [super mouseDown: event];
+		[super mouseDown: event];
     }
 }
 

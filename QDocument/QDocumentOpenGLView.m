@@ -245,7 +245,7 @@ int cocoa_keycode_to_qemu(int keycode)
 		
     // disabnle drag'n'drop
     [self unregisterDraggedTypes];
-
+/* TODO: freezes Q up to several minutes (Lock on screenBuffer?)
     if (screenProperties.screenBufferSize > 0) {
 		if (munmap(screenBuffer, screenProperties.screenBufferSize) == -1) {
 			int errsv = errno;
@@ -253,7 +253,7 @@ int cocoa_keycode_to_qemu(int keycode)
 			screenProperties.screenBufferSize;
 		}
 	}
-
+*/
     [super dealloc];
 }
 
@@ -276,6 +276,10 @@ int cocoa_keycode_to_qemu(int keycode)
 	screenProperties.height = 480;
 	screenProperties.screenBufferSize = 0;
 	
+	displayProperties.x = 0.0;
+	displayProperties.y = ICON_BAR_HEIGHT;
+	displayProperties.width = 640;
+	displayProperties.height = 480;
 	displayProperties.zoom = 1.0;
 	
 	// initialize OpenGL and load play overlay
@@ -289,6 +293,7 @@ int cocoa_keycode_to_qemu(int keycode)
     // QEMU state
     mouseGrabed = FALSE; // we start non grabbed
     is_graphic_console = TRUE; // we start in grafic mode
+
 }
 
 - (void) openGLDrawRect:(NSRect) rect inRect:(NSRect) vPortRect
@@ -312,11 +317,16 @@ int cocoa_keycode_to_qemu(int keycode)
 	float onePixel[2];
     onePixel[0] = 2.0 / displayProperties.width;
     onePixel[1] = 2.0 / displayProperties.height;
-	
-	if ([document VMState] == QDocumentSaved) {
+
+	if ([document VMState] == QDocumentShutdown) {
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glClearColor(1.0, 1.0, 1.0, 1.0);
+		glClearColor(.0, .0, .0, .0);
+
+	} else if ([document VMState] == QDocumentSaved) {
+
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClearColor(0.0, 0.0, 0.0, 1.0);
 
 		// draw saved image
 		if (textures[QDocumentOpenGLTextureSavedImage] != 0) {
@@ -534,15 +544,15 @@ int cocoa_keycode_to_qemu(int keycode)
 		glGetTexLevelParameteriv( GL_TEXTURE_RECTANGLE_ARB, 0, GL_TEXTURE_WIDTH, (GLint*)&screenProperties.width );
 		glGetTexLevelParameteriv( GL_TEXTURE_RECTANGLE_ARB, 0, GL_TEXTURE_HEIGHT, (GLint*)&screenProperties.height ); 	
 	}
-	[self resizeContentToWidth:screenProperties.width height:screenProperties.height];
+	[self resizeContentToWidth:screenProperties.width height:screenProperties.height ];
 }
 
 - (NSImage *) screenshot:(NSSize)size
 {
 	Q_DEBUG(@"screenshot NSSize(%f,  %f)", size.width, size.height);
 
-	// if no size is set, make fullsize shot */ 
-	if (size.width == 0 || !size.height == 0) 
+	// if no size is set, make a fullsize shot
+	if (size.width == 0.0 || size.height == 0.0) 
 		size = [self bounds].size;
 
 	NSBitmapImageRep* sBitmapImageRep = [[[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL
@@ -656,8 +666,8 @@ int cocoa_keycode_to_qemu(int keycode)
 		displayProperties.dy = rect.size.height / (float)screenProperties.height;
 		displayProperties.width = rect.size.width;
 		displayProperties.height = rect.size.height;
-		displayProperties.x = 0.0;//rect.origin.x;//([self bounds].size.width - cw) / 2.0;
-		displayProperties.y = ICON_BAR_HEIGHT;//([self bounds].size.height - ch) / 2.0;
+		displayProperties.x = 0.0;
+		displayProperties.y = ICON_BAR_HEIGHT;
 	}
 
 	[self setFrame:NSMakeRect(displayProperties.x, displayProperties.y, displayProperties.width, displayProperties.height)];

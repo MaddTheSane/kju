@@ -78,7 +78,7 @@
 
 - (id) tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(int)rowIndex
 {
-	Q_DEBUG(@"tableView");
+	Q_DEBUG(@"tableView: objectValueForTableColumn: row:%D", rowIndex);
 
     id VM;
     NSString *platform;

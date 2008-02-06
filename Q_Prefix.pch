@@ -15,3 +15,5 @@
 
 
 #define cgrect(nsrect) (*(CGRect *)&(nsrect))
+
+#define initWithArrayOfAllowedFileTypes initWithObjects:@"qcow2", @"qcow", @"raw", @"cow", @"vmdk", @"cloop", @"img", @"iso", @"dsk", @"dmg", @"cdr", @"toast", @"flp", @"fs", nil

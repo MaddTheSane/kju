@@ -61,11 +61,10 @@
 		if (![NSBundle loadNibNamed:@"QEditVM" owner:editVMController]) {
 			NSLog(@"QEditVM.nib not loaded!");
 		}
-		//[[editPC editPCPanel] center];
         
         // Todo, define some globals
         // set allowed filetypes
-        fileTypes = [[NSMutableArray arrayWithObjects:@"qcow2", @"qcow", @"raw", @"cow", @"vmdk", @"cloop", @"img", @"iso", @"dsk", @"dmg", @"cdr", @"toast", @"flp", @"fs", nil] retain];
+        fileTypes = [[NSArray alloc] initWithArrayOfAllowedFileTypes];
 
     }
     return self;
@@ -466,7 +465,7 @@
         if (returnCode == NSAlertDefaultReturn) { // save and shutdown
 			[self setVMState:QDocumentSaving];
             [distributedObject setCommand:'Z' arg1:0 arg2:0 arg3:0 arg4:0];
-			bitmapImageRep = [[[screenView screenshot:NSMakeSize(0,0)] representations] objectAtIndex:0];
+			bitmapImageRep = [NSBitmapImageRep imageRepWithData:[[screenView screenshot:NSMakeSize(0.0, 0.0)] TIFFRepresentation]];
 			data =[bitmapImageRep representationUsingType: NSPNGFileType properties: nil];
 			fileManager = [NSFileManager defaultManager];
 			if(![fileManager fileExistsAtPath: [NSString stringWithFormat: @"%@/QuickLook", [[[configuration objectForKey:@"Temporary"] objectForKey:@"URL"] path]]])

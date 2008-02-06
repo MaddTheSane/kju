@@ -27,7 +27,7 @@
 #import "QDocument.h"
 #import "QDocumentOpenGLView.h"
 
-// #define QDOCUMENTWINDOWCONTROLLER_DEBUG 1
+
 
 @implementation QDocumentWindowController
 - (id) initWithWindow:(NSWindow *)tWindow sender:(id)sender
@@ -67,7 +67,6 @@
 
     if ([document VMPauseWhileInactive])
         [document VMUnpause:self];
-
 }
 
 - (NSSize)windowWillResize:(NSWindow *)tWindow toSize:(NSSize)proposedFrameSize
