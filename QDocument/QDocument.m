@@ -25,6 +25,7 @@
 #import "QDocument.h"
 #import "QDocumentOpenGLView.h"
 #import "../QShared/QButtonCell.h"
+#import "../QShared/QPopUpButtonCell.h"
 #import "../QShared/QQvmManager.h"
 
 //for CDROM
@@ -183,8 +184,10 @@
 
 	// Tiger compatible custom butoonCell
 	[buttonEdit setCell:[[[QButtonCell alloc] initImageCell:[[buttonEdit cell] image] buttonType:QButtonCellAlone target:[[buttonEdit cell] target] action:[[buttonEdit cell] action]] autorelease]];
-	[buttonFloppy setCell:[[[QButtonCell alloc] initImageCell:[[buttonFloppy cell] image] buttonType:QButtonCellLeft target:[[buttonFloppy cell] target] action:[[buttonFloppy cell] action]] autorelease]];
-	[buttonCDROM setCell:[[[QButtonCell alloc] initImageCell:[[buttonCDROM cell] image] buttonType:QButtonCellRight target:[[buttonCDROM cell] target] action:[[buttonCDROM cell] action]] autorelease]];
+
+	[buttonFloppy setCell:[[[QPopUpButtonCell alloc] initTextCell:@"" buttonType:QButtonCellLeft pullsDown:[[buttonFloppy cell] pullsDown] menu:[[buttonFloppy cell] menu] image:[NSImage imageNamed:@"q_d_disk_drop"]] autorelease]];
+	[buttonCDROM setCell:[[[QPopUpButtonCell alloc] initTextCell:@"" buttonType:QButtonCellRight pullsDown:[[buttonCDROM cell] pullsDown] menu:[[buttonCDROM cell] menu] image:[NSImage imageNamed:@"q_d_cd_drop"]] autorelease]];
+
 	[buttonToggleFullscreen setCell:[[[QButtonCell alloc] initImageCell:[[buttonToggleFullscreen cell] image] buttonType:QButtonCellLeft target:[[buttonToggleFullscreen cell] target] action:[[buttonToggleFullscreen cell] action]] autorelease]];
 	[buttonTakeScreenshot setCell:[[[QButtonCell alloc] initImageCell:[[buttonTakeScreenshot cell] image] buttonType:QButtonCellRight target:[[buttonTakeScreenshot cell] target] action:[[buttonTakeScreenshot cell] action]] autorelease]];
 	[buttonCtrlAltDel setCell:[[[QButtonCell alloc] initImageCell:[[buttonCtrlAltDel cell] image] buttonType:QButtonCellLeft target:[[buttonCtrlAltDel cell] target] action:[[buttonCtrlAltDel cell] action]] autorelease]];

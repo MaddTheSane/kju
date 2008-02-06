@@ -245,12 +245,12 @@ int cocoa_keycode_to_qemu(int keycode)
 		
     // disabnle drag'n'drop
     [self unregisterDraggedTypes];
-/* TODO: freezes Q up to several minutes (Lock on screenBuffer?)
+
+/* TODO: freezes Q up to several minutes (looks like it keeps a tap on the file)
     if (screenProperties.screenBufferSize > 0) {
 		if (munmap(screenBuffer, screenProperties.screenBufferSize) == -1) {
 			int errsv = errno;
 			NSLog(@"QDocumentOpenGLView: dealloc: could not munmap:  errno(%D) - %s", errsv, strerror(errsv));
-			screenProperties.screenBufferSize;
 		}
 	}
 */
