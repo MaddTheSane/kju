@@ -87,7 +87,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 2A37F4A9FDCFA73011CA2CEA /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 2796F6680D58E9E8006DA3A0 /* qemu */;
+			remoteGlobalIDString = 2796F6680D58E9E8006DA3A0;
 			remoteInfo = qemu;
 		};
 /* End PBXContainerItemProxy section */

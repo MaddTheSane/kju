@@ -135,7 +135,7 @@
     }
 	// add knownVMs
 	int i;
-	NSMutableArray *knownVMs = [[[qApplication userDefaults] objectForKey:@"knownVMs"] mutableCopy];
+	NSMutableArray *knownVMs = [[[[qApplication userDefaults] objectForKey:@"knownVMs"] mutableCopy] autorelease];
 	for (i = [knownVMs count] - 1; i > -1; i--) {
 		// does it still exist?
         NSFileManager *fileManager = [NSFileManager defaultManager];

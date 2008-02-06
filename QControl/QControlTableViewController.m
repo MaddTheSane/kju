@@ -36,6 +36,10 @@
 	self = [super init];
 	if (super) {
 	
+		// cache shutdown image
+		shutdownImage = [NSImage imageNamed: @"q_table_shutdown.png"];
+		[shutdownImage retain];
+	
 		// Listen to VM updates
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateThumbnails:) name:@"QVMStatusDidChange" object:nil];
 	}
@@ -48,6 +52,7 @@
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 	[VMsImages release];
+	[shutdownImage release];
 	[super dealloc];
 }
 
@@ -238,6 +243,31 @@
 
 
 #pragma mark create tumbnails
+- (NSImage *) loadThumbnailForVM:(NSMutableDictionary *)VM
+{
+	Q_DEBUG(@"loadThumbnailForVM");
+
+	NSImage *thumbnail;
+	NSImage *savedImage;
+
+	if ([[[VM objectForKey:@"PC Data"] objectForKey:@"state"] isEqual:@"saved"]) { // only return thumbnail for saved VMs
+		savedImage = [[[NSImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/QuickLook/Thumbnail.png", [[[VM objectForKey:@"Temporary"] objectForKey:@"URL"] path]]] autorelease];
+		if (savedImage) { // try screen.png
+			thumbnail = [[[NSImage alloc] initWithSize:NSMakeSize(100.0,  75.0)] autorelease];
+			[thumbnail lockFocus];
+			[savedImage drawInRect:NSMakeRect(0.0, 0.0, 100.0, 75.0) fromRect:NSMakeRect(0.0, 0.0, [savedImage size].width, [savedImage size].height) operation:NSCompositeSourceOver fraction:1.0];
+			[thumbnail unlockFocus];
+			return thumbnail;
+		} else { // try old thumbnail.png
+			savedImage = [[[NSImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/thumbnail.png", [[[VM objectForKey:@"Temporary"] objectForKey:@"URL"] path]]] autorelease];
+			if (savedImage) {
+				return savedImage;
+			}
+		}
+	}
+	return shutdownImage;
+}
+
 - (void) updateThumbnails:(id)sender
 {
 	Q_DEBUG(@"updateThumbnails");
@@ -246,7 +276,6 @@
 	BOOL updateAll;
 	QDocument *qDocument;
 	NSImage *thumbnail;
-	NSImage *savedImage;
 	
 	updateAll = FALSE;
 
@@ -257,7 +286,6 @@
 		VMsImages = [[NSMutableArray alloc] initWithCapacity:[[qControl VMs] count]];
 	}
     for (i = 0; i < [[qControl VMs] count]; i++ ) {
-
 		qDocument = [[NSDocumentController sharedDocumentController] documentForURL:[[[[qControl VMs] objectAtIndex:i] objectForKey:@"Temporary"] objectForKey:@"URL"]];
         if (qDocument) {
 			switch ([qDocument VMState]) {
@@ -267,41 +295,17 @@
 					thumbnail = [(QDocumentOpenGLView *)[qDocument screenView] screenshot:NSMakeSize(100.0, 75.0)];
 					[VMsImages replaceObjectAtIndex:i withObject:thumbnail];
 					break;
+				case QDocumentShutdown:
+					[VMsImages replaceObjectAtIndex:i withObject:shutdownImage];
+					break;
 				default:
 					if (updateAll) {
-						savedImage = [[[NSImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/QuickLook/Thumbnail.png", [[[[[qControl VMs] objectAtIndex:i] objectForKey:@"Temporary"] objectForKey:@"URL"] path]]] autorelease];
-						if (savedImage) {
-							thumbnail = [[[NSImage alloc] initWithSize:NSMakeSize(100.0,  75.0)] autorelease];
-							[thumbnail lockFocus];
-							[savedImage drawInRect:NSMakeRect(0.0, 0.0, 100.0, 75.0) fromRect:NSMakeRect(0.0, 0.0, [savedImage size].width, [savedImage size].height) operation:NSCompositeSourceOver fraction:1.0];
-							[thumbnail unlockFocus];
-						} else {
-							[VMsImages addObject:[NSImage imageNamed: @"q_table_shutdown.png"]];
-						}
-						[VMsImages addObject:thumbnail];
+						[VMsImages addObject:[self loadThumbnailForVM:[[qControl VMs] objectAtIndex:i]]];
 					}
 					break;
 			}
         } else if (updateAll) {
-			if ([[[[[qControl VMs] objectAtIndex:i] objectForKey:@"PC Data"] objectForKey:@"state"] isEqual:@"saved"]) {
-				savedImage = [[[NSImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/QuickLook/Thumbnail.png", [[[[[qControl VMs] objectAtIndex:i] objectForKey:@"Temporary"] objectForKey:@"URL"] path]]] autorelease];
-				if (savedImage) {
-					thumbnail = [[[NSImage alloc] initWithSize:NSMakeSize(100.0,  75.0)] autorelease];
-					[thumbnail lockFocus];
-					[savedImage drawInRect:NSMakeRect(0.0, 0.0, 100.0, 75.0) fromRect:NSMakeRect(0.0, 0.0, [savedImage size].width, [savedImage size].height) operation:NSCompositeSourceOver fraction:1.0];
-					[thumbnail unlockFocus];
-					[VMsImages addObject:thumbnail];
-				} else { // no screen.png, try old thumbnail.png
-					savedImage = [[[NSImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/thumbnail.png", [[[[[qControl VMs] objectAtIndex:i] objectForKey:@"Temporary"] objectForKey:@"URL"] path]]] autorelease];
-					if (savedImage) {
-						[VMsImages addObject:savedImage];
-					} else { // no thumbnail, set shutdown
-						[VMsImages addObject:[NSImage imageNamed: @"q_table_shutdown.png"]];
-					}
-				}
-			} else { // set shutdown
-				[VMsImages addObject:[NSImage imageNamed: @"q_table_shutdown.png"]];
-			}
+			[VMsImages addObject:[self loadThumbnailForVM:[[qControl VMs] objectAtIndex:i]]];
         }
     }
 

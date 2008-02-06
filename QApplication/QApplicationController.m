@@ -24,7 +24,6 @@
 
 #import "QApplicationController.h"
 
-// #define QAPPLICATIONCONTROLLER_DEBUG 1
 
 
 @implementation QApplicationController
@@ -36,7 +35,7 @@
     if (self) {
 
 		// preferences
-		[[NSUserDefaults standardUserDefaults] registerDefaults:[[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:
+		[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:
 			[NSNumber numberWithBool:FALSE], // disable log to console
 			[NSNumber numberWithBool:TRUE], // yellow
 			[NSNumber numberWithBool:TRUE], // showFullscreenWarning

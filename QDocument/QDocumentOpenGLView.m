@@ -262,8 +262,7 @@ int cocoa_keycode_to_qemu(int keycode)
 	Q_DEBUG(@"reshape");
 	
 	[[self openGLContext] makeCurrentContext];
-	[self setFrame:NSMakeRect(displayProperties.x, displayProperties.y, displayProperties.width, displayProperties.height)];
-    glViewport(0.0, 0.0, displayProperties.width, displayProperties.height);
+    glViewport([self bounds].origin.x, [self bounds].origin.y, [self bounds].size.width, [self bounds].size.height);
 }
 
 - (void)awakeFromNib
@@ -343,7 +342,7 @@ int cocoa_keycode_to_qemu(int keycode)
 
 		textures[QDocumentOpenGLTextureScreen] = 1;
 		
-		//calculate the texure rect
+		// calculate the texure rect
 		NSRect clipRect;
 		clipRect = NSMakeRect(
 			0.0, // we update the whole width, as QEMU in vga is always updating whole memory pages)
@@ -353,7 +352,7 @@ int cocoa_keycode_to_qemu(int keycode)
 		int start = (int)clipRect.origin.y * screenProperties.width * 4;
 		unsigned char *startPointer = screenBuffer;
 
-		//adapt the drawRect to the textureRect
+		// adapt the drawRect to the textureRect
 		rect = NSMakeRect(
 			0.0, // we update the whole width, as QEMU in vga is always updating whole memory pages)
 			(screenProperties.height - (clipRect.origin.y + clipRect.size.height)) * displayProperties.dy,
@@ -398,7 +397,7 @@ int cocoa_keycode_to_qemu(int keycode)
 		glTexCoord2f((GLfloat)clipRect.size.width, 0.0f); glVertex2f(1.0f, (GLfloat)(onePixel[1] * (rect.origin.y + rect.size.height) - 1.0));
 		}
 		glEnd();
-		glDisable( GL_TEXTURE_RECTANGLE_ARB );
+		glDisable(GL_TEXTURE_RECTANGLE_ARB);
 
 	} else {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -661,6 +660,8 @@ int cocoa_keycode_to_qemu(int keycode)
 		displayProperties.y = ICON_BAR_HEIGHT;//([self bounds].size.height - ch) / 2.0;
 	}
 
+	[self setFrame:NSMakeRect(displayProperties.x, displayProperties.y, displayProperties.width, displayProperties.height)];
+	[self display]; // apply the new rect
     [self update];
 }
 

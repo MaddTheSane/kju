@@ -32,10 +32,12 @@
 @interface QControlTableViewController : NSObject {
 	IBOutlet QControlTableView *table;
 	IBOutlet QControlController* qControl;
+	NSImage *shutdownImage;
 	NSMutableArray *VMsImages;
 	NSArray *cpuTypes;
 	NSTimer *timer;
 }
 - (void) tableDoubleClick:(id)sender;
+- (NSImage *) loadThumbnailForVM:(NSMutableDictionary *)VM;
 - (void) updateThumbnails:(id)sender;
 @end
