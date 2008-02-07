@@ -774,15 +774,17 @@
 {
 	Q_DEBUG(@"screenshot");
 
-    // generate Screenshot  
-    [screenView lockFocus];
-    NSBitmapImageRep *bitmapImageRep = [[NSBitmapImageRep alloc] initWithFocusedViewRect:[screenView bounds]];
-    [screenView unlockFocus];
-    NSData *data = [bitmapImageRep representationUsingType: NSPNGFileType properties: nil];
-    
+	int i;
+    NSBitmapImageRep *bitmapImageRep;
+	NSData *data;
+	NSFileManager *fileManager;
+	
+	bitmapImageRep = [NSBitmapImageRep imageRepWithData:[[screenView screenshot:NSMakeSize(0.0, 0.0)] TIFFRepresentation]];
+	data =[bitmapImageRep representationUsingType: NSPNGFileType properties: nil];
+
     // find next free number for name and save it to the desktop
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    int i = 1;
+    fileManager = [NSFileManager defaultManager];
+    i = 1;
     while ([fileManager fileExistsAtPath:[NSString stringWithFormat:@"%@/Q Screenshot %D.png", [@"~/Desktop" stringByExpandingTildeInPath], i]])
         i++;
     [data writeToFile: [NSString stringWithFormat:@"%@/Q Screenshot %D.png", [@"~/Desktop" stringByExpandingTildeInPath], i] atomically: YES];
