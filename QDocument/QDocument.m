@@ -53,7 +53,7 @@
         // initialize QEMU state
         cpuUsage = 0.0;
         ideActivity = FALSE;
-        driveFileNames = [[NSMutableArray arrayWithObjects:@"", @"", @"", nil] retain];
+        driveFileNames = [[NSMutableArray alloc] initWithObjects:@"", @"", @"", nil];
         absolute_enabled = FALSE;
         VMSupportsSnapshots = FALSE;
 
@@ -158,6 +158,8 @@
         [windowController release];
     if (fileTypes)
         [fileTypes release];
+    if (driveFileNames)
+		[driveFileNames release];
     if([[NSFileManager defaultManager] fileExistsAtPath:[NSString stringWithFormat:@"/tmp/qDocument_%D.vga", uniqueDocumentID]])
         [[NSFileManager defaultManager] removeFileAtPath:[NSString stringWithFormat:@"/tmp/qDocument_%D.vga", uniqueDocumentID] handler: nil];
 
@@ -282,6 +284,7 @@
 		void (*callback)(id, SEL, NSDocument *, BOOL, void *) = (void (*)(id, SEL, NSDocument *, BOOL, void *))objc_msgSend;
 		(*callback)(canCloseDocumentContext->delegate, canCloseDocumentContext->shouldCloseSelector, self, canCloseDocumentClose, canCloseDocumentContext->contextInfo);
 	}
+	free(canCloseDocumentContext);
 }
 
 - (void)canCloseDocumentWithDelegate:(id)delegate shouldCloseSelector:(SEL)shouldCloseSelector contextInfo:(void *)contextInfo

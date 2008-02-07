@@ -100,8 +100,6 @@ static QQvmManager *sharedQvmManager = nil;
 	NSMutableString *arguments;
 	NSMutableString *argument;
 	NSString *option;
-	NSString *name;
-	int nameIndex;
 
 	data = [NSData dataWithContentsOfFile:[NSString stringWithFormat:@"%@/configuration.plist", filename]];
 	if (data) {
