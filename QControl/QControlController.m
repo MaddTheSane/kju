@@ -122,7 +122,7 @@
     if (VMs)
         [VMs release];
 
-    VMs = [[[NSMutableArray alloc] init] retain];
+    VMs = [[NSMutableArray alloc] init];
     NSString *qvmFile;
 	NSMutableDictionary *tempVM;
     NSDirectoryEnumerator *enumerator = [[NSFileManager defaultManager] enumeratorAtPath:[[qApplication userDefaults] objectForKey:@"dataPath"]];

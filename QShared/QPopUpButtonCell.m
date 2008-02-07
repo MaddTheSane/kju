@@ -51,7 +51,6 @@
 
 - (void) dealloc
 {
-	[image release];
 	[imageNormal release];
 	[super dealloc];
 }

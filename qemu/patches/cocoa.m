@@ -396,9 +396,11 @@ static void cocoa_refresh(DisplayState *ds)
                 console_select(commandPointer[i].arg1);
                 break;
             case 'W': // save VM
+				savedVm_running = FALSE;
                 do_savevm([@"kju_saved" cString]);
                 break;
             case 'X': // revert to previous saved state
+				savedVm_running = FALSE;
                 if (vm_running)
                     vm_stop(0);
                 do_loadvm([@"kju_saved" cString]);

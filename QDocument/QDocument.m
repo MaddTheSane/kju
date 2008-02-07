@@ -160,6 +160,8 @@
         [fileTypes release];
     if (driveFileNames)
 		[driveFileNames release];
+	if (configuration)
+		[configuration release];
     if([[NSFileManager defaultManager] fileExistsAtPath:[NSString stringWithFormat:@"/tmp/qDocument_%D.vga", uniqueDocumentID]])
         [[NSFileManager defaultManager] removeFileAtPath:[NSString stringWithFormat:@"/tmp/qDocument_%D.vga", uniqueDocumentID] handler: nil];
 
@@ -250,29 +252,75 @@
     NSLog(@"We should create a now Document now");
 }
 
+- (void)savePanelDidEnd:(NSOpenPanel *)panel returnCode:(int)returnCode  contextInfo:(void  *)contextInfo
+{
+	Q_DEBUG(@"savePanelDidEnd");
+
+	NSFileManager *fileManager;
+	NSMutableArray *knownVMs;
+
+    if (returnCode == NSOKButton) {
+
+		fileManager = [NSFileManager defaultManager];
+		
+		// move untitled Document to named document
+		if ([fileManager movePath:[[[configuration objectForKey:@"Temporary"] objectForKey:@"URL"] path] toPath:[panel filename] handler:nil]) {
+			[[configuration objectForKey:@"Temporary"] setObject:[panel URL] forKey:@"URL"];
+			[self setFileURL:[panel URL]];
+	
+			// if outside default path, add to knownVNs
+			if (![[[panel filename] stringByDeletingLastPathComponent] isEqual:[[qApplication userDefaults] objectForKey:@"dataPath"]]) {
+				if (![[[qApplication userDefaults] objectForKey:@"knownVMs"] containsObject:[panel filename]]) {
+					knownVMs = [[[[qApplication userDefaults] objectForKey:@"knownVMs"] mutableCopy] autorelease];
+					[knownVMs addObject:[panel filename]];
+					[[qApplication userDefaults] setObject:knownVMs forKey:@"knownVMs"];
+				}
+			}
+			
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"QVMStatusDidChange" object:nil]; //communicate new state
+		} else {
+			[self defaultAlertMessage:@"Could not save %@" informativeText:[NSString stringWithFormat:@"There was an error while saving %@", [self displayName],  [self displayName]]];
+		}
+    }
+}
+
+- (IBAction)saveDocumentAs:(id)sender
+{
+	Q_DEBUG(@"saveDocumentAs");
+
+	if (VMState == QDocumentShutdown || VMState == QDocumentSaved) {	
+		NSSavePanel *savePanel = [NSSavePanel savePanel];
+		[savePanel setAllowedFileTypes:[NSArray arrayWithObject:@"qvm"]];
+		[savePanel setCanSelectHiddenExtension:YES];
+		[savePanel beginSheetForDirectory:[[qApplication userDefaults] objectForKey:@"dataPath"] file:[self displayName] modalForWindow:[screenView window] modalDelegate:self didEndSelector:@selector(savePanelDidEnd:returnCode:contextInfo:) contextInfo:nil];
+	} else {
+		[self defaultAlertMessage:@"VM is running" informativeText:@"Please shutdown the VM before saving the VM to a new Name"];
+	}
+}
+
 - (IBAction) saveDocument:(id)sender
 {
 	Q_DEBUG(@"saveDocument");
 	
-	// Todo:
-	// implement saving as following:
-	// if VM is shutdown/saved:
-	//     - save the .qvm package with the save name
-	//     - save configuration.plist
-	// if the VM is running
-	//     - save a snapshot
+	// Todo: Document was not yet saved with a proper name, we call a savepanel and move the VM
+	if (VMState == QDocumentShutdown || VMState == QDocumentSaved) {
+		[self saveDocumentAs:self];
 
-    [distributedObject setCommand:'W' arg1:0 arg2:0 arg3:0 arg4:0];
+	// if the VM is running, we make a snapshot
+	} else if (VMState == QDocumentPaused || VMState == QDocumentRunning) {
+		[self setVMState:QDocumentSaving];
+		[distributedObject setCommand:'W' arg1:0 arg2:0 arg3:0 arg4:0];
+	}
 }
 
 - (IBAction)revertDocumentToSaved:(id)sender
 {
 	Q_DEBUG(@"revertDocumentToSaved");
 	
-	// Todo
-	// only revert running machines
-
-    [distributedObject setCommand:'X' arg1:0 arg2:0 arg3:0 arg4:0];
+	if (VMState == QDocumentPaused || VMState == QDocumentRunning) {
+		[self setVMState:QDocumentLoading];
+		[distributedObject setCommand:'X' arg1:0 arg2:0 arg3:0 arg4:0];
+	}
 }
 
 - (void)docShouldClose:(id)sender
