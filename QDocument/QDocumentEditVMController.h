@@ -37,7 +37,6 @@
 	IBOutlet NSButton *editVMPanelButtonCancel;
 	
 	// Tab 1
-	IBOutlet NSTextField *vMName;
 	IBOutlet NSButton *grabless;
 	IBOutlet NSButton *qDrivers;
 	IBOutlet NSButton *pauseWhileInactive;

@@ -144,7 +144,7 @@
             platform = [NSString stringWithString:@"ARM"];
         }
         
-        NSMutableAttributedString *attrString = [[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat: @"%@\n", [[VM objectForKey:@"Temporary"] objectForKey:@"name"]] attributes:[NSDictionary dictionaryWithObject: [NSFont boldSystemFontOfSize:[NSFont systemFontSize]] forKey:NSFontAttributeName]] autorelease];
+        NSMutableAttributedString *attrString = [[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat: @"%@\n", [[[[VM objectForKey:@"Temporary"] objectForKey:@"URL"] path] lastPathComponent]] attributes:[NSDictionary dictionaryWithObject: [NSFont boldSystemFontOfSize:[NSFont smallSystemFontSize]] forKey:NSFontAttributeName]] autorelease];
         [attrString appendAttributedString: [[[NSAttributedString alloc] initWithString:state attributes:[NSDictionary dictionaryWithObject:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]] forKey:NSFontAttributeName]] autorelease]];
         
         return attrString;
@@ -253,9 +253,9 @@
 	if ([[[VM objectForKey:@"PC Data"] objectForKey:@"state"] isEqual:@"saved"]) { // only return thumbnail for saved VMs
 		savedImage = [[[NSImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/QuickLook/Thumbnail.png", [[[VM objectForKey:@"Temporary"] objectForKey:@"URL"] path]]] autorelease];
 		if (savedImage) { // try screen.png
-			thumbnail = [[[NSImage alloc] initWithSize:NSMakeSize(100.0,  75.0)] autorelease];
+			thumbnail = [[[NSImage alloc] initWithSize:NSMakeSize(80.0,  60.0)] autorelease];
 			[thumbnail lockFocus];
-			[savedImage drawInRect:NSMakeRect(0.0, 0.0, 100.0, 75.0) fromRect:NSMakeRect(0.0, 0.0, [savedImage size].width, [savedImage size].height) operation:NSCompositeSourceOver fraction:1.0];
+			[savedImage drawInRect:NSMakeRect(0.0, 0.0, 80.0, 60.0) fromRect:NSMakeRect(0.0, 0.0, [savedImage size].width, [savedImage size].height) operation:NSCompositeSourceOver fraction:1.0];
 			[thumbnail unlockFocus];
 			return thumbnail;
 		} else { // try old thumbnail.png
@@ -292,7 +292,7 @@
 				case QDocumentPaused:
 				case QDocumentRunning:
 				case QDocumentSaving:
-					thumbnail = [(QDocumentOpenGLView *)[qDocument screenView] screenshot:NSMakeSize(100.0, 75.0)];
+					thumbnail = [(QDocumentOpenGLView *)[qDocument screenView] screenshot:NSMakeSize(80.0, 60.0)];
 					[VMsImages replaceObjectAtIndex:i withObject:thumbnail];
 					break;
 				case QDocumentShutdown:

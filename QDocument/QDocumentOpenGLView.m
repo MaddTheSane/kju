@@ -573,8 +573,8 @@ int cocoa_keycode_to_qemu(int keycode)
 
 	// setup CG
 	CGContextRef viewContextRef = [[NSGraphicsContext currentContext] graphicsPort];
-	CGContextSetInterpolationQuality (viewContextRef, kCGInterpolationNone);
-	CGContextSetShouldAntialias (viewContextRef, NO);
+	CGContextSetInterpolationQuality (viewContextRef, kCGInterpolationLow);
+	CGContextSetShouldAntialias (viewContextRef, YES);
 
 	// draw screen bitmap directly to Core Graphics context
 	CGDataProviderRef dataProviderRef;

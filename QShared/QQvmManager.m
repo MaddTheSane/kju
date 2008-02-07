@@ -65,15 +65,11 @@ static QQvmManager *sharedQvmManager = nil;
 {
 	Q_DEBUG(@"saveVMConfiguration %@", VM);
 
-	//NSURL *URL;
-	//URL = [[[VM objectForKey:@"Temporary"] objectForKey:@"URL"] copy];
-	//[[VM objectForKey:@"Temporary"] removeObjectForKey:@"URL"]; // can't be stored in Propertylist
-
 	NSMutableDictionary *temporary;
 
 	temporary = [[VM objectForKey:@"Temporary"] copy];
+	[temporary autorelease];
 	[VM removeObjectForKey:@"Temporary"]; // don't store temporary items (URL can't be stored in Propertylist anyways)
-	
 
     NSData *data = [NSPropertyListSerialization
         dataFromPropertyList:VM
@@ -187,17 +183,7 @@ static QQvmManager *sharedQvmManager = nil;
 		
 		// exploded arguments
 		[[tempVM objectForKey:@"Temporary"] setObject:[[QQvmManager sharedQvmManager] explodeVMArguments:[tempVM objectForKey:@"Arguments"]] forKey:@"explodedArguments"];
-		
-		// name
-		nameIndex = [[[tempVM objectForKey:@"Temporary"] objectForKey:@"explodedArguments"] indexOfObject:@"-name"];
-		if (nameIndex == NSNotFound) {
-			name = @"Unknown";
-			NSLog(@"name: %@", name);
-		} else {
-			name = [[[tempVM objectForKey:@"Temporary"] objectForKey:@"explodedArguments"] objectAtIndex:(nameIndex + 1)];
-		}
-		[[tempVM objectForKey:@"Temporary"] setObject:name forKey:@"name"];
-		
+
 		// url
 		[[tempVM objectForKey:@"Temporary"] setObject:[NSURL fileURLWithPath:filename] forKey:@"URL"];
 

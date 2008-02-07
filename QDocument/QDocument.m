@@ -239,12 +239,26 @@
 #pragma mark delegates and overrides for NSDocument
 - (IBAction) newDocument:(id)sender
 {
+	Q_DEBUG(@"saveDocument");
+
+	// Todo:
+	// either create a "new document" (immediately create the files) or show a assistent
+	// the -name argument is created by the document name
+
     NSLog(@"We should create a now Document now");
 }
 
 - (IBAction) saveDocument:(id)sender
 {
 	Q_DEBUG(@"saveDocument");
+	
+	// Todo:
+	// implement saving as following:
+	// if VM is shutdown/saved:
+	//     - save the .qvm package with the save name
+	//     - save configuration.plist
+	// if the VM is running
+	//     - save a snapshot
 
     [distributedObject setCommand:'W' arg1:0 arg2:0 arg3:0 arg4:0];
 }
@@ -252,6 +266,9 @@
 - (IBAction)revertDocumentToSaved:(id)sender
 {
 	Q_DEBUG(@"revertDocumentToSaved");
+	
+	// Todo
+	// only revert running machines
 
     [distributedObject setCommand:'X' arg1:0 arg2:0 arg3:0 arg4:0];
 }

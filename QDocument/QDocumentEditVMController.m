@@ -77,7 +77,6 @@
 	Q_DEBUG(@"resetPanel");
 	
 	// Tab 1
-	[vMName setStringValue:@""];
 	[grabless setState:NSOffState];
 	[qDrivers setState:NSOffState];
 	[pauseWhileInactive setState:NSOffState];
@@ -119,13 +118,8 @@
 {
 	Q_DEBUG(@"setOption:%@ withArgument:%@", key, argument);
 	
-	// -name TODO: convert -name from 0.2.0.Q profile
-	if ([key isEqual:@"-name"]) {
-		[vMName setStringValue:argument];
-		return TRUE;
-
 	// grabless (-usbdevice tablet)
-	} else if ([key isEqual:@"-usbdevice"] && [argument isEqual:@"tablet"]) {
+	if ([key isEqual:@"-usbdevice"] && [argument isEqual:@"tablet"]) {
 		[grabless setState:NSOffState];
 		return TRUE;
 

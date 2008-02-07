@@ -255,13 +255,13 @@
     
     if (create) {
         while ( (object = [enumerator nextObject]) ) {
-            if ([[[object objectForKey:@"PC Data"] objectForKey:@"name"] isEqual: name] )
+            if ([[[object objectForKey:@"Temporary"] objectForKey:@"name"] isEqual: name] )
                 return 0;
         }
     } else {
         while ( (object = [enumerator nextObject]) ) {
-            if ([[[object objectForKey:@"PC Data"] objectForKey:@"name"] isEqual: name]) {
-                if ( ![[[thisPC objectForKey:@"PC Data"] objectForKey:@"name"] isEqual:name])
+            if ([[[object objectForKey:@"Temporary"] objectForKey:@"name"] isEqual: name]) {
+                if ( ![[[thisPC objectForKey:@"Temporary"] objectForKey:@"name"] isEqual:name])
                     return 0;
             }
         }
@@ -292,8 +292,8 @@
 
 	// do not allow deleting a running VM
     if ([[[VM objectForKey:@"PC Data"] objectForKey:@"state"] isEqual:@"running"]) {
-        [self standardAlert: [NSString stringWithFormat: NSLocalizedStringFromTable(@"deleteVM:standardAlert", @"Localizable", @"QControlController"),[[VM objectForKey:@"PC Data"] objectForKey:@"name"]]
-             informativeText: [NSString stringWithFormat: NSLocalizedStringFromTable(@"deleteVM:informativeText", @"Localizable", @"QControlController"), [[VM objectForKey:@"PC Data"] objectForKey:@"name"]]];
+        [self standardAlert: [NSString stringWithFormat: NSLocalizedStringFromTable(@"deleteVM:standardAlert", @"Localizable", @"QControlController"),[[VM objectForKey:@"Temporary"] objectForKey:@"name"]]
+             informativeText: [NSString stringWithFormat: NSLocalizedStringFromTable(@"deleteVM:informativeText", @"Localizable", @"QControlController"), [[VM objectForKey:@"Temporary"] objectForKey:@"name"]]];
         return;
     }
     
@@ -302,7 +302,7 @@
                       defaultButton: NSLocalizedStringFromTable(@"deleteVM:defaultButton", @"Localizable", @"QControlController")
                     alternateButton: NSLocalizedStringFromTable(@"deleteVM:alternateButton", @"Localizable", @"QControlController")
                         otherButton:nil
-                  informativeTextWithFormat:[NSString stringWithFormat: NSLocalizedStringFromTable(@"deleteVM:informativeTextWithFormat", @"Localizable", @"QControlController"),[[VM objectForKey:@"PC Data"] objectForKey:@"name"]]];
+                  informativeTextWithFormat:[NSString stringWithFormat: NSLocalizedStringFromTable(@"deleteVM:informativeTextWithFormat", @"Localizable", @"QControlController"),[[VM objectForKey:@"Temporary"] objectForKey:@"name"]]];
     
     // display alert
     [alert beginSheetModalForWindow:mainWindow
