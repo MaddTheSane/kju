@@ -85,10 +85,6 @@
 				<string>id</string>
 				<key>prefLog</key>
 				<string>id</string>
-				<key>prefPathChoose</key>
-				<string>id</string>
-				<key>prefPathReset</key>
-				<string>id</string>
 				<key>prefUpdates</key>
 				<string>id</string>
 				<key>prefYellow</key>
@@ -110,6 +106,10 @@
 				<string>NSButton</string>
 				<key>buttonEdit</key>
 				<string>NSButton</string>
+				<key>loadProgressIndicator</key>
+				<string>id</string>
+				<key>loadProgressText</key>
+				<string>id</string>
 				<key>mainWindow</key>
 				<string>id</string>
 				<key>prefFSWarning</key>

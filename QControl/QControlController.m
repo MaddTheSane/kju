@@ -31,7 +31,7 @@
 #import "../QShared/QQvmManager.h"
 
 
-#define PREFS_HEIGHT 190.0
+#define PREFS_HEIGHT 100.0
 
 @implementation QControlController
 -(id)init
@@ -44,17 +44,11 @@
         // Application
         qApplication = [NSApp delegate];
 		
-		// load known VMs
+		// load known VMs, search for new VMs
 		[self loadConfigurations];
-
-		// change status to "shutdown" after corrupt termination of QEMU
-		int i;
-		for (i = 0; i < [VMs count]; i++) {
-			if ([[[[VMs objectAtIndex:i] objectForKey:@"PC Data"] objectForKey:@"state"] isEqual:@"running"] ) {
-				[[[VMs objectAtIndex:i] objectForKey:@"PC Data"] setObject:@"shutdown" forKey:@"state"];
-				[[QQvmManager sharedQvmManager] saveVMConfiguration:[VMs objectAtIndex:i]];
-			}
-		}
+		
+		// Listen if new VMs are found
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(queryFinished:) name:NSMetadataQueryDidFinishGatheringNotification object:query];
 
 		// Listen to VM updates
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadConfigurations) name:@"QVMStatusDidChange" object:nil];
@@ -67,6 +61,7 @@
 	Q_DEBUG(@"dealloc");
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+	[query release];
 	[super dealloc];
 }
 
@@ -76,12 +71,23 @@
 
 #pragma mark TODO: load other nibs
 
+	NSPredicate *predicate;
+
 	[buttonEdit setCell:[[[QButtonCell alloc] initImageCell:[[buttonEdit cell] image] buttonType:QButtonCellLeft target:[[buttonEdit cell] target] action:[[buttonEdit cell] action]] autorelease]];
 	[buttonAdd setCell:[[[QButtonCell alloc] initImageCell:[[buttonAdd cell] image] buttonType:QButtonCellRight target:[[buttonAdd cell] target] action:[[buttonAdd cell] action]] autorelease]];
 	
+	// search for qvms
 
+	query = [[NSMetadataQuery alloc] init];
+	[query setDelegate:self];
+	[loadProgressIndicator startAnimation:self];
+	predicate = [NSPredicate predicateWithFormat:@"kMDItemDisplayName ENDSWITH 'qvm'", nil];
+    [query setPredicate:predicate];
+    [query setSearchScopes:[NSArray arrayWithObject:@"/Users/"]];
+	[query startQuery];
+
+	
 	// preferences
-	[prefPath setStringValue:[[qApplication userDefaults] objectForKey:@"dataPath"]];
     if ([[qApplication userDefaults] boolForKey:@"SUCheckAtStartup"]) {
         [prefUpdates setState:NSOnState];
     } else {
@@ -118,21 +124,13 @@
 - (void) loadConfigurations
 {
 	Q_DEBUG(@"loadConfigurations");
-
+	
     if (VMs)
         [VMs release];
 
     VMs = [[NSMutableArray alloc] init];
-    NSString *qvmFile;
 	NSMutableDictionary *tempVM;
-    NSDirectoryEnumerator *enumerator = [[NSFileManager defaultManager] enumeratorAtPath:[[qApplication userDefaults] objectForKey:@"dataPath"]];
-    while ((qvmFile = [enumerator nextObject])) {
-		if ([[qvmFile pathExtension] isEqual:@"qvm"]) {
-			tempVM = [[QQvmManager sharedQvmManager] loadVMConfiguration:[NSString stringWithFormat:@"%@/%@", [[qApplication userDefaults] objectForKey:@"dataPath"], qvmFile]];
-			if (tempVM)
-				[VMs addObject:tempVM];
-		}
-    }
+
 	// add knownVMs
 	int i;
 	NSMutableArray *knownVMs = [[[[qApplication userDefaults] objectForKey:@"knownVMs"] mutableCopy] autorelease];
@@ -481,40 +479,40 @@
 	}
 }
 
-- (IBAction) prefPathReset:(id)sender
+
+
+#pragma mark query handlers
+  - (void)queryFinished:(NSNotification*)note
 {
-	Q_DEBUG(@"prefPathReset");
+	Q_DEBUG(@"queryFinished");
 
-	[[qApplication userDefaults] setObject:[@"~/Documents/QEMU" stringByExpandingTildeInPath] forKey:@"dataPath"];
-	[prefPath setStringValue:[[qApplication userDefaults] objectForKey:@"dataPath"]];
-}
-
-- (void) genericFolderSelectPanelDidEnd:(NSOpenPanel *)sheet returnCode:(int)returnCode contextInfo:(id)contextInfo
-{
-	Q_DEBUG(@"genericFolderSelectPanelDidEnd");
-
-	[ sheet orderOut:self ]; // hide Sheet
-	if ( returnCode == NSOKButton ) {
-		[[qApplication userDefaults] setObject:[sheet filename] forKey:@"dataPath"];
-		[prefPath setStringValue:[sheet filename]];
+	int i;
+	NSArray *searchResults;
+	NSString *VMPath;
+	NSMutableArray *knownVMs;
+	
+	knownVMs = [[[[qApplication userDefaults] objectForKey:@"knownVMs"] mutableCopy] autorelease];
+	searchResults = [(NSMetadataQuery*)[note object] results];
+	
+	for (i = 0; i < [searchResults count]; i++) {
+		VMPath = [[[searchResults objectAtIndex:i] valueForAttribute: (NSString *)kMDItemPath] stringByResolvingSymlinksInPath];
+		if (![knownVMs containsObject:VMPath]) {
+			[knownVMs addObject:VMPath];
+		}
 	}
-}
+	[[qApplication userDefaults] setObject:knownVMs forKey:@"knownVMs"];
 
-- (IBAction) prefPathChoose:(id)sender
-{
-	Q_DEBUG(@"prefPathChoose");
+	// change status to "shutdown" after corrupt termination of QEMU
+	for (i = 0; i < [VMs count]; i++) {
+		if ([[[[VMs objectAtIndex:i] objectForKey:@"PC Data"] objectForKey:@"state"] isEqual:@"running"] ) {
+			[[[VMs objectAtIndex:i] objectForKey:@"PC Data"] setObject:@"shutdown" forKey:@"state"];
+			[[QQvmManager sharedQvmManager] saveVMConfiguration:[VMs objectAtIndex:i]];
+		}
+	}
 
-	NSOpenPanel *openPanel = [[NSOpenPanel alloc] init];
-	[openPanel setCanChooseDirectories:YES];
-	[openPanel setCanCreateDirectories:YES];
-	[openPanel setCanChooseFiles:NO];
-	[openPanel beginSheetForDirectory:[@"~/Documents" stringByExpandingTildeInPath]
-		file:nil
-		types:nil
-		modalForWindow:mainWindow
-		modalDelegate:self
-		didEndSelector:@selector(genericFolderSelectPanelDidEnd:returnCode:contextInfo:)
-		contextInfo:sender];
+	[loadProgressText setHidden:TRUE];
+	[loadProgressIndicator stopAnimation:self];
+	[table reloadData];
 }
 
 

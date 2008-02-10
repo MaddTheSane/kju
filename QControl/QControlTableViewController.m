@@ -81,43 +81,14 @@
 	Q_DEBUG(@"tableView: objectValueForTableColumn: row:%D", rowIndex);
 
     id VM;
-    NSString *platform;
 	NSString *state;
+	NSString *name;
+	NSString *path;
+	NSColor *color;
 	QDocument *qDocument;
+	NSMutableParagraphStyle *paragraphStyle;
+	NSMutableAttributedString *attrString;
 
-	platform = @"";
-	VM = [[qControl VMs] objectAtIndex:rowIndex];
-	qDocument = [[NSDocumentController sharedDocumentController] documentForURL:[[VM objectForKey:@"Temporary"] objectForKey:@"URL"]];
-	if (qDocument) {
-		switch ([qDocument VMState]) {
-			case(QDocumentSaving):
-				state = NSLocalizedStringFromTable(@"saving", @"Localizable", @"vmstate");
-				break;
-			case(QDocumentSaved):
-				state = NSLocalizedStringFromTable(@"saved", @"Localizable", @"vmstate");
-				break;
-			case(QDocumentLoading):
-				state = NSLocalizedStringFromTable(@"loading", @"Localizable", @"vmstate");
-				break;
-			case(QDocumentPaused):
-				state = NSLocalizedStringFromTable(@"paused", @"Localizable", @"vmstate");
-				break;
-			case(QDocumentRunning):
-				state = NSLocalizedStringFromTable(@"running", @"Localizable", @"vmstate");
-				break;
-			case(QDocumentEditing):
-				state = NSLocalizedStringFromTable(@"editing", @"Localizable", @"vmstate");
-				break;
-			case(QDocumentInvalid):
-				state = NSLocalizedStringFromTable(@"invalid", @"Localizable", @"vmstate");
-				break;
-			default:
-				state = NSLocalizedStringFromTable(@"shutdown", @"Localizable", @"vmstate");
-				break;
-		}
-	} else {
-		state = NSLocalizedStringFromTable([[VM objectForKey:@"PC Data"] objectForKey:@"state"], @"Localizable", @"vmstate");
-	}
     
     if ([[aTableColumn identifier] isEqualTo: @"image"]) {
         if ([VMsImages count] < rowIndex) { // return default image if no image available
@@ -127,26 +98,51 @@
         }
     }
     else if ([[aTableColumn identifier] isEqualTo: @"description"]) {
-        
-        if ([[[VM objectForKey:@"PC Data"] objectForKey:@"architecture"] isEqual:@"x86"]) {
-            platform = [NSString stringWithString:@"x86 PC"];
-        } else if ([[[VM objectForKey:@"PC Data"] objectForKey:@"architecture"] isEqual:@"x86-64"]) {
-            platform = [NSString stringWithString:@"x86-64 PC"];
-        } else if ([[[VM objectForKey:@"PC Data"] objectForKey:@"architecture"] isEqual:@"PowerPC"] && [[[VM objectForKey:@"Temporary"] objectForKey:@"-M"] isEqual:@"prep"]) {
-            platform = [NSString stringWithString:@"PPC PREP"];
-        } else if ([[[VM objectForKey:@"PC Data"] objectForKey:@"architecture"] isEqual:@"PowerPC"]) {
-            platform = [NSString stringWithString:@"PPC PowerMac"];
-        } else if ([[[VM objectForKey:@"PC Data"] objectForKey:@"architecture"] isEqual:@"SPARC"]) {
-            platform = [NSString stringWithString:@"SPARC"];
-        } else if ([[[VM objectForKey:@"PC Data"] objectForKey:@"architecture"] isEqual:@"MIPS"]) {
-            platform = [NSString stringWithString:@"MIPS"];
-        } else if ([[[VM objectForKey:@"PC Data"] objectForKey:@"architecture"] isEqual:@"ARM"]) {
-            platform = [NSString stringWithString:@"ARM"];
-        }
-        
-        NSMutableAttributedString *attrString = [[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat: @"%@\n", [[[[VM objectForKey:@"Temporary"] objectForKey:@"URL"] path] lastPathComponent]] attributes:[NSDictionary dictionaryWithObject: [NSFont boldSystemFontOfSize:[NSFont smallSystemFontSize]] forKey:NSFontAttributeName]] autorelease];
+
+		VM = [[qControl VMs] objectAtIndex:rowIndex];
+		qDocument = [[NSDocumentController sharedDocumentController] documentForURL:[[VM objectForKey:@"Temporary"] objectForKey:@"URL"]];
+		if (qDocument) {
+			switch ([qDocument VMState]) {
+				case(QDocumentSaving):
+					state = NSLocalizedStringFromTable(@"saving", @"Localizable", @"vmstate");
+					break;
+				case(QDocumentSaved):
+					state = NSLocalizedStringFromTable(@"saved", @"Localizable", @"vmstate");
+					break;
+				case(QDocumentLoading):
+					state = NSLocalizedStringFromTable(@"loading", @"Localizable", @"vmstate");
+					break;
+				case(QDocumentPaused):
+					state = NSLocalizedStringFromTable(@"paused", @"Localizable", @"vmstate");
+					break;
+				case(QDocumentRunning):
+					state = NSLocalizedStringFromTable(@"running", @"Localizable", @"vmstate");
+					break;
+				case(QDocumentEditing):
+					state = NSLocalizedStringFromTable(@"editing", @"Localizable", @"vmstate");
+					break;
+				case(QDocumentInvalid):
+					state = NSLocalizedStringFromTable(@"invalid", @"Localizable", @"vmstate");
+					break;
+				default:
+					state = NSLocalizedStringFromTable(@"shutdown", @"Localizable", @"vmstate");
+					break;
+			}
+		} else {
+			state = NSLocalizedStringFromTable([[VM objectForKey:@"PC Data"] objectForKey:@"state"], @"Localizable", @"vmstate");
+		}
+		path = [[[VM objectForKey:@"Temporary"] objectForKey:@"URL"] path];
+		name = [path lastPathComponent];
+		name = [name substringToIndex:[name length] - 4];
+		paragraphStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
+		
+		color = [NSColor colorWithDeviceRed:0.5 green:0.5 blue:0.5 alpha:1.0];
+		[paragraphStyle setLineBreakMode:NSLineBreakByTruncatingHead];
+
+        attrString = [[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat: @"%@\n", name] attributes:[NSDictionary dictionaryWithObject: [NSFont boldSystemFontOfSize:[NSFont smallSystemFontSize]] forKey:NSFontAttributeName]] autorelease];
+		[attrString appendAttributedString: [[[NSAttributedString alloc] initWithString:[NSString stringWithFormat: @"%@\n", [path stringByDeletingLastPathComponent]]  attributes:[NSDictionary dictionaryWithObjectsAndKeys: [NSFont systemFontOfSize:[NSFont smallSystemFontSize]], NSFontAttributeName, paragraphStyle, NSParagraphStyleAttributeName, color, NSForegroundColorAttributeName, nil]] autorelease]];
         [attrString appendAttributedString: [[[NSAttributedString alloc] initWithString:state attributes:[NSDictionary dictionaryWithObject:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]] forKey:NSFontAttributeName]] autorelease]];
-        
+
         return attrString;
     }
     

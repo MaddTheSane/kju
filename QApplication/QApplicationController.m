@@ -39,14 +39,12 @@
 			[NSNumber numberWithBool:FALSE], // disable log to console
 			[NSNumber numberWithBool:TRUE], // yellow
 			[NSNumber numberWithBool:TRUE], // showFullscreenWarning
-			[@"~/Documents/QEMU" stringByExpandingTildeInPath], // standart path
 			[NSMutableArray array], // known VMs
 			nil
 		] forKeys:[NSArray arrayWithObjects:
 			@"enableLogToConsole",
 			@"yellow",
 			@"showFullscreenWarning",
-			@"dataPath",
 			@"knownVMs",
 			nil]]];
 		userDefaults = [NSUserDefaults standardUserDefaults];
@@ -60,6 +58,9 @@
 		}
 		if ([userDefaults objectForKey:@"enableCheckForUpdates"]) {
 			[userDefaults removeObjectForKey:@"enableCheckForUpdates"];
+		}
+		if ([userDefaults objectForKey:@"dataPath"]) {
+			[userDefaults removeObjectForKey:@"dataPath"];
 		}
 #pragma mark TODO:Sparclekey for userdefaults
 		

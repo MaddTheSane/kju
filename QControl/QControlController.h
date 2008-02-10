@@ -46,7 +46,6 @@
 	// preferences
 	BOOL isPrefAnimating;
 	BOOL isPrefShown;
-	IBOutlet id prefPath;
 	IBOutlet id prefUpdates;
 	IBOutlet id prefLog;
 	IBOutlet id prefYellow;
@@ -54,6 +53,13 @@
 	
 	IBOutlet NSButton *buttonEdit;
 	IBOutlet NSButton *buttonAdd;
+	
+	// loading VMs
+	IBOutlet id loadProgressIndicator;
+	IBOutlet id loadProgressText;
+	
+	// browsing for qvms
+	NSMetadataQuery *query;
 /*	
 	// progressPanel
 	IBOutlet id progressPanel;
@@ -97,8 +103,6 @@
 - (IBAction) prefLog:(id)sender;
 - (IBAction) prefYellow:(id)sender;
 - (IBAction) prefFSWarning:(id)sender;
-- (IBAction) prefPathReset:(id)sender;
-- (IBAction) prefPathChoose:(id)sender;
 
 /*
 - (BOOL) importFreeOSZooPC:(NSString *)name withPath:(NSString *)path;

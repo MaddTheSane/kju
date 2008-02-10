@@ -1,0 +1,58 @@
+119
+[new] smartfolder for Q Control (get rid of default folder)
+
+118
+[new] QDocument savepanel while saving
+[new] QDocument loadpanel while reverting
+[new] QDocument saveAs
+[fix] QControlController memory leak
+
+117
+[fix] QDocument removed 2 memory leaks
+
+116
+[new] smaller antialiased thumbnails 
+[new] VM name is taken from filename 
+[fix] Q Browser resizable
+
+115
+[fix] QDocument takeScreenShot adapted to QDocumentOpenGLView
+
+114
+[new] QPopUpButtonCell
+
+113
+[fix] QDocumentOpenGLView draw black bg if no savedImage 
+[fix] remove of dead code
+
+112
+[fix] QDocumentTableViewController unified thumnailloading 
+[fix] QDocumentOpenGLView better Window updates 
+[fix] QApplicationController Memory Leak 
+[fix] QControlController Memory Lea
+
+111
+[fix] remove obsolete files
+
+110
+[new] target to build qemu right as part of the project 
+[fix] QDocumentOpenGLView initial window size 
+[fix] QApplication added missing header
+
+109
+[new] QDocumentOpenGLView: Play overlay 
+[new] QDocumentOpenGLView: Saved Image overlay 
+[fix] QDocumentOpenGLView: updateSavedImage 
+[fix] QControlTableViewController: updateThumbnails 
+
+108
+[fix] cocoa.m: add missing semicolons
+[fix] remove obsolete import QDocumentQuartzView.h
+[fix] set XCode configuration to precompile Q_Prefix.pch
+[fix] added some useful strings to Info.plist
+
+107
+Checked in QApplication
+
+106
+Initial commit Q2

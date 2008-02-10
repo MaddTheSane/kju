@@ -180,7 +180,6 @@
 	
 	cpuTypes = [[[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"i386-softmmu",@"x86_64-softmmu",@"ppc-softmmu",@"sparc-softmmu",@"mips-softmmu",@"arm-softmmu",nil] forKeys:[NSArray arrayWithObjects:@"x86",@"x86-64",@"PowerPC",@"SPARC",@"MIPS",@"ARM",nil]] autorelease];
 
-        
     // if this PC is already running, abort
     if ([[[[document configuration] objectForKey:@"PC Data"] objectForKey:@"state"] isEqual:@"running"]) {
         [document defaultAlertMessage:@"QDocumentTaskController: Guest already running!" informativeText:nil];

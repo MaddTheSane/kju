@@ -28,8 +28,10 @@
 #import "../QDocument/QDocument.h"
 
 
-#define ICON_WIDTH 12.0
-#define ICON_HEIGHT 12.0
+#define ICON_WIDTH 9.0
+#define ICON_HEIGHT 9.0
+#define ICON_X 45.0
+#define ICON_Y 31.0
 
 @implementation QControlTableView
 - (id) initWithCoder: (NSCoder *) decoder
@@ -188,7 +190,7 @@
         cellRect = [self frameOfCellAtColumn:1 row:i];
         
         // edit icon
-        point = NSMakePoint(cellRect.origin.x + cellRect.size.width - 4 * (ICON_WIDTH + 4), cellRect.origin.y + cellRect.size.height - (ICON_HEIGHT + 4));
+        point = NSMakePoint(cellRect.origin.x + ICON_X + (ICON_WIDTH + 4), cellRect.origin.y + ICON_Y);
         if (NSPointInRect(pointClicked, NSMakeRect(point.x, point.y, ICON_WIDTH, ICON_HEIGHT))) {
             qFraction = 1.0;
         } else if (document) {
@@ -205,14 +207,14 @@
             qFraction = 0.5;
 		}
         [qEditIcon
-            drawAtPoint: point
-            fromRect: NSMakeRect(0, 0, ICON_WIDTH, ICON_HEIGHT)
+            drawInRect: NSMakeRect(point.x, point.y, ICON_WIDTH, ICON_HEIGHT)
+            fromRect: NSMakeRect(0, 0, [qEditIcon size].width, [qEditIcon size].height)
             operation: NSCompositeSourceOver
             fraction: qFraction
         ];
 
         // play/pause icon
-        point = NSMakePoint(cellRect.origin.x + cellRect.size.width - 3 * (ICON_WIDTH + 4), cellRect.origin.y + cellRect.size.height - (ICON_HEIGHT + 4));
+        point = NSMakePoint(cellRect.origin.x + ICON_X + 2 * (ICON_WIDTH + 4), cellRect.origin.y + ICON_Y);
         if (NSPointInRect(pointClicked, NSMakeRect(point.x, point.y, ICON_WIDTH, ICON_HEIGHT))) {
             qFraction = 1.0;
         } else if (document) {
@@ -242,14 +244,14 @@
 			qFraction = 0.25;
 		}
         [image
-            drawAtPoint: point
-            fromRect: NSMakeRect(0, 0, ICON_WIDTH, ICON_HEIGHT)
+            drawInRect: NSMakeRect(point.x, point.y, ICON_WIDTH, ICON_HEIGHT)
+            fromRect: NSMakeRect(0, 0, [image size].width, [image size].height)
             operation: NSCompositeSourceOver
             fraction: qFraction
         ];
 
         // stop icon
-        point = NSMakePoint(cellRect.origin.x + cellRect.size.width - 2 * (ICON_WIDTH + 4), cellRect.origin.y + cellRect.size.height - (ICON_HEIGHT + 4));
+        point = NSMakePoint(cellRect.origin.x + ICON_X + 3 * (ICON_WIDTH + 4), cellRect.origin.y + ICON_Y);
         if (NSPointInRect(pointClicked, NSMakeRect(point.x, point.y, ICON_WIDTH, ICON_HEIGHT))) {
             qFraction = 1.0;
         } else if (document) {
@@ -266,14 +268,14 @@
 			qFraction = 0.25;
 		}
         [qStopIcon
-            drawAtPoint: point
-            fromRect: NSMakeRect(0, 0, ICON_WIDTH, ICON_HEIGHT)
+            drawInRect: NSMakeRect(point.x, point.y, ICON_WIDTH, ICON_HEIGHT)
+            fromRect: NSMakeRect(0, 0, [qStopIcon size].width, [qStopIcon size].height)
             operation: NSCompositeSourceOver
             fraction: qFraction
         ];
         
         // delete icon
-        point = NSMakePoint(cellRect.origin.x + cellRect.size.width - (ICON_WIDTH + 4), cellRect.origin.y + cellRect.size.height - (ICON_HEIGHT + 4));
+        point = NSMakePoint(cellRect.origin.x + ICON_X + 4 * (ICON_WIDTH + 4), cellRect.origin.y + ICON_Y);
         if (NSPointInRect(pointClicked, NSMakeRect(point.x, point.y, ICON_WIDTH, ICON_HEIGHT)))
             qFraction = 1.0;
         else if (document)
@@ -281,8 +283,8 @@
         else
             qFraction = 0.5;
         [qDeleteIcon
-            drawAtPoint: point
-            fromRect: NSMakeRect(0, 0, ICON_WIDTH, ICON_HEIGHT)
+            drawInRect: NSMakeRect(point.x, point.y, ICON_WIDTH, ICON_HEIGHT)
+            fromRect: NSMakeRect(0, 0, [qDeleteIcon size].width, [qDeleteIcon size].height)
             operation: NSCompositeSourceOver
             fraction: qFraction
         ];
