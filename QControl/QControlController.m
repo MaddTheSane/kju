@@ -119,31 +119,33 @@
 
 
 #pragma mark configurations
+NSInteger revCaseInsensitiveCompare(id string1, id string2, void *context)
+
+{
+    return [[string2 lastPathComponent] caseInsensitiveCompare:[string1 lastPathComponent] ];
+}
+
 
 
 - (void) loadConfigurations
 {
 	Q_DEBUG(@"loadConfigurations");
 	
+	NSMutableDictionary *tempVM;
+	NSMutableArray *knownVMs;
+
     if (VMs)
         [VMs release];
-
-    VMs = [[NSMutableArray alloc] init];
-	NSMutableDictionary *tempVM;
-
-	// add knownVMs
+	VMs =[[NSMutableArray alloc] init];
+	
+	// check knownVMs
 	int i;
-	NSMutableArray *knownVMs = [[[[qApplication userDefaults] objectForKey:@"knownVMs"] mutableCopy] autorelease];
+	knownVMs = [[[[qApplication userDefaults] objectForKey:@"knownVMs"] mutableCopy] autorelease];
+	[knownVMs sortUsingFunction:revCaseInsensitiveCompare context:nil];
 	for (i = [knownVMs count] - 1; i > -1; i--) {
-		// does it still exist?
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        if ([fileManager fileExistsAtPath:[knownVMs objectAtIndex:i]]) {
-			tempVM = [[QQvmManager sharedQvmManager] loadVMConfiguration:[knownVMs objectAtIndex:i]];
-			if (tempVM) {
-				[VMs addObject:tempVM];
-			} else {
-				[knownVMs removeObjectAtIndex:i];
-			}
+		tempVM = [[QQvmManager sharedQvmManager] loadVMConfiguration:[knownVMs objectAtIndex:i]];
+		if (tempVM) {
+			[VMs addObject:tempVM];
 		} else {
 			[knownVMs removeObjectAtIndex:i];
 		}

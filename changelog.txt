@@ -1,5 +1,11 @@
+120
+[fix] QControlController adapted for smartfolder
+[fix] QControlTableView adapted for smartfolder
+[fix] QControlTableViewController adapted for smartfolder
+[fix] QDocument adapted for smartfolder
+
 119
-[new] smartfolder for Q Control (get rid of default folder)
+[new] smartfolder for Q Control (ie. show all qvm files using spotlight - get rid of default folder)
 
 118
 [new] QDocument savepanel while saving

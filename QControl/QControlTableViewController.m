@@ -136,12 +136,12 @@
 		name = [name substringToIndex:[name length] - 4];
 		paragraphStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
 		
-		color = [NSColor colorWithDeviceRed:0.5 green:0.5 blue:0.5 alpha:1.0];
+		color = [NSColor colorWithDeviceRed:0.75 green:0.75 blue:0.75 alpha:1.0];
 		[paragraphStyle setLineBreakMode:NSLineBreakByTruncatingHead];
 
         attrString = [[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat: @"%@\n", name] attributes:[NSDictionary dictionaryWithObject: [NSFont boldSystemFontOfSize:[NSFont smallSystemFontSize]] forKey:NSFontAttributeName]] autorelease];
-		[attrString appendAttributedString: [[[NSAttributedString alloc] initWithString:[NSString stringWithFormat: @"%@\n", [path stringByDeletingLastPathComponent]]  attributes:[NSDictionary dictionaryWithObjectsAndKeys: [NSFont systemFontOfSize:[NSFont smallSystemFontSize]], NSFontAttributeName, paragraphStyle, NSParagraphStyleAttributeName, color, NSForegroundColorAttributeName, nil]] autorelease]];
-        [attrString appendAttributedString: [[[NSAttributedString alloc] initWithString:state attributes:[NSDictionary dictionaryWithObject:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]] forKey:NSFontAttributeName]] autorelease]];
+        [attrString appendAttributedString: [[[NSAttributedString alloc] initWithString:[NSString stringWithFormat: @"%@\n", state] attributes:[NSDictionary dictionaryWithObject:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]] forKey:NSFontAttributeName]] autorelease]];
+		[attrString appendAttributedString: [[[NSAttributedString alloc] initWithString:[NSString stringWithFormat: @"\n%@", [path stringByDeletingLastPathComponent]]  attributes:[NSDictionary dictionaryWithObjectsAndKeys: [NSFont systemFontOfSize:[NSFont smallSystemFontSize]], NSFontAttributeName, paragraphStyle, NSParagraphStyleAttributeName, color, NSForegroundColorAttributeName, nil]] autorelease]];
 
         return attrString;
     }

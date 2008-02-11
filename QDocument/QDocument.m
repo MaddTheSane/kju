@@ -269,12 +269,10 @@
 			[self setFileURL:[panel URL]];
 	
 			// if outside default path, add to knownVNs
-			if (![[[panel filename] stringByDeletingLastPathComponent] isEqual:[[qApplication userDefaults] objectForKey:@"dataPath"]]) {
-				if (![[[qApplication userDefaults] objectForKey:@"knownVMs"] containsObject:[panel filename]]) {
-					knownVMs = [[[[qApplication userDefaults] objectForKey:@"knownVMs"] mutableCopy] autorelease];
-					[knownVMs addObject:[panel filename]];
-					[[qApplication userDefaults] setObject:knownVMs forKey:@"knownVMs"];
-				}
+			if (![[[qApplication userDefaults] objectForKey:@"knownVMs"] containsObject:[panel filename]]) {
+				knownVMs = [[[[qApplication userDefaults] objectForKey:@"knownVMs"] mutableCopy] autorelease];
+				[knownVMs addObject:[panel filename]];
+				[[qApplication userDefaults] setObject:knownVMs forKey:@"knownVMs"];
 			}
 			
 			[[NSNotificationCenter defaultCenter] postNotificationName:@"QVMStatusDidChange" object:nil]; //communicate new state
@@ -292,7 +290,7 @@
 		NSSavePanel *savePanel = [NSSavePanel savePanel];
 		[savePanel setAllowedFileTypes:[NSArray arrayWithObject:@"qvm"]];
 		[savePanel setCanSelectHiddenExtension:YES];
-		[savePanel beginSheetForDirectory:[[qApplication userDefaults] objectForKey:@"dataPath"] file:[self displayName] modalForWindow:[screenView window] modalDelegate:self didEndSelector:@selector(savePanelDidEnd:returnCode:contextInfo:) contextInfo:nil];
+		[savePanel beginSheetForDirectory:nil file:[self displayName] modalForWindow:[screenView window] modalDelegate:self didEndSelector:@selector(savePanelDidEnd:returnCode:contextInfo:) contextInfo:nil];
 	} else {
 		[self defaultAlertMessage:@"VM is running" informativeText:@"Please shutdown the VM before saving the VM to a new Name"];
 	}

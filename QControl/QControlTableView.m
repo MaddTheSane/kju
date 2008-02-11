@@ -30,8 +30,9 @@
 
 #define ICON_WIDTH 9.0
 #define ICON_HEIGHT 9.0
-#define ICON_X 45.0
+#define ICON_X 3.0
 #define ICON_Y 31.0
+#define ICON_SPACE 2.0
 
 @implementation QControlTableView
 - (id) initWithCoder: (NSCoder *) decoder
@@ -64,28 +65,28 @@
     int row = [self rowAtPoint: pointClicked];
     NSRect cellRect = [self frameOfCellAtColumn:1 row:row];
     
-    for (i = 1; i < 5; i++) {
+    for (i = 0; i < 4; i++) {
         if (NSPointInRect(pointClicked, NSMakeRect(
-            cellRect.origin.x + cellRect.size.width - i * (ICON_WIDTH + 4),
-            cellRect.origin.y + cellRect.size.height - ICON_HEIGHT - 4,
+            cellRect.origin.x + ICON_X + i * (ICON_WIDTH),
+            cellRect.origin.y + ICON_Y,
             ICON_WIDTH,
             ICON_HEIGHT
         ))) {
             VM = [[qControl VMs] objectAtIndex:row];
             switch (i) {
-                case 1: // delete
-                    if ([[[VM objectForKey:@"PC Data"] objectForKey:@"state"] isEqual:@"shutdown"])
-                        clicked = TRUE;
+                case 0: // edit
+                    clicked = TRUE;
+                break;
+                case 1: // play/pause
+                    clicked = TRUE;
                 break;
                 case 2: // stop
                     if (![[[VM objectForKey:@"PC Data"] objectForKey:@"state"] isEqual:@"shutdown"])
                         clicked = TRUE;
                 break;
-                case 3: // play/pause
-                    clicked = TRUE;
-                break;
-                case 4: // edit
-                    clicked = TRUE;
+                case 3: // delete
+                    if ([[[VM objectForKey:@"PC Data"] objectForKey:@"state"] isEqual:@"shutdown"])
+                        clicked = TRUE;
                 break;
             }
         }
@@ -117,26 +118,18 @@
 	VM = [[qControl VMs] objectAtIndex:row];
 	document = [[NSDocumentController sharedDocumentController] documentForURL:[[VM objectForKey:@"Temporary"] objectForKey:@"URL"]];
 	
-    for (i = 1; i < 5; i++) {
+    for (i = 0; i < 4; i++) {
         if (NSPointInRect(pointClicked, NSMakeRect(
-            cellRect.origin.x + cellRect.size.width - i * (ICON_WIDTH + 4),
-            cellRect.origin.y + cellRect.size.height - ICON_HEIGHT - 4,
+            cellRect.origin.x + ICON_X + i * (ICON_WIDTH + ICON_SPACE),
+            cellRect.origin.y + ICON_Y,
             ICON_WIDTH,
             ICON_HEIGHT
         ))) {
             switch (i) {
-                case 1: // delete
-                    if (!document) // only allow if VM is not open
-                        [qControl deleteVM:VM];
-					break;
-                case 2: // stop
-                    if (document) {
-						if (([document VMState]==QDocumentRunning)||([document VMState]==QDocumentPaused)) {
-							[document VMShutDown:self];
-						}
-					}
-					break;
-                case 3: // play/pause
+                case 0: // edit
+                    [qControl editVM:VM];
+                break;
+                case 1: // play/pause
 					if (document) {
 						switch ([document VMState]) {
 							case QDocumentShutdown:
@@ -154,9 +147,17 @@
 						[qControl startVM:VM];
 					}
 					break;
-                case 4: // edit
-                    [qControl editVM:VM];
-                break;
+                case 2: // stop
+                    if (document) {
+						if (([document VMState]==QDocumentRunning)||([document VMState]==QDocumentPaused)) {
+							[document VMShutDown:self];
+						}
+					}
+					break;
+                case 3: // delete
+                    if (!document) // only allow if VM is not open
+                        [qControl deleteVM:VM];
+					break;
             }
         }
     }
@@ -190,7 +191,7 @@
         cellRect = [self frameOfCellAtColumn:1 row:i];
         
         // edit icon
-        point = NSMakePoint(cellRect.origin.x + ICON_X + (ICON_WIDTH + 4), cellRect.origin.y + ICON_Y);
+        point = NSMakePoint(cellRect.origin.x + ICON_X, cellRect.origin.y + ICON_Y);
         if (NSPointInRect(pointClicked, NSMakeRect(point.x, point.y, ICON_WIDTH, ICON_HEIGHT))) {
             qFraction = 1.0;
         } else if (document) {
@@ -214,7 +215,7 @@
         ];
 
         // play/pause icon
-        point = NSMakePoint(cellRect.origin.x + ICON_X + 2 * (ICON_WIDTH + 4), cellRect.origin.y + ICON_Y);
+        point = NSMakePoint(cellRect.origin.x + ICON_X + (ICON_WIDTH + ICON_SPACE), cellRect.origin.y + ICON_Y);
         if (NSPointInRect(pointClicked, NSMakeRect(point.x, point.y, ICON_WIDTH, ICON_HEIGHT))) {
             qFraction = 1.0;
         } else if (document) {
@@ -251,7 +252,7 @@
         ];
 
         // stop icon
-        point = NSMakePoint(cellRect.origin.x + ICON_X + 3 * (ICON_WIDTH + 4), cellRect.origin.y + ICON_Y);
+        point = NSMakePoint(cellRect.origin.x + ICON_X + 2 * (ICON_WIDTH + ICON_SPACE), cellRect.origin.y + ICON_Y);
         if (NSPointInRect(pointClicked, NSMakeRect(point.x, point.y, ICON_WIDTH, ICON_HEIGHT))) {
             qFraction = 1.0;
         } else if (document) {
@@ -275,7 +276,7 @@
         ];
         
         // delete icon
-        point = NSMakePoint(cellRect.origin.x + ICON_X + 4 * (ICON_WIDTH + 4), cellRect.origin.y + ICON_Y);
+        point = NSMakePoint(cellRect.origin.x + ICON_X + 3 * (ICON_WIDTH + ICON_SPACE), cellRect.origin.y + ICON_Y);
         if (NSPointInRect(pointClicked, NSMakeRect(point.x, point.y, ICON_WIDTH, ICON_HEIGHT)))
             qFraction = 1.0;
         else if (document)
