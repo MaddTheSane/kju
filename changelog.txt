@@ -1,3 +1,9 @@
+121
+[fix] QControlTableViewController moved VM path to tooltip
+[fix] QControlTableViewController tableDoubleAction
+[fix] QControlController searchscope fixed for Filevault
+[fix] QControlController add dragged vms only once
+
 120
 [fix] QControlController adapted for smartfolder
 [fix] QControlTableView adapted for smartfolder

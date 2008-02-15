@@ -24,12 +24,46 @@
 
 #import <Cocoa/Cocoa.h>
 
+typedef enum {
+   QDocumentEditVMMachinePc = 0,
+   QDocumentEditVMMachineIsapc = 1,
+   QDocumentEditVMMachineG3bw = 2,
+   QDocumentEditVMMachineMac99 = 3,
+   QDocumentEditVMMachinePrep = 4,
+   QDocumentEditVMMachineRef405ep = 5,
+   QDocumentEditVMMachineTaihu = 6,
+   QDocumentEditVMMachineSS2 = 7,
+   QDocumentEditVMMachineSS5 = 8,
+   QDocumentEditVMMachineSS10 = 9,
+   QDocumentEditVMMachineSS20 = 10,
+   QDocumentEditVMMachineSS600MP = 11,
+   QDocumentEditVMMachineSS1000 = 12,
+   QDocumentEditVMMachineSS2000 = 13,
+   QDocumentEditVMMachineMips = 14,
+   QDocumentEditVMMachineMalta = 15,
+   QDocumentEditVMMachinePica61 = 16,
+   QDocumentEditVMMachineMipssim = 17,
+   QDocumentEditVMMachineArm1 = 18,
+   QDocumentEditVMMachineArm2 = 19,
+   QDocumentEditVMMachineArm3 = 20,
+   QDocumentEditVMMachineArm4 = 21,
+   QDocumentEditVMMachineArm5 = 22,
+   QDocumentEditVMMachineArm6 = 23,
+   QDocumentEditVMMachineArm7 = 24,
+   QDocumentEditVMMachineM68k1 = 25,
+   QDocumentEditVMMachineM68k2 = 26,
+   QDocumentEditVMMachineCris = 27
+} QDocumentEditVMMachine;
+
 
 @interface QDocumentEditVMController : NSObject {
 
 	// Document
 	id document;
 	NSMutableDictionary *VM;
+	
+	// niccount
+	int niccount;
 	
 	// Panel
 	IBOutlet NSPanel *editVMPanel;
@@ -81,6 +115,7 @@
 - (IBAction)cancel:(id)sender;
 
 - (void) resetPanel:(id)sender;
+- (void) setMachine:(QDocumentEditVMMachine)machine;
 - (BOOL) setOption:(NSString *)key withArgument:(NSString *)argument;
 - (void) populatePanel:(id)sender;
 @end

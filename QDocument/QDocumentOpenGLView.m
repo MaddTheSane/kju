@@ -661,6 +661,7 @@ int cocoa_keycode_to_qemu(int keycode)
         displayProperties.height = screenProperties.height * displayProperties.dy;
         displayProperties.x = ([[NSScreen mainScreen] frame].size.width - displayProperties.width) / 2.0;
         displayProperties.y = ([[NSScreen mainScreen] frame].size.height - displayProperties.height) / 2.0;
+		[self setFrame:NSMakeRect(displayProperties.x, displayProperties.y, displayProperties.width, displayProperties.height)];
 	} else {
 		displayProperties.dx = rect.size.width / (float)screenProperties.width;
 		displayProperties.dy = rect.size.height / (float)screenProperties.height;
@@ -670,7 +671,7 @@ int cocoa_keycode_to_qemu(int keycode)
 		displayProperties.y = ICON_BAR_HEIGHT;
 	}
 
-	[self setFrame:NSMakeRect(displayProperties.x, displayProperties.y, displayProperties.width, displayProperties.height)];
+//	[self setFrame:NSMakeRect(displayProperties.x, displayProperties.y, displayProperties.width, displayProperties.height)];
 	[self display]; // apply the new rect
     [self update];
 }
@@ -746,9 +747,10 @@ int cocoa_keycode_to_qemu(int keycode)
         // set view
         [fullScreenWindow close];
         [[normalWindow contentView] addSubview:self];
+        [self setContentDimensionsForFrame:NSMakeRect(0.0, 0.0, screenProperties.width * displayProperties.zoom, screenProperties.height * displayProperties.zoom)];
+		[self setFrame:NSMakeRect(displayProperties.x, displayProperties.y, displayProperties.width, displayProperties.height)];
         [normalWindow makeKeyAndOrderFront: self];
         [NSMenu setMenuBarVisible:YES];
-        [self setContentDimensionsForFrame:NSMakeRect(0.0, 0.0, screenProperties.width * displayProperties.zoom, screenProperties.height * displayProperties.zoom)];
 
     } else {
      
@@ -815,9 +817,9 @@ int cocoa_keycode_to_qemu(int keycode)
     );
 
     // keep Window in correct aspect ratio
-    [normalWindow setMaxSize:NSMakeSize(normalWindowSize.width, normalWindowSize.height)];
-    [normalWindow setAspectRatio:NSMakeSize(normalWindowSize.width, normalWindowSize.height)];
-
+    [normalWindow setMaxSize:NSMakeSize(screenProperties.width, screenProperties.height + TITLE_BAR_HEIGHT + ICON_BAR_HEIGHT)];
+//	[normalWindow setAspectRatio:NSMakeSize(screenProperties.width, screenProperties.height + TITLE_BAR_HEIGHT + ICON_BAR_HEIGHT)];
+//	[normalWindow setResizeIncrements:NSMakeSize(10,10)];
     // update windows
     if (isFullscreen) {
         [self setContentDimensionsForFrame:[[NSScreen mainScreen] frame]];

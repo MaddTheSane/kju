@@ -85,7 +85,7 @@
 	// Tab 2
 	[M selectItemAtIndex:0];
 	[cpu selectItemAtIndex:0];
-	[smp setStringValue:@"0"];
+	[smp setStringValue:@"1"];
 	[m setStringValue:@"128"]; // 128
 	[vga selectItemAtIndex:0];
 	[pcspk setState:NSOffState];
@@ -114,6 +114,11 @@
 	[optional setStringValue:@""];
 }
 
+- (void) setMachine:(QDocumentEditVMMachine)machine
+{
+	// here, we show the items available for this machine
+}
+
 - (BOOL)setOption:(NSString *)key withArgument:(NSString *)argument
 {
 	Q_DEBUG(@"setOption:%@ withArgument:%@", key, argument);
@@ -122,12 +127,13 @@
 	if ([key isEqual:@"-usbdevice"] && [argument isEqual:@"tablet"]) {
 		[grabless setState:NSOffState];
 		return TRUE;
-
-	// Q Windows driver TODO: add second CD ROM
-//	} else if ([key isEqual:@"-usb"] && [argument isEqual:@"tablet"]) {
-//		[grabless setState:NSOffState];
-//		return TRUE;
-
+/*
+	// TODO: see if we can add a second CD ROM with the drivers, else make floppy
+	// Q Windows driver
+	} else if ([key isEqual:@"-usb"] && [argument isEqual:@"tablet"]) {
+		[grabless setState:NSOffState];
+		return TRUE;
+*/
 	// -smb
 	} else if ([key isEqual:@"-smb"]) {
         if ([argument isEqual:@"~/Desktop/Q Shared Files/"]) {
@@ -137,16 +143,149 @@
             [smb selectItemAtIndex:2];
         }
 		return TRUE;
-		
+	
+	// TODO: add other machines
+	// select machine
 	} else if ([key isEqual:@"-M"]) {
-        if ([argument isEqual:@""]) {
-            [smb selectItemAtIndex:1];
-        } else {
-            [smb insertItemWithTitle:[NSString stringWithString:argument] atIndex:2];
-            [smb selectItemAtIndex:2];
+        if ([argument isEqual:@"pc"]) {
+            [M selectItemAtIndex:1];
+			[self setMachine:QDocumentEditVMMachinePc];
+        } else if ([argument isEqual:@"isapc"]) {
+            [M selectItemAtIndex:2];
+			[self setMachine:QDocumentEditVMMachineIsapc];
         }
-
 		return TRUE;
+
+	// TODO: if we have other machines, we must make shure the correct machine is selected
+	// select cpu
+	} else if ([key isEqual:@"-cpu"]) {
+        if ([argument isEqual:@"qemu32"]) {
+            [cpu selectItemAtIndex:0];
+        } else if ([argument isEqual:@"486"]) {
+            [cpu selectItemAtIndex:1];
+        } else if ([argument isEqual:@"pentium"]) {
+            [cpu selectItemAtIndex:2];
+        } else if ([argument isEqual:@"pentium2"]) {
+            [cpu selectItemAtIndex:3];
+        } else if ([argument isEqual:@"pentium3"]) {
+            [cpu selectItemAtIndex:4];
+        }
+		return TRUE;
+
+	// smp
+	} else if ([key isEqual:@"-smp"]) {
+		[smp setStringValue:argument];
+		return TRUE;
+		
+	// m
+	} else if ([key isEqual:@"-m"]) {
+		[m setStringValue:argument];
+		return TRUE;		
+
+	// graphicscards
+	} else if ([key isEqual:@"-std-vga"]) {
+		[vga selectItemAtIndex:1];
+		return true;
+	} else if ([key isEqual:@"-vmwarevga"]) {
+		[vga selectItemAtIndex:2];
+		return true;
+		
+	// soundcards
+	} else if ([key isEqual:@"-soundhw"]) {
+		if ([argument rangeOfString:@"pcspk"].location != NSNotFound)
+			[pcspk setState:NSOnState];
+		if ([argument rangeOfString:@"adlib"].location != NSNotFound)
+			[adlib setState:NSOnState];
+		if ([argument rangeOfString:@"sb16"].location != NSNotFound)
+			[sb16 setState:NSOnState];
+		if ([argument rangeOfString:@"es1370"].location != NSNotFound)
+			[es1370 setState:NSOnState];
+		return true;
+	
+	// networkcards
+	} else if ([key isEqual:@"-nic"]) {
+		// we can only handle the first to nics with the gui
+		niccount++;
+		id nicModel;
+		if (niccount == 1) {
+			nicModel = nicModel1;
+		} else if (niccount == 2) {
+			nicModel = nicModel1;
+		} else {
+			return false;
+		}
+        if ([argument isEqual:@"i82551"]) {
+            [nicModel selectItemAtIndex:1];
+        } else if ([argument isEqual:@"i82557b"]) {
+            [nicModel selectItemAtIndex:2];
+        } else if ([argument isEqual:@"i82559er"]) {
+            [nicModel selectItemAtIndex:3];
+        } else if ([argument isEqual:@"ne2k_pci"]) {
+            [nicModel selectItemAtIndex:4];
+        } else if ([argument isEqual:@"ne2k_isa"]) {
+            [nicModel selectItemAtIndex:5];
+        } else if ([argument isEqual:@"rtl8139"]) {
+            [nicModel selectItemAtIndex:6];
+        } else if ([argument isEqual:@"smc91c111"]) {
+            [nicModel selectItemAtIndex:7];
+        } else if ([argument isEqual:@"lance"]) {
+            [nicModel selectItemAtIndex:8];
+        } else if ([argument isEqual:@"mcf_fec"]) {
+            [nicModel selectItemAtIndex:9];
+        }
+		return TRUE;
+
+	// fda
+	// TODO:
+	
+	// cdrom
+	// TODO:
+	
+	// hda
+	// TODO:
+	
+	// hdb
+	// TODO:
+	
+	// hdc
+	// TODO:
+	
+	// hdd
+	// TODO:
+	
+	// boot
+	} else if ([key isEqual:@"-boot"]) {
+        if ([argument isEqual:@"a"]) {
+            [boot selectItemAtIndex:0];
+        } else if ([argument isEqual:@"c"]) {
+            [boot selectItemAtIndex:1];
+        } else if ([argument isEqual:@"d"]) {
+            [boot selectItemAtIndex:2];
+        } else if ([argument isEqual:@"n"]) {
+            [boot selectItemAtIndex:3];
+        }
+		return TRUE;
+	
+	// localtime
+	} else if ([key isEqual:@"-localtime"]) {
+		[localtime setState:NSOnState];
+		return true;
+	
+	// win2khack
+	} else if ([key isEqual:@"-win2khack"]) {
+		[win2kHack setState:NSOnState];
+		return true;
+	
+	// kernel
+	// TODO:
+	
+	// append
+	} else if ([key isEqual:@"-append"]) {
+		[append setStringValue:argument];
+		return TRUE;
+	
+	// initrd
+	// TODO:
 
 	}
 	return FALSE;
@@ -159,6 +298,8 @@
 	int i;
 	NSMutableString *optionalArguments;
 	NSString *key;
+	
+	niccount = 0;
 
 	optionalArguments = [NSMutableString stringWithString:@""];
 	key = nil;

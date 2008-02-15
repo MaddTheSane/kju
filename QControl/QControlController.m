@@ -77,16 +77,14 @@
 	[buttonAdd setCell:[[[QButtonCell alloc] initImageCell:[[buttonAdd cell] image] buttonType:QButtonCellRight target:[[buttonAdd cell] target] action:[[buttonAdd cell] action]] autorelease]];
 	
 	// search for qvms
-
 	query = [[NSMetadataQuery alloc] init];
 	[query setDelegate:self];
 	[loadProgressIndicator startAnimation:self];
 	predicate = [NSPredicate predicateWithFormat:@"kMDItemDisplayName ENDSWITH 'qvm'", nil];
     [query setPredicate:predicate];
-    [query setSearchScopes:[NSArray arrayWithObject:@"/Users/"]];
+    [query setSearchScopes:[NSArray arrayWithObject:NSMetadataQueryUserHomeScope]];
 	[query startQuery];
 
-	
 	// preferences
     if ([[qApplication userDefaults] boolForKey:@"SUCheckAtStartup"]) {
         [prefUpdates setState:NSOnState];
@@ -179,10 +177,12 @@ NSInteger revCaseInsensitiveCompare(id string1, id string2, void *context)
 	NSMutableArray *knownVMs = [[[qApplication userDefaults] objectForKey:@"knownVMs"] mutableCopy];
 	NSMutableDictionary *tempVM = [[QQvmManager sharedQvmManager] loadVMConfiguration:path];
 	if (tempVM) {
-		[knownVMs addObject:path];
-		[VMs addObject:tempVM];
-		[table reloadData];
-		[[qApplication userDefaults] setObject:knownVMs forKey:@"knownVMs"];
+		if (![knownVMs containsObject:path]) {
+			[knownVMs addObject:path];
+			[VMs addObject:tempVM];
+			[table reloadData];
+			[[qApplication userDefaults] setObject:knownVMs forKey:@"knownVMs"];
+		}
 	}
 }
 

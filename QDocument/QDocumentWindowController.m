@@ -83,13 +83,19 @@
 
     return proposedFrameSize;
 }
-
+/*
 - (void)windowDidResize:(NSNotification *)notification
 {
     Q_DEBUG(@"QemuCocoaView: windowDidResize");
 
 	if (![screenView isFullscreen]) {
+		// update zoom
+		[screenView displayPropertiesSetZoom:([window frame].size.width / (float)[screenView screenProperties].width)];
+	
 		[screenView setContentDimensionsForFrame:NSMakeRect(0, 0, [window frame].size.width, [window frame].size.height - TITLE_BAR_HEIGHT - ICON_BAR_HEIGHT)];
+		[screenView reshape];
 	}
 }
+*/
+
 @end

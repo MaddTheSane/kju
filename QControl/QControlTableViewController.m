@@ -62,6 +62,8 @@
 
 	// set infos for microIcons
 	[table setQControl:qControl];
+	[table setTarget:self];
+	[table setDoubleAction:@selector(tableDoubleClick:)];
 
 	// loading initial Thumbnails
 	[self updateThumbnails:self];
@@ -84,9 +86,7 @@
 	NSString *state;
 	NSString *name;
 	NSString *path;
-	NSColor *color;
 	QDocument *qDocument;
-	NSMutableParagraphStyle *paragraphStyle;
 	NSMutableAttributedString *attrString;
 
     
@@ -134,14 +134,9 @@
 		path = [[[VM objectForKey:@"Temporary"] objectForKey:@"URL"] path];
 		name = [path lastPathComponent];
 		name = [name substringToIndex:[name length] - 4];
-		paragraphStyle = [[[NSMutableParagraphStyle alloc] init] autorelease];
-		
-		color = [NSColor colorWithDeviceRed:0.75 green:0.75 blue:0.75 alpha:1.0];
-		[paragraphStyle setLineBreakMode:NSLineBreakByTruncatingHead];
 
         attrString = [[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat: @"%@\n", name] attributes:[NSDictionary dictionaryWithObject: [NSFont boldSystemFontOfSize:[NSFont smallSystemFontSize]] forKey:NSFontAttributeName]] autorelease];
         [attrString appendAttributedString: [[[NSAttributedString alloc] initWithString:[NSString stringWithFormat: @"%@\n", state] attributes:[NSDictionary dictionaryWithObject:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]] forKey:NSFontAttributeName]] autorelease]];
-		[attrString appendAttributedString: [[[NSAttributedString alloc] initWithString:[NSString stringWithFormat: @"\n%@", [path stringByDeletingLastPathComponent]]  attributes:[NSDictionary dictionaryWithObjectsAndKeys: [NSFont systemFontOfSize:[NSFont smallSystemFontSize]], NSFontAttributeName, paragraphStyle, NSParagraphStyleAttributeName, color, NSForegroundColorAttributeName, nil]] autorelease]];
 
         return attrString;
     }
@@ -155,8 +150,10 @@
 - (NSString *)tableView:(NSTableView *)aTableView toolTipForCell:(NSCell *)cell rect:(NSRectPointer)rect tableColumn:(NSTableColumn *)aTableColumn row:(int)rowIndex mouseLocation:(NSPoint)mouseLocation
 {
 	Q_DEBUG(@"toolTipForCell");
-
-    return [[[qControl VMs] objectAtIndex:rowIndex] objectForKey:@"Arguments"];
+	NSString *path;
+	
+	path = [[[[[qControl VMs] objectAtIndex:rowIndex] objectForKey:@"Temporary"] objectForKey:@"URL"] path];
+    return [NSString stringWithFormat:@"%@\n\n%@", [[[qControl VMs] objectAtIndex:rowIndex] objectForKey:@"Arguments"], [path stringByDeletingLastPathComponent]];
 }
 
 

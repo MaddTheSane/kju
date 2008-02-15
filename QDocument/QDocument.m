@@ -184,8 +184,6 @@
     [super windowControllerDidLoadNib:aController];
     // Add any code here that needs to be executed once the windowController has loaded the document's window.
 
-//	[screenView updateSavedImage:self];
-
 	// Tiger compatible custom butoonCell
 	[buttonEdit setCell:[[[QButtonCell alloc] initImageCell:[[buttonEdit cell] image] buttonType:QButtonCellAlone target:[[buttonEdit cell] target] action:[[buttonEdit cell] action]] autorelease]];
 
