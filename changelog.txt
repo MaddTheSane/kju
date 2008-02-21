@@ -1,3 +1,6 @@
+122
+[fix] QControlTableView single click handled as double click
+
 121
 [fix] QControlTableViewController moved VM path to tooltip
 [fix] QControlTableViewController tableDoubleAction
