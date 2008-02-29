@@ -1,3 +1,6 @@
+123
+[new] QDocumentEditVMController populating panel
+
 122
 [fix] QControlTableView single click handled as double click
 

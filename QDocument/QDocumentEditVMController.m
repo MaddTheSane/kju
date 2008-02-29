@@ -75,11 +75,26 @@
 - (void) resetPanel:(id)sender
 {
 	Q_DEBUG(@"resetPanel");
+
+	NSString *diskImageFile;
+	NSDirectoryEnumerator *directoryEnumerator;
+	NSArray *fileTypes;
+	
+	fileTypes = [[[NSArray alloc] initWithArrayOfAllowedFileTypes] autorelease];
 	
 	// Tab 1
+	// -tablet
 	[grabless setState:NSOffState];
+
+	// qdrivers
 	[qDrivers setState:NSOffState];
+
+	// pause while inactive
 	[pauseWhileInactive setState:NSOffState];
+
+	// -smb
+	while(![[smb itemAtIndex:2] isSeparatorItem])
+		[smb removeItemAtIndex:2];
 	[smb selectItemAtIndex:0];
 	
 	// Tab 2
@@ -94,22 +109,118 @@
 	[es1370 setState:NSOffState];
 	[nicModel1 selectItemAtIndex:0];
 	[nicModel2 selectItemAtIndex:0];
+
+	// -fda
+	while(![[fda itemAtIndex:1] isSeparatorItem])
+		[fda removeItemAtIndex:1];
 	[fda selectItemAtIndex:0];
+
+	// -cdrom
+	while(![[cdrom itemAtIndex:2] isSeparatorItem])
+		[cdrom removeItemAtIndex:2];
 	[cdrom selectItemAtIndex:0];
+
+
+	// cleanup -hdb and add Harddisks located in Package to Menu
+	while(![[hda itemAtIndex:1] isSeparatorItem])
+		[hda removeItemAtIndex:1];
+	if ([hda numberOfItems] > 8) {
+		while(![[hda itemAtIndex:2] isSeparatorItem])
+			[hda removeItemAtIndex:2];
+	} else {
+		[[hda menu] insertItem:[NSMenuItem separatorItem] atIndex:2];
+	}
+	directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:[[[VM objectForKey:@"Temporary"] objectForKey:@"URL"] path]];
+	while ((diskImageFile = [directoryEnumerator nextObject])) {
+		if ([fileTypes containsObject:[diskImageFile pathExtension]])
+			[hda insertItemWithTitle:[diskImageFile lastPathComponent] atIndex:2];
+	}
+	if([[hda itemAtIndex:2] isSeparatorItem])
+		[hda removeItemAtIndex:2];
 	[hda selectItemAtIndex:0];
+
+	// -boot
 	[boot selectItemAtIndex:2]; // c
+
+
 	
 	// Tab 3
+
+
 	
 	// Tab 4
+	// cleanup -hdb and add Harddisks located in Package to Menu
+	while(![[hdb itemAtIndex:1] isSeparatorItem])
+		[hdb removeItemAtIndex:1];
+	if ([hdb numberOfItems] > 8) {
+		while(![[hdb itemAtIndex:2] isSeparatorItem])
+			[hdb removeItemAtIndex:2];
+	} else {
+		[[hdb menu] insertItem:[NSMenuItem separatorItem] atIndex:2];
+	}
+	directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:[[[VM objectForKey:@"Temporary"] objectForKey:@"URL"] path]];
+	while ((diskImageFile = [directoryEnumerator nextObject])) {
+		if ([fileTypes containsObject:[diskImageFile pathExtension]])
+			[hdb insertItemWithTitle:[diskImageFile lastPathComponent] atIndex:2];
+	}
+	if([[hdb itemAtIndex:2] isSeparatorItem])
+		[hdb removeItemAtIndex:2];
 	[hdb selectItemAtIndex:0];
+
+	// cleanup -hdc and add Harddisks located in Package to Menu
+	while(![[hdc itemAtIndex:1] isSeparatorItem])
+		[hdc removeItemAtIndex:1];
+	if ([hdc numberOfItems] > 8) {
+		while(![[hdc itemAtIndex:2] isSeparatorItem])
+			[hdc removeItemAtIndex:2];
+	} else {
+		[[hdc menu] insertItem:[NSMenuItem separatorItem] atIndex:2];
+	}
+	directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:[[[VM objectForKey:@"Temporary"] objectForKey:@"URL"] path]];
+	while ((diskImageFile = [directoryEnumerator nextObject])) {
+		if ([fileTypes containsObject:[diskImageFile pathExtension]])
+			[hdc insertItemWithTitle:[diskImageFile lastPathComponent] atIndex:2];
+	}
+	if([[hdc itemAtIndex:2] isSeparatorItem])
+		[hdc removeItemAtIndex:2];
 	[hdc selectItemAtIndex:0];
+
+	// cleanup -hdd and add Harddisks located in Package to Menu
+	while(![[hdd itemAtIndex:1] isSeparatorItem])
+		[hdd removeItemAtIndex:1];
+	if ([hdd numberOfItems] > 8) {
+		while(![[hdd itemAtIndex:2] isSeparatorItem])
+			[hdd removeItemAtIndex:2];
+	} else {
+		[[hdd menu] insertItem:[NSMenuItem separatorItem] atIndex:2];
+	}
+	directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:[[[VM objectForKey:@"Temporary"] objectForKey:@"URL"] path]];
+	while ((diskImageFile = [directoryEnumerator nextObject])) {
+		if ([fileTypes containsObject:[diskImageFile pathExtension]])
+			[hdd insertItemWithTitle:[diskImageFile lastPathComponent] atIndex:2];
+	}
+	if([[hdd itemAtIndex:2] isSeparatorItem])
+		[hdd removeItemAtIndex:2];
 	[hdd selectItemAtIndex:0];
+
+	// -localtime
 	[localtime setState:NSOffState];
+
+	// -win2khack
 	[win2kHack setState:NSOffState];
+
+	// kernel
+	while(![[kernel itemAtIndex:1] isSeparatorItem])
+		[kernel removeItemAtIndex:1];
 	[kernel selectItemAtIndex:0];
+
 	[append setStringValue:@""];
+
+	// initrd
+	while(![[initrd itemAtIndex:1] isSeparatorItem])
+		[initrd removeItemAtIndex:1];
 	[initrd selectItemAtIndex:0];
+
 	[onlyOptional setState:NSOffState];
 	[optional setStringValue:@""];
 }
@@ -122,7 +233,7 @@
 - (BOOL)setOption:(NSString *)key withArgument:(NSString *)argument
 {
 	Q_DEBUG(@"setOption:%@ withArgument:%@", key, argument);
-	
+
 	// grabless (-usbdevice tablet)
 	if ([key isEqual:@"-usbdevice"] && [argument isEqual:@"tablet"]) {
 		[grabless setState:NSOffState];
@@ -143,7 +254,7 @@
             [smb selectItemAtIndex:2];
         }
 		return TRUE;
-	
+
 	// TODO: add other machines
 	// select machine
 	} else if ([key isEqual:@"-M"]) {
@@ -176,7 +287,7 @@
 	} else if ([key isEqual:@"-smp"]) {
 		[smp setStringValue:argument];
 		return TRUE;
-		
+
 	// m
 	} else if ([key isEqual:@"-m"]) {
 		[m setStringValue:argument];
@@ -189,7 +300,7 @@
 	} else if ([key isEqual:@"-vmwarevga"]) {
 		[vga selectItemAtIndex:2];
 		return true;
-		
+
 	// soundcards
 	} else if ([key isEqual:@"-soundhw"]) {
 		if ([argument rangeOfString:@"pcspk"].location != NSNotFound)
@@ -201,58 +312,111 @@
 		if ([argument rangeOfString:@"es1370"].location != NSNotFound)
 			[es1370 setState:NSOnState];
 		return true;
-	
+
 	// networkcards
-	} else if ([key isEqual:@"-nic"]) {
+	} else if ([key isEqual:@"-net"]) {
 		// we can only handle the first to nics with the gui
 		niccount++;
 		id nicModel;
 		if (niccount == 1) {
 			nicModel = nicModel1;
 		} else if (niccount == 2) {
-			nicModel = nicModel1;
+			nicModel = nicModel2;
 		} else {
 			return false;
 		}
-        if ([argument isEqual:@"i82551"]) {
+        if ([argument rangeOfString:@"i82551"].location != NSNotFound) {
             [nicModel selectItemAtIndex:1];
-        } else if ([argument isEqual:@"i82557b"]) {
+        } else if ([argument rangeOfString:@"i82557b"].location != NSNotFound) {
             [nicModel selectItemAtIndex:2];
-        } else if ([argument isEqual:@"i82559er"]) {
+        } else if ([argument rangeOfString:@"i82559er"].location != NSNotFound) {
             [nicModel selectItemAtIndex:3];
-        } else if ([argument isEqual:@"ne2k_pci"]) {
+        } else if ([argument rangeOfString:@"ne2k_pci"].location != NSNotFound) {
             [nicModel selectItemAtIndex:4];
-        } else if ([argument isEqual:@"ne2k_isa"]) {
+        } else if ([argument rangeOfString:@"ne2k_isa"].location != NSNotFound) {
             [nicModel selectItemAtIndex:5];
-        } else if ([argument isEqual:@"rtl8139"]) {
+        } else if ([argument rangeOfString:@"rtl8139"].location != NSNotFound) {
             [nicModel selectItemAtIndex:6];
-        } else if ([argument isEqual:@"smc91c111"]) {
+        } else if ([argument rangeOfString:@"smc91c111"].location != NSNotFound) {
             [nicModel selectItemAtIndex:7];
-        } else if ([argument isEqual:@"lance"]) {
+        } else if ([argument rangeOfString:@"lance"].location != NSNotFound) {
             [nicModel selectItemAtIndex:8];
-        } else if ([argument isEqual:@"mcf_fec"]) {
+        } else if ([argument rangeOfString:@"mcf_fec"].location != NSNotFound) {
             [nicModel selectItemAtIndex:9];
-        }
+        } else if ([argument rangeOfString:@"nic"].location != NSNotFound) { // default is rtl8139
+            [nicModel selectItemAtIndex:6];
+		} else if ([argument isEqual:@"user"]) { // user networking
+            //Todo: what should we do
+		}
 		return TRUE;
 
 	// fda
-	// TODO:
-	
+	} else if ([key isEqual:@"-fda"]) {
+		[fda insertItemWithTitle:[NSString stringWithString:argument] atIndex:1];
+		[fda selectItemAtIndex:1];
+		return TRUE;
+
 	// cdrom
-	// TODO:
+	} else if ([key isEqual:@"-cdrom"]) {
+		if ([argument isEqual:@"/dev/cdrom"]) {
+			[cdrom selectItemAtIndex:1];
+		} else {
+			[cdrom insertItemWithTitle:[NSString stringWithString:argument] atIndex:2];
+			[cdrom selectItemAtIndex:2];
+		}
+		return TRUE;
 	
 	// hda
-	// TODO:
+	} else if ([key isEqual:@"-hda"]) {
+		if ([hda indexOfItemWithTitle:argument] > -1) {
+			[hda selectItemWithTitle:argument];
+		} else {
+/* TODO: new Image
+			int intResult;
+			NSString *stringValue;
+			NSScanner *scanner = [NSScanner scannerWithString: argument];
+			
+			if ([scanner scanString:@"createNew" intoString:&stringValue]) {
+				[scanner scanInt:&intResult];
+				customImagePopUpButtonTemp = hda;
+				[self setCustomDIType:@"qcow" size:intResult];
+			} else {*/
+				[hda insertItemWithTitle:[NSString stringWithString:argument] atIndex:1];
+				[hda selectItemAtIndex:1];
+//			}
+		}
+		return TRUE;
 	
 	// hdb
-	// TODO:
-	
+	} else if ([key isEqual:@"-hdb"]) {
+		 if ([hdb indexOfItemWithTitle:argument] > -1) {
+			 [hdb selectItemWithTitle:argument];
+		 } else {
+			 [hdb insertItemWithTitle:[NSString stringWithString:argument] atIndex:1];
+			 [hdb selectItemAtIndex:1];
+		 }
+		 return TRUE;
+
 	// hdc
-	// TODO:
-	
+	} else if ([key isEqual:@"-hdc"]) {
+		 if ([hdc indexOfItemWithTitle:argument] > -1) {
+			 [hdc selectItemWithTitle:argument];
+		 } else {
+			 [hdc insertItemWithTitle:[NSString stringWithString:argument] atIndex:1];
+			 [hdc selectItemAtIndex:1];
+		 }
+		 return TRUE;
+
 	// hdd
-	// TODO:
-	
+	} else if ([key isEqual:@"-hdd"]) {
+		 if ([hdd indexOfItemWithTitle:argument] > -1) {
+			 [hdd selectItemWithTitle:argument];
+		 } else {
+			 [hdd insertItemWithTitle:[NSString stringWithString:argument] atIndex:1];
+			 [hdd selectItemAtIndex:1];
+		 }
+		 return TRUE;
+
 	// boot
 	} else if ([key isEqual:@"-boot"]) {
         if ([argument isEqual:@"a"]) {
@@ -265,27 +429,33 @@
             [boot selectItemAtIndex:3];
         }
 		return TRUE;
-	
+
 	// localtime
 	} else if ([key isEqual:@"-localtime"]) {
 		[localtime setState:NSOnState];
 		return true;
-	
+
 	// win2khack
 	} else if ([key isEqual:@"-win2khack"]) {
 		[win2kHack setState:NSOnState];
 		return true;
-	
+
 	// kernel
-	// TODO:
-	
+	} else if ([key isEqual:@"-kernel"]) {
+		[kernel insertItemWithTitle:[NSString stringWithString:argument] atIndex:1];
+		[kernel	selectItemAtIndex:1];
+		return TRUE;
+
 	// append
 	} else if ([key isEqual:@"-append"]) {
 		[append setStringValue:argument];
 		return TRUE;
-	
+
 	// initrd
-	// TODO:
+	} else if ([key isEqual:@"-initrd"]) {
+		[initrd insertItemWithTitle:[NSString stringWithString:argument] atIndex:1];
+		[initrd	selectItemAtIndex:1];
+		return TRUE;
 
 	}
 	return FALSE;
