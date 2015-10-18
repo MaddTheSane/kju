@@ -7,7 +7,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication"/>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <menu title="MainMenu" systemMenu="main" id="29" userLabel="MainMenu">
             <items>
                 <menuItem id="56">
@@ -376,10 +376,10 @@ UREXBRLigoIgQ29udHJvbA
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <clipView key="contentView" id="Obm-bL-7e2">
                             <rect key="frame" x="0.0" y="0.0" width="248" height="368"/>
-                            <autoresizingMask key="autoresizingMask"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" autosaveName="qControlTable" rowHeight="60" id="221" customClass="QControlTableView">
-                                    <rect key="frame" x="200" y="0.0" width="249" height="368"/>
+                                    <rect key="frame" x="200" y="0.0" width="249" height="62"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <animations/>
                                     <size key="intercellSpacing" width="3" height="2"/>
@@ -392,7 +392,7 @@ UREXBRLigoIgQ29udHJvbA
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" white="0.33333299" alpha="1" colorSpace="calibratedWhite"/>
                                             </tableHeaderCell>
-                                            <imageCell key="dataCell" controlSize="small" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="633FA247-8C89-4999-A1B6-733C7AF017D5" id="250"/>
+                                            <imageCell key="dataCell" controlSize="small" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="05D4A220-1A80-4608-B8CB-06060233612E" id="250"/>
                                         </tableColumn>
                                         <tableColumn identifier="description" editable="NO" width="163" minWidth="147" maxWidth="1000" id="224">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Description">
@@ -433,7 +433,7 @@ UREXBRLigoIgQ29udHJvbA
                         <rect key="frame" x="16" y="4" width="41" height="19"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <animations/>
-                        <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="q_d_einstellungen" imagePosition="only" alignment="center" controlSize="small" borderStyle="border" inset="2" id="366">
+                        <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="NSActionTemplate" imagePosition="only" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="366">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="smallSystem"/>
                         </buttonCell>
@@ -445,7 +445,7 @@ UREXBRLigoIgQ29udHJvbA
                         <rect key="frame" x="54" y="4" width="41" height="19"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <animations/>
-                        <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="q_d_plus" imagePosition="only" alignment="center" controlSize="small" borderStyle="border" inset="2" id="367">
+                        <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="NSAddTemplate" imagePosition="only" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="367">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="smallSystem"/>
                         </buttonCell>
@@ -492,7 +492,7 @@ UREXBRLigoIgQ29udHJvbA
         </customObject>
     </objects>
     <resources>
-        <image name="633FA247-8C89-4999-A1B6-733C7AF017D5" width="60" height="60">
+        <image name="05D4A220-1A80-4608-B8CB-06060233612E" width="60" height="60">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw
@@ -1535,8 +1535,8 @@ AKsArQCyALUAtwC5ALsAvQDCANkA2wDd8g/yFPIf8ijyO/I/8kryU/JY8mDyY/Jo8nfye/KC8oryl/Kc
 8p7yoPKl8q3ysPK18r3ywPLS8tXy2gAAAAAAAAIBAAAAAAAAAEEAAAAAAAAAAAAAAAAAAPLcA
 </mutableData>
         </image>
-        <image name="q_d_einstellungen" width="16.225351333618164" height="16.225351333618164"/>
-        <image name="q_d_plus" width="16.225351333618164" height="16.225351333618164"/>
+        <image name="NSActionTemplate" width="14" height="14"/>
+        <image name="NSAddTemplate" width="11" height="11"/>
         <image name="q_prefs_bg" width="1" height="71"/>
     </resources>
 </document>

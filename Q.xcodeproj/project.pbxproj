@@ -25,47 +25,20 @@
 		27210CD80D51A2360067EBF6 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27210CD70D51A2360067EBF6 /* OpenGL.framework */; };
 		273B943A0CC0E2E20006BD99 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 273B94390CC0E2E10006BD99 /* IOKit.framework */; };
 		273B965D0CC1E19E0006BD99 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 273B965B0CC1E19E0006BD99 /* Localizable.strings */; };
-		273B98800CC2A21D0006BD99 /* q_doc_icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 273B987F0CC2A21D0006BD99 /* q_doc_icon.icns */; };
 		274EB3DC0D37C6F200E1A75D /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 274EB3DB0D37C6F200E1A75D /* Sparkle.framework */; };
 		274EB4050D37C74800E1A75D /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 274EB3DB0D37C6F200E1A75D /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		274EB4280D37CA6300E1A75D /* q_icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 274EB4190D37CA6300E1A75D /* q_icon.icns */; };
-		274EB4330D37CA6300E1A75D /* q_tbfs_ctrlaltdel.png in Resources */ = {isa = PBXBuildFile; fileRef = 274EB4240D37CA6300E1A75D /* q_tbfs_ctrlaltdel.png */; };
-		274EB4340D37CA6300E1A75D /* q_tbfs_fullscreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 274EB4250D37CA6300E1A75D /* q_tbfs_fullscreen.png */; };
-		274EB4350D37CA6300E1A75D /* q_tbfs_screenshot.png in Resources */ = {isa = PBXBuildFile; fileRef = 274EB4260D37CA6300E1A75D /* q_tbfs_screenshot.png */; };
-		274EB4360D37CA6300E1A75D /* q_tbfs_shutdown.png in Resources */ = {isa = PBXBuildFile; fileRef = 274EB4270D37CA6300E1A75D /* q_tbfs_shutdown.png */; };
 		274EB4450D37CCF600E1A75D /* QDocumentWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EB4390D37CCF600E1A75D /* QDocumentWindowController.m */; };
 		274EB4460D37CCF600E1A75D /* QDocumentTaskController.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EB43A0D37CCF600E1A75D /* QDocumentTaskController.m */; };
 		274EB4480D37CCF600E1A75D /* QDocumentDistributedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EB43F0D37CCF600E1A75D /* QDocumentDistributedObject.m */; };
 		274EB44A0D37CCF600E1A75D /* QDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EB4430D37CCF600E1A75D /* QDocument.m */; };
 		274EB45E0D37CE1D00E1A75D /* QApplicationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EB45A0D37CE1D00E1A75D /* QApplicationController.m */; };
 		274EB45F0D37CE1D00E1A75D /* QApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EB45C0D37CE1D00E1A75D /* QApplication.m */; };
-		274EB48F0D37D14000E1A75D /* q_table_shutdown.png in Resources */ = {isa = PBXBuildFile; fileRef = 274EB4890D37D14000E1A75D /* q_table_shutdown.png */; };
-		274EB4900D37D14000E1A75D /* q_tv_delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 274EB48A0D37D14000E1A75D /* q_tv_delete.png */; };
-		274EB4910D37D14000E1A75D /* q_tv_edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 274EB48B0D37D14000E1A75D /* q_tv_edit.png */; };
-		274EB4920D37D14000E1A75D /* q_tv_pause.png in Resources */ = {isa = PBXBuildFile; fileRef = 274EB48C0D37D14000E1A75D /* q_tv_pause.png */; };
-		274EB4930D37D14000E1A75D /* q_tv_play.png in Resources */ = {isa = PBXBuildFile; fileRef = 274EB48D0D37D14000E1A75D /* q_tv_play.png */; };
-		274EB4940D37D14000E1A75D /* q_tv_stop.png in Resources */ = {isa = PBXBuildFile; fileRef = 274EB48E0D37D14000E1A75D /* q_tv_stop.png */; };
 		274EB4970D37D1B800E1A75D /* QControlTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EB4960D37D1B800E1A75D /* QControlTableView.m */; };
 		274EB4A40D381F2100E1A75D /* QControlTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EB4A30D381F2100E1A75D /* QControlTableViewController.m */; };
 		274EB4AB0D38247E00E1A75D /* QControlController.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EB49C0D37D21100E1A75D /* QControlController.m */; };
 		275D5ED10D411D3B0061152C /* QButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 275D5ED00D411D3B0061152C /* QButtonCell.m */; };
 		275DFE160D42015300889562 /* killall9.sh in Resources */ = {isa = PBXBuildFile; fileRef = 275DFE130D42015300889562 /* killall9.sh */; };
-		275DFE170D42015300889562 /* q_button_n.png in Resources */ = {isa = PBXBuildFile; fileRef = 275DFE140D42015300889562 /* q_button_n.png */; };
-		275DFE180D42015300889562 /* q_button_p.png in Resources */ = {isa = PBXBuildFile; fileRef = 275DFE150D42015300889562 /* q_button_p.png */; };
 		27626CC70D5A6E6F0081F814 /* QPopUpButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27626CC60D5A6E6F0081F814 /* QPopUpButtonCell.m */; };
-		277009760D40250500E00BB9 /* q_prefs_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 277009750D40250500E00BB9 /* q_prefs_bg.png */; };
-		2788E6FB0D3CB8AD00BC6EBC /* q_d_cd_drop.png in Resources */ = {isa = PBXBuildFile; fileRef = 2788E6F00D3CB8AD00BC6EBC /* q_d_cd_drop.png */; };
-		2788E6FC0D3CB8AD00BC6EBC /* q_d_ctraltdel.png in Resources */ = {isa = PBXBuildFile; fileRef = 2788E6F10D3CB8AD00BC6EBC /* q_d_ctraltdel.png */; };
-		2788E6FD0D3CB8AD00BC6EBC /* q_d_disk_drop.png in Resources */ = {isa = PBXBuildFile; fileRef = 2788E6F20D3CB8AD00BC6EBC /* q_d_disk_drop.png */; };
-		2788E6FE0D3CB8AD00BC6EBC /* q_d_einstellungen.png in Resources */ = {isa = PBXBuildFile; fileRef = 2788E6F30D3CB8AD00BC6EBC /* q_d_einstellungen.png */; };
-		2788E6FF0D3CB8AD00BC6EBC /* q_d_fullscreen.png in Resources */ = {isa = PBXBuildFile; fileRef = 2788E6F40D3CB8AD00BC6EBC /* q_d_fullscreen.png */; };
-		2788E7000D3CB8AD00BC6EBC /* q_d_pause.png in Resources */ = {isa = PBXBuildFile; fileRef = 2788E6F50D3CB8AD00BC6EBC /* q_d_pause.png */; };
-		2788E7010D3CB8AD00BC6EBC /* q_d_plus.png in Resources */ = {isa = PBXBuildFile; fileRef = 2788E6F60D3CB8AD00BC6EBC /* q_d_plus.png */; };
-		2788E7020D3CB8AD00BC6EBC /* q_d_reset.png in Resources */ = {isa = PBXBuildFile; fileRef = 2788E6F70D3CB8AD00BC6EBC /* q_d_reset.png */; };
-		2788E7030D3CB8AD00BC6EBC /* q_d_screenshot.png in Resources */ = {isa = PBXBuildFile; fileRef = 2788E6F80D3CB8AD00BC6EBC /* q_d_screenshot.png */; };
-		2788E7040D3CB8AD00BC6EBC /* q_d_shutdown.png in Resources */ = {isa = PBXBuildFile; fileRef = 2788E6F90D3CB8AD00BC6EBC /* q_d_shutdown.png */; };
-		2788E7050D3CB8AD00BC6EBC /* q_d_start.png in Resources */ = {isa = PBXBuildFile; fileRef = 2788E6FA0D3CB8AD00BC6EBC /* q_d_start.png */; };
-		279547380D3B4A4C00CB2BE3 /* q_bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 279547370D3B4A4C00CB2BE3 /* q_bg.png */; };
 		279547B40D3B866000CB2BE3 /* QWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 279547B30D3B866000CB2BE3 /* QWindow.m */; };
 		27A2546D0D45F26D006BDDD5 /* QQvmManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A2546C0D45F26D006BDDD5 /* QQvmManager.m */; };
 		27A258D00D479EA1006BDDD5 /* QDocumentEditVMController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A258CF0D479EA1006BDDD5 /* QDocumentEditVMController.m */; };
@@ -74,7 +47,7 @@
 		27C9788D0CC3BE4B00A5F3AF /* FSRoundedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C978870CC3BE4B00A5F3AF /* FSRoundedView.m */; };
 		27C9788E0CC3BE4B00A5F3AF /* FSToolbarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C978890CC3BE4B00A5F3AF /* FSToolbarController.m */; };
 		27C9788F0CC3BE4B00A5F3AF /* FSTransparentButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C9788B0CC3BE4B00A5F3AF /* FSTransparentButton.m */; };
-		27F9229A0D5408E600C28DF8 /* q_overlay_play.png in Resources */ = {isa = PBXBuildFile; fileRef = 27F922990D5408E600C28DF8 /* q_overlay_play.png */; };
+		55BA7AA91BD40CB800A404A1 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55BA7AA81BD40CB800A404A1 /* Media.xcassets */; settings = {ASSET_TAGS = (); }; };
 		8D15AC2C0486D014006FF6A4 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */; };
 		8D15AC2D0486D014006FF6A4 /* MainMenu.nib in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B6FDCFA73011CA2CEA /* MainMenu.nib */; };
 		8D15AC2E0486D014006FF6A4 /* QDocument.nib in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B4FDCFA73011CA2CEA /* QDocument.nib */; };
@@ -116,14 +89,8 @@
 		27210CD70D51A2360067EBF6 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = /System/Library/Frameworks/OpenGL.framework; sourceTree = "<absolute>"; };
 		273B94390CC0E2E10006BD99 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = /Developer/SDKs/MacOSX10.4u.sdk/System/Library/Frameworks/IOKit.framework; sourceTree = "<absolute>"; };
 		273B965C0CC1E19E0006BD99 /* English */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = English; path = English.lproj/Localizable.strings; sourceTree = "<group>"; };
-		273B987F0CC2A21D0006BD99 /* q_doc_icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = q_doc_icon.icns; path = Resources/q_doc_icon.icns; sourceTree = "<group>"; };
 		273B989F0CC2ABCC0006BD99 /* CGSPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGSPrivate.h; sourceTree = "<group>"; };
 		274EB3DB0D37C6F200E1A75D /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
-		274EB4190D37CA6300E1A75D /* q_icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; name = q_icon.icns; path = Resources/q_icon.icns; sourceTree = "<group>"; };
-		274EB4240D37CA6300E1A75D /* q_tbfs_ctrlaltdel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = q_tbfs_ctrlaltdel.png; path = Resources/q_tbfs_ctrlaltdel.png; sourceTree = "<group>"; };
-		274EB4250D37CA6300E1A75D /* q_tbfs_fullscreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = q_tbfs_fullscreen.png; path = Resources/q_tbfs_fullscreen.png; sourceTree = "<group>"; };
-		274EB4260D37CA6300E1A75D /* q_tbfs_screenshot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = q_tbfs_screenshot.png; path = Resources/q_tbfs_screenshot.png; sourceTree = "<group>"; };
-		274EB4270D37CA6300E1A75D /* q_tbfs_shutdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = q_tbfs_shutdown.png; path = Resources/q_tbfs_shutdown.png; sourceTree = "<group>"; };
 		274EB4390D37CCF600E1A75D /* QDocumentWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QDocumentWindowController.m; path = QDocument/QDocumentWindowController.m; sourceTree = "<group>"; };
 		274EB43A0D37CCF600E1A75D /* QDocumentTaskController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QDocumentTaskController.m; path = QDocument/QDocumentTaskController.m; sourceTree = "<group>"; };
 		274EB43B0D37CCF600E1A75D /* QDocumentWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QDocumentWindowController.h; path = QDocument/QDocumentWindowController.h; sourceTree = "<group>"; };
@@ -136,12 +103,6 @@
 		274EB45B0D37CE1D00E1A75D /* QApplicationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QApplicationController.h; path = QApplication/QApplicationController.h; sourceTree = "<group>"; };
 		274EB45C0D37CE1D00E1A75D /* QApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QApplication.m; path = QApplication/QApplication.m; sourceTree = "<group>"; };
 		274EB45D0D37CE1D00E1A75D /* QApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QApplication.h; path = QApplication/QApplication.h; sourceTree = "<group>"; };
-		274EB4890D37D14000E1A75D /* q_table_shutdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = q_table_shutdown.png; path = Resources/q_table_shutdown.png; sourceTree = "<group>"; };
-		274EB48A0D37D14000E1A75D /* q_tv_delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = q_tv_delete.png; path = Resources/q_tv_delete.png; sourceTree = "<group>"; };
-		274EB48B0D37D14000E1A75D /* q_tv_edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = q_tv_edit.png; path = Resources/q_tv_edit.png; sourceTree = "<group>"; };
-		274EB48C0D37D14000E1A75D /* q_tv_pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = q_tv_pause.png; path = Resources/q_tv_pause.png; sourceTree = "<group>"; };
-		274EB48D0D37D14000E1A75D /* q_tv_play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = q_tv_play.png; path = Resources/q_tv_play.png; sourceTree = "<group>"; };
-		274EB48E0D37D14000E1A75D /* q_tv_stop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = q_tv_stop.png; path = Resources/q_tv_stop.png; sourceTree = "<group>"; };
 		274EB4950D37D1B800E1A75D /* QControlTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QControlTableView.h; path = QControl/QControlTableView.h; sourceTree = "<group>"; };
 		274EB4960D37D1B800E1A75D /* QControlTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QControlTableView.m; path = QControl/QControlTableView.m; sourceTree = "<group>"; };
 		274EB49B0D37D21100E1A75D /* QControlController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QControlController.h; path = QControl/QControlController.h; sourceTree = "<group>"; };
@@ -151,23 +112,8 @@
 		275D5ECF0D411D3B0061152C /* QButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QButtonCell.h; path = QShared/QButtonCell.h; sourceTree = "<group>"; };
 		275D5ED00D411D3B0061152C /* QButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QButtonCell.m; path = QShared/QButtonCell.m; sourceTree = "<group>"; };
 		275DFE130D42015300889562 /* killall9.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; name = killall9.sh; path = Resources/killall9.sh; sourceTree = "<group>"; };
-		275DFE140D42015300889562 /* q_button_n.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = q_button_n.png; path = Resources/q_button_n.png; sourceTree = "<group>"; };
-		275DFE150D42015300889562 /* q_button_p.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = q_button_p.png; path = Resources/q_button_p.png; sourceTree = "<group>"; };
 		27626CC50D5A6E6F0081F814 /* QPopUpButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QPopUpButtonCell.h; path = QShared/QPopUpButtonCell.h; sourceTree = "<group>"; };
 		27626CC60D5A6E6F0081F814 /* QPopUpButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QPopUpButtonCell.m; path = QShared/QPopUpButtonCell.m; sourceTree = "<group>"; };
-		277009750D40250500E00BB9 /* q_prefs_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = q_prefs_bg.png; path = Resources/q_prefs_bg.png; sourceTree = "<group>"; };
-		2788E6F00D3CB8AD00BC6EBC /* q_d_cd_drop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = q_d_cd_drop.png; path = Resources/q_d_cd_drop.png; sourceTree = "<group>"; };
-		2788E6F10D3CB8AD00BC6EBC /* q_d_ctraltdel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = q_d_ctraltdel.png; path = Resources/q_d_ctraltdel.png; sourceTree = "<group>"; };
-		2788E6F20D3CB8AD00BC6EBC /* q_d_disk_drop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = q_d_disk_drop.png; path = Resources/q_d_disk_drop.png; sourceTree = "<group>"; };
-		2788E6F30D3CB8AD00BC6EBC /* q_d_einstellungen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = q_d_einstellungen.png; path = Resources/q_d_einstellungen.png; sourceTree = "<group>"; };
-		2788E6F40D3CB8AD00BC6EBC /* q_d_fullscreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = q_d_fullscreen.png; path = Resources/q_d_fullscreen.png; sourceTree = "<group>"; };
-		2788E6F50D3CB8AD00BC6EBC /* q_d_pause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = q_d_pause.png; path = Resources/q_d_pause.png; sourceTree = "<group>"; };
-		2788E6F60D3CB8AD00BC6EBC /* q_d_plus.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = q_d_plus.png; path = Resources/q_d_plus.png; sourceTree = "<group>"; };
-		2788E6F70D3CB8AD00BC6EBC /* q_d_reset.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = q_d_reset.png; path = Resources/q_d_reset.png; sourceTree = "<group>"; };
-		2788E6F80D3CB8AD00BC6EBC /* q_d_screenshot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = q_d_screenshot.png; path = Resources/q_d_screenshot.png; sourceTree = "<group>"; };
-		2788E6F90D3CB8AD00BC6EBC /* q_d_shutdown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = q_d_shutdown.png; path = Resources/q_d_shutdown.png; sourceTree = "<group>"; };
-		2788E6FA0D3CB8AD00BC6EBC /* q_d_start.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = q_d_start.png; path = Resources/q_d_start.png; sourceTree = "<group>"; };
-		279547370D3B4A4C00CB2BE3 /* q_bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = q_bg.png; path = Resources/q_bg.png; sourceTree = "<group>"; };
 		279547B20D3B866000CB2BE3 /* QWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QWindow.h; path = QShared/QWindow.h; sourceTree = "<group>"; };
 		279547B30D3B866000CB2BE3 /* QWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QWindow.m; path = QShared/QWindow.m; sourceTree = "<group>"; };
 		27A2546B0D45F26D006BDDD5 /* QQvmManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QQvmManager.h; path = QShared/QQvmManager.h; sourceTree = "<group>"; };
@@ -183,7 +129,6 @@
 		27C978890CC3BE4B00A5F3AF /* FSToolbarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSToolbarController.m; sourceTree = "<group>"; };
 		27C9788A0CC3BE4B00A5F3AF /* FSTransparentButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSTransparentButton.h; sourceTree = "<group>"; };
 		27C9788B0CC3BE4B00A5F3AF /* FSTransparentButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSTransparentButton.m; sourceTree = "<group>"; };
-		27F922990D5408E600C28DF8 /* q_overlay_play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = q_overlay_play.png; path = Resources/q_overlay_play.png; sourceTree = "<group>"; };
 		2A37F4B0FDCFA73011CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2A37F4B5FDCFA73011CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/QDocument.nib; sourceTree = "<group>"; };
 		2A37F4B7FDCFA73011CA2CEA /* English */ = {isa = PBXFileReference; lastKnownFileType = wrapper.nib; name = English; path = English.lproj/MainMenu.nib; sourceTree = "<group>"; };
@@ -191,6 +136,7 @@
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		32DBCF750370BD2300C91783 /* Q_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Q_Prefix.pch; sourceTree = "<group>"; };
+		55BA7AA81BD40CB800A404A1 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Media.xcassets; path = Resources/Media.xcassets; sourceTree = "<group>"; };
 		8D15AC360486D014006FF6A4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8D15AC370486D014006FF6A4 /* Q.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Q.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -349,36 +295,9 @@
 		2A37F4B8FDCFA73011CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				27F922990D5408E600C28DF8 /* q_overlay_play.png */,
+				55BA7AA81BD40CB800A404A1 /* Media.xcassets */,
 				27A259000D47C8EF006BDDD5 /* QEditVM.nib */,
 				275DFE130D42015300889562 /* killall9.sh */,
-				275DFE140D42015300889562 /* q_button_n.png */,
-				275DFE150D42015300889562 /* q_button_p.png */,
-				277009750D40250500E00BB9 /* q_prefs_bg.png */,
-				2788E6F00D3CB8AD00BC6EBC /* q_d_cd_drop.png */,
-				2788E6F10D3CB8AD00BC6EBC /* q_d_ctraltdel.png */,
-				2788E6F20D3CB8AD00BC6EBC /* q_d_disk_drop.png */,
-				2788E6F30D3CB8AD00BC6EBC /* q_d_einstellungen.png */,
-				2788E6F40D3CB8AD00BC6EBC /* q_d_fullscreen.png */,
-				2788E6F50D3CB8AD00BC6EBC /* q_d_pause.png */,
-				2788E6F60D3CB8AD00BC6EBC /* q_d_plus.png */,
-				2788E6F70D3CB8AD00BC6EBC /* q_d_reset.png */,
-				2788E6F80D3CB8AD00BC6EBC /* q_d_screenshot.png */,
-				2788E6F90D3CB8AD00BC6EBC /* q_d_shutdown.png */,
-				2788E6FA0D3CB8AD00BC6EBC /* q_d_start.png */,
-				279547370D3B4A4C00CB2BE3 /* q_bg.png */,
-				274EB4890D37D14000E1A75D /* q_table_shutdown.png */,
-				274EB48A0D37D14000E1A75D /* q_tv_delete.png */,
-				274EB48B0D37D14000E1A75D /* q_tv_edit.png */,
-				274EB48C0D37D14000E1A75D /* q_tv_pause.png */,
-				274EB48D0D37D14000E1A75D /* q_tv_play.png */,
-				274EB48E0D37D14000E1A75D /* q_tv_stop.png */,
-				274EB4190D37CA6300E1A75D /* q_icon.icns */,
-				274EB4240D37CA6300E1A75D /* q_tbfs_ctrlaltdel.png */,
-				274EB4250D37CA6300E1A75D /* q_tbfs_fullscreen.png */,
-				274EB4260D37CA6300E1A75D /* q_tbfs_screenshot.png */,
-				274EB4270D37CA6300E1A75D /* q_tbfs_shutdown.png */,
-				273B987F0CC2A21D0006BD99 /* q_doc_icon.icns */,
 				273B965B0CC1E19E0006BD99 /* Localizable.strings */,
 				2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */,
 				2A37F4B6FDCFA73011CA2CEA /* MainMenu.nib */,
@@ -456,36 +375,9 @@
 				8D15AC2E0486D014006FF6A4 /* QDocument.nib in Resources */,
 				8D15AC2F0486D014006FF6A4 /* InfoPlist.strings in Resources */,
 				273B965D0CC1E19E0006BD99 /* Localizable.strings in Resources */,
-				273B98800CC2A21D0006BD99 /* q_doc_icon.icns in Resources */,
-				274EB4280D37CA6300E1A75D /* q_icon.icns in Resources */,
-				274EB4330D37CA6300E1A75D /* q_tbfs_ctrlaltdel.png in Resources */,
-				274EB4340D37CA6300E1A75D /* q_tbfs_fullscreen.png in Resources */,
-				274EB4350D37CA6300E1A75D /* q_tbfs_screenshot.png in Resources */,
-				274EB4360D37CA6300E1A75D /* q_tbfs_shutdown.png in Resources */,
-				274EB48F0D37D14000E1A75D /* q_table_shutdown.png in Resources */,
-				274EB4900D37D14000E1A75D /* q_tv_delete.png in Resources */,
-				274EB4910D37D14000E1A75D /* q_tv_edit.png in Resources */,
-				274EB4920D37D14000E1A75D /* q_tv_pause.png in Resources */,
-				274EB4930D37D14000E1A75D /* q_tv_play.png in Resources */,
-				274EB4940D37D14000E1A75D /* q_tv_stop.png in Resources */,
-				279547380D3B4A4C00CB2BE3 /* q_bg.png in Resources */,
-				2788E6FB0D3CB8AD00BC6EBC /* q_d_cd_drop.png in Resources */,
-				2788E6FC0D3CB8AD00BC6EBC /* q_d_ctraltdel.png in Resources */,
-				2788E6FD0D3CB8AD00BC6EBC /* q_d_disk_drop.png in Resources */,
-				2788E6FE0D3CB8AD00BC6EBC /* q_d_einstellungen.png in Resources */,
-				2788E6FF0D3CB8AD00BC6EBC /* q_d_fullscreen.png in Resources */,
-				2788E7000D3CB8AD00BC6EBC /* q_d_pause.png in Resources */,
-				2788E7010D3CB8AD00BC6EBC /* q_d_plus.png in Resources */,
-				2788E7020D3CB8AD00BC6EBC /* q_d_reset.png in Resources */,
-				2788E7030D3CB8AD00BC6EBC /* q_d_screenshot.png in Resources */,
-				2788E7040D3CB8AD00BC6EBC /* q_d_shutdown.png in Resources */,
-				2788E7050D3CB8AD00BC6EBC /* q_d_start.png in Resources */,
-				277009760D40250500E00BB9 /* q_prefs_bg.png in Resources */,
 				275DFE160D42015300889562 /* killall9.sh in Resources */,
-				275DFE170D42015300889562 /* q_button_n.png in Resources */,
-				275DFE180D42015300889562 /* q_button_p.png in Resources */,
 				27A259020D47C8EF006BDDD5 /* QEditVM.nib in Resources */,
-				27F9229A0D5408E600C28DF8 /* q_overlay_play.png in Resources */,
+				55BA7AA91BD40CB800A404A1 /* Media.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -620,6 +512,7 @@
 		C05733C808A9546B00998B17 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = q_icon;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -644,6 +537,7 @@
 		C05733C908A9546B00998B17 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = q_icon;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

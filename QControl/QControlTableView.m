@@ -44,7 +44,7 @@
         qPlayIcon = [NSImage imageNamed: @"q_tv_play.png"];
         qPauseIcon = [NSImage imageNamed: @"q_tv_pause.png"];
         qStopIcon = [NSImage imageNamed: @"q_tv_stop.png"];
-        qEditIcon = [NSImage imageNamed: @"q_tv_edit.png"];
+        qEditIcon = [NSImage imageNamed: NSImageNameActionTemplate];
         qDeleteIcon = [NSImage imageNamed: @"q_tv_delete.png"];
 
 		// register table for drag'n drop
