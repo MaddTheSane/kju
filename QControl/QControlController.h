@@ -32,13 +32,15 @@
 #import "QApplicationController.h"
 #import "QControlTableView.h"
 
+@class QWindow;
+
 @interface QControlController : NSObject <NSAnimationDelegate, NSMetadataQueryDelegate>
 {
 	QApplicationController *qApplication;
 
 	// controlWindow
 	NSMutableArray *VMs;
-	IBOutlet id mainWindow;
+	QWindow *mainWindow;
 	IBOutlet QControlTableView *table;
 	
 	NSTimer *timer;	 //to update Table Thumbnails
@@ -46,17 +48,17 @@
 	// preferences
 	BOOL isPrefAnimating;
 	BOOL isPrefShown;
-	IBOutlet id prefUpdates;
-	IBOutlet id prefLog;
-	IBOutlet id prefYellow;
-	IBOutlet id prefFSWarning;
+	IBOutlet NSButton *prefUpdates;
+	IBOutlet NSButton *prefLog;
+	IBOutlet NSButton *prefYellow;
+	IBOutlet NSButton *prefFSWarning;
 	
 	IBOutlet NSButton *buttonEdit;
 	IBOutlet NSButton *buttonAdd;
 	
 	// loading VMs
-	IBOutlet id loadProgressIndicator;
-	IBOutlet id loadProgressText;
+	IBOutlet NSProgressIndicator *loadProgressIndicator;
+	IBOutlet NSTextField *loadProgressText;
 	
 	// browsing for qvms
 	NSMetadataQuery *query;
@@ -132,5 +134,5 @@
 
 // getters & setters
 - (NSMutableArray *) VMs;
-- (id) mainWindow;
+@property (readonly, assign) IBOutlet QWindow *mainWindow;
 @end

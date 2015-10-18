@@ -147,7 +147,7 @@
     } else if ([option isEqual:@"-smb"]) {
         // Q Filesharing
         if ([argument isEqual:@"~/Desktop/Q Shared Files/"]) {
-            [fileManager createDirectoryAtPath:[@"~/Desktop/Q Shared Files/" stringByExpandingTildeInPath] attributes: nil];
+			[fileManager createDirectoryAtPath:[@"~/Desktop/Q Shared Files/" stringByExpandingTildeInPath] attributes: @{}];
             [arguments addObject:@"-smb"];
             [arguments addObject:[@"~/Desktop/Q Shared Files/" stringByExpandingTildeInPath]];
         // normal SMB

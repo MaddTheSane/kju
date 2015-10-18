@@ -141,13 +141,13 @@
     [[[NSOpenPanel openPanel] retain]
         beginForDirectory:[userDefaults objectForKey:@"pcData"]
         file:nil
-        types:[NSArray arrayWithObject:@"qvm"]
+        types:@[@"qvm"]
         modelessDelegate:self
         didEndSelector:@selector(openPanelDidEnd:returnCode:contextInfo:)
         contextInfo:nil];
 }
 
-- (void)documentController:(NSDocumentController *)docController  didCloseAll: (BOOL)didCloseAll contextInfo:(void *)contextInfo
+- (void)documentController:(NSDocumentController *)docController didCloseAll: (BOOL)didCloseAll contextInfo:(void *)contextInfo
 {
 	Q_DEBUG(@"QApplicationController: documentController: didCloseAll");
 

@@ -392,7 +392,7 @@ UREXBRLigoIgQ29udHJvbA
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" white="0.33333299" alpha="1" colorSpace="calibratedWhite"/>
                                             </tableHeaderCell>
-                                            <imageCell key="dataCell" controlSize="small" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="C16A4D09-ACA6-48D5-BDB6-65F307899E9B" id="250"/>
+                                            <imageCell key="dataCell" controlSize="small" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="E4D6BB66-9232-4223-806A-2467983080B9" id="250"/>
                                         </tableColumn>
                                         <tableColumn identifier="description" editable="NO" width="163" minWidth="147" maxWidth="1000" id="224">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Description">
@@ -479,7 +479,6 @@ UREXBRLigoIgQ29udHJvbA
             <connections>
                 <outlet property="buttonAdd" destination="330" id="337"/>
                 <outlet property="buttonEdit" destination="328" id="336"/>
-                <outlet property="loadPrograssText" destination="355" id="357"/>
                 <outlet property="loadProgressIndicator" destination="354" id="358"/>
                 <outlet property="loadProgressText" destination="355" id="359"/>
                 <outlet property="mainWindow" destination="216" id="240"/>
@@ -492,7 +491,7 @@ UREXBRLigoIgQ29udHJvbA
         </customObject>
     </objects>
     <resources>
-        <image name="C16A4D09-ACA6-48D5-BDB6-65F307899E9B" width="60" height="60">
+        <image name="E4D6BB66-9232-4223-806A-2467983080B9" width="60" height="60">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGPT5YJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK4HCBMU
 GR4fIyQrLjE3OlUkbnVsbNUJCgsMDQ4PEBESVk5TU2l6ZVYkY2xhc3NcTlNJbWFnZUZsYWdzVk5TUmVw

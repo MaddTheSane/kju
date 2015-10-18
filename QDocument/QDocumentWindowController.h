@@ -25,7 +25,7 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface QDocumentWindowController : NSObject {
+@interface QDocumentWindowController : NSObject <NSWindowDelegate> {
     id document;
 	id screenView;
     NSWindow *window;

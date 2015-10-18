@@ -89,7 +89,7 @@ typedef struct {
 	//Edit VM panel
 	QDocumentEditVMController *editVMController;
 
-    NSArray *fileTypes;
+    NSArray<NSString*> *fileTypes;
 	
 	// overriding "canCloseDocumentWithDelegate"
 	// http://lists.apple.com/archives/cocoa-dev/2001/Nov/msg00940.html

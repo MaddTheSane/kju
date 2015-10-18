@@ -71,14 +71,14 @@
 }
 
 #pragma mark fill the table
--(int)numberOfRowsInTableView:(NSTableView *)table
+-(NSInteger)numberOfRowsInTableView:(NSTableView *)table
 {
 	Q_DEBUG(@"numberOfRowsInTableView");
 
     return [[qControl VMs] count];
 }
 
-- (id) tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(int)rowIndex
+- (id) tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
 {
 	Q_DEBUG(@"tableView: objectValueForTableColumn: row:%D", rowIndex);
 
@@ -147,7 +147,7 @@
 
 
 #pragma mark tooltips
-- (NSString *)tableView:(NSTableView *)aTableView toolTipForCell:(NSCell *)cell rect:(NSRectPointer)rect tableColumn:(NSTableColumn *)aTableColumn row:(int)rowIndex mouseLocation:(NSPoint)mouseLocation
+- (NSString *)tableView:(NSTableView *)aTableView toolTipForCell:(NSCell *)cell rect:(NSRectPointer)rect tableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex mouseLocation:(NSPoint)mouseLocation
 {
 	Q_DEBUG(@"toolTipForCell");
 	NSString *path;
@@ -159,7 +159,7 @@
 
 
 #pragma mark drag'n'drop
-- (NSDragOperation)tableView:(NSTableView*)tv validateDrop:(id <NSDraggingInfo>)info proposedRow:(int)row proposedDropOperation:(NSTableViewDropOperation)op 
+- (NSDragOperation)tableView:(NSTableView*)tv validateDrop:(id <NSDraggingInfo>)info proposedRow:(NSInteger)row proposedDropOperation:(NSTableViewDropOperation)op
 {
 	Q_DEBUG(@"validateDrop");
 
@@ -181,7 +181,7 @@
     return NSDragOperationNone;
 }
 
-- (BOOL)tableView:(NSTableView *)aTableView acceptDrop:(id <NSDraggingInfo>)info row:(int)row dropOperation:(NSTableViewDropOperation)operation
+- (BOOL)tableView:(NSTableView *)aTableView acceptDrop:(id <NSDraggingInfo>)info row:(NSInteger)row dropOperation:(NSTableViewDropOperation)operation
 {
 	Q_DEBUG(@"acceptDrop");
 

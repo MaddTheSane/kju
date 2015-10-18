@@ -29,6 +29,7 @@
 #import "../QDocument/QDocument.h"
 #import "../QShared/QButtonCell.h"
 #import "../QShared/QQvmManager.h"
+#import "../QShared/QWindow.h"
 
 
 #define PREFS_HEIGHT 100.0
@@ -528,7 +529,7 @@ NSInteger revCaseInsensitiveCompare(id string1, id string2, void *context)
         defaultButton:@"OK"
         alternateButton:nil
         otherButton:nil
-        informativeTextWithFormat:informativeText];
+        informativeTextWithFormat:@"%@", informativeText];
 
     [alert beginSheetModalForWindow:mainWindow
         modalDelegate:self
@@ -539,6 +540,7 @@ NSInteger revCaseInsensitiveCompare(id string1, id string2, void *context)
 
 
 #pragma mark getters and setter
+@synthesize mainWindow;
 - (id) mainWindow {return mainWindow;}
 - (NSMutableArray *) VMs {return VMs;}
 @end

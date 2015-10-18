@@ -29,7 +29,7 @@
 
 #define FILE_TYPES [NSArray arrayWithObjects:@"qcow2", @"qcow", @"raw", @"cow", @"vmdk", @"cloop", @"img", @"iso", @"dsk", @"dmg", @"cdr", @"toast", @"flp", @"fs", nil]
 
-@interface QControlTableViewController : NSObject {
+@interface QControlTableViewController : NSObject <NSTableViewDataSource, NSTableViewDelegate> {
 	IBOutlet QControlTableView *table;
 	IBOutlet QControlController* qControl;
 	NSImage *shutdownImage;

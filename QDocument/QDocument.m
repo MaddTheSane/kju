@@ -35,6 +35,8 @@
 #import <IOKit/storage/IOMediaBSDClient.h>
 #import <IOKit/storage/IOMedia.h>
 #import <IOKit/storage/IOCDMedia.h>
+#import <IOKit/storage/IODVDMedia.h>
+#import <IOKit/storage/IOBDMedia.h>
 
 
 @implementation QDocument
@@ -731,8 +733,9 @@
             strcat(bsdPath, "r");
             devPathLength = strlen(bsdPath);
             if (CFStringGetCString(bsdPathAsCFString, bsdPath + devPathLength, maxPathSize - devPathLength, kCFStringEncodingASCII)) {
-                if (bsdPath[0] != '\0')
-                    path = [NSString stringWithCString:bsdPath];
+				if (bsdPath[0] != '\0') {
+					path = [[NSFileManager defaultManager] stringWithFileSystemRepresentation:bsdPath length:strlen(bsdPath)];
+				}
             }
             CFRelease(bsdPathAsCFString);
         }

@@ -53,12 +53,12 @@
 @implementation QWindow
 
 
-- (id)initWithContentRect:(NSRect)contentRect styleMask:(unsigned int)styleMask backing:(NSBackingStoreType)bufferingType defer:(BOOL)flag
+- (id)initWithContentRect:(NSRect)contentRect styleMask:(NSUInteger)styleMask backing:(NSBackingStoreType)bufferingType defer:(BOOL)flag
 {
 	Q_DEBUG(@"initWithContentRect");
     
     // Conditionally add textured window flag to stylemask
-    unsigned int newStyle;
+    NSUInteger newStyle;
     if (styleMask & NSTexturedBackgroundWindowMask){
         newStyle = styleMask;
     } else {

@@ -37,14 +37,14 @@ typedef struct QCommand
 } QCommand;
 
 // to be implemented by QEMU
-@protocol QDocumentDistributedObjectClientProto
+@protocol QDocumentDistributedObjectClientProto <NSObject>
 - (NSString*) testClient;
 - (BOOL) do_kbd_put_keycode:(int)keycode;
 - (BOOL) do_kbd_mouse_eventDx:(int)dx dy:(int)dy dz:(int)dz bs:(int)sb;
 @end
 
 // to be implemented by Q Control
-@protocol QDocumentDistributedObjectServerProto
+@protocol QDocumentDistributedObjectServerProto <NSObject>
 - (BOOL) qemuRegister:(id)sender;
 - (BOOL) qemuUnRegister:(id)sender;
 - (BOOL) sendMessage:(NSData*)data;
