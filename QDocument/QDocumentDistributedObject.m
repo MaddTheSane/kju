@@ -172,7 +172,10 @@
     NSLog(@"getFilename: drive %D", drive);
 #endif
 
-    return [NSData dataWithBytes:[[[document driveFileNames] objectAtIndex:drive] cString] length:[[[document driveFileNames] objectAtIndex:drive] length]];
+	NSString *fileStr = [[document driveFileNames] objectAtIndex:drive];
+	const char* fileSysRep = [fileStr fileSystemRepresentation];
+	
+    return [NSData dataWithBytes:fileSysRep length:strlen(fileSysRep)];
 }
 
 - (void) setCpu:(float)tCpuUsage ideActivity:(BOOL)tIdeActivity

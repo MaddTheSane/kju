@@ -32,7 +32,7 @@
 #import "QApplicationController.h"
 #import "QControlTableView.h"
 
-@interface QControlController : NSObject
+@interface QControlController : NSObject <NSAnimationDelegate, NSMetadataQueryDelegate>
 {
 	QApplicationController *qApplication;
 

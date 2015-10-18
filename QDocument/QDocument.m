@@ -127,7 +127,7 @@
         videoRAMSize = 1024 * 768 * 4;
         void *dummyFile;
         dummyFile = malloc(videoRAMSize);
-        fd = open([[NSString stringWithFormat:@"/tmp/qDocument_%D.vga", uniqueDocumentID] cString], O_CREAT|O_RDWR, 0666); // open (trunkate/create) for read/write
+        fd = open([[NSString stringWithFormat:@"/tmp/qDocument_%D.vga", uniqueDocumentID] fileSystemRepresentation], O_CREAT|O_RDWR, 0666); // open (trunkate/create) for read/write
         if (fd == -1) {
             [self defaultAlertMessage:[NSString stringWithFormat:@"QDocument: could not create '/tmp/qDocument_%D.vga' file", uniqueDocumentID] informativeText:nil];
             [self setVMState:QDocumentInvalid];
@@ -844,7 +844,7 @@
 	NSFileManager *fileManager;
 	
 	bitmapImageRep = [NSBitmapImageRep imageRepWithData:[[screenView screenshot:NSMakeSize(0.0, 0.0)] TIFFRepresentation]];
-	data =[bitmapImageRep representationUsingType: NSPNGFileType properties: nil];
+	data =[bitmapImageRep representationUsingType: NSPNGFileType properties: @{}];
 
     // find next free number for name and save it to the desktop
     fileManager = [NSFileManager defaultManager];
@@ -867,14 +867,14 @@
 
 
 #pragma mark getters
+@synthesize screenView;
+@synthesize cpuUsage;
 - (QApplicationController *) qApplication { return qApplication;}
 - (BOOL) canCloseDocumentClose {return canCloseDocumentClose;}
 - (int) uniqueDocumentID {return uniqueDocumentID;}
 - (QDocumentDistributedObject *) distributedObject {return distributedObject;}
 - (QDocumentTaskController *) qemuTask {return qemuTask;}
-- (id) screenView {return screenView;}
 - (NSString *) smbPath { return smbPath;}
-- (float) cpuUsage {return cpuUsage;}
 - (BOOL) ideActivity {return ideActivity;}
 - (NSMutableArray *) driveFileNames { return driveFileNames;}
 - (BOOL) absolute_enabled {return absolute_enabled;}
@@ -883,7 +883,7 @@
 
 
 #pragma mark setters
-- (void) setCpuUsage:(float)tCpuUsage { cpuUsage = tCpuUsage;}
 - (void) setIdeActivity:(BOOL)tIdeActivity{ ideActivity = tIdeActivity;}
 - (void) setAbsolute_enabled:(BOOL)tAbsloute_enabled {absolute_enabled = tAbsloute_enabled;}
 @end
+

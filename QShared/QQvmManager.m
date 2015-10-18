@@ -138,7 +138,7 @@ static QQvmManager *sharedQvmManager = nil;
 			option = nil;
 			argument = nil;
 			for (i = 0; i < [singleArguments count]; i++) {
-				if ([[singleArguments objectAtIndex:i] cString][0] != '-') { // part of argument
+				if ([[singleArguments objectAtIndex:i] UTF8String][0] != '-') { // part of argument
 					if (!argument) {
 						argument = [NSMutableString stringWithString:[singleArguments objectAtIndex:i]];
 					} else {

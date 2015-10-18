@@ -31,8 +31,9 @@
 #import "QDocumentTaskController.h"
 #import "QDocumentEditVMController.h"
 
+@class QDocumentOpenGLView;
 
-typedef enum {
+typedef NS_ENUM(NSInteger, QDocumentVMState) {
    QDocumentShutdown = 0,
    QDocumentSaving = 1,
    QDocumentSaved = 2,
@@ -41,7 +42,7 @@ typedef enum {
    QDocumentRunning = 5,
    QDocumentEditing = 6,
    QDocumentInvalid = 7
-} QDocumentVMState;
+};
 
 typedef struct {
 	id delegate;
@@ -55,7 +56,7 @@ typedef struct {
     QDocumentWindowController *windowController;
     QDocumentDistributedObject *distributedObject;
     QDocumentTaskController *qemuTask;
-    id screenView;
+    QDocumentOpenGLView *screenView;
     int uniqueDocumentID;
     
     // QEMU state
@@ -147,10 +148,10 @@ typedef struct {
 - (int) uniqueDocumentID;
 - (QDocumentDistributedObject *) distributedObject;
 - (QDocumentTaskController *) qemuTask;
-- (id) screenView;
+@property (retain, readonly) QDocumentOpenGLView* screenView;
 - (QDocumentVMState) VMState;
 - (NSString *) smbPath;
-- (float) cpuUsage;
+@property float cpuUsage;
 - (BOOL) ideActivity;
 - (NSMutableArray *) driveFileNames;
 - (BOOL) absolute_enabled;
@@ -158,7 +159,6 @@ typedef struct {
 
 // setters
 - (void) setVMState:(QDocumentVMState)tVMState;
-- (void) setCpuUsage:(float)tCpuUsage;
 - (void) setIdeActivity:(BOOL)tIdeActivity;
 - (void) setAbsolute_enabled:(BOOL)tAbsloute_enabled;
 @end

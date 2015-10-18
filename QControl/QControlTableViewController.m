@@ -34,7 +34,7 @@
 	Q_DEBUG(@"init");
 
 	self = [super init];
-	if (super) {
+	if (self) {
 	
 		// cache shutdown image
 		shutdownImage = [NSImage imageNamed: @"q_table_shutdown.png"];

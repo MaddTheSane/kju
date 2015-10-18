@@ -142,6 +142,9 @@
 							case QDocumentRunning:
 								[document VMPause:self];
 								break;
+								
+							default:
+								break;
 						}
 					} else {
 						[qControl startVM:VM];

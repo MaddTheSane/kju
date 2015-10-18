@@ -25,7 +25,7 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface QApplicationController : NSObject {
+@interface QApplicationController : NSObject <NSApplicationDelegate> {
     NSUserDefaults *userDefaults;
     int uniqueDocumentID;
 }

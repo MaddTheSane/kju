@@ -27,7 +27,7 @@
 
 #define SEMI_TRANSPARENT_COLOR [NSColor colorWithCalibratedWhite:0.0 alpha:0.6]
 
-@interface FSToolbarController : NSObject
+@interface FSToolbarController : NSObject <NSWindowDelegate>
 {
 	NSWindow * window;
 	FSRoundedView * view;

@@ -788,7 +788,7 @@ int cocoa_keycode_to_qemu(int keycode)
 			return;
 		}
 	}
-    fd = open([[NSString stringWithFormat:@"/private/tmp/qDocument_%D.vga", [document uniqueDocumentID]] cString], O_RDONLY); // open file
+    fd = open([[NSString stringWithFormat:@"/private/tmp/qDocument_%D.vga", [document uniqueDocumentID]] fileSystemRepresentation], O_RDONLY); // open file
     if(fd == -1) {
 		int errsv = errno;
         NSLog(@"QDocumentOpenGLView: resizeContent: could not open '/private/tmp/qDocument_%D.vga': errno(%D) - %s", [document uniqueDocumentID], errsv, strerror(errsv));

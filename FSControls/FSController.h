@@ -30,6 +30,9 @@
     FSToolbarController * toolbar;
     id pc;
 }
+
+- (instancetype) initWithSender:(id)sender;
+
 - (BOOL) showsToolbar;
 - (void) toggleToolbar;
 

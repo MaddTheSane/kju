@@ -72,7 +72,7 @@
         // create PC directory
         NSFileManager *fileManager = [NSFileManager defaultManager];
         if ([fileManager fileExistsAtPath: [NSString stringWithFormat:@"%@/", [userDefaults objectForKey:@"dataPath"]]] == NO)
-            [fileManager createDirectoryAtPath: [NSString stringWithFormat:@"%@/", [userDefaults objectForKey:@"dataPath"]] attributes: nil];
+			[fileManager createDirectoryAtPath: [NSString stringWithFormat:@"%@/", [userDefaults objectForKey:@"dataPath"]] attributes: @{}];
         }
         
         // uniqueDocumentIDs
