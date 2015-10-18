@@ -24,7 +24,7 @@
 
 #import <Cocoa/Cocoa.h>
 
-typedef enum {
+typedef NS_ENUM(NSInteger, QDocumentEditVMMachine) {
    QDocumentEditVMMachinePc = 0,
    QDocumentEditVMMachineIsapc = 1,
    QDocumentEditVMMachineG3bw = 2,
@@ -53,7 +53,7 @@ typedef enum {
    QDocumentEditVMMachineM68k1 = 25,
    QDocumentEditVMMachineM68k2 = 26,
    QDocumentEditVMMachineCris = 27
-} QDocumentEditVMMachine;
+};
 
 
 @interface QDocumentEditVMController : NSObject {

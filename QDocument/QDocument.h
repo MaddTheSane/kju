@@ -153,7 +153,7 @@ typedef struct {
 - (NSString *) smbPath;
 @property float cpuUsage;
 - (BOOL) ideActivity;
-- (NSMutableArray *) driveFileNames;
+- (NSMutableArray<NSString*> *) driveFileNames;
 - (BOOL) absolute_enabled;
 - (NSMutableDictionary *) configuration;
 

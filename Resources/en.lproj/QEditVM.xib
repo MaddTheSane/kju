@@ -42,7 +42,7 @@
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
-        <customObject id="-3" userLabel="Application"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="5" userLabel="Window" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
@@ -431,13 +431,13 @@
                                             <rect key="frame" x="116" y="48" width="286" height="22"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <animations/>
-                                            <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" inset="2" selectedItem="150" id="515">
+                                            <popUpButtonCell key="cell" type="push" title="New 4gb compressed diskimage" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" inset="2" selectedItem="150" id="515">
                                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <menu key="menu" title="OtherViews" id="132">
                                                     <items>
                                                         <menuItem title="No Hard disk" id="133"/>
-                                                        <menuItem isSeparatorItem="YES" state="on" id="153">
+                                                        <menuItem isSeparatorItem="YES" id="153">
                                                             <modifierMask key="keyEquivalentModifierMask" command="YES"/>
                                                         </menuItem>
                                                         <menuItem isSeparatorItem="YES" id="154">
@@ -476,13 +476,13 @@
                                             <rect key="frame" x="116" y="23" width="286" height="22"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                             <animations/>
-                                            <popUpButtonCell key="cell" type="push" title="Hard disk" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" inset="2" id="517">
+                                            <popUpButtonCell key="cell" type="push" bezelStyle="rounded" alignment="left" controlSize="small" lineBreakMode="truncatingTail" borderStyle="borderAndBezel" inset="2" id="517">
                                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                                 <font key="font" metaFont="smallSystem"/>
                                                 <menu key="menu" title="OtherViews" id="144">
                                                     <items>
                                                         <menuItem title="Floppy" id="145"/>
-                                                        <menuItem title="Hard disk" state="on" id="156"/>
+                                                        <menuItem title="Hard disk" id="156"/>
                                                         <menuItem title="CD-ROM" id="146"/>
                                                         <menuItem title="Network" id="147"/>
                                                     </items>

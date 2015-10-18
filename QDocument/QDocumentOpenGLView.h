@@ -54,11 +54,11 @@ typedef struct {
     float zoom;
 } QDisplayProperties;
 
-typedef enum {
+typedef NS_ENUM(NSInteger, QDocumentOpenGLTextures) {
 	QDocumentOpenGLTextureScreen = 0,
 	QDocumentOpenGLTextureOverlay = 1,
 	QDocumentOpenGLTextureSavedImage = 2
-} QDocumentOpenGLTextures;
+};
 
 @interface QDocumentOpenGLView : NSOpenGLView
 {

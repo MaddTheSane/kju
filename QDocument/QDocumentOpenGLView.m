@@ -33,7 +33,7 @@ Todo:
 #import "QDocumentOpenGLView.h"
 
 
-#import "../CGSPrivate.h"
+//#import "../CGSPrivate.h"
 #import "../FSControls/FSController.h"
 
 #import <sys/mman.h> // for mmap

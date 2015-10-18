@@ -22,7 +22,7 @@
  * THE SOFTWARE.
  */
 
-#import "../CGSPrivate.h"
+//#import "../CGSPrivate.h"
 
 #import "QControlController.h"
 

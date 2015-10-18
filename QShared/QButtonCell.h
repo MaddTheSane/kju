@@ -24,12 +24,12 @@
 
 #import <Cocoa/Cocoa.h>
 
-typedef enum {
+typedef NS_ENUM(NSInteger, QButtonCellType) {
 	QButtonCellAlone = 0,
 	QButtonCellLeft = 1,
 	QButtonCellMiddle = 2,
 	QButtonCellRight = 3
-} QButtonCellType;
+};
 
 @interface QButtonCell : NSButtonCell {
 
