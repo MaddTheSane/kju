@@ -54,8 +54,8 @@ static QQvmManager *sharedQvmManager = nil;
 
 - (id)copyWithZone:(NSZone *)zone {return self; }
 - (id)retain { return self;}
-- (unsigned)retainCount {return UINT_MAX;}  //denotes an object that cannot be released
-- (void)release {} //do nothing
+- (NSUInteger)retainCount {return NSUIntegerMax;}  //denotes an object that cannot be released
+- (oneway void)release {} //do nothing
 - (id)autorelease { return self; }
 
 

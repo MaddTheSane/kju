@@ -1116,11 +1116,11 @@ int cocoa_keycode_to_qemu(int keycode)
 
 #pragma mark getters
 - (BOOL) mouseGrabed { return mouseGrabed;}
-- (BOOL) isFullscreen { return isFullscreen;}
+@synthesize fullscreen = isFullscreen;
+@synthesize screenBuffer;
 - (QScreen) screenProperties { return screenProperties;}
 - (QDisplayProperties) displayProperties { return displayProperties;}
 - (void) displayPropertiesSetZoom:(float)tZoom {displayProperties.zoom = tZoom;}
-- (void *) screenBuffer { return screenBuffer;}
 - (NSWindow *) normalWindow { return normalWindow;}
 - (id) fullscreenController { return fullscreenController;}
 @end

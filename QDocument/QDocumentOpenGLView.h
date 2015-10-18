@@ -99,12 +99,12 @@ typedef enum {
 
 // getters
 - (BOOL) mouseGrabed;
-- (BOOL) isFullscreen;
+@property (readonly, getter=isFullscreen) BOOL fullscreen;
 - (NSWindow *) normalWindow;
 - (QScreen) screenProperties;
 - (QDisplayProperties) displayProperties;
 - (void) displayPropertiesSetZoom:(float)tZoom;
-- (void *) screenBuffer;
+@property (readonly) void *screenBuffer NS_RETURNS_INNER_POINTER;
 - (id) fullscreenController;
 @end
 
