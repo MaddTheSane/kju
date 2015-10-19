@@ -46,10 +46,10 @@
 		27C9788D0CC3BE4B00A5F3AF /* FSRoundedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C978870CC3BE4B00A5F3AF /* FSRoundedView.m */; };
 		27C9788E0CC3BE4B00A5F3AF /* FSToolbarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C978890CC3BE4B00A5F3AF /* FSToolbarController.m */; };
 		27C9788F0CC3BE4B00A5F3AF /* FSTransparentButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C9788B0CC3BE4B00A5F3AF /* FSTransparentButton.m */; };
+		554512DA1BD4ADF800EDF6EE /* QDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = 554512DC1BD4ADF800EDF6EE /* QDocument.xib */; };
 		55BA7AA91BD40CB800A404A1 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55BA7AA81BD40CB800A404A1 /* Media.xcassets */; settings = {ASSET_TAGS = (); }; };
 		55BA7AAC1BD4144800A404A1 /* QEditVM.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55BA7AAE1BD4144800A404A1 /* QEditVM.xib */; };
 		55BA7AB11BD4146600A404A1 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55BA7AB31BD4146600A404A1 /* MainMenu.xib */; };
-		55BA7AB51BD4148800A404A1 /* QDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55BA7AB41BD4148800A404A1 /* QDocument.xib */; settings = {ASSET_TAGS = (); }; };
 		8D15AC2C0486D014006FF6A4 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */; };
 		8D15AC2F0486D014006FF6A4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165FFE840EACC02AAC07 /* InfoPlist.strings */; };
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -136,10 +136,10 @@
 		554512D01BD4AA6900EDF6EE /* fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		554512D51BD4AA9500EDF6EE /* de */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		554512D91BD4AACB00EDF6EE /* pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		554512DB1BD4ADF800EDF6EE /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/QDocument.xib; sourceTree = "<group>"; };
 		55BA7AA81BD40CB800A404A1 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		55BA7AAD1BD4144800A404A1 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/QEditVM.xib; sourceTree = "<group>"; };
 		55BA7AB21BD4146600A404A1 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		55BA7AB41BD4148800A404A1 /* QDocument.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = QDocument.xib; sourceTree = "<group>"; };
 		8D15AC360486D014006FF6A4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Info.plist; sourceTree = "<group>"; };
 		8D15AC370486D014006FF6A4 /* Q.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Q.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -304,7 +304,7 @@
 				273B965B0CC1E19E0006BD99 /* Localizable.strings */,
 				2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */,
 				55BA7AB31BD4146600A404A1 /* MainMenu.xib */,
-				55BA7AB41BD4148800A404A1 /* QDocument.xib */,
+				554512DC1BD4ADF800EDF6EE /* QDocument.xib */,
 				8D15AC360486D014006FF6A4 /* Info.plist */,
 				089C165FFE840EACC02AAC07 /* InfoPlist.strings */,
 			);
@@ -381,7 +381,7 @@
 				8D15AC2F0486D014006FF6A4 /* InfoPlist.strings in Resources */,
 				273B965D0CC1E19E0006BD99 /* Localizable.strings in Resources */,
 				275DFE160D42015300889562 /* killall9.sh in Resources */,
-				55BA7AB51BD4148800A404A1 /* QDocument.xib in Resources */,
+				554512DA1BD4ADF800EDF6EE /* QDocument.xib in Resources */,
 				55BA7AA91BD40CB800A404A1 /* Media.xcassets in Resources */,
 				55BA7AB11BD4146600A404A1 /* MainMenu.xib in Resources */,
 			);
@@ -469,6 +469,14 @@
 				2A37F4BAFDCFA73011CA2CEA /* en */,
 			);
 			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		554512DC1BD4ADF800EDF6EE /* QDocument.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				554512DB1BD4ADF800EDF6EE /* en */,
+			);
+			name = QDocument.xib;
 			sourceTree = "<group>";
 		};
 		55BA7AAE1BD4144800A404A1 /* QEditVM.xib */ = {
