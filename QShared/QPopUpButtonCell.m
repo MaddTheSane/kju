@@ -41,7 +41,7 @@
 
 		image = anImage;
 		[image setFlipped:TRUE];
-		imageNormal = [[NSImage imageNamed:@"q_button_n"] retain];
+		imageNormal = [NSImage imageNamed:@"q_button_n"];
 		[imageNormal setFlipped:TRUE];
 
 		buttonType = aButtonType;
@@ -49,11 +49,6 @@
 	return self;
 }
 
-- (void) dealloc
-{
-	[imageNormal release];
-	[super dealloc];
-}
 
 - (void)drawBezelWithFrame:(NSRect)frame inView:(NSView *)controlView
 {

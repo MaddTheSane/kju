@@ -25,6 +25,7 @@
 #import "QDocumentTaskController.h"
 #import "QDocument.h"
 #import "../QShared/QQvmManager.h"
+#import "QDocumentOpenGLView.h"
 
 
 @implementation QDocumentTaskController
@@ -62,10 +63,7 @@
 		if ([task isRunning]) { //make shure it's dead
 			[task terminate];
 		}
-        [task release];
     }
-    
-    [super dealloc];
 }
 
 
@@ -98,7 +96,7 @@
         if ([[[document qApplication] userDefaults] boolForKey:@"enableLogToConsole"]) {
             NSData * pipedata;
             while ((pipedata = [[[task standardOutput] fileHandleForReading] availableData]) && [pipedata length]) {
-                NSString * console_out = [[[NSString alloc] initWithData:pipedata encoding:NSUTF8StringEncoding] autorelease];
+                NSString * console_out = [[NSString alloc] initWithData:pipedata encoding:NSUTF8StringEncoding];
                 // trim string to only contain the error
                 NSArray * comps = [console_out componentsSeparatedByString:@": "];
                 [document defaultAlertMessage:@"Error: QEMU quited unexpected!" informativeText:[comps objectAtIndex:1]];
@@ -178,7 +176,7 @@
 	NSString *key;
 	NSMutableArray *explodedArguments;
 	
-	cpuTypes = [[[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"i386-softmmu",@"x86_64-softmmu",@"ppc-softmmu",@"sparc-softmmu",@"mips-softmmu",@"arm-softmmu",nil] forKeys:[NSArray arrayWithObjects:@"x86",@"x86-64",@"PowerPC",@"SPARC",@"MIPS",@"ARM",nil]] autorelease];
+	cpuTypes = [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"i386-softmmu",@"x86_64-softmmu",@"ppc-softmmu",@"sparc-softmmu",@"mips-softmmu",@"arm-softmmu",nil] forKeys:[NSArray arrayWithObjects:@"x86",@"x86-64",@"PowerPC",@"SPARC",@"MIPS",@"ARM",nil]];
 
     // if this PC is already running, abort
     if ([[[[document configuration] objectForKey:@"PC Data"] objectForKey:@"state"] isEqual:@"running"]) {
@@ -245,7 +243,6 @@ NSLog(@"ARGUMENTS: %@", arguments);
     [task setCurrentDirectoryPath:[NSString stringWithFormat:@"%@/Contents/Resources/bin/", [[NSBundle mainBundle] bundlePath]]];
     [task setLaunchPath:[NSString stringWithFormat:@"%@/Contents/Resources/bin/%@", [[NSBundle mainBundle] bundlePath], [cpuTypes objectForKey:[[[document configuration] objectForKey:@"PC Data"] objectForKey:@"architecture"]], [cpuTypes objectForKey:[[[document configuration] objectForKey:@"PC Data"] objectForKey:@"architecture"]]]];
     [task setArguments:arguments];
-    [arguments release];
 
     if ([[[document qApplication] userDefaults] boolForKey:@"enableLogToConsole"]) {
         // prepare nstask output to grab exit codes and display a standardAlert when the qemu instance crashed
@@ -253,7 +250,6 @@ NSLog(@"ARGUMENTS: %@", arguments);
         [task setStandardOutput:pipe];
         [task setStandardError:pipe];
         
-        [pipe release];
     }
     
 	[document setVMState:QDocumentLoading];

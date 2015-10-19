@@ -32,9 +32,9 @@
 
 	self = [super initImageCell:anImage];
 	if (self) {
-		imageNormal = [[NSImage imageNamed:@"q_button_n"] retain];
+		imageNormal = [NSImage imageNamed:@"q_button_n"];
 		[imageNormal setFlipped:TRUE];
-		imagePressed = [[NSImage imageNamed:@"q_button_p"] retain];
+		imagePressed = [NSImage imageNamed:@"q_button_p"];
 		[imagePressed setFlipped:TRUE];
 		[[self image] setFlipped:TRUE];
 		[self setBezelStyle:NSRegularSquareBezelStyle];
@@ -53,13 +53,6 @@
 		[self setAction:anAction];
 	}
 	return self;
-}
-
-- (void) dealloc
-{
-	[imageNormal release];
-	[imagePressed release];
-	[super dealloc];
 }
 
 - (void)drawBezelWithFrame:(NSRect)frame inView:(NSView *)controlView

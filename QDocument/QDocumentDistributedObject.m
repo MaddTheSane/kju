@@ -60,7 +60,6 @@
 	Q_DEBUG(@"dealloc");
 
 	free(commandBuffer);
-    [super dealloc];
 }
 
 
@@ -76,7 +75,6 @@
 	Q_DEBUG(@"qemuRegister");
 
     qemu = sender;
-    [qemu retain];
     return TRUE;
 }
 
@@ -84,7 +82,6 @@
 {
 	Q_DEBUG(@"qemuUnRegister");
 
-    [qemu release];
     qemu = nil;
     return TRUE;
 }

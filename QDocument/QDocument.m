@@ -105,7 +105,6 @@
         // read the .qvm file
         configuration = [[QQvmManager sharedQvmManager] loadVMConfiguration:[[self fileURL] path]];
 		if (configuration) {
-			[configuration retain];
 			// is this VM saveable (only -hda qcow2 is)
 			NSRange hdb;
 			NSRange qcow2;
@@ -162,22 +161,9 @@
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 
-    if (distributedObject)
-        [distributedObject release];
-    if (qemuTask)
-        [qemuTask release];
-    if (windowController)
-        [windowController release];
-    if (fileTypes)
-        [fileTypes release];
-    if (driveFileNames)
-		[driveFileNames release];
-	if (configuration)
-		[configuration release];
     if([[NSFileManager defaultManager] fileExistsAtPath:[NSString stringWithFormat:@"/tmp/qDocument_%D.vga", uniqueDocumentID]])
         [[NSFileManager defaultManager] removeFileAtPath:[NSString stringWithFormat:@"/tmp/qDocument_%D.vga", uniqueDocumentID] handler: nil];
 
-    [super dealloc];
 }
 
 - (NSString *)windowNibName
@@ -197,17 +183,17 @@
     // Add any code here that needs to be executed once the windowController has loaded the document's window.
 
 	// Tiger compatible custom butoonCell
-	[buttonEdit setCell:[[[QButtonCell alloc] initImageCell:[[buttonEdit cell] image] buttonType:QButtonCellAlone target:[[buttonEdit cell] target] action:[[buttonEdit cell] action]] autorelease]];
+	[buttonEdit setCell:[[QButtonCell alloc] initImageCell:[[buttonEdit cell] image] buttonType:QButtonCellAlone target:[[buttonEdit cell] target] action:[[buttonEdit cell] action]]];
 
-	[buttonFloppy setCell:[[[QPopUpButtonCell alloc] initTextCell:@"" buttonType:QButtonCellLeft pullsDown:[[buttonFloppy cell] pullsDown] menu:[[buttonFloppy cell] menu] image:[NSImage imageNamed:@"q_d_disk_drop"]] autorelease]];
-	[buttonCDROM setCell:[[[QPopUpButtonCell alloc] initTextCell:@"" buttonType:QButtonCellRight pullsDown:[[buttonCDROM cell] pullsDown] menu:[[buttonCDROM cell] menu] image:[NSImage imageNamed:@"q_d_cd_drop"]] autorelease]];
+	[buttonFloppy setCell:[[QPopUpButtonCell alloc] initTextCell:@"" buttonType:QButtonCellLeft pullsDown:[[buttonFloppy cell] pullsDown] menu:[[buttonFloppy cell] menu] image:[NSImage imageNamed:@"q_d_disk_drop"]]];
+	[buttonCDROM setCell:[[QPopUpButtonCell alloc] initTextCell:@"" buttonType:QButtonCellRight pullsDown:[[buttonCDROM cell] pullsDown] menu:[[buttonCDROM cell] menu] image:[NSImage imageNamed:@"q_d_cd_drop"]]];
 
-	[buttonToggleFullscreen setCell:[[[QButtonCell alloc] initImageCell:[[buttonToggleFullscreen cell] image] buttonType:QButtonCellLeft target:[[buttonToggleFullscreen cell] target] action:[[buttonToggleFullscreen cell] action]] autorelease]];
-	[buttonTakeScreenshot setCell:[[[QButtonCell alloc] initImageCell:[[buttonTakeScreenshot cell] image] buttonType:QButtonCellRight target:[[buttonTakeScreenshot cell] target] action:[[buttonTakeScreenshot cell] action]] autorelease]];
-	[buttonCtrlAltDel setCell:[[[QButtonCell alloc] initImageCell:[[buttonCtrlAltDel cell] image] buttonType:QButtonCellLeft target:[[buttonCtrlAltDel cell] target] action:[[buttonCtrlAltDel cell] action]] autorelease]];
-	[buttonReset setCell:[[[QButtonCell alloc] initImageCell:[[buttonReset cell] image] buttonType:QButtonCellMiddle target:[[buttonReset cell] target] action:[[buttonReset cell] action]] autorelease]];
-	[buttonTogglePause setCell:[[[QButtonCell alloc] initImageCell:[[buttonTogglePause cell] image] buttonType:QButtonCellMiddle target:[[buttonTogglePause cell] target] action:[[buttonTogglePause cell] action]] autorelease]];
-	[buttonTogleStartShutdown setCell:[[[QButtonCell alloc] initImageCell:[[buttonTogleStartShutdown cell] image] buttonType:QButtonCellRight target:[[buttonTogleStartShutdown cell] target] action:[[buttonTogleStartShutdown cell] action]] autorelease]];
+	[buttonToggleFullscreen setCell:[[QButtonCell alloc] initImageCell:[[buttonToggleFullscreen cell] image] buttonType:QButtonCellLeft target:[[buttonToggleFullscreen cell] target] action:[[buttonToggleFullscreen cell] action]]];
+	[buttonTakeScreenshot setCell:[[QButtonCell alloc] initImageCell:[[buttonTakeScreenshot cell] image] buttonType:QButtonCellRight target:[[buttonTakeScreenshot cell] target] action:[[buttonTakeScreenshot cell] action]]];
+	[buttonCtrlAltDel setCell:[[QButtonCell alloc] initImageCell:[[buttonCtrlAltDel cell] image] buttonType:QButtonCellLeft target:[[buttonCtrlAltDel cell] target] action:[[buttonCtrlAltDel cell] action]]];
+	[buttonReset setCell:[[QButtonCell alloc] initImageCell:[[buttonReset cell] image] buttonType:QButtonCellMiddle target:[[buttonReset cell] target] action:[[buttonReset cell] action]]];
+	[buttonTogglePause setCell:[[QButtonCell alloc] initImageCell:[[buttonTogglePause cell] image] buttonType:QButtonCellMiddle target:[[buttonTogglePause cell] target] action:[[buttonTogglePause cell] action]]];
+	[buttonTogleStartShutdown setCell:[[QButtonCell alloc] initImageCell:[[buttonTogleStartShutdown cell] image] buttonType:QButtonCellRight target:[[buttonTogleStartShutdown cell] target] action:[[buttonTogleStartShutdown cell] action]]];
 	
     // create a controller for the document window
     windowController = [[QDocumentWindowController alloc] initWithWindow:[[[self windowControllers] objectAtIndex:0] window] sender:self];
@@ -280,7 +266,7 @@
 	
 			// if outside default path, add to knownVNs
 			if (![[[qApplication userDefaults] objectForKey:@"knownVMs"] containsObject:[panel filename]]) {
-				knownVMs = [[[[qApplication userDefaults] objectForKey:@"knownVMs"] mutableCopy] autorelease];
+				knownVMs = [[[qApplication userDefaults] objectForKey:@"knownVMs"] mutableCopy];
 				[knownVMs addObject:[panel filename]];
 				[[qApplication userDefaults] setObject:knownVMs forKey:@"knownVMs"];
 			}
@@ -588,7 +574,7 @@
         [alert beginSheetModalForWindow:[screenView window]
             modalDelegate:self
             didEndSelector:@selector(shutdownVMSheetDidEnd:returnCode:contextInfo:)
-            contextInfo:sender];
+            contextInfo:(__bridge void * _Nullable)(sender)];
     } else {
         NSAlert *alert = [NSAlert alertWithMessageText: NSLocalizedStringFromTable(@"shutdownPC:text:2", @"Localizable", @"cocoaQemu")
             defaultButton: NSLocalizedStringFromTable(@"shutdownPC:defaultButton:2", @"Localizable", @"cocoaQemu")
@@ -598,7 +584,7 @@
         [alert beginSheetModalForWindow:[screenView window]
             modalDelegate:self
             didEndSelector:@selector(shutdownVMSheetDidEnd:returnCode:contextInfo:)
-            contextInfo:sender];
+            contextInfo:(__bridge void * _Nullable)(sender)];
     }
 }
 
@@ -787,7 +773,7 @@
         modalForWindow:[screenView window]
         modalDelegate:self
         didEndSelector:@selector(changeDeviceSheetDidEnd:returnCode:contextInfo:)
-        contextInfo:[NSNumber numberWithInt:0]];
+        contextInfo:(__bridge void * _Nullable)([NSNumber numberWithInt:0])];
 }
 
 - (IBAction) VMChangeFdb:(id)sender
@@ -803,7 +789,7 @@
         modalForWindow:[screenView window]
         modalDelegate:self
         didEndSelector:@selector(changeDeviceSheetDidEnd:returnCode:contextInfo:)
-        contextInfo:[NSNumber numberWithInt:1]];
+        contextInfo:(__bridge void * _Nullable)([NSNumber numberWithInt:1])];
 }
 
 - (IBAction) VMChangeCdrom:(id)sender
@@ -819,7 +805,7 @@
         modalForWindow:[screenView window]
         modalDelegate:self
         didEndSelector:@selector(changeDeviceSheetDidEnd:returnCode:contextInfo:)
-        contextInfo:[NSNumber numberWithInt:2]];
+        contextInfo:(__bridge void * _Nullable)([NSNumber numberWithInt:2])];
 }
 
 - (IBAction) VMEjectFda:(id)sender

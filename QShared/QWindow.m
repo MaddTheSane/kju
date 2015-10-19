@@ -99,7 +99,6 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:NSApplicationDidBecomeActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"yellow" object:nil];
     
-    [super dealloc];
 }
 
 - (void) setYellow:(id)sender
@@ -212,6 +211,6 @@
 
     [bg unlockFocus];
     
-    return [NSColor colorWithPatternImage:[bg autorelease]];
+    return [NSColor colorWithPatternImage:bg];
 }
 @end

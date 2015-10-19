@@ -26,6 +26,7 @@
 
 #import "QDocument.h"
 #import "QQvmManager.h"
+#import "QDocumentOpenGLView.h"
 
 
 @implementation QDocumentEditVMController
@@ -80,7 +81,7 @@
 	NSDirectoryEnumerator *directoryEnumerator;
 	NSArray *fileTypes;
 	
-	fileTypes = [[[NSArray alloc] initWithArrayOfAllowedFileTypes] autorelease];
+	fileTypes = [[NSArray alloc] initWithArrayOfAllowedFileTypes];
 	
 	// Tab 1
 	// -tablet

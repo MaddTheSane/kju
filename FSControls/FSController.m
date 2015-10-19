@@ -71,8 +71,6 @@
 {
 	Q_DEBUG(@"dealloc");
 
-    [toolbar release];
-    [super dealloc];
 }
 
 @end

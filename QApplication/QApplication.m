@@ -47,9 +47,6 @@
 - (void) dealloc
 {
 	Q_DEBUG(@"dealloc");
-
-    [applicationController release];
-    [super dealloc];
 }
 
 

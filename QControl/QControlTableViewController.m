@@ -38,7 +38,6 @@
 	
 		// cache shutdown image
 		shutdownImage = [NSImage imageNamed: @"q_table_shutdown.png"];
-		[shutdownImage retain];
 	
 		// Listen to VM updates
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateThumbnails:) name:@"QVMStatusDidChange" object:nil];
@@ -51,9 +50,6 @@
 	Q_DEBUG(@"dealloc");
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-	[VMsImages release];
-	[shutdownImage release];
-	[super dealloc];
 }
 
 -(void)awakeFromNib
@@ -135,8 +131,8 @@
 		name = [path lastPathComponent];
 		name = [name substringToIndex:[name length] - 4];
 
-        attrString = [[[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat: @"%@\n", name] attributes:[NSDictionary dictionaryWithObject: [NSFont boldSystemFontOfSize:[NSFont smallSystemFontSize]] forKey:NSFontAttributeName]] autorelease];
-        [attrString appendAttributedString: [[[NSAttributedString alloc] initWithString:[NSString stringWithFormat: @"%@\n", state] attributes:[NSDictionary dictionaryWithObject:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]] forKey:NSFontAttributeName]] autorelease]];
+        attrString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat: @"%@\n", name] attributes:[NSDictionary dictionaryWithObject: [NSFont boldSystemFontOfSize:[NSFont smallSystemFontSize]] forKey:NSFontAttributeName]];
+        [attrString appendAttributedString: [[NSAttributedString alloc] initWithString:[NSString stringWithFormat: @"%@\n", state] attributes:[NSDictionary dictionaryWithObject:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]] forKey:NSFontAttributeName]]];
 
         return attrString;
     }
@@ -244,15 +240,15 @@
 	NSImage *savedImage;
 
 	if ([[[VM objectForKey:@"PC Data"] objectForKey:@"state"] isEqual:@"saved"]) { // only return thumbnail for saved VMs
-		savedImage = [[[NSImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/QuickLook/Thumbnail.png", [[[VM objectForKey:@"Temporary"] objectForKey:@"URL"] path]]] autorelease];
+		savedImage = [[NSImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/QuickLook/Thumbnail.png", [[[VM objectForKey:@"Temporary"] objectForKey:@"URL"] path]]];
 		if (savedImage) { // try screen.png
-			thumbnail = [[[NSImage alloc] initWithSize:NSMakeSize(80.0,  60.0)] autorelease];
+			thumbnail = [[NSImage alloc] initWithSize:NSMakeSize(80.0,  60.0)];
 			[thumbnail lockFocus];
 			[savedImage drawInRect:NSMakeRect(0.0, 0.0, 80.0, 60.0) fromRect:NSMakeRect(0.0, 0.0, [savedImage size].width, [savedImage size].height) operation:NSCompositeSourceOver fraction:1.0];
 			[thumbnail unlockFocus];
 			return thumbnail;
 		} else { // try old thumbnail.png
-			savedImage = [[[NSImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/thumbnail.png", [[[VM objectForKey:@"Temporary"] objectForKey:@"URL"] path]]] autorelease];
+			savedImage = [[NSImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/thumbnail.png", [[[VM objectForKey:@"Temporary"] objectForKey:@"URL"] path]]];
 			if (savedImage) {
 				return savedImage;
 			}
@@ -274,8 +270,6 @@
 
 	if ((!VMsImages) || ([VMsImages count] != [[qControl VMs] count])) {
 		updateAll = TRUE;
-		if (VMsImages)
-			[VMsImages release];
 		VMsImages = [[NSMutableArray alloc] initWithCapacity:[[qControl VMs] count]];
 	}
     for (i = 0; i < [[qControl VMs] count]; i++ ) {

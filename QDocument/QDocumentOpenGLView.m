@@ -264,7 +264,6 @@ int cocoa_keycode_to_qemu(int keycode)
 		}
 	}
 */
-    [super dealloc];
 }
 
 - (void)reshape
@@ -565,7 +564,7 @@ int cocoa_keycode_to_qemu(int keycode)
 	if (size.width == 0.0 || size.height == 0.0) 
 		size = [self bounds].size;
 
-	NSBitmapImageRep* sBitmapImageRep = [[[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL
+	NSBitmapImageRep* sBitmapImageRep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL
 		pixelsWide:size.width
 		pixelsHigh:size.height
 		bitsPerSample:8
@@ -574,9 +573,9 @@ int cocoa_keycode_to_qemu(int keycode)
 		isPlanar:NO
 		colorSpaceName:NSDeviceRGBColorSpace
 		bytesPerRow:(size.width * 4)
-		bitsPerPixel:32] autorelease];
+		bitsPerPixel:32];
 	
-	NSImage* image = [[[NSImage alloc] initWithSize:NSMakeSize(size.width, size.height)] autorelease];
+	NSImage* image = [[NSImage alloc] initWithSize:NSMakeSize(size.width, size.height)];
 	[image addRepresentation:sBitmapImageRep];
 		
 	[image lockFocusOnRepresentation:sBitmapImageRep];
@@ -708,7 +707,7 @@ int cocoa_keycode_to_qemu(int keycode)
         [fullScreenWindow setOpaque:NO]; // we want to see thru unrendered parts of the window
         [fullScreenWindow setReleasedWhenClosed:YES];
         [fullScreenWindow setHasShadow:NO];
-        [fullScreenWindow setContentView:[[[BlackView alloc] initWithFrame:[[NSScreen mainScreen] frame]] autorelease]];
+        [fullScreenWindow setContentView:[[BlackView alloc] initWithFrame:[[NSScreen mainScreen] frame]]];
         [(BlackView*)[fullScreenWindow contentView] setOpacity:0.75];
         [NSMenu setMenuBarVisible:NO];
 
@@ -746,7 +745,6 @@ int cocoa_keycode_to_qemu(int keycode)
         // switch from fullscreen to desktop
         
         // remove fullscreenController
-        [fullscreenController release];
 		
         isFullscreen = FALSE;
         [self ungrabMouse];

@@ -40,7 +40,7 @@
 
 	// controlWindow
 	NSMutableArray *VMs;
-	QWindow *mainWindow;
+	QWindow *__unsafe_unretained mainWindow;
 	IBOutlet QControlTableView *table;
 	
 	NSTimer *timer;	 //to update Table Thumbnails
@@ -134,5 +134,5 @@
 
 // getters & setters
 - (NSMutableArray *) VMs;
-@property (readonly, assign) IBOutlet QWindow *mainWindow;
+@property (readonly, unsafe_unretained) IBOutlet QWindow *mainWindow;
 @end

@@ -24,6 +24,7 @@
 
 #import "FSToolbarController.h"
 #import "FSTransparentButton.h"
+#import "FSController.h"
 #import "../QDocument/QDocument.h"
 #import "../QDocument/QDocumentOpenGLView.h"
 
@@ -61,7 +62,7 @@
     [self setAnimates: YES];
     [window makeKeyAndOrderFront:nil];
 	// start the NSTimer to fade in
-	fadeTimer = [[NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(fadeIn) userInfo:nil repeats:YES] retain];    
+	fadeTimer = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(fadeIn) userInfo:nil repeats:YES];    
 }
 
 - (void) hide
@@ -70,7 +71,7 @@
 
 	// start the NSTimer to fade out
 	[self setAnimates: YES];
-	fadeTimer = [[NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(fadeOut) userInfo:nil repeats:YES] retain];
+	fadeTimer = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(fadeOut) userInfo:nil repeats:YES];
 	showsToolbar = NO;
 }
 
@@ -125,7 +126,6 @@
 	[button setTarget: target];
 	[button setAction: action];
 	[cView addSubview: button];
-	[button release];
 	
 	// add title label
 	// we have to position it centered underneath the button
@@ -144,7 +144,6 @@
 	[textField setAlignment: NSCenterTextAlignment];
 	[textField setStringValue: title];
 	[cView addSubview: textField];
-	[textField release];
 	
 	[cView setNeedsDisplay: YES];
 }
@@ -155,7 +154,6 @@
 
 	id cView = [[window contentView] superview];	
 	[cView addSubview: item];
-	[item release];
 
 	[cView setNeedsDisplay: YES];
 }
@@ -195,7 +193,7 @@
 	} else {
 		// fadeIn complete
 		[fadeTimer invalidate];
-		[fadeTimer release];
+		fadeTimer = nil;
 		[self setAnimates: NO];
 	}
 }
@@ -211,7 +209,6 @@
 	} else {
 		// fadeOut complete
 		[fadeTimer invalidate];
-		[fadeTimer release];
 		[window orderOut:nil];
 		[self setAnimates: NO];
 	}
@@ -238,7 +235,7 @@
 
     [[pc screenView] toggleFullScreen];
     // release ourselves with the FSController
-    [[[pc screenView] fullscreenController] release];
+    [[pc screenView] fullscreenController];
 }
 
 - (void) shutdownPC:(id)sender
@@ -247,7 +244,7 @@
 
     [pc VMShutDown:self];
     // release ourselves with the FSController
-    [[[pc screenView] fullscreenController] release];
+    [[pc screenView] fullscreenController];
 }
 
 - (void) dealloc
@@ -255,7 +252,6 @@
 	Q_DEBUG(@"dealloc");
 
     [window close];
-    [super dealloc];
 }
 
 @end

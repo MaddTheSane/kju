@@ -130,7 +130,6 @@
             }
         }
     }
-    [panel release];
 }
 
 - (IBAction) openDocument:(id)sender
@@ -138,7 +137,7 @@
 	Q_DEBUG(@"applicationShouldOpenUntitledFile");
     
     //myDoc
-    [[[NSOpenPanel openPanel] retain]
+    [[NSOpenPanel openPanel]
         beginForDirectory:[userDefaults objectForKey:@"pcData"]
         file:nil
         types:@[@"qvm"]

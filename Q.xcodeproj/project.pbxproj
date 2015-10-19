@@ -40,7 +40,7 @@
 		275DFE160D42015300889562 /* killall9.sh in Resources */ = {isa = PBXBuildFile; fileRef = 275DFE130D42015300889562 /* killall9.sh */; };
 		27626CC70D5A6E6F0081F814 /* QPopUpButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27626CC60D5A6E6F0081F814 /* QPopUpButtonCell.m */; };
 		279547B40D3B866000CB2BE3 /* QWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 279547B30D3B866000CB2BE3 /* QWindow.m */; };
-		27A2546D0D45F26D006BDDD5 /* QQvmManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A2546C0D45F26D006BDDD5 /* QQvmManager.m */; };
+		27A2546D0D45F26D006BDDD5 /* QQvmManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A2546C0D45F26D006BDDD5 /* QQvmManager.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		27A258D00D479EA1006BDDD5 /* QDocumentEditVMController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A258CF0D479EA1006BDDD5 /* QDocumentEditVMController.m */; };
 		27C9788C0CC3BE4B00A5F3AF /* FSController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C978850CC3BE4B00A5F3AF /* FSController.m */; };
 		27C9788D0CC3BE4B00A5F3AF /* FSRoundedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C978870CC3BE4B00A5F3AF /* FSRoundedView.m */; };
@@ -55,16 +55,6 @@
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
 		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		2796F66C0D58EA50006DA3A0 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 2A37F4A9FDCFA73011CA2CEA /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 2796F6680D58E9E8006DA3A0;
-			remoteInfo = qemu;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		274EB3F40D37C71900E1A75D /* Copy Frameworks */ = {
@@ -336,7 +326,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				2796F66D0D58EA50006DA3A0 /* PBXTargetDependency */,
 			);
 			name = Q;
 			productInstallPath = "$(HOME)/Applications";
@@ -436,14 +425,6 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
-/* Begin PBXTargetDependency section */
-		2796F66D0D58EA50006DA3A0 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 2796F6680D58E9E8006DA3A0 /* qemu */;
-			targetProxy = 2796F66C0D58EA50006DA3A0 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
-
 /* Begin PBXVariantGroup section */
 		089C165FFE840EACC02AAC07 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
@@ -524,6 +505,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = q_icon;
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -550,6 +532,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = q_icon;
 				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

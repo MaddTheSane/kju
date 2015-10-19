@@ -62,8 +62,6 @@
 	Q_DEBUG(@"dealloc");
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-	[query release];
-	[super dealloc];
 }
 
 -(void)awakeFromNib
@@ -74,8 +72,8 @@
 
 	NSPredicate *predicate;
 
-	[buttonEdit setCell:[[[QButtonCell alloc] initImageCell:[[buttonEdit cell] image] buttonType:QButtonCellLeft target:[[buttonEdit cell] target] action:[[buttonEdit cell] action]] autorelease]];
-	[buttonAdd setCell:[[[QButtonCell alloc] initImageCell:[[buttonAdd cell] image] buttonType:QButtonCellRight target:[[buttonAdd cell] target] action:[[buttonAdd cell] action]] autorelease]];
+	[buttonEdit setCell:[[QButtonCell alloc] initImageCell:[[buttonEdit cell] image] buttonType:QButtonCellLeft target:[[buttonEdit cell] target] action:[[buttonEdit cell] action]]];
+	[buttonAdd setCell:[[QButtonCell alloc] initImageCell:[[buttonAdd cell] image] buttonType:QButtonCellRight target:[[buttonAdd cell] target] action:[[buttonAdd cell] action]]];
 	
 	// search for qvms
 	query = [[NSMetadataQuery alloc] init];
@@ -133,12 +131,10 @@ NSInteger revCaseInsensitiveCompare(id string1, id string2, void *context)
 	NSMutableDictionary *tempVM;
 	NSMutableArray *knownVMs;
 
-    if (VMs)
-        [VMs release];
 	VMs =[[NSMutableArray alloc] init];
 	
 	// check knownVMs
-	knownVMs = [[[[qApplication userDefaults] objectForKey:@"knownVMs"] mutableCopy] autorelease];
+	knownVMs = [[[qApplication userDefaults] objectForKey:@"knownVMs"] mutableCopy];
 	[knownVMs sortUsingFunction:revCaseInsensitiveCompare context:nil];
 	for (NSInteger i = [knownVMs count] - 1; i > -1; i--) {
 		tempVM = [[QQvmManager sharedQvmManager] loadVMConfiguration:[knownVMs objectAtIndex:i]];
@@ -308,7 +304,7 @@ NSInteger revCaseInsensitiveCompare(id string1, id string2, void *context)
     [alert beginSheetModalForWindow:mainWindow
                   modalDelegate:self
                  didEndSelector:@selector(deleteVMAlertDidEnd:returnCode:contextInfo:)
-                 contextInfo:VM];
+                 contextInfo:(__bridge void * _Nullable)(VM)];
 }
 
 - (void) startVMWithURL:(NSURL *)URL
@@ -429,7 +425,6 @@ NSInteger revCaseInsensitiveCompare(id string1, id string2, void *context)
         [viewAnimation setAnimationCurve:NSAnimationLinear];
         [viewAnimation setDelegate:self];
         [viewAnimation startAnimation];
-        [viewAnimation release];
         
         isPrefAnimating = TRUE;
     }
@@ -493,7 +488,7 @@ NSInteger revCaseInsensitiveCompare(id string1, id string2, void *context)
 	NSString *VMPath;
 	NSMutableArray *knownVMs;
 	
-	knownVMs = [[[[qApplication userDefaults] objectForKey:@"knownVMs"] mutableCopy] autorelease];
+	knownVMs = [[[qApplication userDefaults] objectForKey:@"knownVMs"] mutableCopy];
 	searchResults = [(NSMetadataQuery*)[note object] results];
 	
 	for (i = 0; i < [searchResults count]; i++) {

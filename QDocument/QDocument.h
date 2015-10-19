@@ -45,14 +45,14 @@ typedef NS_ENUM(NSInteger, QDocumentVMState) {
 };
 
 typedef struct {
-	id delegate;
+	id delegate __unsafe_unretained;
 	SEL shouldCloseSelector;
 	void *contextInfo;
 } CanCloseDocumentContext;
 
 @interface QDocument : NSDocument
 {
-    QApplicationController *qApplication;
+    QApplicationController *__unsafe_unretained qApplication;
     QDocumentWindowController *windowController;
     QDocumentDistributedObject *distributedObject;
     QDocumentTaskController *qemuTask;
@@ -143,12 +143,12 @@ typedef struct {
 - (IBAction) toggleFullscreen:(id)sender;
 
 // getters/setters
-@property (readonly, assign) QApplicationController *qApplication;
+@property (readonly, unsafe_unretained) QApplicationController *qApplication;
 @property (readonly) BOOL canCloseDocumentClose;
 @property (readonly) int uniqueDocumentID;
-@property (readonly, retain) QDocumentDistributedObject *distributedObject;
-@property (readonly, retain) QDocumentTaskController *qemuTask;
-@property (readonly, retain) QDocumentOpenGLView* screenView;
+@property (readonly, strong) QDocumentDistributedObject *distributedObject;
+@property (readonly, strong) QDocumentTaskController *qemuTask;
+@property (readonly, strong) QDocumentOpenGLView* screenView;
 @property (nonatomic) QDocumentVMState VMState;
 - (NSString *) smbPath;
 @property float cpuUsage;
