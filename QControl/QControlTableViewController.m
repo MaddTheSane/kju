@@ -37,7 +37,7 @@
 	if (self) {
 	
 		// cache shutdown image
-		shutdownImage = [NSImage imageNamed: @"q_table_shutdown.png"];
+		shutdownImage = [NSImage imageNamed: @"q_table_shutdown"];
 	
 		// Listen to VM updates
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateThumbnails:) name:@"QVMStatusDidChange" object:nil];
@@ -88,7 +88,7 @@
     
     if ([aTableColumn.identifier isEqualTo: @"image"]) {
         if (VMsImages.count < rowIndex) { // return default image if no image available
-            return [NSImage imageNamed: @"q_table_shutdown.png"];
+            return [NSImage imageNamed: @"q_table_shutdown"];
 		} else {
             return VMsImages[rowIndex];
         }

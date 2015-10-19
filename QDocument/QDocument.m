@@ -366,7 +366,7 @@
 				[progressPanel orderOut:self];
 				[progressIndicator stopAnimation:self];
 			}
-			buttonTogglePause.image = [NSImage imageNamed:@"q_d_start.png"];
+			buttonTogglePause.image = [NSImage imageNamed:@"q_d_start"];
 			[buttonEdit setEnabled:TRUE];
 			break;
 		case QDocumentSaving:
@@ -388,7 +388,7 @@
 				[progressPanel orderOut:self];
 				[progressIndicator stopAnimation:self];
 			}
-			buttonTogglePause.image = [NSImage imageNamed:@"q_d_start.png"];
+			buttonTogglePause.image = [NSImage imageNamed:@"q_d_start"];
 			[buttonEdit setEnabled:FALSE];
 			break;
 		case QDocumentLoading:
@@ -403,7 +403,7 @@
 			}
 			break;
 		case QDocumentPaused:
-			buttonTogglePause.image = [NSImage imageNamed:@"q_d_start.png"];
+			buttonTogglePause.image = [NSImage imageNamed:@"q_d_start"];
 			[buttonEdit setEnabled:FALSE];
 			[screenView display];
 			break;
@@ -413,7 +413,7 @@
 				[progressPanel orderOut:self];
 				[progressIndicator stopAnimation:self];
 			}
-			buttonTogglePause.image = [NSImage imageNamed:@"q_d_pause.png"];
+			buttonTogglePause.image = [NSImage imageNamed:@"q_d_pause"];
 			[buttonEdit setEnabled:FALSE];
 			[screenView display];
 			break;
@@ -533,7 +533,7 @@
 			fileManager = [NSFileManager defaultManager];
 			if(![fileManager fileExistsAtPath: [NSString stringWithFormat: @"%@/QuickLook", [configuration[@"Temporary"][@"URL"] path]]])
 				[fileManager createDirectoryAtPath: [NSString stringWithFormat: @"%@/QuickLook", [configuration[@"Temporary"][@"URL"] path]] withIntermediateDirectories: NO attributes: nil error: NULL];
-			[data writeToFile: [NSString stringWithFormat: @"%@/QuickLook/Thumbnail.png", [configuration[@"Temporary"][@"URL"] path]] atomically: YES];
+			[data writeToURL:[configuration[@"Temporary"][@"URL"] URLByAppendingPathComponent:@"QuickLook/Thumbnail.png"] atomically:YES];
 			[screenView updateSavedImage:self];
         } else if (returnCode == NSAlertOtherReturn) { // shutdown
 			[distributedObject setCommand:'Q' arg1:0 arg2:0 arg3:0 arg4:0];
@@ -852,9 +852,10 @@
     // find next free number for name and save it to the desktop
     fileManager = [NSFileManager defaultManager];
     i = 1;
-    while ([fileManager fileExistsAtPath:[NSString stringWithFormat:@"%@/Q Screenshot %D.png", (@"~/Desktop").stringByExpandingTildeInPath, i]])
+	NSString * desktopPath = [[fileManager URLForDirectory:NSDesktopDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil] path];
+    while ([fileManager fileExistsAtPath: [desktopPath stringByAppendingPathComponent:[NSString stringWithFormat:@"Q Screenshot %D.png", i]]])
         i++;
-    [data writeToFile: [NSString stringWithFormat:@"%@/Q Screenshot %D.png", (@"~/Desktop").stringByExpandingTildeInPath, i] atomically: YES];
+    [data writeToFile: [desktopPath stringByAppendingPathComponent:[NSString stringWithFormat:@"Q Screenshot %D.png", i]] atomically: YES];
 }
 
 

@@ -253,7 +253,7 @@ int cocoa_keycode_to_qemu(int keycode)
 {
 	Q_DEBUG(@"dealloc");
 		
-    // disabnle drag'n'drop
+    // disable drag'n'drop
     [self unregisterDraggedTypes];
 
 /* TODO: freezes Q up to several minutes (looks like it keeps a tap on the file)
@@ -294,7 +294,7 @@ int cocoa_keycode_to_qemu(int keycode)
 	// initialize OpenGL and load play overlay
 	[self prepareOpenGL];
 	[self updateSavedImage:self];
-	textures[QDocumentOpenGLTextureOverlay] = [self createTextureFromImagePath:[NSString stringWithFormat:@"%@/q_overlay_play.png", [NSBundle mainBundle].resourcePath]];
+	textures[QDocumentOpenGLTextureOverlay] = [self createTextureFromImage: [NSImage imageNamed:@"q_overlay_play"]];
 
     // enable drag'n'drop for files
     [self registerForDraggedTypes:@[NSFilenamesPboardType]];
@@ -478,9 +478,66 @@ int cocoa_keycode_to_qemu(int keycode)
 
 
 #pragma mark saved image and screenshots
+- (GLuint) createTextureFromImage:(NSImage *)image
+{
+	Q_DEBUG(@"loadTextureFromImage: %@", image);
+	
+	GLuint texture;
+	CGImageRef imageRef;
+	CGColorSpaceRef colorSpaceRef;
+	CGContextRef contextRef;
+	void * textureData;
+	CGRect textureRect;
+	size_t textureWidth;
+	size_t textureHeight;
+	
+	imageRef = CGImageRetain([image CGImageForProposedRect:NULL context:nil hints:nil]);
+	textureWidth = CGImageGetWidth(imageRef);
+	textureHeight = CGImageGetHeight(imageRef);
+	textureRect = CGRectMake(0, 0, textureWidth, textureHeight);
+	textureData = calloc(textureWidth * 4, textureHeight);
+	colorSpaceRef = CGColorSpaceCreateDeviceRGB();
+	contextRef = CGBitmapContextCreate (textureData, textureWidth, textureHeight, 8, textureWidth*4, colorSpaceRef, kCGImageAlphaPremultipliedLast);
+	
+	CGContextDrawImage(contextRef, textureRect, imageRef);
+	CGContextRelease(contextRef);
+	CFRelease(imageRef);
+	
+	glPixelStorei(GL_UNPACK_ROW_LENGTH, (GLint)textureWidth);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_RECTANGLE_ARB, texture);
+	glTexParameteri(GL_TEXTURE_RECTANGLE_ARB, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexImage2D(GL_TEXTURE_RECTANGLE_ARB,
+				 0,
+				 GL_RGBA8,
+				 (GLint)textureWidth,
+				 (GLint)textureHeight,
+				 0,
+#if __LITTLE_ENDIAN__
+				 GL_RGBA,
+				 GL_UNSIGNED_BYTE,
+#else
+				 GL_BGRA,
+				 GL_UNSIGNED_INT_8_8_8_8_REV,
+#endif
+				 textureData);
+	
+	free(textureData);
+	
+	return texture;
+}
+
 - (GLuint) createTextureFromImagePath:(NSString *)path
 {
 	Q_DEBUG(@"loadTextureFromImagePath: %@", path);
+	
+	return [self createTextureFromImageURL:[NSURL fileURLWithPath:path]];
+}
+
+- (GLuint) createTextureFromImageURL:(NSURL *)url
+{
+	Q_DEBUG(@"loadTextureFromImageURL: %@", path);
 
 	GLuint texture;
 	CGImageSourceRef sourceRef;
@@ -492,7 +549,7 @@ int cocoa_keycode_to_qemu(int keycode)
 	GLint textureWidth;
 	GLint textureHeight;
 
-	sourceRef = CGImageSourceCreateWithURL((CFURLRef)[NSURL fileURLWithPath:path], NULL);
+	sourceRef = CGImageSourceCreateWithURL((CFURLRef)url, NULL);
 	if (!sourceRef)
 		return 0;
 
@@ -547,7 +604,7 @@ int cocoa_keycode_to_qemu(int keycode)
 		glDeleteTextures(1, &textures[QDocumentOpenGLTextureSavedImage]);
 	}
 
-	textures[QDocumentOpenGLTextureSavedImage] = [self createTextureFromImagePath:[NSString stringWithFormat:@"%@/QuickLook/Thumbnail.png", [[document configuration][@"Temporary"][@"URL"] path]]];
+	textures[QDocumentOpenGLTextureSavedImage] = [self createTextureFromImageURL:[[document configuration][@"Temporary"][@"URL"] URLByAppendingPathComponent:@"QuickLook/Thumbnail.png"]];
 	if (textures[QDocumentOpenGLTextureSavedImage] != 0) {
 		glBindTexture(GL_TEXTURE_RECTANGLE_ARB, textures[QDocumentOpenGLTextureSavedImage]);
 		glGetTexLevelParameteriv( GL_TEXTURE_RECTANGLE_ARB, 0, GL_TEXTURE_WIDTH, (GLint*)&screenProperties.width );
@@ -792,7 +849,7 @@ int cocoa_keycode_to_qemu(int keycode)
         if (munmap(screenBuffer, screenProperties.screenBufferSize) == -1) {
 			int errsv = errno;
 			NSLog(@"QDocumentOpenGLView: resizeContent: could not munmap:  errno(%D) - %s", errsv, strerror(errsv));
-			screenProperties.screenBufferSize;
+			//screenProperties.screenBufferSize;
 			return;
 		}
 	}
@@ -898,7 +955,6 @@ int cocoa_keycode_to_qemu(int keycode)
             NSArray *fileArray = [paste propertyListForType:@"NSFilenamesPboardType"];
             // copy all dragged Files into smb folder
             if ([document smbPath]) {
-                int i;
                 NSFileManager *fileManager = [NSFileManager defaultManager];
                 for (NSString *file in fileArray) {
 					[fileManager copyItemAtPath:file toPath:[[document smbPath] stringByAppendingPathComponent:file.lastPathComponent] error:nil];

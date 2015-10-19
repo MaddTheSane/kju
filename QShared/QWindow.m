@@ -80,7 +80,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setYellow:) name:@"yellow" object:nil];
         
         // chache images
-        template = [NSImage imageNamed:@"q_bg.png"];
+        template = [NSImage imageNamed:@"q_bg"];
         
         return self;
     }

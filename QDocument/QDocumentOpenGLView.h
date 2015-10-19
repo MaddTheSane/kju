@@ -82,7 +82,9 @@ typedef NS_ENUM(NSInteger, QDocumentOpenGLTextures) {
     BOOL tablet_enabled;
 }
 // saved image and screenshot
-- (GLuint) createTextureFromImagePath:(NSString *)path;
+- (GLuint) createTextureFromImage:(NSImage *)image;
+- (GLuint) createTextureFromImagePath:(NSString *)path DEPRECATED_ATTRIBUTE;
+- (GLuint) createTextureFromImageURL:(NSURL *)url;
 - (void) updateSavedImage:(id)sender;
 - (NSImage *) screenshot:(NSSize)size;
 
