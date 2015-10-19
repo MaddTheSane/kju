@@ -34,6 +34,7 @@
 {
 	Q_DEBUG(@"initWithSender");
 
+	self = [super init];
 	pc = sender;
 	showsToolbar = NO;
 	isAnimating = NO;

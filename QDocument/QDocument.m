@@ -134,7 +134,8 @@
         
         // create shared videoram
         int videoRAMSize;
-        int fd, ret;
+        int fd;
+		ssize_t ret;
         videoRAMSize = 1024 * 768 * 4;
         void *dummyFile;
         dummyFile = malloc(videoRAMSize);
@@ -161,9 +162,9 @@
 
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 
-    if([[NSFileManager defaultManager] fileExistsAtPath:[NSString stringWithFormat:@"/tmp/qDocument_%D.vga", uniqueDocumentID]])
-        [[NSFileManager defaultManager] removeFileAtPath:[NSString stringWithFormat:@"/tmp/qDocument_%D.vga", uniqueDocumentID] handler: nil];
-
+	if([[NSFileManager defaultManager] fileExistsAtPath:[NSString stringWithFormat:@"/tmp/qDocument_%D.vga", uniqueDocumentID]]) {
+		[[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"/tmp/qDocument_%D.vga", uniqueDocumentID] error:nil];
+	}
 }
 
 - (NSString *)windowNibName
@@ -185,8 +186,8 @@
 	// Tiger compatible custom butoonCell
 	buttonEdit.cell = [[QButtonCell alloc] initImageCell:[buttonEdit.cell image] buttonType:QButtonCellAlone target:buttonEdit.cell.target action:[buttonEdit.cell action]];
 
-	buttonFloppy.cell = [[QPopUpButtonCell alloc] initTextCell:@"" buttonType:QButtonCellLeft pullsDown:buttonFloppy.cell.pullsDown menu:buttonFloppy.cell.menu image:[NSImage imageNamed:@"q_d_disk_drop"]];
-	buttonCDROM.cell = [[QPopUpButtonCell alloc] initTextCell:@"" buttonType:QButtonCellRight pullsDown:buttonCDROM.cell.pullsDown menu:buttonCDROM.cell.menu image:[NSImage imageNamed:@"q_d_cd_drop"]];
+	buttonFloppy.cell = [[QPopUpButtonCell alloc] initTextCell:@"" buttonType:QButtonCellLeft pullsDown:((NSPopUpButton*)buttonFloppy.cell).pullsDown menu:buttonFloppy.cell.menu image:[NSImage imageNamed:@"q_d_disk_drop"]];
+	buttonCDROM.cell = [[QPopUpButtonCell alloc] initTextCell:@"" buttonType:QButtonCellRight pullsDown:((NSPopUpButton*)buttonCDROM.cell).pullsDown menu:buttonCDROM.cell.menu image:[NSImage imageNamed:@"q_d_cd_drop"]];
 
 	buttonToggleFullscreen.cell = [[QButtonCell alloc] initImageCell:[buttonToggleFullscreen.cell image] buttonType:QButtonCellLeft target:buttonToggleFullscreen.cell.target action:[buttonToggleFullscreen.cell action]];
 	buttonTakeScreenshot.cell = [[QButtonCell alloc] initImageCell:[buttonTakeScreenshot.cell image] buttonType:QButtonCellRight target:buttonTakeScreenshot.cell.target action:[buttonTakeScreenshot.cell action]];
@@ -248,36 +249,6 @@
     NSLog(@"We should create a now Document now");
 }
 
-- (void)savePanelDidEnd:(NSOpenPanel *)panel returnCode:(int)returnCode  contextInfo:(void  *)contextInfo
-{
-	Q_DEBUG(@"savePanelDidEnd");
-
-	NSFileManager *fileManager;
-	NSMutableArray *knownVMs;
-
-    if (returnCode == NSOKButton) {
-
-		fileManager = [NSFileManager defaultManager];
-		
-		// move untitled Document to named document
-		if ([fileManager movePath:[configuration[@"Temporary"][@"URL"] path] toPath:[panel filename] handler:nil]) {
-			configuration[@"Temporary"][@"URL"] = panel.URL;
-			self.fileURL = panel.URL;
-	
-			// if outside default path, add to knownVNs
-			if (![[[qApplication userDefaults] objectForKey:@"knownVMs"] containsObject:[panel filename]]) {
-				knownVMs = [[[qApplication userDefaults] objectForKey:@"knownVMs"] mutableCopy];
-				[knownVMs addObject:[panel filename]];
-				[[qApplication userDefaults] setObject:knownVMs forKey:@"knownVMs"];
-			}
-			
-			[[NSNotificationCenter defaultCenter] postNotificationName:@"QVMStatusDidChange" object:nil]; //communicate new state
-		} else {
-			[self defaultAlertMessage:@"Could not save %@" informativeText:[NSString stringWithFormat:@"There was an error while saving %@", self.displayName,  self.displayName]];
-		}
-    }
-}
-
 - (IBAction)saveDocumentAs:(id)sender
 {
 	Q_DEBUG(@"saveDocumentAs");
@@ -285,8 +256,36 @@
 	if (VMState == QDocumentShutdown || VMState == QDocumentSaved) {	
 		NSSavePanel *savePanel = [NSSavePanel savePanel];
 		savePanel.allowedFileTypes = @[@"qvm"];
-		[savePanel setCanSelectHiddenExtension:YES];
-		[savePanel beginSheetForDirectory:NSHomeDirectory() file:self.displayName modalForWindow:screenView.window modalDelegate:self didEndSelector:@selector(savePanelDidEnd:returnCode:contextInfo:) contextInfo:nil];
+		savePanel.canSelectHiddenExtension = YES;
+		savePanel.nameFieldStringValue = self.displayName;
+		[savePanel beginSheetModalForWindow:screenView.window completionHandler:^(NSInteger returnCode) {
+			Q_DEBUG(@"savePanelDidEnd");
+			
+			NSFileManager *fileManager;
+			NSMutableArray *knownVMs;
+			
+			if (returnCode == NSOKButton) {
+				
+				fileManager = [NSFileManager defaultManager];
+				
+				// move untitled Document to named document
+				if ([fileManager moveItemAtURL:configuration[@"Temporary"][@"URL"] toURL:[savePanel URL] error:nil]) {
+					configuration[@"Temporary"][@"URL"] = savePanel.URL;
+					self.fileURL = savePanel.URL;
+					
+					// if outside default path, add to knownVNs
+					if (![[[qApplication userDefaults] objectForKey:@"knownVMs"] containsObject:[[savePanel URL] path]]) {
+						knownVMs = [[[qApplication userDefaults] objectForKey:@"knownVMs"] mutableCopy];
+						[knownVMs addObject:[[savePanel URL] path]];
+						[[qApplication userDefaults] setObject:knownVMs forKey:@"knownVMs"];
+					}
+					
+					[[NSNotificationCenter defaultCenter] postNotificationName:@"QVMStatusDidChange" object:nil]; //communicate new state
+				} else {
+					[self defaultAlertMessage:@"Could not save %@" informativeText:[NSString stringWithFormat:@"There was an error while saving %@", self.displayName]];
+				}
+			}
+		}];
 	} else {
 		[self defaultAlertMessage:@"VM is running" informativeText:@"Please shutdown the VM before saving the VM to a new Name"];
 	}
@@ -755,7 +754,7 @@
 	Q_DEBUG(@"changeDeviceSheetDidEnd");
 
     if(returnCode == NSOKButton) {
-        [driveFileNames insertObject:[sheet filename] atIndex:contextInfo.intValue];
+        [driveFileNames insertObject:[[sheet URL] path] atIndex:contextInfo.intValue];
         [distributedObject setCommand:'D' arg1:contextInfo.intValue arg2:0 arg3:0 arg4:0];
     }
 }
@@ -764,48 +763,54 @@
 {
 	Q_DEBUG(@"VMChangeFda");
 
-        NSOpenPanel *op = [[NSOpenPanel alloc] init];
+        NSOpenPanel *op = [NSOpenPanel openPanel];
         [op setPrompt: NSLocalizedStringFromTable(@"changeFda:prompt", @"Localizable", @"cocoaQemu")];
         [op setMessage: NSLocalizedStringFromTable(@"changeFda:message", @"Localizable", @"cocoaQemu")];
-        [op beginSheetForDirectory:nil
-        file:nil
-        types:fileTypes
-        modalForWindow:screenView.window
-        modalDelegate:self
-        didEndSelector:@selector(changeDeviceSheetDidEnd:returnCode:contextInfo:)
-        contextInfo:(__bridge void * _Nullable)(@0)];
+		op.allowedFileTypes = fileTypes;
+		[op beginSheetModalForWindow:screenView.window completionHandler:^(NSInteger returnCode) {
+			Q_DEBUG(@"changeDeviceSheetDidEnd");
+			
+			if(returnCode == NSOKButton) {
+				[driveFileNames insertObject:[[op URL] path] atIndex:0];
+				[distributedObject setCommand:'D' arg1:0 arg2:0 arg3:0 arg4:0];
+			}
+		}];
 }
 
 - (IBAction) VMChangeFdb:(id)sender
 {
 	Q_DEBUG(@"VMChangeFdb");
 
-    NSOpenPanel *op = [[NSOpenPanel alloc] init];
+    NSOpenPanel *op = [NSOpenPanel openPanel];
         [op setPrompt: NSLocalizedStringFromTable(@"changeFdb:prompt", @"Localizable", @"cocoaQemu")];
         [op setMessage: NSLocalizedStringFromTable(@"changeFdb:message", @"Localizable", @"cocoaQemu")];
-        [op beginSheetForDirectory:nil
-        file:nil
-        types:fileTypes
-        modalForWindow:screenView.window
-        modalDelegate:self
-        didEndSelector:@selector(changeDeviceSheetDidEnd:returnCode:contextInfo:)
-        contextInfo:(__bridge void * _Nullable)(@1)];
+		op.allowedFileTypes = fileTypes;
+		[op beginSheetModalForWindow:screenView.window completionHandler:^(NSInteger returnCode) {
+			Q_DEBUG(@"changeDeviceSheetDidEnd");
+			
+			if(returnCode == NSOKButton) {
+				[driveFileNames insertObject:[[op URL] path] atIndex:1];
+				[distributedObject setCommand:'D' arg1:1 arg2:0 arg3:0 arg4:0];
+			}
+		}];
 }
 
 - (IBAction) VMChangeCdrom:(id)sender
 {
 	Q_DEBUG(@"VMChangeCdrom");
 
-    NSOpenPanel *op = [[NSOpenPanel alloc] init];
+    NSOpenPanel *op = [NSOpenPanel openPanel];
         [op setPrompt: NSLocalizedStringFromTable(@"changeCdrom:prompt", @"Localizable", @"cocoaQemu")];
         [op setMessage: NSLocalizedStringFromTable(@"changeCdrom:message", @"Localizable", @"cocoaQemu")];
-        [op beginSheetForDirectory:nil
-        file:nil
-        types:fileTypes
-        modalForWindow:screenView.window
-        modalDelegate:self
-        didEndSelector:@selector(changeDeviceSheetDidEnd:returnCode:contextInfo:)
-        contextInfo:(__bridge void * _Nullable)(@2)];
+		op.allowedFileTypes = fileTypes;
+		[op beginSheetModalForWindow:screenView.window completionHandler:^(NSInteger returnCode) {
+			Q_DEBUG(@"changeDeviceSheetDidEnd");
+			
+			if(returnCode == NSOKButton) {
+				[driveFileNames insertObject:[[op URL] path] atIndex:2];
+				[distributedObject setCommand:'D' arg1:2 arg2:0 arg3:0 arg4:0];
+			}
+		}];
 }
 
 - (IBAction) VMEjectFda:(id)sender

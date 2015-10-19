@@ -199,10 +199,9 @@
 		} else { // copy all dragged Files to the Q shared folder of this PC
             NSArray *fileArray = [paste propertyListForType:@"NSFilenamesPboardType"];
 			if ([qControl VMs][row][@"Temporary"][@"-smb"]) {
-				int i;
 				NSFileManager *fileManager = [NSFileManager defaultManager];
-				for (i = 0; i < fileArray.count; i++) {
-					[fileManager copyPath:fileArray[i] toPath:[NSString stringWithFormat:@"%@/%@", [qControl VMs][row][@"Temporary"][@"-smb"], [fileArray[i] lastPathComponent]] handler:nil]; 
+				for (NSString *file in fileArray) {
+					[fileManager copyItemAtPath:file toPath:[[qControl VMs][row][@"Temporary"][@"-smb"] stringByAppendingPathComponent:[file lastPathComponent]] error:nil];
 				}
 			}
         }// else {
@@ -221,7 +220,7 @@
 	Q_DEBUG(@"tableDoubleClick");
 
     if (table.selectedRow < 0) { // no empty line selection
-//TODO:        [qControl addPC:self]; // addNewVM
+		//TODO: [qControl addPC:self]; // addNewVM
     } else if ([[qControl VMs][[sender clickedRow]][@"PC Data"][@"state"] isEqualTo:@"running"]) {  // move VM to front
 		[(QDocument *)[[NSDocumentController sharedDocumentController] documentForURL:[qControl VMs][table.selectedRow][@"Temporary"][@"URL"]] showWindows];
 	} else {
@@ -240,7 +239,8 @@
 	NSImage *savedImage;
 
 	if ([VM[@"PC Data"][@"state"] isEqual:@"saved"]) { // only return thumbnail for saved VMs
-		savedImage = [[NSImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/QuickLook/Thumbnail.png", [VM[@"Temporary"][@"URL"] path]]];
+		//savedImage = [[NSImage alloc] initWithContentsOfURL:[[VM[@"Temporary"][@"URL"] URLByAppendingPathComponent:@"QuickLook" isDirectory:YES] URLByAppendingPathComponent:@"Thumbnail.png"]];
+		savedImage = [[NSImage alloc] initWithContentsOfURL:[VM[@"Temporary"][@"URL"] URLByAppendingPathComponent:@"QuickLook/Thumbnail.png"]];
 		if (savedImage) { // try screen.png
 			thumbnail = [[NSImage alloc] initWithSize:NSMakeSize(80.0,  60.0)];
 			[thumbnail lockFocus];
@@ -248,7 +248,7 @@
 			[thumbnail unlockFocus];
 			return thumbnail;
 		} else { // try old thumbnail.png
-			savedImage = [[NSImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/thumbnail.png", [VM[@"Temporary"][@"URL"] path]]];
+			savedImage = [[NSImage alloc] initWithContentsOfURL:[VM[@"Temporary"][@"URL"] URLByAppendingPathComponent:@"thumbnail.png"]];
 			if (savedImage) {
 				return savedImage;
 			}
@@ -279,7 +279,7 @@
 				case QDocumentPaused:
 				case QDocumentRunning:
 				case QDocumentSaving:
-					thumbnail = [(QDocumentOpenGLView *)qDocument.screenView screenshot:NSMakeSize(80.0, 60.0)];
+					thumbnail = [qDocument.screenView screenshot:NSMakeSize(80.0, 60.0)];
 					VMsImages[i] = thumbnail;
 					break;
 				case QDocumentShutdown:

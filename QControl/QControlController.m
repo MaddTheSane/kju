@@ -275,7 +275,7 @@ NSInteger revCaseInsensitiveCompare(id string1, id string2, void *context)
         // delete .qvm
         NSFileManager *fileManager = [NSFileManager defaultManager];
         if ([fileManager fileExistsAtPath:[contextInfo[@"Temporary"][@"URL"] path]])
-            [fileManager removeFileAtPath:[contextInfo[@"Temporary"][@"URL"] path] handler:nil];
+            [fileManager removeItemAtURL:contextInfo[@"Temporary"][@"URL"] error:nil];
     
         // cleanup
         [self loadConfigurations];
@@ -298,7 +298,7 @@ NSInteger revCaseInsensitiveCompare(id string1, id string2, void *context)
                       defaultButton: NSLocalizedStringFromTable(@"deleteVM:defaultButton", @"Localizable", @"QControlController")
                     alternateButton: NSLocalizedStringFromTable(@"deleteVM:alternateButton", @"Localizable", @"QControlController")
                         otherButton:nil
-                  informativeTextWithFormat:[NSString stringWithFormat: NSLocalizedStringFromTable(@"deleteVM:informativeTextWithFormat", @"Localizable", @"QControlController"),VM[@"Temporary"][@"name"]]];
+                  informativeTextWithFormat:@"%@", [NSString stringWithFormat: NSLocalizedStringFromTable(@"deleteVM:informativeTextWithFormat", @"Localizable", @"QControlController"),VM[@"Temporary"][@"name"]]];
     
     // display alert
     [alert beginSheetModalForWindow:mainWindow

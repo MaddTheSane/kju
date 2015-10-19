@@ -27,6 +27,7 @@
 
 
 @implementation QApplicationController
+@synthesize userDefaults;
 - (instancetype) init
 {
 	Q_DEBUG(@"init");
@@ -57,14 +58,15 @@
 #pragma mark TODO:Sparclekey for userdefaults
 		
 		// add necessary entries to old preferences
+		NSFileManager *fileManager = [NSFileManager defaultManager];
 		if (![userDefaults objectForKey:@"dataPath"]) {
-			[userDefaults setObject:[NSString stringWithFormat:@"%@/Documents/QEMU", NSHomeDirectory()] forKey:@"dataPath"];
+			NSURL *docURL = [[fileManager URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil] URLByAppendingPathComponent:@"QEMU" isDirectory:YES];
+			[userDefaults setObject:docURL.path forKey:@"dataPath"];
 		}
 
         // create PC directory
-        NSFileManager *fileManager = [NSFileManager defaultManager];
         if ([fileManager fileExistsAtPath: [NSString stringWithFormat:@"%@/", [userDefaults objectForKey:@"dataPath"]]] == NO)
-			[fileManager createDirectoryAtPath: [NSString stringWithFormat:@"%@/", [userDefaults objectForKey:@"dataPath"]] attributes: @{}];
+			[fileManager createDirectoryAtPath:[userDefaults objectForKey:@"dataPath"] withIntermediateDirectories:YES attributes:nil error:nil];
         }
         
         // uniqueDocumentIDs
@@ -129,13 +131,42 @@
 	Q_DEBUG(@"applicationShouldOpenUntitledFile");
     
     //myDoc
-    [[NSOpenPanel openPanel]
-        beginForDirectory:[userDefaults objectForKey:@"pcData"]
-        file:nil
-        types:@[@"qvm"]
-        modelessDelegate:self
-        didEndSelector:@selector(openPanelDidEnd:returnCode:contextInfo:)
-        contextInfo:nil];
+	NSOpenPanel *panel = [NSOpenPanel openPanel];
+	panel.allowedFileTypes = @[@"qvm"];
+	panel.directoryURL = [NSURL fileURLWithPath:[userDefaults objectForKey:@"pcData"]];
+	[panel beginWithCompletionHandler:^(NSInteger returnCode) {
+		Q_DEBUG(@"openPanelDidEnd");
+		
+		if (returnCode == NSOKButton) {
+			NSURL *path;
+			NSDocumentController *documentController;
+			NSDocument *document;
+			
+			//        path = [NSURL URLWithString:[[panel filenames] objectAtIndex:0]];
+			if (panel.URLs.count < 1) {
+				return;
+			}
+			path = panel.URLs[0];
+			documentController = [NSDocumentController sharedDocumentController];
+			
+			// is this document already open?
+			if ([documentController documentForURL:path]) {
+				NSLog(@"Document is already open");
+				//Todo: show the document
+			} else {
+				
+				// open the document
+				document = [documentController makeDocumentWithContentsOfURL:path ofType:@"QVM" error:nil];
+				if (document) {
+					[documentController addDocument:document];
+					[document makeWindowControllers];
+					[document showWindows];
+				} else {
+					NSLog(@"Document was not created");
+				}
+			}
+		}
+	}];
 }
 
 - (void)documentController:(NSDocumentController *)docController didCloseAll: (BOOL)didCloseAll contextInfo:(void *)contextInfo

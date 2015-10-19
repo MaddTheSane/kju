@@ -29,6 +29,8 @@
 
 
 @implementation QDocumentTaskController
+@synthesize task;
+
 - (instancetype) initWithFile:(NSString *)file sender:(QDocument*)sender
 {
 	Q_DEBUG(@"initWithFile: %@", file);
@@ -145,9 +147,10 @@
     } else if ([option isEqual:@"-smb"]) {
         // Q Filesharing
         if ([argument isEqual:@"~/Desktop/Q Shared Files/"]) {
-			[fileManager createDirectoryAtPath:(@"~/Desktop/Q Shared Files/").stringByExpandingTildeInPath attributes: @{}];
+			NSURL *sharedFiles = [[fileManager URLForDirectory:NSDesktopDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:nil] URLByAppendingPathComponent:@"Q Shared Files" isDirectory:YES];
+			[fileManager createDirectoryAtURL:sharedFiles withIntermediateDirectories:NO attributes:nil error:nil];
             [arguments addObject:@"-smb"];
-            [arguments addObject:(@"~/Desktop/Q Shared Files/").stringByExpandingTildeInPath];
+            [arguments addObject:sharedFiles.path];
         // normal SMB
         } else if ([fileManager fileExistsAtPath:argument]) {
             [arguments addObject:@"-smb"];
@@ -171,12 +174,11 @@
 	Q_DEBUG(@"startPC:%@", filename);
 
 	int i;
-    NSDictionary *cpuTypes;
 	NSMutableArray *arguments;
 	NSString *key;
 	NSMutableArray *explodedArguments;
 	
-	cpuTypes = @{@"x86": @"i386-softmmu",@"x86-64": @"x86_64-softmmu",@"PowerPC": @"ppc-softmmu",@"SPARC": @"sparc-softmmu",@"MIPS": @"mips-softmmu",@"ARM": @"arm-softmmu"};
+	NSDictionary *cpuTypes = @{@"x86": @"i386-softmmu",@"x86-64": @"x86_64-softmmu",@"PowerPC": @"ppc-softmmu",@"SPARC": @"sparc-softmmu",@"MIPS": @"mips-softmmu",@"ARM": @"arm-softmmu"};
 
     // if this PC is already running, abort
     if ([[document configuration][@"PC Data"][@"state"] isEqual:@"running"]) {
@@ -240,13 +242,14 @@ NSLog(@"ARGUMENTS: %@", arguments);
     [[QQvmManager sharedQvmManager] saveVMConfiguration:[document configuration]];
 
     task = [[NSTask alloc] init];
-    task.currentDirectoryPath = [NSString stringWithFormat:@"%@/Contents/Resources/bin/", [NSBundle mainBundle].bundlePath];
-    task.launchPath = [NSString stringWithFormat:@"%@/Contents/Resources/bin/%@", [NSBundle mainBundle].bundlePath, cpuTypes[[document configuration][@"PC Data"][@"architecture"]], cpuTypes[[document configuration][@"PC Data"][@"architecture"]]];
+	NSString *binDir = [[[NSBundle mainBundle] resourcePath] stringByAppendingPathComponent:@"bin"];
+    task.currentDirectoryPath = binDir;
+	task.launchPath = [binDir stringByAppendingPathComponent:cpuTypes[[document configuration][@"PC Data"][@"architecture"]]];
     task.arguments = arguments;
 
     if ([[document.qApplication userDefaults] boolForKey:@"enableLogToConsole"]) {
         // prepare nstask output to grab exit codes and display a standardAlert when the qemu instance crashed
-        NSPipe * pipe = [[NSPipe alloc] init];
+        NSPipe * pipe = [NSPipe pipe];
         task.standardOutput = pipe;
         task.standardError = pipe;
         
@@ -256,6 +259,4 @@ NSLog(@"ARGUMENTS: %@", arguments);
     [task launch];
 }
 
-
-- (NSTask *) task {return task;}
 @end

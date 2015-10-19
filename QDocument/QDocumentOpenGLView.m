@@ -900,8 +900,8 @@ int cocoa_keycode_to_qemu(int keycode)
             if ([document smbPath]) {
                 int i;
                 NSFileManager *fileManager = [NSFileManager defaultManager];
-                for (i=0; i<fileArray.count; i++) {
-                    [fileManager copyPath:fileArray[i] toPath:[NSString stringWithFormat:@"%@/%@", [document smbPath], [fileArray[i] lastPathComponent]] handler:nil]; 
+                for (NSString *file in fileArray) {
+					[fileManager copyItemAtPath:file toPath:[[document smbPath] stringByAppendingPathComponent:file.lastPathComponent] error:nil];
                 }
             }
         } else {
@@ -942,21 +942,21 @@ int cocoa_keycode_to_qemu(int keycode)
             if (keycode) {
                 // emulate caps lock and num lock keydown and keyup
                 if (keycode == 58 || keycode == 69) {
-                    [document.distributedObjectsetCommand:'K' arg1:keycode arg2:0 arg3:0 arg4:0];
-                    [document.distributedObjectsetCommand:'K' arg1:keycode | 0x80 arg2:0 arg3:0 arg4:0];
+                    [document.distributedObject setCommand:'K' arg1:keycode arg2:0 arg3:0 arg4:0];
+                    [document.distributedObject setCommand:'K' arg1:keycode | 0x80 arg2:0 arg3:0 arg4:0];
                     
                 } else if (is_graphic_console) {
                     if (keycode & 0x80)
-                        [document.distributedObjectsetCommand:'K' arg1:0xe0 arg2:0 arg3:0 arg4:0];
+                        [document.distributedObject setCommand:'K' arg1:0xe0 arg2:0 arg3:0 arg4:0];
 
                     // keydown
                     if (modifiers_state[keycode] == 0) {
-                        [document.distributedObjectsetCommand:'K' arg1:keycode & 0x7f arg2:0 arg3:0 arg4:0];
+                        [document.distributedObject setCommand:'K' arg1:keycode & 0x7f arg2:0 arg3:0 arg4:0];
                         modifiers_state[keycode] = 1;
 
                     // keyup
                     } else {
-                        [document.distributedObjectsetCommand:'K' arg1:keycode | 0x80 arg2:0 arg3:0 arg4:0];
+                        [document.distributedObject setCommand:'K' arg1:keycode | 0x80 arg2:0 arg3:0 arg4:0];
                         modifiers_state[keycode] = 0;
                     }
                 }
@@ -977,21 +977,21 @@ int cocoa_keycode_to_qemu(int keycode)
                     // enable graphic console
                     case 0x02: // '1' to '9' keys
                         is_graphic_console = TRUE;
-                        [document.distributedObjectsetCommand:'S' arg1:keycode - 0x02 arg2:0 arg3:0 arg4:0];
+                        [document.distributedObject setCommand:'S' arg1:keycode - 0x02 arg2:0 arg3:0 arg4:0];
                         break;
 
                     // enable monitor
                     case 0x03 ... 0x0a: // '1' to '9' keys
                         is_graphic_console = FALSE;
-                        [document.distributedObjectsetCommand:'S' arg1:keycode - 0x02 arg2:0 arg3:0 arg4:0];
+                        [document.distributedObject setCommand:'S' arg1:keycode - 0x02 arg2:0 arg3:0 arg4:0];
                         break;
                 }
 
             // handle keys for graphic console
             } else if (is_graphic_console) {
                 if (keycode & 0x80) //check bit for e0 in front
-                    [document.distributedObjectsetCommand:'K' arg1:0xe0 arg2:0 arg3:0 arg4:0];
-                [document.distributedObjectsetCommand:'K' arg1:keycode & 0x7f arg2:0 arg3:0 arg4:0];
+                    [document.distributedObject setCommand:'K' arg1:0xe0 arg2:0 arg3:0 arg4:0];
+                [document.distributedObject setCommand:'K' arg1:keycode & 0x7f arg2:0 arg3:0 arg4:0];
 
             // handlekeys for Monitor
             } else {
@@ -1026,15 +1026,15 @@ int cocoa_keycode_to_qemu(int keycode)
                     }
                 }
                 if (keysym)
-                    [document.distributedObjectsetCommand:'C' arg1:keysym arg2:0 arg3:0 arg4:0];
+                    [document.distributedObject setCommand:'C' arg1:keysym arg2:0 arg3:0 arg4:0];
             }
             break;
         case NSKeyUp:
             keycode = cocoa_keycode_to_qemu(event.keyCode);   
             if (is_graphic_console) {
                 if (keycode & 0x80)
-                    [document.distributedObjectsetCommand:'K' arg1:0xe0 arg2:0 arg3:0 arg4:0];
-                [document.distributedObjectsetCommand:'K' arg1:keycode | 0x80 arg2:0 arg3:0 arg4:0];
+                    [document.distributedObject setCommand:'K' arg1:0xe0 arg2:0 arg3:0 arg4:0];
+                [document.distributedObject setCommand:'K' arg1:keycode | 0x80 arg2:0 arg3:0 arg4:0];
             }
             break;
         case NSMouseMoved:
@@ -1050,10 +1050,10 @@ int cocoa_keycode_to_qemu(int keycode)
                         [NSCursor hide];
                         tablet_enabled = TRUE;
                     }
-                    [document.distributedObjectsetCommand:'M' arg1:(int)(p.x * 0x7FFF / screenProperties.width) arg2:(int)((screenProperties.height - p.y) * 0x7FFF / screenProperties.height) arg3:(int)event.deltaZ arg4:0];
+                    [document.distributedObject setCommand:'M' arg1:(int)(p.x * 0x7FFF / screenProperties.width) arg2:(int)((screenProperties.height - p.y) * 0x7FFF / screenProperties.height) arg3:(int)event.deltaZ arg4:0];
                     }
                 } else {
-                    [document.distributedObjectsetCommand:'M' arg1:(int)event.deltaX arg2:(int)event.deltaY arg3:(int)event.deltaZ arg4:0];
+                    [document.distributedObject setCommand:'M' arg1:(int)event.deltaX arg2:(int)event.deltaY arg3:(int)event.deltaZ arg4:0];
             }
             break;
         case NSLeftMouseDown:
@@ -1065,36 +1065,36 @@ int cocoa_keycode_to_qemu(int keycode)
             }
             if (tablet_enabled) {
                 NSPoint p = event.locationInWindow;
-                [document.distributedObjectsetCommand:'M' arg1:(int)(p.x * 0x7FFF / screenProperties.width) arg2:(int)((screenProperties.height - p.y) * 0x7FFF / screenProperties.height) arg3:(int)event.deltaZ arg4:buttons];
+                [document.distributedObject setCommand:'M' arg1:(int)(p.x * 0x7FFF / screenProperties.width) arg2:(int)((screenProperties.height - p.y) * 0x7FFF / screenProperties.height) arg3:(int)event.deltaZ arg4:buttons];
             } else {
-                [document.distributedObjectsetCommand:'M' arg1:(int)event.deltaX arg2:(int)event.deltaY arg3:(int)event.deltaZ arg4:buttons];
+                [document.distributedObject setCommand:'M' arg1:(int)event.deltaX arg2:(int)event.deltaY arg3:(int)event.deltaZ arg4:buttons];
             }
             break;
         case NSRightMouseDown:
         case NSRightMouseDragged:
             if (tablet_enabled) {
                 NSPoint p = event.locationInWindow;
-                [document.distributedObjectsetCommand:'M' arg1:(int)(p.x * 0x7FFF / screenProperties.width) arg2:(int)((screenProperties.height - p.y) * 0x7FFF / screenProperties.height) arg3:(int)event.deltaZ arg4:buttons |= MOUSE_EVENT_RBUTTON];
+                [document.distributedObject setCommand:'M' arg1:(int)(p.x * 0x7FFF / screenProperties.width) arg2:(int)((screenProperties.height - p.y) * 0x7FFF / screenProperties.height) arg3:(int)event.deltaZ arg4:buttons |= MOUSE_EVENT_RBUTTON];
             } else {
-                [document.distributedObjectsetCommand:'M' arg1:(int)event.deltaX arg2:(int)event.deltaY arg3:(int)event.deltaZ arg4:buttons |= MOUSE_EVENT_RBUTTON];
+                [document.distributedObject setCommand:'M' arg1:(int)event.deltaX arg2:(int)event.deltaY arg3:(int)event.deltaZ arg4:buttons |= MOUSE_EVENT_RBUTTON];
             }
             break;
         case NSOtherMouseDown:
         case NSOtherMouseDragged:
             if (tablet_enabled) {
                 NSPoint p = event.locationInWindow;
-                [document.distributedObjectsetCommand:'M' arg1:(int)(p.x * 0x7FFF / screenProperties.width) arg2:(int)((screenProperties.height - p.y) * 0x7FFF / screenProperties.height) arg3:(int)event.deltaZ arg4:buttons |= MOUSE_EVENT_MBUTTON];
+                [document.distributedObject setCommand:'M' arg1:(int)(p.x * 0x7FFF / screenProperties.width) arg2:(int)((screenProperties.height - p.y) * 0x7FFF / screenProperties.height) arg3:(int)event.deltaZ arg4:buttons |= MOUSE_EVENT_MBUTTON];
             } else {
-                [document.distributedObjectsetCommand:'M' arg1:(int)event.deltaX arg2:(int)event.deltaY arg3:(int)event.deltaZ arg4:buttons |= MOUSE_EVENT_MBUTTON];
+                [document.distributedObject setCommand:'M' arg1:(int)event.deltaX arg2:(int)event.deltaY arg3:(int)event.deltaZ arg4:buttons |= MOUSE_EVENT_MBUTTON];
             }
             break;
         case NSLeftMouseUp:
         case NSRightMouseUp:
         case NSOtherMouseUp:
-            [document.distributedObjectsetCommand:'M' arg1:0 arg2:0 arg3:0 arg4:0];
+            [document.distributedObject setCommand:'M' arg1:0 arg2:0 arg3:0 arg4:0];
             break;
         case NSScrollWheel:
-            [document.distributedObjectsetCommand:'M' arg1:0 arg2:0 arg3:event.deltaY arg4:0];
+            [document.distributedObject setCommand:'M' arg1:0 arg2:0 arg3:event.deltaY arg4:0];
             break;
     }
 }

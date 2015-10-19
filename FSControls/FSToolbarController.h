@@ -54,7 +54,7 @@
 - (void) fadeIn;
 - (void) fadeOut;
 - (void) setAnimates:(BOOL)lock;
-@property (getter=isAnimating, readonly) BOOL animating;
+@property (getter=isAnimating, setter=setAnimates:) BOOL animating;
 - (IBAction) setFullscreen:(id)sender;
 - (IBAction) shutdownPC:(id)sender;
 @end

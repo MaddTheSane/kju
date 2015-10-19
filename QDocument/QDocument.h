@@ -67,7 +67,7 @@ typedef struct {
     NSString *smbPath;
     float cpuUsage;
     BOOL ideActivity;
-    NSMutableArray *driveFileNames;
+    NSMutableArray<NSString*> *driveFileNames;
     BOOL absolute_enabled;
     BOOL VMSupportsSnapshots;
 	
@@ -128,7 +128,6 @@ typedef struct {
 // change drives of VM
 @property (readonly, copy) NSString *firstCDROMDrive;
 - (IBAction) VMUseCdrom:(id)sender;
-- (void)changeDeviceSheetDidEnd: (NSOpenPanel *)sheet returnCode:(int)returnCode contextInfo:(NSString *)contextInfo;
 - (IBAction) VMChangeFda:(id)sender;
 - (IBAction) VMChangeFdb:(id)sender;
 - (IBAction) VMChangeCdrom:(id)sender;
