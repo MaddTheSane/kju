@@ -1,3 +1,4 @@
 ﻿/* Localized versions of Info.plist keys */
 
 NSHumanReadableCopyright = "© Mike Kronenberg, 2008";
+"ch.kberg.Q.vm" = "QVM";

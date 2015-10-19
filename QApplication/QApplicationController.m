@@ -132,7 +132,7 @@
     
     //myDoc
 	NSOpenPanel *panel = [NSOpenPanel openPanel];
-	panel.allowedFileTypes = @[@"qvm"];
+	panel.allowedFileTypes = @[@"qvm", @"ch.kberg.Q.vm"];
 	panel.directoryURL = [NSURL fileURLWithPath:[userDefaults objectForKey:@"pcData"]];
 	[panel beginWithCompletionHandler:^(NSInteger returnCode) {
 		Q_DEBUG(@"openPanelDidEnd");

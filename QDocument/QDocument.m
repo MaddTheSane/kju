@@ -258,7 +258,7 @@
 
 	if (VMState == QDocumentShutdown || VMState == QDocumentSaved) {	
 		NSSavePanel *savePanel = [NSSavePanel savePanel];
-		savePanel.allowedFileTypes = @[@"qvm"];
+		savePanel.allowedFileTypes = @[@"qvm", @"ch.kberg.Q.vm"];
 		savePanel.canSelectHiddenExtension = YES;
 		savePanel.nameFieldStringValue = self.displayName;
 		[savePanel beginSheetModalForWindow:screenView.window completionHandler:^(NSInteger returnCode) {

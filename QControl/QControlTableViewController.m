@@ -165,7 +165,7 @@
     [table setDropRow:table.numberOfRows dropOperation: NSTableViewDropAbove];
 
 	if ([desiredType isEqualToString:NSFilenamesPboardType]) { // we only accept files to be dragged onto Q Control
-		if ([@"qvm" isEqual:[[paste propertyListForType:@"NSFilenamesPboardType"][0] pathExtension]]) { // add an existing VM to the Browser
+		if ([@"qvm" caseInsensitiveCompare:[[paste propertyListForType:@"NSFilenamesPboardType"][0] pathExtension]] == NSOrderedSame) { // add an existing VM to the Browser
 			[table setDropRow:table.numberOfRows dropOperation: NSTableViewDropAbove]; //drop to last row
 		} else if([FILE_TYPES containsObject:[[paste propertyListForType:@"NSFilenamesPboardType"][0] pathExtension]]) { // create a new VM with this diskimage
 			[table setDropRow:table.numberOfRows dropOperation: NSTableViewDropAbove]; //drop to last row
@@ -192,7 +192,7 @@
         return NO;
     } else {
 //        if ([desiredType isEqualToString:NSFilenamesPboardType]) {
-		if ([@"qvm" isEqual:[[paste propertyListForType:@"NSFilenamesPboardType"][0] pathExtension]]) { // add an existing VM to the Browser
+		if ([@"qvm" caseInsensitiveCompare:[[paste propertyListForType:@"NSFilenamesPboardType"][0] pathExtension]] == NSOrderedSame) { // add an existing VM to the Browser
 			[qControl addVMToKnownVMs:[paste propertyListForType:@"NSFilenamesPboardType"][0]];
 		} else if([FILE_TYPES containsObject:[[paste propertyListForType:@"NSFilenamesPboardType"][0] pathExtension]]) { // create a new VM with this diskimage
 			[qControl addVMFromDragDrop:[paste propertyListForType:@"NSFilenamesPboardType"][0]];

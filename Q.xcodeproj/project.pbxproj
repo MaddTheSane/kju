@@ -84,42 +84,42 @@
 		089C1660FE840EACC02AAC07 /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		13E42FBA07B3F13500E4EEF1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		27210CC50D51A0310067EBF6 /* QDocumentOpenGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QDocumentOpenGLView.h; path = QDocument/QDocumentOpenGLView.h; sourceTree = "<group>"; };
-		27210CC60D51A0310067EBF6 /* QDocumentOpenGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QDocumentOpenGLView.m; path = QDocument/QDocumentOpenGLView.m; sourceTree = "<group>"; };
+		27210CC50D51A0310067EBF6 /* QDocumentOpenGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QDocumentOpenGLView.h; sourceTree = "<group>"; };
+		27210CC60D51A0310067EBF6 /* QDocumentOpenGLView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QDocumentOpenGLView.m; sourceTree = "<group>"; };
 		27210CD70D51A2360067EBF6 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		273B94390CC0E2E10006BD99 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		273B965C0CC1E19E0006BD99 /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		273B989F0CC2ABCC0006BD99 /* CGSPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGSPrivate.h; sourceTree = "<group>"; };
 		274EB3DB0D37C6F200E1A75D /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
-		274EB4390D37CCF600E1A75D /* QDocumentWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QDocumentWindowController.m; path = QDocument/QDocumentWindowController.m; sourceTree = "<group>"; };
-		274EB43A0D37CCF600E1A75D /* QDocumentTaskController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QDocumentTaskController.m; path = QDocument/QDocumentTaskController.m; sourceTree = "<group>"; };
-		274EB43B0D37CCF600E1A75D /* QDocumentWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QDocumentWindowController.h; path = QDocument/QDocumentWindowController.h; sourceTree = "<group>"; };
-		274EB43C0D37CCF600E1A75D /* QDocumentTaskController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QDocumentTaskController.h; path = QDocument/QDocumentTaskController.h; sourceTree = "<group>"; };
-		274EB43F0D37CCF600E1A75D /* QDocumentDistributedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QDocumentDistributedObject.m; path = QDocument/QDocumentDistributedObject.m; sourceTree = "<group>"; };
-		274EB4400D37CCF600E1A75D /* QDocumentDistributedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QDocumentDistributedObject.h; path = QDocument/QDocumentDistributedObject.h; sourceTree = "<group>"; };
-		274EB4430D37CCF600E1A75D /* QDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QDocument.m; path = QDocument/QDocument.m; sourceTree = "<group>"; };
-		274EB4440D37CCF600E1A75D /* QDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QDocument.h; path = QDocument/QDocument.h; sourceTree = "<group>"; };
-		274EB45A0D37CE1D00E1A75D /* QApplicationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QApplicationController.m; path = QApplication/QApplicationController.m; sourceTree = "<group>"; };
-		274EB45B0D37CE1D00E1A75D /* QApplicationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QApplicationController.h; path = QApplication/QApplicationController.h; sourceTree = "<group>"; };
-		274EB45C0D37CE1D00E1A75D /* QApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QApplication.m; path = QApplication/QApplication.m; sourceTree = "<group>"; };
-		274EB45D0D37CE1D00E1A75D /* QApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QApplication.h; path = QApplication/QApplication.h; sourceTree = "<group>"; };
-		274EB4950D37D1B800E1A75D /* QControlTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QControlTableView.h; path = QControl/QControlTableView.h; sourceTree = "<group>"; };
-		274EB4960D37D1B800E1A75D /* QControlTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QControlTableView.m; path = QControl/QControlTableView.m; sourceTree = "<group>"; };
-		274EB49B0D37D21100E1A75D /* QControlController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QControlController.h; path = QControl/QControlController.h; sourceTree = "<group>"; };
-		274EB49C0D37D21100E1A75D /* QControlController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QControlController.m; path = QControl/QControlController.m; sourceTree = "<group>"; };
-		274EB4A20D381F2100E1A75D /* QControlTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QControlTableViewController.h; path = QControl/QControlTableViewController.h; sourceTree = "<group>"; };
-		274EB4A30D381F2100E1A75D /* QControlTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QControlTableViewController.m; path = QControl/QControlTableViewController.m; sourceTree = "<group>"; };
-		275D5ECF0D411D3B0061152C /* QButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QButtonCell.h; path = QShared/QButtonCell.h; sourceTree = "<group>"; };
-		275D5ED00D411D3B0061152C /* QButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QButtonCell.m; path = QShared/QButtonCell.m; sourceTree = "<group>"; };
+		274EB4390D37CCF600E1A75D /* QDocumentWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QDocumentWindowController.m; sourceTree = "<group>"; };
+		274EB43A0D37CCF600E1A75D /* QDocumentTaskController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QDocumentTaskController.m; sourceTree = "<group>"; };
+		274EB43B0D37CCF600E1A75D /* QDocumentWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QDocumentWindowController.h; sourceTree = "<group>"; };
+		274EB43C0D37CCF600E1A75D /* QDocumentTaskController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QDocumentTaskController.h; sourceTree = "<group>"; };
+		274EB43F0D37CCF600E1A75D /* QDocumentDistributedObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QDocumentDistributedObject.m; sourceTree = "<group>"; };
+		274EB4400D37CCF600E1A75D /* QDocumentDistributedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QDocumentDistributedObject.h; sourceTree = "<group>"; };
+		274EB4430D37CCF600E1A75D /* QDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QDocument.m; sourceTree = "<group>"; };
+		274EB4440D37CCF600E1A75D /* QDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QDocument.h; sourceTree = "<group>"; };
+		274EB45A0D37CE1D00E1A75D /* QApplicationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QApplicationController.m; sourceTree = "<group>"; };
+		274EB45B0D37CE1D00E1A75D /* QApplicationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QApplicationController.h; sourceTree = "<group>"; };
+		274EB45C0D37CE1D00E1A75D /* QApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QApplication.m; sourceTree = "<group>"; };
+		274EB45D0D37CE1D00E1A75D /* QApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QApplication.h; sourceTree = "<group>"; };
+		274EB4950D37D1B800E1A75D /* QControlTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QControlTableView.h; sourceTree = "<group>"; };
+		274EB4960D37D1B800E1A75D /* QControlTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QControlTableView.m; sourceTree = "<group>"; };
+		274EB49B0D37D21100E1A75D /* QControlController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QControlController.h; sourceTree = "<group>"; };
+		274EB49C0D37D21100E1A75D /* QControlController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QControlController.m; sourceTree = "<group>"; };
+		274EB4A20D381F2100E1A75D /* QControlTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QControlTableViewController.h; sourceTree = "<group>"; };
+		274EB4A30D381F2100E1A75D /* QControlTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QControlTableViewController.m; sourceTree = "<group>"; };
+		275D5ECF0D411D3B0061152C /* QButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QButtonCell.h; sourceTree = "<group>"; };
+		275D5ED00D411D3B0061152C /* QButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QButtonCell.m; sourceTree = "<group>"; };
 		275DFE130D42015300889562 /* killall9.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = killall9.sh; sourceTree = "<group>"; };
-		27626CC50D5A6E6F0081F814 /* QPopUpButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QPopUpButtonCell.h; path = QShared/QPopUpButtonCell.h; sourceTree = "<group>"; };
-		27626CC60D5A6E6F0081F814 /* QPopUpButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QPopUpButtonCell.m; path = QShared/QPopUpButtonCell.m; sourceTree = "<group>"; };
-		279547B20D3B866000CB2BE3 /* QWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QWindow.h; path = QShared/QWindow.h; sourceTree = "<group>"; };
-		279547B30D3B866000CB2BE3 /* QWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QWindow.m; path = QShared/QWindow.m; sourceTree = "<group>"; };
-		27A2546B0D45F26D006BDDD5 /* QQvmManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QQvmManager.h; path = QShared/QQvmManager.h; sourceTree = "<group>"; };
-		27A2546C0D45F26D006BDDD5 /* QQvmManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QQvmManager.m; path = QShared/QQvmManager.m; sourceTree = "<group>"; };
-		27A258CE0D479EA1006BDDD5 /* QDocumentEditVMController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = QDocumentEditVMController.h; path = QDocument/QDocumentEditVMController.h; sourceTree = "<group>"; };
-		27A258CF0D479EA1006BDDD5 /* QDocumentEditVMController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = QDocumentEditVMController.m; path = QDocument/QDocumentEditVMController.m; sourceTree = "<group>"; };
+		27626CC50D5A6E6F0081F814 /* QPopUpButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QPopUpButtonCell.h; sourceTree = "<group>"; };
+		27626CC60D5A6E6F0081F814 /* QPopUpButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPopUpButtonCell.m; sourceTree = "<group>"; };
+		279547B20D3B866000CB2BE3 /* QWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QWindow.h; sourceTree = "<group>"; };
+		279547B30D3B866000CB2BE3 /* QWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QWindow.m; sourceTree = "<group>"; };
+		27A2546B0D45F26D006BDDD5 /* QQvmManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QQvmManager.h; sourceTree = "<group>"; };
+		27A2546C0D45F26D006BDDD5 /* QQvmManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QQvmManager.m; sourceTree = "<group>"; };
+		27A258CE0D479EA1006BDDD5 /* QDocumentEditVMController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QDocumentEditVMController.h; sourceTree = "<group>"; };
+		27A258CF0D479EA1006BDDD5 /* QDocumentEditVMController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QDocumentEditVMController.m; sourceTree = "<group>"; };
 		27C978840CC3BE4B00A5F3AF /* FSController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSController.h; sourceTree = "<group>"; };
 		27C978850CC3BE4B00A5F3AF /* FSController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FSController.m; sourceTree = "<group>"; };
 		27C978860CC3BE4B00A5F3AF /* FSRoundedView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSRoundedView.h; sourceTree = "<group>"; };
@@ -204,7 +204,7 @@
 				274EB43B0D37CCF600E1A75D /* QDocumentWindowController.h */,
 				274EB4390D37CCF600E1A75D /* QDocumentWindowController.m */,
 			);
-			name = QDocument;
+			path = QDocument;
 			sourceTree = "<group>";
 		};
 		274EB4590D37CE0400E1A75D /* QApplication */ = {
@@ -215,7 +215,7 @@
 				274EB45B0D37CE1D00E1A75D /* QApplicationController.h */,
 				274EB45A0D37CE1D00E1A75D /* QApplicationController.m */,
 			);
-			name = QApplication;
+			path = QApplication;
 			sourceTree = "<group>";
 		};
 		274EB4880D37D0DB00E1A75D /* QControl */ = {
@@ -228,7 +228,7 @@
 				274EB4A20D381F2100E1A75D /* QControlTableViewController.h */,
 				274EB4A30D381F2100E1A75D /* QControlTableViewController.m */,
 			);
-			name = QControl;
+			path = QControl;
 			sourceTree = "<group>";
 		};
 		279547AF0D3B864700CB2BE3 /* QShared */ = {
@@ -243,7 +243,7 @@
 				279547B20D3B866000CB2BE3 /* QWindow.h */,
 				279547B30D3B866000CB2BE3 /* QWindow.m */,
 			);
-			name = QShared;
+			path = QShared;
 			sourceTree = "<group>";
 		};
 		27C978830CC3BE4B00A5F3AF /* FSControls */ = {

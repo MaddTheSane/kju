@@ -79,7 +79,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowNeedsUpdate:) name:NSApplicationDidBecomeActiveNotification object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(setYellow:) name:@"yellow" object:nil];
         
-        // chache images
+        // cache images
         template = [NSImage imageNamed:@"q_bg"];
         
         return self;
