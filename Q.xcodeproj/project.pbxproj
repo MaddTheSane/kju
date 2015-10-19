@@ -540,6 +540,7 @@
 				GCC_PREFIX_HEADER = Q_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.kberg.Q;
 				PRODUCT_NAME = Q;
 				WRAPPER_EXTENSION = app;
@@ -564,6 +565,7 @@
 				GCC_PREFIX_HEADER = Q_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.kberg.Q;
 				PRODUCT_NAME = Q;
 				WRAPPER_EXTENSION = app;
