@@ -29,5 +29,5 @@
 + (instancetype)sharedQvmManager;
 - (BOOL) saveVMConfiguration:(NSMutableDictionary *) VM;
 - (NSMutableDictionary *) loadVMConfiguration:(NSString *) filepath;
-- (NSMutableArray *) explodeVMArguments:(NSString *) argumentsString;
+- (NSArray *) explodeVMArguments:(NSString *) argumentsString;
 @end

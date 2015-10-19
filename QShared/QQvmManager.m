@@ -188,7 +188,7 @@ static QQvmManager *sharedQvmManager = nil;
 	return nil;
 }
 
-- (NSMutableArray *) explodeVMArguments:(NSString *) argumentsString
+- (NSArray *) explodeVMArguments:(NSString *) argumentsString
 {
 	Q_DEBUG(@"explodeVMArguments: %@", argumentsString);
 	
@@ -323,6 +323,6 @@ static QQvmManager *sharedQvmManager = nil;
 		// must have been an empty string
 	}
 
-	return argumentsArray;
+	return [NSArray arrayWithArray:argumentsArray];
 }
 @end
