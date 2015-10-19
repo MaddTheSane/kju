@@ -7,13 +7,13 @@
 "startPCWithArgs:text" = "Loading PC";
 
 "changeFda:prompt" = "choose Image for Floppy A";
-"changeFda:message" = "Select the diskimage you want to use as Floppy A.";
+"changeFda:message" = "Select the disk image you want to use as Floppy A.";
 
 "changeFdb:prompt" = "choose Image for Floppy B";
-"changeFdb:message" = "Select the diskimage you want to use as Floppy B.";
+"changeFdb:message" = "Select the disk image you want to use as Floppy B.";
 
 "changeCdrom:prompt" = "choose Image your CD-ROM";
-"changeCdrom:message" = "Select the diskimage you want to use as CD-ROM.";
+"changeCdrom:message" = "Select the disk image you want to use as CD-ROM.";
 
 "shutdownPC:text:1" = "Turn off Guest PC";
 "shutdownPC:defaultButton:1" = "Cancel";

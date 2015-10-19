@@ -7,13 +7,13 @@
 "startPCWithArgs:text" = "Loading PC";
 
 "changeFda:prompt" = "choose Image for Floppy A";
-"changeFda:message" = "Select the diskimage you want to use as Floppy A.";
+"changeFda:message" = "Select the disk image you want to use as Floppy A.";
 
 "changeFdb:prompt" = "choose Image for Floppy B";
-"changeFdb:message" = "Select the diskimage you want to use as Floppy B.";
+"changeFdb:message" = "Select the disk image you want to use as Floppy B.";
 
 "changeCdrom:prompt" = "choose Image your CD-ROM";
-"changeCdrom:message" = "Select the diskimage you want to use as CD-ROM.";
+"changeCdrom:message" = "Select the disk image you want to use as CD-ROM.";
 
 "shutdownPC:text:1" = "Shutting down Guest PC";
 "shutdownPC:defaultButton:1" = "Cancel";
@@ -29,6 +29,13 @@
 "cocoa_refresh:showFullscreen:defaultButton" = "OK";
 "cocoa_refresh:showFullscreen:otherButton" = "Don't show again";
 "cocoa_refresh:showFullscreen:informativeText" = "You are about to enter Fullscreen Mode.\n\nUse ⌘-F to exit Fullscreen Mode. You can toggle a toolbar by hitting ⌘-B and switch between running Guest PCs with ⌘-< and ⌘-> (⌘-Shift-<).";
+
+/* cocoaQemuProgressWindow */
+
+"applicationDidFinishLaunching:alert:messageText" = "Error starting Guest PC";
+"applicationDidFinishLaunching:alert:informativeText" = "The Guest PC files could not be found or the files are damaged.";
+"applicationDidFinishLaunching:alert:defaultButton" = "OK";
+
 
 /* cocoaQemuProgressWindow */
 
