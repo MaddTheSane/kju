@@ -30,7 +30,7 @@
 
 
 @implementation QDocumentWindowController
-- (id) initWithWindow:(NSWindow *)tWindow sender:(id)sender
+- (id) initWithWindow:(NSWindow *)tWindow sender:(QDocument *)sender
 {
 	Q_DEBUG(@"initWithWindow:");
 

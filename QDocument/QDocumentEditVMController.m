@@ -29,7 +29,7 @@
 
 
 @implementation QDocumentEditVMController
-- (void)showEditVMPanel:(id)sender
+- (void)showEditVMPanel:(QDocument*)sender
 {
 	Q_DEBUG(@"showEditVMPanel");
 
@@ -39,7 +39,7 @@
 		// populate panel
 		
 		// reset and populate Panel
-		document = (QDocument *)sender;
+		document = sender;
 		VM = [document configuration];
 		[self resetPanel:self];
 		[self populatePanel:self];

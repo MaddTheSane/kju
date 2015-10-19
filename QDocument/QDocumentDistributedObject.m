@@ -28,7 +28,7 @@
 
 
 @implementation QDocumentDistributedObject
-- (id) initWithSender:(id)sender
+- (instancetype) initWithSender:(QDocument*)sender
 {
 	Q_DEBUG(@"init");
 
@@ -119,11 +119,11 @@
     NSRect tRect;
 	tRect = NSMakeRect(
 		rect.origin.x * [[document screenView] displayProperties].dx,
-		([(QDocumentOpenGLView *)[(QDocument *)document screenView] screenProperties].height - rect.origin.y - rect.size.height) * [[document screenView]  displayProperties].dy,
+		([[document screenView] screenProperties].height - rect.origin.y - rect.size.height) * [[document screenView]  displayProperties].dy,
 		rect.size.width * [[document screenView] displayProperties].dx,
 		rect.size.height * [[document screenView] displayProperties].dy);
 
-    [(QDocumentOpenGLView *)[(QDocument *)document screenView] displayRect:tRect];
+    [[document screenView] displayRect:tRect];
 
     return true;
 }
@@ -134,7 +134,7 @@
     NSLog(@"QDistributedObject: resizeTo: rect(%f, %f)", size.width, size.height);
 #endif
 
-    [(QDocumentOpenGLView *)[(QDocument *)document screenView] resizeContentToWidth:(int)size.width height:(int)size.height];
+    [[document screenView] resizeContentToWidth:(int)size.width height:(int)size.height];
     
     return true;
 }

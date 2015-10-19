@@ -25,9 +25,8 @@
 #import <Cocoa/Cocoa.h>
 
 @interface QQvmManager : NSDocument
-{
-}
-+ (QQvmManager*)sharedQvmManager;
+
++ (instancetype)sharedQvmManager;
 - (BOOL) saveVMConfiguration:(NSMutableDictionary *) VM;
 - (NSMutableDictionary *) loadVMConfiguration:(NSString *) filepath;
 - (NSMutableArray *) explodeVMArguments:(NSString *) argumentsString;

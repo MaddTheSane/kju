@@ -80,7 +80,7 @@
 */	
 }
 /* init & dealloc */
-- (id) init;
+- (instancetype) init;
 
 // IBActions
 //- (IBAction) addPC:(id)sender;

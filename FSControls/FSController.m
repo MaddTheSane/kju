@@ -28,7 +28,7 @@
 
 @implementation FSController
 
-- (id) initWithSender:(id)sender
+- (id) initWithSender:(QDocument*)sender
 {
 	Q_DEBUG(@"initWithSender");
 	

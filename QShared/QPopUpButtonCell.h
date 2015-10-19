@@ -32,5 +32,5 @@
 	NSImage *imageNormal;
 	QButtonCellType buttonType;
 }
-- (id)initTextCell:(NSString *)stringValue buttonType:(QButtonCellType)aButtonType pullsDown:(BOOL)pullDown menu:(NSMenu *)menu image:(NSImage *)anImage;
+- (instancetype)initTextCell:(NSString *)stringValue buttonType:(QButtonCellType)aButtonType pullsDown:(BOOL)pullDown menu:(NSMenu *)menu image:(NSImage *)anImage;
 @end

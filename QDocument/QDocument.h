@@ -120,8 +120,8 @@ typedef struct {
 
 // pause VM
 - (void) VMSetPauseWhileInactive:(BOOL)value;
-- (void) VMPause:(id)sender;
-- (void) VMUnpause:(id)sender;
+- (IBAction) VMPause:(id)sender;
+- (IBAction) VMUnpause:(id)sender;
 - (BOOL) VMPauseWhileInactive;
 - (IBAction) togglePause:(id)sender;
 
@@ -137,28 +137,24 @@ typedef struct {
 - (IBAction) VMEjectCdrom:(id)sender;
 
 // take screenshot of VM
-- (void) takeScreenShot: (id)sender;
+- (IBAction) takeScreenShot: (id)sender;
 
 // toggle fullscreen of VM
-- (void) toggleFullscreen:(id)sender;
+- (IBAction) toggleFullscreen:(id)sender;
 
-// getters
-- (QApplicationController *) qApplication;
-- (BOOL) canCloseDocumentClose;
-- (int) uniqueDocumentID;
-- (QDocumentDistributedObject *) distributedObject;
-- (QDocumentTaskController *) qemuTask;
-@property (retain, readonly) QDocumentOpenGLView* screenView;
-- (QDocumentVMState) VMState;
+// getters/setters
+@property (readonly, assign) QApplicationController *qApplication;
+@property (readonly) BOOL canCloseDocumentClose;
+@property (readonly) int uniqueDocumentID;
+@property (readonly, retain) QDocumentDistributedObject *distributedObject;
+@property (readonly, retain) QDocumentTaskController *qemuTask;
+@property (readonly, retain) QDocumentOpenGLView* screenView;
+@property (nonatomic) QDocumentVMState VMState;
 - (NSString *) smbPath;
 @property float cpuUsage;
-- (BOOL) ideActivity;
-- (NSMutableArray<NSString*> *) driveFileNames;
-- (BOOL) absolute_enabled;
+@property BOOL ideActivity;
+@property (readonly, copy) NSArray<NSString*> *driveFileNames;
+@property BOOL absolute_enabled;
 - (NSMutableDictionary *) configuration;
 
-// setters
-- (void) setVMState:(QDocumentVMState)tVMState;
-- (void) setIdeActivity:(BOOL)tIdeActivity;
-- (void) setAbsolute_enabled:(BOOL)tAbsloute_enabled;
 @end

@@ -24,14 +24,15 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class QDocument;
 
 @interface QDocumentTaskController : NSObject {
-    id document; 
+    QDocument *document;
     NSTask *task;
 }
-- (id) initWithFile:(NSString *)file sender:(id)sender;
+- (instancetype) initWithFile:(NSString *)file sender:(QDocument*)sender;
 
-- (BOOL) addArgumentTo:(id)arguments option:(id)option argument:(id)argument filename:filename;
+- (BOOL) addArgumentTo:(id)arguments option:(id)option argument:(id)argument filename:(NSString*)filename;
 - (void) startQemuForFile:(NSString *)filename;
 
 - (NSTask *) task;

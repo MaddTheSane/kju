@@ -27,7 +27,7 @@
 
 
 @implementation QApplicationController
-- (id) init
+- (instancetype) init
 {
 	Q_DEBUG(@"init");
 
@@ -36,9 +36,9 @@
 
 		// preferences
 		[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:
-			[NSNumber numberWithBool:FALSE], // disable log to console
-			[NSNumber numberWithBool:TRUE], // yellow
-			[NSNumber numberWithBool:TRUE], // showFullscreenWarning
+			@NO, // disable log to console
+			@YES, // yellow
+			@YES, // showFullscreenWarning
 			[NSMutableArray array], // known VMs
 			nil
 		] forKeys:[NSArray arrayWithObjects:
@@ -107,14 +107,14 @@
         NSDocument *document;
         
 //        path = [NSURL URLWithString:[[panel filenames] objectAtIndex:0]];
-        if ([[panel filenames] count] < 1) {
+        if ([[panel URLs] count] < 1) {
             return;
         }
-        path = [[panel filenames] objectAtIndex:0];
+        path = [[panel URLs] objectAtIndex:0];
         documentController = [NSDocumentController sharedDocumentController];
         
         // is this document already open?
-        if ([documentController documentForURL:[NSURL fileURLWithPath:(NSString *)path]]) {
+        if ([documentController documentForURL:path]) {
             NSLog(@"Document is already open");
             //Todo: show the document
         } else {

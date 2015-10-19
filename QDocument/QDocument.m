@@ -40,8 +40,18 @@
 
 
 @implementation QDocument
+@synthesize VMState;
+@synthesize screenView;
+@synthesize cpuUsage;
+@synthesize ideActivity;
+@synthesize absolute_enabled;
+@synthesize canCloseDocumentClose;
+@synthesize uniqueDocumentID;
+@synthesize distributedObject;
+@synthesize qemuTask;
+@synthesize qApplication;
 
-- (id)init
+- (instancetype)init
 {
 	Q_DEBUG(@"init");
 
@@ -290,7 +300,7 @@
 		NSSavePanel *savePanel = [NSSavePanel savePanel];
 		[savePanel setAllowedFileTypes:[NSArray arrayWithObject:@"qvm"]];
 		[savePanel setCanSelectHiddenExtension:YES];
-		[savePanel beginSheetForDirectory:nil file:[self displayName] modalForWindow:[screenView window] modalDelegate:self didEndSelector:@selector(savePanelDidEnd:returnCode:contextInfo:) contextInfo:nil];
+		[savePanel beginSheetForDirectory:NSHomeDirectory() file:[self displayName] modalForWindow:[screenView window] modalDelegate:self didEndSelector:@selector(savePanelDidEnd:returnCode:contextInfo:) contextInfo:nil];
 	} else {
 		[self defaultAlertMessage:@"VM is running" informativeText:@"Please shutdown the VM before saving the VM to a new Name"];
 	}
@@ -443,7 +453,6 @@
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"QVMStatusDidChange" object:nil];
 
 }
-- (QDocumentVMState) VMState {return VMState;}
 
 - (void) errorSheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(id)contextInfo
 {
@@ -478,7 +487,7 @@
 		@selector(errorSheetDidEnd:returnCode:contextInfo:),
 		nil,
 		nil,
-		text); //informative text
+		@"%@", text); //informative text
 }
 
 
@@ -535,7 +544,7 @@
 			[self setVMState:QDocumentSaving];
             [distributedObject setCommand:'Z' arg1:0 arg2:0 arg3:0 arg4:0];
 			bitmapImageRep = [NSBitmapImageRep imageRepWithData:[[screenView screenshot:NSMakeSize(0.0, 0.0)] TIFFRepresentation]];
-			data =[bitmapImageRep representationUsingType: NSPNGFileType properties: nil];
+			data =[bitmapImageRep representationUsingType: NSPNGFileType properties: @{}];
 			fileManager = [NSFileManager defaultManager];
 			if(![fileManager fileExistsAtPath: [NSString stringWithFormat: @"%@/QuickLook", [[[configuration objectForKey:@"Temporary"] objectForKey:@"URL"] path]]])
 				[fileManager createDirectoryAtPath: [NSString stringWithFormat: @"%@/QuickLook", [[[configuration objectForKey:@"Temporary"] objectForKey:@"URL"] path]] withIntermediateDirectories: NO attributes: nil error: NULL];
@@ -870,23 +879,11 @@
 
 
 #pragma mark getters
-@synthesize screenView;
-@synthesize cpuUsage;
-- (QApplicationController *) qApplication { return qApplication;}
-- (BOOL) canCloseDocumentClose {return canCloseDocumentClose;}
-- (int) uniqueDocumentID {return uniqueDocumentID;}
-- (QDocumentDistributedObject *) distributedObject {return distributedObject;}
-- (QDocumentTaskController *) qemuTask {return qemuTask;}
 - (NSString *) smbPath { return smbPath;}
-- (BOOL) ideActivity {return ideActivity;}
-- (NSMutableArray *) driveFileNames { return driveFileNames;}
-- (BOOL) absolute_enabled {return absolute_enabled;}
+- (NSArray *) driveFileNames { return [driveFileNames copy];}
 - (NSMutableDictionary *) configuration {return configuration;}
 
 
 
-#pragma mark setters
-- (void) setIdeActivity:(BOOL)tIdeActivity{ ideActivity = tIdeActivity;}
-- (void) setAbsolute_enabled:(BOOL)tAbsloute_enabled {absolute_enabled = tAbsloute_enabled;}
 @end
 

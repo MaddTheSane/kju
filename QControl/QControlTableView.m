@@ -48,7 +48,7 @@
         qDeleteIcon = [NSImage imageNamed: @"q_tv_delete.png"];
 
 		// register table for drag'n drop
-		[self registerForDraggedTypes:[NSArray arrayWithObjects: NSFilenamesPboardType, nil]];
+		[self registerForDraggedTypes:@[NSFilenamesPboardType]];
     }
     
     return self;
@@ -62,7 +62,7 @@
     id VM;
     BOOL clicked = false;
     pointClicked = [self convertPoint:[event locationInWindow] fromView:nil];
-    int row = [self rowAtPoint: pointClicked];
+    NSInteger row = [self rowAtPoint: pointClicked];
     NSRect cellRect = [self frameOfCellAtColumn:1 row:row];
     
     for (i = 0; i < 4; i++) {
@@ -105,7 +105,7 @@
 	Q_DEBUG(@"mouseUp");
 
     int i;
-	int row;
+	NSInteger row;
     id VM;
 	NSRect cellRect;
     BOOL clicked;
@@ -300,5 +300,5 @@
 
 
 #pragma mark getters and setters
--(void) setQControl:(id)sender {qControl = sender;}
+-(void) setQControl:(QControlController*)sender {qControl = sender;}
 @end

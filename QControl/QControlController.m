@@ -138,10 +138,9 @@ NSInteger revCaseInsensitiveCompare(id string1, id string2, void *context)
 	VMs =[[NSMutableArray alloc] init];
 	
 	// check knownVMs
-	int i;
 	knownVMs = [[[[qApplication userDefaults] objectForKey:@"knownVMs"] mutableCopy] autorelease];
 	[knownVMs sortUsingFunction:revCaseInsensitiveCompare context:nil];
-	for (i = [knownVMs count] - 1; i > -1; i--) {
+	for (NSInteger i = [knownVMs count] - 1; i > -1; i--) {
 		tempVM = [[QQvmManager sharedQvmManager] loadVMConfiguration:[knownVMs objectAtIndex:i]];
 		if (tempVM) {
 			[VMs addObject:tempVM];

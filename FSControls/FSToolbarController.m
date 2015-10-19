@@ -29,7 +29,7 @@
 
 @implementation FSToolbarController
 
-- (id) initWithSender:(id)sender
+- (instancetype) initWithSender:(QDocument*)sender
 {
 	Q_DEBUG(@"initWithSender");
 

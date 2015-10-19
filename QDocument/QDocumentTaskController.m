@@ -28,7 +28,7 @@
 
 
 @implementation QDocumentTaskController
-- (id) initWithFile:(NSString *)file sender:(id)sender
+- (instancetype) initWithFile:(NSString *)file sender:(QDocument*)sender
 {
 	Q_DEBUG(@"initWithFile: %@", file);
 
@@ -118,7 +118,7 @@
 
 
 
-- (BOOL) addArgumentTo:(id)arguments option:(id)option argument:(id)argument filename:filename
+- (BOOL) addArgumentTo:(id)arguments option:(id)option argument:(id)argument filename:(NSString*)filename
 {
 	Q_DEBUG(@"addArgumentTo: option:%@ argument:%@ filename:%@", option, argument, filename);
 
@@ -129,7 +129,7 @@
     if ([argument isEqual:@"/dev/cdrom"]) {
         NSString *CDROMPath = [document firstCDROMDrive];
         if (CDROMPath) {
-            NSLog(@"CDROM: ", CDROMPath);
+            NSLog(@"CDROM: %@", CDROMPath);
             [arguments addObject:@"-cdrom"];
             [arguments addObject:CDROMPath];
         }
@@ -259,7 +259,6 @@ NSLog(@"ARGUMENTS: %@", arguments);
 	[document setVMState:QDocumentLoading];
     [task launch];
 }
-
 
 
 - (NSTask *) task {return task;}

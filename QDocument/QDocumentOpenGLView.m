@@ -221,11 +221,13 @@ int cocoa_keycode_to_qemu(int keycode)
 
 @interface BlackView : NSView
 {
-    float opacity;
+    CGFloat opacity;
 }
-- (void) setOpacity:(float)value;
+@property CGFloat opacity;
 @end
 @implementation BlackView
+@synthesize opacity;
+
 - (void) drawRect:(NSRect) rect
 {
     CGContextRef viewContextRef = [[NSGraphicsContext currentContext] graphicsPort];
@@ -233,12 +235,20 @@ int cocoa_keycode_to_qemu(int keycode)
     CGContextSetRGBFillColor(viewContextRef, 0, 0, 0, opacity);
     CGContextFillRect(viewContextRef, cgrect(rect));
 }
-- (void) setOpacity:(float)value {opacity = value;}
+
 @end
 
 
 
 @implementation QDocumentOpenGLView
+@synthesize fullscreen = isFullscreen;
+@synthesize screenBuffer;
+@synthesize screenProperties;
+@synthesize displayProperties;
+@synthesize fullscreenController;
+@synthesize mouseGrabed;
+@synthesize mouseDownCanMoveWindow;
+
 - (void) dealloc
 {
 	Q_DEBUG(@"dealloc");
@@ -480,16 +490,16 @@ int cocoa_keycode_to_qemu(int keycode)
 	CGContextRef contextRef;
 	void * textureData;
 	CGRect textureRect;
-	size_t textureWidth;
-	size_t textureHeight;
+	GLint textureWidth;
+	GLint textureHeight;
 
 	sourceRef = CGImageSourceCreateWithURL((CFURLRef)[NSURL fileURLWithPath:path], NULL);
 	if (!sourceRef)
 		return 0;
 
 	imageRef = CGImageSourceCreateImageAtIndex(sourceRef, 0, NULL);
-	textureWidth = CGImageGetWidth(imageRef);
-    textureHeight = CGImageGetHeight(imageRef);
+	textureWidth = (GLint)CGImageGetWidth(imageRef);
+    textureHeight = (GLint)CGImageGetHeight(imageRef);
 	textureRect = CGRectMake(0, 0, textureWidth, textureHeight);
 	textureData = calloc(textureWidth * 4, textureHeight);
 	colorSpaceRef = CGColorSpaceCreateDeviceRGB();
@@ -699,7 +709,7 @@ int cocoa_keycode_to_qemu(int keycode)
         [fullScreenWindow setReleasedWhenClosed:YES];
         [fullScreenWindow setHasShadow:NO];
         [fullScreenWindow setContentView:[[[BlackView alloc] initWithFrame:[[NSScreen mainScreen] frame]] autorelease]];
-        [[fullScreenWindow contentView] setOpacity:0.75];
+        [(BlackView*)[fullScreenWindow contentView] setOpacity:0.75];
         [NSMenu setMenuBarVisible:NO];
 
         // grow transition
@@ -812,8 +822,8 @@ int cocoa_keycode_to_qemu(int keycode)
 
     NSSize normalWindowSize;
     normalWindowSize = NSMakeSize(
-        (float)w * displayProperties.zoom,
-        (float)h * displayProperties.zoom + TITLE_BAR_HEIGHT + ICON_BAR_HEIGHT
+        (CGFloat)w * displayProperties.zoom,
+        (CGFloat)h * displayProperties.zoom + TITLE_BAR_HEIGHT + ICON_BAR_HEIGHT
     );
 
     // keep Window in correct aspect ratio
@@ -870,7 +880,7 @@ int cocoa_keycode_to_qemu(int keycode)
 {
 	Q_DEBUG(@"prepareForDragOperation");
 
-    return true;
+    return YES;
 }
 
 - (BOOL) performDragOperation:(id <NSDraggingInfo>)sender
@@ -909,7 +919,7 @@ int cocoa_keycode_to_qemu(int keycode)
 	Q_DEBUG(@"concludeDragOperation");
 
     // hide border
-    drag = false;
+    drag = NO;
     [self display];
 }
 
@@ -1115,12 +1125,6 @@ int cocoa_keycode_to_qemu(int keycode)
 
 
 #pragma mark getters
-- (BOOL) mouseGrabed { return mouseGrabed;}
-@synthesize fullscreen = isFullscreen;
-@synthesize screenBuffer;
-- (QScreen) screenProperties { return screenProperties;}
-- (QDisplayProperties) displayProperties { return displayProperties;}
 - (void) displayPropertiesSetZoom:(float)tZoom {displayProperties.zoom = tZoom;}
 - (NSWindow *) normalWindow { return normalWindow;}
-- (id) fullscreenController { return fullscreenController;}
 @end

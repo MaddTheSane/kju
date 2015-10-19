@@ -30,7 +30,7 @@
 
 
 @implementation QApplication
-- (id) init
+- (instancetype) init
 {
 	Q_DEBUG(@"init");
 
@@ -48,7 +48,7 @@
 {
 	Q_DEBUG(@"dealloc");
 
-    [applicationController dealloc];
+    [applicationController release];
     [super dealloc];
 }
 

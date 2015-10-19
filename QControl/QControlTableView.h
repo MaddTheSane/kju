@@ -24,9 +24,11 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class QControlController;
+
 @interface QControlTableView : NSTableView
 {
-    id qControl;
+    QControlController *qControl;
     NSPoint pointClicked;
     NSImage *qPlayIcon;
     NSImage *qPauseIcon;
@@ -34,5 +36,5 @@
     NSImage *qEditIcon;
     NSImage *qDeleteIcon;
 }
--(void) setQControl:(id)sender;
+-(void) setQControl:(QControlController*)sender;
 @end

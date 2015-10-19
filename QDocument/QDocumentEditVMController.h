@@ -24,6 +24,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class QDocument;
+
 typedef NS_ENUM(NSInteger, QDocumentEditVMMachine) {
    QDocumentEditVMMachinePc = 0,
    QDocumentEditVMMachineIsapc = 1,
@@ -59,7 +61,7 @@ typedef NS_ENUM(NSInteger, QDocumentEditVMMachine) {
 @interface QDocumentEditVMController : NSObject {
 
 	// Document
-	id document;
+	QDocument *document; //weak
 	NSMutableDictionary *VM;
 	
 	// niccount
@@ -108,14 +110,14 @@ typedef NS_ENUM(NSInteger, QDocumentEditVMMachine) {
 	IBOutlet NSTextField *optional;
 
 }
-- (void)showEditVMPanel:(id)sender;
+- (void)showEditVMPanel:(QDocument*)sender;
 - (NSPanel *) editVMPanel;
 
 - (IBAction)OK:(id)sender;
 - (IBAction)cancel:(id)sender;
 
-- (void) resetPanel:(id)sender;
+- (IBAction) resetPanel:(id)sender;
 - (void) setMachine:(QDocumentEditVMMachine)machine;
 - (BOOL) setOption:(NSString *)key withArgument:(NSString *)argument;
-- (void) populatePanel:(id)sender;
+- (IBAction) populatePanel:(id)sender;
 @end

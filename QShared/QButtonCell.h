@@ -32,11 +32,9 @@ typedef NS_ENUM(NSInteger, QButtonCellType) {
 };
 
 @interface QButtonCell : NSButtonCell {
-
 	NSImage *imageNormal;
 	NSImage *imagePressed;
 	QButtonCellType buttonType;
-
 }
-- (id)initImageCell:(NSImage *)anImage buttonType:(QButtonCellType)aButtonType target:(id)aTarget action:(SEL)anAction;
+- (instancetype)initImageCell:(NSImage *)anImage buttonType:(QButtonCellType)aButtonType target:(id)aTarget action:(SEL)anAction;
 @end

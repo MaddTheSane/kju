@@ -57,15 +57,17 @@ typedef struct QCommand
 - (BOOL) setVm_running:(BOOL)isRunning;
 @end
 
+@class QDocument;
+
 @interface QDocumentDistributedObject : NSObject <QDocumentDistributedObjectServerProto> {
-    id document;
+    QDocument *document;
     id qemu;
     void *commandBuffer;
     QCommand *commandPointer;
     int commandCount;
 }
 - (id) qemu;
-- (id) initWithSender:(id)sender;
+- (instancetype) initWithSender:(QDocument*)sender;
 - (void) setCommand:(char)command arg1:(int)arg1 arg2:(int)arg2 arg3:(int)arg3 arg4:(int)arg4;
 
 - (BOOL) qemuRegister:(id)sender;

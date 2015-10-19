@@ -24,13 +24,15 @@
 
 #import <Cocoa/Cocoa.h>
 
+@class QDocumentOpenGLView;
+@class QDocument;
 
 @interface QDocumentWindowController : NSObject <NSWindowDelegate> {
-    id document;
-	id screenView;
+    QDocument *document;
+	QDocumentOpenGLView *screenView;
     NSWindow *window;
     NSToolbar *toolbar;
     NSTimer *cpuTimer; // Timer to update the cpu Icon
 }
-- (id) initWithWindow:(NSWindow *)tWindow sender:(id)sender;
+- (instancetype) initWithWindow:(NSWindow *)tWindow sender:(QDocument *)sender;
 @end

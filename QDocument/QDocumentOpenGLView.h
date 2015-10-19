@@ -60,6 +60,8 @@ typedef NS_ENUM(NSInteger, QDocumentOpenGLTextures) {
 	QDocumentOpenGLTextureSavedImage = 2
 };
 
+@class FSController;
+
 @interface QDocumentOpenGLView : NSOpenGLView
 {
     IBOutlet QDocument *document;
@@ -68,7 +70,7 @@ typedef NS_ENUM(NSInteger, QDocumentOpenGLTextures) {
     QScreen screenProperties;
     QDisplayProperties displayProperties;
     void *screenBuffer;
-    id fullscreenController;
+    FSController *fullscreenController;
 
 	GLuint textures[3];
 
@@ -98,13 +100,13 @@ typedef NS_ENUM(NSInteger, QDocumentOpenGLTextures) {
 - (void) handleEvent:(NSEvent *)event;
 
 // getters
-- (BOOL) mouseGrabed;
+@property (readonly) BOOL mouseGrabed;
 @property (readonly, getter=isFullscreen) BOOL fullscreen;
 - (NSWindow *) normalWindow;
-- (QScreen) screenProperties;
-- (QDisplayProperties) displayProperties;
+@property (readonly) QScreen screenProperties;
+@property (readonly) QDisplayProperties displayProperties;
 - (void) displayPropertiesSetZoom:(float)tZoom;
 @property (readonly) void *screenBuffer NS_RETURNS_INNER_POINTER;
-- (id) fullscreenController;
+@property (readonly) FSController *fullscreenController;
 @end
 
