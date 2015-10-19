@@ -28,7 +28,9 @@
 #import "QDocumentOpenGLView.h"
 
 
-@implementation QDocumentTaskController
+@implementation QDocumentTaskController {
+	__weak QDocument *document;
+}
 @synthesize task;
 
 - (instancetype) initWithFile:(NSString *)file sender:(QDocument*)sender
@@ -201,7 +203,7 @@
     }
  
     // Arguments of configuration
-	explodedArguments = [[QQvmManager sharedQvmManager] explodeVMArguments:[document configuration][@"Arguments"]];
+	explodedArguments = [[[QQvmManager sharedQvmManager] explodeVMArguments:[document configuration][@"Arguments"]] mutableCopy];
 	key = nil;
 	for (i = 0; i < explodedArguments.count; i++) {
 		if ([explodedArguments[i] characterAtIndex:0] == '-') { // key

@@ -26,10 +26,7 @@
 
 @class QDocument;
 
-@interface QDocumentTaskController : NSObject {
-    QDocument *document;
-    NSTask *task;
-}
+@interface QDocumentTaskController : NSObject
 - (instancetype) initWithFile:(NSString *)file sender:(QDocument*)sender NS_DESIGNATED_INITIALIZER;
 
 - (BOOL) addArgumentTo:(id)arguments option:(id)option argument:(id)argument filename:(NSString*)filename;

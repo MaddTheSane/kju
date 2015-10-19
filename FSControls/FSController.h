@@ -28,10 +28,6 @@
 @class QDocument;
 
 @interface FSController : NSObject
-{
-    FSToolbarController * toolbar;
-    QDocument *pc;
-}
 
 - (instancetype) initWithSender:(QDocument*)sender;
 

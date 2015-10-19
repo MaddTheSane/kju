@@ -29,6 +29,15 @@
 #import "../QDocument/QDocumentOpenGLView.h"
 
 @implementation FSToolbarController
+{
+	__weak NSWindow * window;
+	__weak FSRoundedView * view;
+	NSTimer * fadeTimer;
+	
+	BOOL showsToolbar;
+	BOOL isAnimating;
+	__weak QDocument *pc;
+}
 @synthesize showsToolbar;
 @synthesize animating = isAnimating;
 
@@ -47,8 +56,9 @@
 	window.delegate = self;
 	
 	// create a rounded view and make it the window's contentView
-	view = [[FSRoundedView alloc] init];
-	window.contentView = view;
+	FSRoundedView *rv = [[FSRoundedView alloc] init];
+	window.contentView = rv;
+	view = rv;
 	
     [self setupToolbar];
 	
@@ -155,7 +165,7 @@
 {
 	Q_DEBUG(@"addCustomToolbarItem");
 
-	id cView = window.contentView.superview;	
+	id cView = window.contentView.superview;
 	[cView addSubview: item];
 
 	[cView setNeedsDisplay: YES];
@@ -207,11 +217,12 @@
 
 	if(window.alphaValue > 0.0) {
 		// fade out..
-		float nextAlphaValue = window.alphaValue - 0.2;
+		CGFloat nextAlphaValue = window.alphaValue - 0.2;
 		window.alphaValue = nextAlphaValue;
 	} else {
 		// fadeOut complete
 		[fadeTimer invalidate];
+		fadeTimer = nil;
 		[window orderOut:nil];
 		[self setAnimates: NO];
 	}
@@ -238,7 +249,7 @@
 
     [pc.screenView toggleFullScreen];
     // release ourselves with the FSController
-    [pc.screenView fullscreenController];
+    //[[[pc screenView] fullscreenController] release];
 }
 
 - (void) shutdownPC:(id)sender
@@ -247,7 +258,7 @@
 
     [pc VMShutDown:self];
     // release ourselves with the FSController
-    [pc.screenView fullscreenController];
+    //[[[pc screenView] fullscreenController] release];
 }
 
 - (void) dealloc

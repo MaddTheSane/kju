@@ -30,6 +30,8 @@
 
 
 @implementation QApplication
+@synthesize applicationController;
+
 - (instancetype) init
 {
 	Q_DEBUG(@"init");

@@ -35,6 +35,16 @@
 #define ICON_SPACE 2.0
 
 @implementation QControlTableView
+{
+	NSPoint pointClicked;
+	NSImage *qPlayIcon;
+	NSImage *qPauseIcon;
+	NSImage *qStopIcon;
+	NSImage *qEditIcon;
+	NSImage *qDeleteIcon;
+}
+@synthesize qControl;
+
 - (instancetype) initWithCoder: (NSCoder *) decoder
 {
 	Q_DEBUG(@"init");
@@ -298,7 +308,4 @@
 }
 
 
-
-#pragma mark getters and setters
--(void) setQControl:(QControlController*)sender {qControl = sender;}
 @end

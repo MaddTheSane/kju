@@ -25,11 +25,7 @@
 #import <Cocoa/Cocoa.h>
 
 
-@interface QWindow : NSWindow {
-    BOOL forceDisplay;
-	BOOL yellow;
-    NSImage *template;
-}
+@interface QWindow : NSWindow 
 - (void) setYellow:(id)sender;
 @property (readonly, copy) NSColor *sizedPolishedBackground;
 - (void)windowNeedsUpdate:(NSNotification *)aNotification;

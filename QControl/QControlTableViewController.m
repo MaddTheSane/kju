@@ -29,6 +29,15 @@
 
 
 @implementation QControlTableViewController
+{
+	NSImage *shutdownImage;
+	NSMutableArray *VMsImages;
+	NSArray *cpuTypes;
+	NSTimer *timer;
+}
+@synthesize table;
+@synthesize qControl;
+
 - (instancetype) init
 {
 	Q_DEBUG(@"init");

@@ -51,51 +51,23 @@ typedef struct {
 } CanCloseDocumentContext;
 
 @interface QDocument : NSDocument
-{
-    QApplicationController *__unsafe_unretained qApplication;
-    QDocumentWindowController *windowController;
-    QDocumentDistributedObject *distributedObject;
-    QDocumentTaskController *qemuTask;
-    QDocumentOpenGLView *screenView;
-    int uniqueDocumentID;
-    
-    // QEMU state
-    NSMutableDictionary *configuration;
-	QDocumentVMState VMState;
-    BOOL VMPauseWhileInactive;
-    BOOL VMPausedByUser;
-    NSString *smbPath;
-    float cpuUsage;
-    BOOL ideActivity;
-    NSMutableArray<NSString*> *driveFileNames;
-    BOOL absolute_enabled;
-    BOOL VMSupportsSnapshots;
-	
-	IBOutlet NSButton *buttonEdit;
-	IBOutlet NSButton *buttonFloppy;
-	IBOutlet NSButton *buttonCDROM;
-	IBOutlet NSButton *buttonToggleFullscreen;
-	IBOutlet NSButton *buttonTakeScreenshot;
-	IBOutlet NSButton *buttonCtrlAltDel;
-	IBOutlet NSButton *buttonReset;
-	IBOutlet NSButton *buttonTogglePause;
-	IBOutlet NSButton *buttonTogleStartShutdown;
-	
-	//Progress panel
-	IBOutlet NSPanel *progressPanel;
-	IBOutlet NSTextField *progressText;
-	IBOutlet NSProgressIndicator *progressIndicator;
-	
-	//Edit VM panel
-	QDocumentEditVMController *editVMController;
 
-    NSArray<NSString*> *fileTypes;
-	
-	// overriding "canCloseDocumentWithDelegate"
-	// http://lists.apple.com/archives/cocoa-dev/2001/Nov/msg00940.html
-	BOOL canCloseDocumentClose;
-	CanCloseDocumentContext *canCloseDocumentContext;
-}
+@property (weak) IBOutlet NSButton *buttonEdit;
+@property (weak) IBOutlet NSButton *buttonFloppy;
+@property (weak) IBOutlet NSButton *buttonCDROM;
+@property (weak) IBOutlet NSButton *buttonToggleFullscreen;
+@property (weak) IBOutlet NSButton *buttonTakeScreenshot;
+@property (weak) IBOutlet NSButton *buttonCtrlAltDel;
+@property (weak) IBOutlet NSButton *buttonReset;
+@property (weak) IBOutlet NSButton *buttonTogglePause;
+@property (weak) IBOutlet NSButton *buttonTogleStartShutdown;
+
+//Progress panel
+@property (weak) IBOutlet NSPanel *progressPanel;
+@property (weak) IBOutlet NSTextField *progressText;
+@property (weak) IBOutlet NSProgressIndicator *progressIndicator;
+
+
 // "canCloseDocumentWithDelegate" callback
 - (void)docShouldClose:(id)sender;
 

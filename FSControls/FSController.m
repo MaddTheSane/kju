@@ -27,7 +27,10 @@
 #import "../QDocument/QDocumentOpenGLView.h"
 
 @implementation FSController
-
+{
+	FSToolbarController * toolbar;
+	__weak QDocument *pc;
+}
 - (instancetype) initWithSender:(QDocument*)sender
 {
 	Q_DEBUG(@"initWithSender");

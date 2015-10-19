@@ -27,6 +27,9 @@
 
 
 @implementation QApplicationController
+{
+	int uniqueDocumentID;
+}
 @synthesize userDefaults;
 - (instancetype) init
 {
@@ -186,6 +189,4 @@
     return uniqueDocumentID;
 }
 
-#pragma mark getters
-- (NSUserDefaults *) userDefaults {return userDefaults;}
 @end

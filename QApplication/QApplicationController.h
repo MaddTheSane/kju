@@ -24,13 +24,13 @@
 
 #import <Cocoa/Cocoa.h>
 
+NS_ASSUME_NONNULL_BEGIN
 
-@interface QApplicationController : NSObject <NSApplicationDelegate> {
-    NSUserDefaults *userDefaults;
-    int uniqueDocumentID;
-}
+@interface QApplicationController : NSObject <NSApplicationDelegate>
 -(int) leaseAUniqueDocumentID:(id)sender;
 
 // getters
 @property (readonly, strong) NSUserDefaults *userDefaults;
 @end
+
+NS_ASSUME_NONNULL_END

@@ -40,6 +40,35 @@
 
 
 @implementation QDocument
+{
+	QApplicationController *__unsafe_unretained qApplication;
+	QDocumentWindowController *windowController;
+	QDocumentDistributedObject *distributedObject;
+	QDocumentTaskController *qemuTask;
+	QDocumentOpenGLView *screenView;
+	int uniqueDocumentID;
+	
+	// QEMU state
+	NSMutableDictionary *configuration;
+	BOOL VMPauseWhileInactive;
+	BOOL VMPausedByUser;
+	NSString *smbPath;
+	float cpuUsage;
+	BOOL ideActivity;
+	NSMutableArray<NSString*> *driveFileNames;
+	BOOL absolute_enabled;
+	BOOL VMSupportsSnapshots;
+		
+	//Edit VM panel
+	QDocumentEditVMController *editVMController;
+	
+	NSArray<NSString*> *fileTypes;
+	
+	// overriding "canCloseDocumentWithDelegate"
+	// http://lists.apple.com/archives/cocoa-dev/2001/Nov/msg00940.html
+	BOOL canCloseDocumentClose;
+	CanCloseDocumentContext *canCloseDocumentContext;
+}
 @synthesize VMState;
 @synthesize screenView;
 @synthesize cpuUsage;
@@ -53,6 +82,20 @@
 @synthesize VMPauseWhileInactive;
 @synthesize smbPath;
 @synthesize configuration;
+@synthesize buttonEdit;
+@synthesize buttonFloppy;
+@synthesize buttonCDROM;
+@synthesize buttonToggleFullscreen;
+@synthesize buttonTakeScreenshot;
+@synthesize buttonCtrlAltDel;
+@synthesize buttonReset;
+@synthesize buttonTogglePause;
+@synthesize buttonTogleStartShutdown;
+
+//Progress panel
+@synthesize progressPanel;
+@synthesize progressText;
+@synthesize progressIndicator;
 
 - (instancetype)init
 {
@@ -870,10 +913,7 @@
     [screenView toggleFullScreen];
 }
 
-
-
 #pragma mark getters
 - (NSArray *) driveFileNames { return [driveFileNames copy];}
 
 @end
-

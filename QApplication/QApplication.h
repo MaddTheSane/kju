@@ -27,8 +27,6 @@
 #import "QApplicationController.h"
 
 
-@interface QApplication : NSApplication {
-    QApplicationController *applicationController;
-}
-@property (readonly, strong) QApplicationController *applicationController;
+@interface QApplication : NSApplication
+@property (readonly, strong, nonnull) QApplicationController *applicationController;
 @end

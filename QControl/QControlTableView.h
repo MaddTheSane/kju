@@ -27,14 +27,5 @@
 @class QControlController;
 
 @interface QControlTableView : NSTableView
-{
-    QControlController *qControl;
-    NSPoint pointClicked;
-    NSImage *qPlayIcon;
-    NSImage *qPauseIcon;
-    NSImage *qStopIcon;
-    NSImage *qEditIcon;
-    NSImage *qDeleteIcon;
-}
--(void) setQControl:(QControlController*)sender;
+@property (weak) QControlController *qControl;
 @end

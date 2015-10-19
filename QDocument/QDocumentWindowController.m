@@ -30,6 +30,13 @@
 
 
 @implementation QDocumentWindowController
+{
+	__weak QDocument *document;
+	__weak QDocumentOpenGLView *screenView;
+	NSWindow *window;
+	NSToolbar *toolbar;
+	NSTimer *cpuTimer; // Timer to update the cpu Icon
+}
 - (instancetype) initWithWindow:(NSWindow *)tWindow sender:(QDocument *)sender
 {
 	Q_DEBUG(@"initWithWindow:");
@@ -38,8 +45,8 @@
     if (self) {
         
         // we are part of this document
-        document = (QDocument *)sender;
-		screenView = (QDocumentOpenGLView *)document.screenView;
+        document = sender;
+		screenView = document.screenView;
         
         // we are delegate of this window
         window = tWindow;

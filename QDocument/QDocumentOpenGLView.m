@@ -233,7 +233,7 @@ int cocoa_keycode_to_qemu(int keycode)
     CGContextRef viewContextRef = [NSGraphicsContext currentContext].graphicsPort;
     CGContextSetShouldAntialias (viewContextRef, NO);
     CGContextSetRGBFillColor(viewContextRef, 0, 0, 0, opacity);
-    CGContextFillRect(viewContextRef, cgrect(rect));
+    CGContextFillRect(viewContextRef, rect);
 }
 
 @end
@@ -241,6 +241,22 @@ int cocoa_keycode_to_qemu(int keycode)
 
 
 @implementation QDocumentOpenGLView
+{
+	NSWindow *fullScreenWindow;
+	QScreen screenProperties;
+	QDisplayProperties displayProperties;
+	void *screenBuffer;
+	FSController *fullscreenController;
+	
+	GLuint textures[3];
+	
+	int modifiers_state[256];
+	BOOL is_graphic_console;
+	BOOL mouseGrabed;
+	BOOL isFullscreen;
+	BOOL drag;
+	BOOL tablet_enabled;
+}
 @synthesize fullscreen = isFullscreen;
 @synthesize screenBuffer;
 @synthesize screenProperties;
@@ -248,6 +264,8 @@ int cocoa_keycode_to_qemu(int keycode)
 @synthesize fullscreenController;
 @synthesize mouseGrabed;
 @synthesize mouseDownCanMoveWindow;
+@synthesize document;
+@synthesize normalWindow;
 
 - (void) dealloc
 {
@@ -646,18 +664,23 @@ int cocoa_keycode_to_qemu(int keycode)
 	CGDataProviderRef dataProviderRef;
 	dataProviderRef = CGDataProviderCreateWithData(NULL, screenBuffer, screenProperties.width * 4 * screenProperties.height, NULL);
 	if (dataProviderRef) {
+		CGColorSpaceRef colorSpace;
+#if __LITTLE_ENDIAN__
+		colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB); //colorspace for OX X >= 10.4
+#else
+		colorSpace = CGColorSpaceCreateDeviceRGB(); //colorspace for OS X < 10.4 (actually ppc)
+#endif
 		CGImageRef imageRef = CGImageCreate(
 			screenProperties.width, //width
 			screenProperties.height, //height
 			8, //bitsPerComponent
 			32, //bitsPerPixel
 			(screenProperties.width * 4), //bytesPerRow
+											colorSpace,
 #if __LITTLE_ENDIAN__
-			CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB), //colorspace for OX S >= 10.4
-			kCGImageAlphaNoneSkipLast,
+			(CGBitmapInfo)kCGImageAlphaNoneSkipLast,
 #else
-			CGColorSpaceCreateDeviceRGB(), //colorspace for OS X < 10.4 (actually ppc)
-			kCGImageAlphaNoneSkipFirst, //bitmapInfo
+			(CGBitmapInfo)kCGImageAlphaNoneSkipFirst, //bitmapInfo
 #endif
 			dataProviderRef, //provider
 			NULL, //decode
@@ -666,6 +689,7 @@ int cocoa_keycode_to_qemu(int keycode)
 		);
 		CGContextDrawImage (viewContextRef, CGRectMake(0, 0, size.width, size.height), imageRef);
 		CGImageRelease (imageRef);
+		CGColorSpaceRelease(colorSpace);
 	}
 	CGDataProviderRelease(dataProviderRef);
 	
@@ -802,6 +826,7 @@ int cocoa_keycode_to_qemu(int keycode)
         // switch from fullscreen to desktop
         
         // remove fullscreenController
+		fullscreenController = nil;
 		
         isFullscreen = FALSE;
         [self ungrabMouse];
@@ -1152,6 +1177,10 @@ int cocoa_keycode_to_qemu(int keycode)
         case NSScrollWheel:
             [document.distributedObject setCommand:'M' arg1:0 arg2:0 arg3:event.deltaY arg4:0];
             break;
+			
+		default:
+			NSLog(@"Unhandled type: %lu", (unsigned long)event.type);
+			break;
     }
 }
 - (void) flagsChanged:(NSEvent *)event { [self handleEvent:event];}
@@ -1179,6 +1208,5 @@ int cocoa_keycode_to_qemu(int keycode)
 
 
 #pragma mark getters
-- (void) displayPropertiesSetZoom:(float)tZoom {displayProperties.zoom = tZoom;}
-- (NSWindow *) normalWindow { return normalWindow;}
+- (void) displayPropertiesSetZoom:(CGFloat)tZoom {displayProperties.zoom = tZoom;}
 @end

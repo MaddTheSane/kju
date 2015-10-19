@@ -26,6 +26,11 @@
 
 
 @implementation QButtonCell
+{
+	NSImage *imageNormal;
+	NSImage *imagePressed;
+	QButtonCellType buttonType;
+}
 - (instancetype)initImageCell:(NSImage *)anImage
 {
 	Q_DEBUG(@"initImageCell");

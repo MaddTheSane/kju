@@ -30,15 +30,7 @@
 #define SEMI_TRANSPARENT_COLOR [NSColor colorWithCalibratedWhite:0.0 alpha:0.6]
 
 @interface FSToolbarController : NSObject <NSWindowDelegate>
-{
-	NSWindow * window;
-	FSRoundedView * view;
-	NSTimer * fadeTimer;
-	
-	BOOL showsToolbar;
-	BOOL isAnimating;
-	QDocument *pc;
-}
+
 - (instancetype) initWithSender:(QDocument*)sender;
 
 - (void) show;

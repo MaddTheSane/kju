@@ -29,15 +29,15 @@
 
 #define FILE_TYPES [NSArray arrayWithObjects:@"qcow2", @"qcow", @"raw", @"cow", @"vmdk", @"cloop", @"img", @"iso", @"dsk", @"dmg", @"cdr", @"toast", @"flp", @"fs", nil]
 
-@interface QControlTableViewController : NSObject <NSTableViewDataSource, NSTableViewDelegate> {
-	IBOutlet QControlTableView *table;
-	IBOutlet QControlController* qControl;
-	NSImage *shutdownImage;
-	NSMutableArray *VMsImages;
-	NSArray *cpuTypes;
-	NSTimer *timer;
-}
+NS_ASSUME_NONNULL_BEGIN
+
+@interface QControlTableViewController : NSObject <NSTableViewDataSource, NSTableViewDelegate>
+@property (weak) IBOutlet QControlTableView *table;
+@property (weak) IBOutlet QControlController* qControl;
+
 - (void) tableDoubleClick:(id)sender;
 - (NSImage *) loadThumbnailForVM:(NSMutableDictionary *)VM;
 - (void) updateThumbnails:(id)sender;
 @end
+
+NS_ASSUME_NONNULL_END

@@ -35,6 +35,54 @@
 #define PREFS_HEIGHT 100.0
 
 @implementation QControlController
+{
+	__weak QApplicationController *qApplication;
+	
+	// controlWindow
+	NSMutableArray *VMs;
+	QWindow *__unsafe_unretained mainWindow;
+	
+	NSTimer *timer;	 //to update Table Thumbnails
+	
+	// preferences
+	BOOL isPrefAnimating;
+	BOOL isPrefShown;
+	
+	// loading VMs
+	
+	// browsing for qvms
+	NSMetadataQuery *query;
+	/*
+	 // progressPanel
+	 IBOutlet id progressPanel;
+	 IBOutlet NSProgressIndicator *progressIndicator;
+	 IBOutlet NSTextField *progressTitle;
+	 IBOutlet NSTextField *progressText;
+	 IBOutlet NSTextField *progressStatusText;
+	 
+	 // preferences
+	 cocoaControlPreferences *preferences;
+	 
+	 // FreeOSDownloader
+	 cocoaDownloadController *downloader;
+	 
+	 // newImage
+	 */	
+}
+
+@synthesize table;
+@synthesize prefUpdates;
+@synthesize prefLog;
+@synthesize prefYellow;
+@synthesize prefFSWarning;
+
+@synthesize buttonEdit;
+@synthesize buttonAdd;
+
+@synthesize loadProgressIndicator;
+@synthesize loadProgressText;
+
+
 -(instancetype)init
 {
 	Q_DEBUG(@"init");
@@ -312,7 +360,7 @@ NSInteger revCaseInsensitiveCompare(id string1, id string2, void *context)
 	Q_DEBUG(@"startVMWithURL:%@", URL);
 
 	// start VM
-	[[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:URL display:YES error:nil];
+	[[NSDocumentController sharedDocumentController] openDocumentWithContentsOfURL:URL display:YES completionHandler:^(NSDocument * _Nullable document, BOOL documentWasAlreadyOpen, NSError * _Nullable error) {}];
 }
 
 - (void) startVM:(NSMutableDictionary *)VM
