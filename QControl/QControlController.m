@@ -35,7 +35,7 @@
 #define PREFS_HEIGHT 100.0
 
 @implementation QControlController
--(id)init
+-(instancetype)init
 {
 	Q_DEBUG(@"init");
 
@@ -43,7 +43,7 @@
 	if (self) {
 	
         // Application
-        qApplication = [NSApp delegate];
+        qApplication = NSApp.delegate;
 		
 		// load known VMs, search for new VMs
 		[self loadConfigurations];
@@ -72,38 +72,38 @@
 
 	NSPredicate *predicate;
 
-	[buttonEdit setCell:[[QButtonCell alloc] initImageCell:[[buttonEdit cell] image] buttonType:QButtonCellLeft target:[[buttonEdit cell] target] action:[[buttonEdit cell] action]]];
-	[buttonAdd setCell:[[QButtonCell alloc] initImageCell:[[buttonAdd cell] image] buttonType:QButtonCellRight target:[[buttonAdd cell] target] action:[[buttonAdd cell] action]]];
+	buttonEdit.cell = [[QButtonCell alloc] initImageCell:[buttonEdit.cell image] buttonType:QButtonCellLeft target:buttonEdit.cell.target action:[buttonEdit.cell action]];
+	buttonAdd.cell = [[QButtonCell alloc] initImageCell:[buttonAdd.cell image] buttonType:QButtonCellRight target:buttonAdd.cell.target action:[buttonAdd.cell action]];
 	
 	// search for qvms
 	query = [[NSMetadataQuery alloc] init];
-	[query setDelegate:self];
+	query.delegate = self;
 	[loadProgressIndicator startAnimation:self];
 	predicate = [NSPredicate predicateWithFormat:@"kMDItemDisplayName ENDSWITH 'qvm'", nil];
-    [query setPredicate:predicate];
-    [query setSearchScopes:[NSArray arrayWithObject:NSMetadataQueryUserHomeScope]];
+    query.predicate = predicate;
+    query.searchScopes = @[NSMetadataQueryUserHomeScope];
 	[query startQuery];
 
 	// preferences
     if ([[qApplication userDefaults] boolForKey:@"SUCheckAtStartup"]) {
-        [prefUpdates setState:NSOnState];
+        prefUpdates.state = NSOnState;
     } else {
-        [prefUpdates setState:NSOffState];
+        prefUpdates.state = NSOffState;
     }
     if ([[qApplication userDefaults] boolForKey:@"enableLogToConsole"]) {
-        [prefLog setState:NSOnState];
+        prefLog.state = NSOnState;
     } else {
-        [prefLog setState:NSOffState];
+        prefLog.state = NSOffState;
     }
     if ([[qApplication userDefaults] boolForKey:@"showFullscreenWarning"]) {
-        [prefFSWarning setState:NSOnState];
+        prefFSWarning.state = NSOnState;
     } else {
-        [prefFSWarning setState:NSOffState];
+        prefFSWarning.state = NSOffState;
     }
     if ([[qApplication userDefaults] boolForKey:@"yellow"]) {
-        [prefYellow setState:NSOnState];
+        prefYellow.state = NSOnState;
     } else {
-        [prefYellow setState:NSOffState];
+        prefYellow.state = NSOffState;
     }
 }
 
@@ -136,8 +136,8 @@ NSInteger revCaseInsensitiveCompare(id string1, id string2, void *context)
 	// check knownVMs
 	knownVMs = [[[qApplication userDefaults] objectForKey:@"knownVMs"] mutableCopy];
 	[knownVMs sortUsingFunction:revCaseInsensitiveCompare context:nil];
-	for (NSInteger i = [knownVMs count] - 1; i > -1; i--) {
-		tempVM = [[QQvmManager sharedQvmManager] loadVMConfiguration:[knownVMs objectAtIndex:i]];
+	for (NSInteger i = knownVMs.count - 1; i > -1; i--) {
+		tempVM = [[QQvmManager sharedQvmManager] loadVMConfiguration:knownVMs[i]];
 		if (tempVM) {
 			[VMs addObject:tempVM];
 		} else {
@@ -274,8 +274,8 @@ NSInteger revCaseInsensitiveCompare(id string1, id string2, void *context)
         
         // delete .qvm
         NSFileManager *fileManager = [NSFileManager defaultManager];
-        if ([fileManager fileExistsAtPath:[[[contextInfo objectForKey:@"Temporary"] objectForKey:@"URL"] path]])
-            [fileManager removeFileAtPath:[[[contextInfo objectForKey:@"Temporary"] objectForKey:@"URL"] path] handler:nil];
+        if ([fileManager fileExistsAtPath:[contextInfo[@"Temporary"][@"URL"] path]])
+            [fileManager removeFileAtPath:[contextInfo[@"Temporary"][@"URL"] path] handler:nil];
     
         // cleanup
         [self loadConfigurations];
@@ -287,9 +287,9 @@ NSInteger revCaseInsensitiveCompare(id string1, id string2, void *context)
 	Q_DEBUG(@"deleteThisVM: %@", VM);
 
 	// do not allow deleting a running VM
-    if ([[[VM objectForKey:@"PC Data"] objectForKey:@"state"] isEqual:@"running"]) {
-        [self standardAlert: [NSString stringWithFormat: NSLocalizedStringFromTable(@"deleteVM:standardAlert", @"Localizable", @"QControlController"),[[VM objectForKey:@"Temporary"] objectForKey:@"name"]]
-             informativeText: [NSString stringWithFormat: NSLocalizedStringFromTable(@"deleteVM:informativeText", @"Localizable", @"QControlController"), [[VM objectForKey:@"Temporary"] objectForKey:@"name"]]];
+    if ([VM[@"PC Data"][@"state"] isEqual:@"running"]) {
+        [self standardAlert: [NSString stringWithFormat: NSLocalizedStringFromTable(@"deleteVM:standardAlert", @"Localizable", @"QControlController"),VM[@"Temporary"][@"name"]]
+             informativeText: [NSString stringWithFormat: NSLocalizedStringFromTable(@"deleteVM:informativeText", @"Localizable", @"QControlController"), VM[@"Temporary"][@"name"]]];
         return;
     }
     
@@ -298,7 +298,7 @@ NSInteger revCaseInsensitiveCompare(id string1, id string2, void *context)
                       defaultButton: NSLocalizedStringFromTable(@"deleteVM:defaultButton", @"Localizable", @"QControlController")
                     alternateButton: NSLocalizedStringFromTable(@"deleteVM:alternateButton", @"Localizable", @"QControlController")
                         otherButton:nil
-                  informativeTextWithFormat:[NSString stringWithFormat: NSLocalizedStringFromTable(@"deleteVM:informativeTextWithFormat", @"Localizable", @"QControlController"),[[VM objectForKey:@"Temporary"] objectForKey:@"name"]]];
+                  informativeTextWithFormat:[NSString stringWithFormat: NSLocalizedStringFromTable(@"deleteVM:informativeTextWithFormat", @"Localizable", @"QControlController"),VM[@"Temporary"][@"name"]]];
     
     // display alert
     [alert beginSheetModalForWindow:mainWindow
@@ -319,7 +319,7 @@ NSInteger revCaseInsensitiveCompare(id string1, id string2, void *context)
 {
 	Q_DEBUG(@"startVM: %@", VM);
 
-    [self startVMWithURL:[[VM objectForKey:@"Temporary"] objectForKey:@"URL"]];
+    [self startVMWithURL:VM[@"Temporary"][@"URL"]];
 }
 
 - (void) pauseVM:(NSMutableDictionary *)VM
@@ -327,7 +327,7 @@ NSInteger revCaseInsensitiveCompare(id string1, id string2, void *context)
 	Q_DEBUG(@"pauseVM: %@", VM);
 
 	QDocument *qDocument;
-	qDocument = [[NSDocumentController sharedDocumentController] documentForURL:[[VM objectForKey:@"Temporary"] objectForKey:@"URL"]];
+	qDocument = [[NSDocumentController sharedDocumentController] documentForURL:VM[@"Temporary"][@"URL"]];
 	[qDocument VMPause:self];
 }
 
@@ -336,7 +336,7 @@ NSInteger revCaseInsensitiveCompare(id string1, id string2, void *context)
 	Q_DEBUG(@"unpauseVM: %@", VM);
 
 	QDocument *qDocument;
-	qDocument = [[NSDocumentController sharedDocumentController] documentForURL:[[VM objectForKey:@"Temporary"] objectForKey:@"URL"]];
+	qDocument = [[NSDocumentController sharedDocumentController] documentForURL:VM[@"Temporary"][@"URL"]];
 	[qDocument VMUnpause:self];
 }
 
@@ -345,7 +345,7 @@ NSInteger revCaseInsensitiveCompare(id string1, id string2, void *context)
 	Q_DEBUG(@"stopVM: %@", VM);
 
 	QDocument *qDocument;
-	qDocument = [[NSDocumentController sharedDocumentController] documentForURL:[[VM objectForKey:@"Temporary"] objectForKey:@"URL"]];
+	qDocument = [[NSDocumentController sharedDocumentController] documentForURL:VM[@"Temporary"][@"URL"]];
 	[qDocument VMShutDown:self];
 }
 
@@ -403,10 +403,10 @@ NSInteger revCaseInsensitiveCompare(id string1, id string2, void *context)
         NSMutableDictionary* viewDictionary;
         NSRect tFrame;
         
-        tFrame = [[[table superview] superview] frame];
+        tFrame = table.superview.superview.frame;
         viewDictionary = [NSMutableDictionary dictionaryWithCapacity:3];
-        [viewDictionary setObject:[[table superview] superview] forKey:NSViewAnimationTargetKey];      
-        [viewDictionary setObject:[NSValue valueWithRect:tFrame] forKey:NSViewAnimationStartFrameKey];
+        viewDictionary[NSViewAnimationTargetKey] = table.superview.superview;      
+        viewDictionary[NSViewAnimationStartFrameKey] = [NSValue valueWithRect:tFrame];
             
         if (isPrefShown) {
             tFrame.origin.y = 30.0;
@@ -419,11 +419,11 @@ NSInteger revCaseInsensitiveCompare(id string1, id string2, void *context)
             isPrefShown = TRUE;
         }
         
-        [viewDictionary setObject:[NSValue valueWithRect:tFrame] forKey:NSViewAnimationEndFrameKey];  
-        viewAnimation = [[NSViewAnimation alloc] initWithViewAnimations:[NSArray arrayWithObjects:viewDictionary, nil]];
-        [viewAnimation setDuration:0.25];
-        [viewAnimation setAnimationCurve:NSAnimationLinear];
-        [viewAnimation setDelegate:self];
+        viewDictionary[NSViewAnimationEndFrameKey] = [NSValue valueWithRect:tFrame];  
+        viewAnimation = [[NSViewAnimation alloc] initWithViewAnimations:@[viewDictionary]];
+        viewAnimation.duration = 0.25;
+        viewAnimation.animationCurve = NSAnimationLinear;
+        viewAnimation.delegate = self;
         [viewAnimation startAnimation];
         
         isPrefAnimating = TRUE;
@@ -489,10 +489,10 @@ NSInteger revCaseInsensitiveCompare(id string1, id string2, void *context)
 	NSMutableArray *knownVMs;
 	
 	knownVMs = [[[qApplication userDefaults] objectForKey:@"knownVMs"] mutableCopy];
-	searchResults = [(NSMetadataQuery*)[note object] results];
+	searchResults = ((NSMetadataQuery*)note.object).results;
 	
-	for (i = 0; i < [searchResults count]; i++) {
-		VMPath = [[[searchResults objectAtIndex:i] valueForAttribute: (NSString *)kMDItemPath] stringByResolvingSymlinksInPath];
+	for (i = 0; i < searchResults.count; i++) {
+		VMPath = [[searchResults[i] valueForAttribute: (NSString *)kMDItemPath] stringByResolvingSymlinksInPath];
 		if (![knownVMs containsObject:VMPath]) {
 			[knownVMs addObject:VMPath];
 		}
@@ -500,10 +500,10 @@ NSInteger revCaseInsensitiveCompare(id string1, id string2, void *context)
 	[[qApplication userDefaults] setObject:knownVMs forKey:@"knownVMs"];
 
 	// change status to "shutdown" after corrupt termination of QEMU
-	for (i = 0; i < [VMs count]; i++) {
-		if ([[[[VMs objectAtIndex:i] objectForKey:@"PC Data"] objectForKey:@"state"] isEqual:@"running"] ) {
-			[[[VMs objectAtIndex:i] objectForKey:@"PC Data"] setObject:@"shutdown" forKey:@"state"];
-			[[QQvmManager sharedQvmManager] saveVMConfiguration:[VMs objectAtIndex:i]];
+	for (i = 0; i < VMs.count; i++) {
+		if ([VMs[i][@"PC Data"][@"state"] isEqual:@"running"] ) {
+			VMs[i][@"PC Data"][@"state"] = @"shutdown";
+			[[QQvmManager sharedQvmManager] saveVMConfiguration:VMs[i]];
 		}
 	}
 

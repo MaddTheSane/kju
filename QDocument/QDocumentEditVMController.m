@@ -35,7 +35,7 @@
 	Q_DEBUG(@"showEditVMPanel");
 
 
-	if (![editVMPanel isVisible]) {
+	if (!editVMPanel.visible) {
 	
 		// populate panel
 		
@@ -47,7 +47,7 @@
 		
 		// open sheet
 		[NSApp beginSheet:editVMPanel
-			modalForWindow:[[document screenView] window]
+			modalForWindow:document.screenView.window
 			modalDelegate:nil
 			didEndSelector:nil
 			contextInfo:nil];
@@ -85,58 +85,58 @@
 	
 	// Tab 1
 	// -tablet
-	[grabless setState:NSOffState];
+	grabless.state = NSOffState;
 
 	// qdrivers
-	[qDrivers setState:NSOffState];
+	qDrivers.state = NSOffState;
 
 	// pause while inactive
-	[pauseWhileInactive setState:NSOffState];
+	pauseWhileInactive.state = NSOffState;
 
 	// -smb
-	while(![[smb itemAtIndex:2] isSeparatorItem])
+	while(![smb itemAtIndex:2].separatorItem)
 		[smb removeItemAtIndex:2];
 	[smb selectItemAtIndex:0];
 	
 	// Tab 2
 	[M selectItemAtIndex:0];
 	[cpu selectItemAtIndex:0];
-	[smp setStringValue:@"1"];
-	[m setStringValue:@"128"]; // 128
+	smp.stringValue = @"1";
+	m.stringValue = @"128"; // 128
 	[vga selectItemAtIndex:0];
-	[pcspk setState:NSOffState];
-	[adlib setState:NSOffState];
-	[sb16 setState:NSOffState];
-	[es1370 setState:NSOffState];
+	pcspk.state = NSOffState;
+	adlib.state = NSOffState;
+	sb16.state = NSOffState;
+	es1370.state = NSOffState;
 	[nicModel1 selectItemAtIndex:0];
 	[nicModel2 selectItemAtIndex:0];
 
 	// -fda
-	while(![[fda itemAtIndex:1] isSeparatorItem])
+	while(![fda itemAtIndex:1].separatorItem)
 		[fda removeItemAtIndex:1];
 	[fda selectItemAtIndex:0];
 
 	// -cdrom
-	while(![[cdrom itemAtIndex:2] isSeparatorItem])
+	while(![cdrom itemAtIndex:2].separatorItem)
 		[cdrom removeItemAtIndex:2];
 	[cdrom selectItemAtIndex:0];
 
 
 	// cleanup -hdb and add Harddisks located in Package to Menu
-	while(![[hda itemAtIndex:1] isSeparatorItem])
+	while(![hda itemAtIndex:1].separatorItem)
 		[hda removeItemAtIndex:1];
-	if ([hda numberOfItems] > 8) {
-		while(![[hda itemAtIndex:2] isSeparatorItem])
+	if (hda.numberOfItems > 8) {
+		while(![hda itemAtIndex:2].separatorItem)
 			[hda removeItemAtIndex:2];
 	} else {
-		[[hda menu] insertItem:[NSMenuItem separatorItem] atIndex:2];
+		[hda.menu insertItem:[NSMenuItem separatorItem] atIndex:2];
 	}
-	directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:[[[VM objectForKey:@"Temporary"] objectForKey:@"URL"] path]];
+	directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:[VM[@"Temporary"][@"URL"] path]];
 	while ((diskImageFile = [directoryEnumerator nextObject])) {
-		if ([fileTypes containsObject:[diskImageFile pathExtension]])
-			[hda insertItemWithTitle:[diskImageFile lastPathComponent] atIndex:2];
+		if ([fileTypes containsObject:diskImageFile.pathExtension])
+			[hda insertItemWithTitle:diskImageFile.lastPathComponent atIndex:2];
 	}
-	if([[hda itemAtIndex:2] isSeparatorItem])
+	if([hda itemAtIndex:2].separatorItem)
 		[hda removeItemAtIndex:2];
 	[hda selectItemAtIndex:0];
 
@@ -151,79 +151,79 @@
 	
 	// Tab 4
 	// cleanup -hdb and add Harddisks located in Package to Menu
-	while(![[hdb itemAtIndex:1] isSeparatorItem])
+	while(![hdb itemAtIndex:1].separatorItem)
 		[hdb removeItemAtIndex:1];
-	if ([hdb numberOfItems] > 8) {
-		while(![[hdb itemAtIndex:2] isSeparatorItem])
+	if (hdb.numberOfItems > 8) {
+		while(![hdb itemAtIndex:2].separatorItem)
 			[hdb removeItemAtIndex:2];
 	} else {
-		[[hdb menu] insertItem:[NSMenuItem separatorItem] atIndex:2];
+		[hdb.menu insertItem:[NSMenuItem separatorItem] atIndex:2];
 	}
-	directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:[[[VM objectForKey:@"Temporary"] objectForKey:@"URL"] path]];
+	directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:[VM[@"Temporary"][@"URL"] path]];
 	while ((diskImageFile = [directoryEnumerator nextObject])) {
-		if ([fileTypes containsObject:[diskImageFile pathExtension]])
-			[hdb insertItemWithTitle:[diskImageFile lastPathComponent] atIndex:2];
+		if ([fileTypes containsObject:diskImageFile.pathExtension])
+			[hdb insertItemWithTitle:diskImageFile.lastPathComponent atIndex:2];
 	}
-	if([[hdb itemAtIndex:2] isSeparatorItem])
+	if([hdb itemAtIndex:2].separatorItem)
 		[hdb removeItemAtIndex:2];
 	[hdb selectItemAtIndex:0];
 
 	// cleanup -hdc and add Harddisks located in Package to Menu
-	while(![[hdc itemAtIndex:1] isSeparatorItem])
+	while(![hdc itemAtIndex:1].separatorItem)
 		[hdc removeItemAtIndex:1];
-	if ([hdc numberOfItems] > 8) {
-		while(![[hdc itemAtIndex:2] isSeparatorItem])
+	if (hdc.numberOfItems > 8) {
+		while(![hdc itemAtIndex:2].separatorItem)
 			[hdc removeItemAtIndex:2];
 	} else {
-		[[hdc menu] insertItem:[NSMenuItem separatorItem] atIndex:2];
+		[hdc.menu insertItem:[NSMenuItem separatorItem] atIndex:2];
 	}
-	directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:[[[VM objectForKey:@"Temporary"] objectForKey:@"URL"] path]];
+	directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:[VM[@"Temporary"][@"URL"] path]];
 	while ((diskImageFile = [directoryEnumerator nextObject])) {
-		if ([fileTypes containsObject:[diskImageFile pathExtension]])
-			[hdc insertItemWithTitle:[diskImageFile lastPathComponent] atIndex:2];
+		if ([fileTypes containsObject:diskImageFile.pathExtension])
+			[hdc insertItemWithTitle:diskImageFile.lastPathComponent atIndex:2];
 	}
-	if([[hdc itemAtIndex:2] isSeparatorItem])
+	if([hdc itemAtIndex:2].separatorItem)
 		[hdc removeItemAtIndex:2];
 	[hdc selectItemAtIndex:0];
 
 	// cleanup -hdd and add Harddisks located in Package to Menu
-	while(![[hdd itemAtIndex:1] isSeparatorItem])
+	while(![hdd itemAtIndex:1].separatorItem)
 		[hdd removeItemAtIndex:1];
-	if ([hdd numberOfItems] > 8) {
-		while(![[hdd itemAtIndex:2] isSeparatorItem])
+	if (hdd.numberOfItems > 8) {
+		while(![hdd itemAtIndex:2].separatorItem)
 			[hdd removeItemAtIndex:2];
 	} else {
-		[[hdd menu] insertItem:[NSMenuItem separatorItem] atIndex:2];
+		[hdd.menu insertItem:[NSMenuItem separatorItem] atIndex:2];
 	}
-	directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:[[[VM objectForKey:@"Temporary"] objectForKey:@"URL"] path]];
+	directoryEnumerator = [[NSFileManager defaultManager] enumeratorAtPath:[VM[@"Temporary"][@"URL"] path]];
 	while ((diskImageFile = [directoryEnumerator nextObject])) {
-		if ([fileTypes containsObject:[diskImageFile pathExtension]])
-			[hdd insertItemWithTitle:[diskImageFile lastPathComponent] atIndex:2];
+		if ([fileTypes containsObject:diskImageFile.pathExtension])
+			[hdd insertItemWithTitle:diskImageFile.lastPathComponent atIndex:2];
 	}
-	if([[hdd itemAtIndex:2] isSeparatorItem])
+	if([hdd itemAtIndex:2].separatorItem)
 		[hdd removeItemAtIndex:2];
 	[hdd selectItemAtIndex:0];
 
 	// -localtime
-	[localtime setState:NSOffState];
+	localtime.state = NSOffState;
 
 	// -win2khack
-	[win2kHack setState:NSOffState];
+	win2kHack.state = NSOffState;
 
 	// kernel
-	while(![[kernel itemAtIndex:1] isSeparatorItem])
+	while(![kernel itemAtIndex:1].separatorItem)
 		[kernel removeItemAtIndex:1];
 	[kernel selectItemAtIndex:0];
 
-	[append setStringValue:@""];
+	append.stringValue = @"";
 
 	// initrd
-	while(![[initrd itemAtIndex:1] isSeparatorItem])
+	while(![initrd itemAtIndex:1].separatorItem)
 		[initrd removeItemAtIndex:1];
 	[initrd selectItemAtIndex:0];
 
-	[onlyOptional setState:NSOffState];
-	[optional setStringValue:@""];
+	onlyOptional.state = NSOffState;
+	optional.stringValue = @"";
 }
 
 - (void) setMachine:(QDocumentEditVMMachine)machine
@@ -237,7 +237,7 @@
 
 	// grabless (-usbdevice tablet)
 	if ([key isEqual:@"-usbdevice"] && [argument isEqual:@"tablet"]) {
-		[grabless setState:NSOffState];
+		grabless.state = NSOffState;
 		return TRUE;
 /*
 	// TODO: see if we can add a second CD ROM with the drivers, else make floppy
@@ -286,12 +286,12 @@
 
 	// smp
 	} else if ([key isEqual:@"-smp"]) {
-		[smp setStringValue:argument];
+		smp.stringValue = argument;
 		return TRUE;
 
 	// m
 	} else if ([key isEqual:@"-m"]) {
-		[m setStringValue:argument];
+		m.stringValue = argument;
 		return TRUE;		
 
 	// graphicscards
@@ -305,13 +305,13 @@
 	// soundcards
 	} else if ([key isEqual:@"-soundhw"]) {
 		if ([argument rangeOfString:@"pcspk"].location != NSNotFound)
-			[pcspk setState:NSOnState];
+			pcspk.state = NSOnState;
 		if ([argument rangeOfString:@"adlib"].location != NSNotFound)
-			[adlib setState:NSOnState];
+			adlib.state = NSOnState;
 		if ([argument rangeOfString:@"sb16"].location != NSNotFound)
-			[sb16 setState:NSOnState];
+			sb16.state = NSOnState;
 		if ([argument rangeOfString:@"es1370"].location != NSNotFound)
-			[es1370 setState:NSOnState];
+			es1370.state = NSOnState;
 		return true;
 
 	// networkcards
@@ -433,12 +433,12 @@
 
 	// localtime
 	} else if ([key isEqual:@"-localtime"]) {
-		[localtime setState:NSOnState];
+		localtime.state = NSOnState;
 		return true;
 
 	// win2khack
 	} else if ([key isEqual:@"-win2khack"]) {
-		[win2kHack setState:NSOnState];
+		win2kHack.state = NSOnState;
 		return true;
 
 	// kernel
@@ -449,7 +449,7 @@
 
 	// append
 	} else if ([key isEqual:@"-append"]) {
-		[append setStringValue:argument];
+		append.stringValue = argument;
 		return TRUE;
 
 	// initrd
@@ -474,30 +474,30 @@
 
 	optionalArguments = [NSMutableString stringWithString:@""];
 	key = nil;
-	for (i = 0; i < [[[VM objectForKey:@"Temporary"] objectForKey:@"explodedArguments"] count]; i++) {
-		if ([[[[VM objectForKey:@"Temporary"] objectForKey:@"explodedArguments"] objectAtIndex:i] characterAtIndex:0] == '-') { // key
+	for (i = 0; i < [VM[@"Temporary"][@"explodedArguments"] count]; i++) {
+		if ([VM[@"Temporary"][@"explodedArguments"][i] characterAtIndex:0] == '-') { // key
 			if (key) { // store previous key
 				if (![self setOption:key withArgument:@""]) {
 					[optionalArguments appendFormat:@"%@ ", key];
 				}
 			}
-			key = [[[VM objectForKey:@"Temporary"] objectForKey:@"explodedArguments"] objectAtIndex:i];
+			key = VM[@"Temporary"][@"explodedArguments"][i];
 		} else { // argument
-				if (![self setOption:key withArgument:[[[VM objectForKey:@"Temporary"] objectForKey:@"explodedArguments"] objectAtIndex:i]]) {
+				if (![self setOption:key withArgument:VM[@"Temporary"][@"explodedArguments"][i]]) {
 					[optionalArguments appendFormat:@"%@ ", key];
-					[optionalArguments appendFormat:@"%@ ", [[[VM objectForKey:@"Temporary"] objectForKey:@"explodedArguments"] objectAtIndex:i]];
+					[optionalArguments appendFormat:@"%@ ", VM[@"Temporary"][@"explodedArguments"][i]];
 				}
 			key = nil;
 		}
 	}
 	if (key) { // store previous key
-		if ([self setOption:key withArgument:[[[VM objectForKey:@"Temporary"] objectForKey:@"explodedArguments"] objectAtIndex:i]]) {
+		if ([self setOption:key withArgument:VM[@"Temporary"][@"explodedArguments"][i]]) {
 			[optionalArguments appendFormat:@"%@", key];
 		}
 	}
 	
 	// add unknown arguments to "optional"
-	[optional setStringValue:optionalArguments];	
+	optional.stringValue = optionalArguments;	
 
 }
 @end

@@ -35,7 +35,7 @@
 
 - (instancetype) initWithSender:(QDocument*)sender;
 
-- (BOOL) showsToolbar;
+@property (readonly) BOOL showsToolbar;
 - (void) toggleToolbar;
 
 @end

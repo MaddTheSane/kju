@@ -67,7 +67,7 @@ static QQvmManager *sharedQvmManager = nil;
 
 	NSMutableDictionary *temporary;
 
-	temporary = [[VM objectForKey:@"Temporary"] copy];
+	temporary = [VM[@"Temporary"] copy];
 	[temporary autorelease];
 	[VM removeObjectForKey:@"Temporary"]; // don't store temporary items (URL can't be stored in Propertylist anyways)
 
@@ -77,8 +77,8 @@ static QQvmManager *sharedQvmManager = nil;
         errorDescription: nil];
 	if (data) {
 //		[[VM objectForKey:@"Temporary"] setObject:URL forKey:@"URL"]; // reenter URL
-		[VM setObject:temporary forKey:@"Temporary"]; // reenter Temporary
-		if ([data writeToFile:[NSString stringWithFormat:@"%@/configuration.plist", [[[VM objectForKey:@"Temporary"] objectForKey:@"URL"] path]] atomically:YES]) {
+		VM[@"Temporary"] = temporary; // reenter Temporary
+		if ([data writeToFile:[NSString stringWithFormat:@"%@/configuration.plist", [VM[@"Temporary"][@"URL"] path]] atomically:YES]) {
 			return TRUE;
 		}
 	}
@@ -110,39 +110,39 @@ static QQvmManager *sharedQvmManager = nil;
 			errorDescription: nil];
 
 		// upgrade Version 0.1.0.Q to 0.2.0.Q
-		if ([[tempVM objectForKey:@"Version"] isEqual:@"0.1.0.Q"]) {
-			lookForArguments = [NSArray arrayWithObjects:@"-snapshot", @"-nographic", @"-audio-help", @"-localtime", @"-full-screen", @"-win2k-hack", @"-usb", @"-s", @"-S", @"-d", @"-std-vga", nil];
-			enumerator = [[tempVM objectForKey:@"Arguments"] keyEnumerator];
+		if ([tempVM[@"Version"] isEqual:@"0.1.0.Q"]) {
+			lookForArguments = @[@"-snapshot", @"-nographic", @"-audio-help", @"-localtime", @"-full-screen", @"-win2k-hack", @"-usb", @"-s", @"-S", @"-d", @"-std-vga"];
+			enumerator = [tempVM[@"Arguments"] keyEnumerator];
 			arguments = [[NSMutableString alloc] init];
 			while ((key = [enumerator nextObject])) {
-				if ([[tempVM objectForKey:@"Arguments"] objectForKey:key]) {
-					if ([key isEqual:@"-net"] && [[[tempVM objectForKey:@"Arguments"] objectForKey:key] isEqual:@"user"]) {
+				if (tempVM[@"Arguments"][key]) {
+					if ([key isEqual:@"-net"] && [tempVM[@"Arguments"][key] isEqual:@"user"]) {
 						[arguments appendFormat:[NSString stringWithFormat:@" -net nic"]];
 					}
 					if ([lookForArguments containsObject:key]) {
 						[arguments appendFormat:[NSString stringWithFormat:@" %@", key]];
 					} else {
-						[arguments appendFormat:[NSString stringWithFormat:@" %@ %@", key, [[tempVM objectForKey:@"Arguments"] objectForKey:key]]];
+						[arguments appendFormat:[NSString stringWithFormat:@" %@ %@", key, tempVM[@"Arguments"][key]]];
 					}
 				}
 			}
-			[tempVM setObject:arguments forKey:@"Arguments"];
-			[tempVM setObject:@"0.2.0.Q" forKey:@"Version"];
+			tempVM[@"Arguments"] = arguments;
+			tempVM[@"Version"] = @"0.2.0.Q";
 		}
 
 		// upgrade Version 0.2.0.Q to 0.2.1.Q (i.e. use doublequotes on all commands and paths)
-		if ([[tempVM objectForKey:@"Version"] isEqual:@"0.2.0.Q"]) {
-			lookForArguments = [NSArray arrayWithObjects:@"-hda", @"-hdb", @"-hdc", @"-hdd", @"-fda", @"-fdb", @"-cdrom", @"-append", @"-kernel", @"-initrd", @"-smb", nil];
-			singleArguments = [[tempVM objectForKey:@"Arguments"] componentsSeparatedByString:@" "];
-			arguments = [NSMutableString stringWithFormat:@"-name \"%@\" ", [[tempVM objectForKey:@"PC Data"] objectForKey:@"name"]]; // add name for VM
+		if ([tempVM[@"Version"] isEqual:@"0.2.0.Q"]) {
+			lookForArguments = @[@"-hda", @"-hdb", @"-hdc", @"-hdd", @"-fda", @"-fdb", @"-cdrom", @"-append", @"-kernel", @"-initrd", @"-smb"];
+			singleArguments = [tempVM[@"Arguments"] componentsSeparatedByString:@" "];
+			arguments = [NSMutableString stringWithFormat:@"-name \"%@\" ", tempVM[@"PC Data"][@"name"]]; // add name for VM
 			option = nil;
 			argument = nil;
-			for (i = 0; i < [singleArguments count]; i++) {
-				if ([[singleArguments objectAtIndex:i] UTF8String][0] != '-') { // part of argument
+			for (i = 0; i < singleArguments.count; i++) {
+				if ([singleArguments[i] UTF8String][0] != '-') { // part of argument
 					if (!argument) {
-						argument = [NSMutableString stringWithString:[singleArguments objectAtIndex:i]];
+						argument = [NSMutableString stringWithString:singleArguments[i]];
 					} else {
-						[argument appendFormat:@" %@", [singleArguments objectAtIndex:i]];
+						[argument appendFormat:@" %@", singleArguments[i]];
 					}
 				} else { // key
 					if (option) { // handle previous key
@@ -156,7 +156,7 @@ static QQvmManager *sharedQvmManager = nil;
 						}
 						option = nil;
 					}
-					option = [singleArguments objectAtIndex:i];
+					option = singleArguments[i];
 				}
 			}
 			if (option) { // handle last option, argument pair
@@ -168,22 +168,22 @@ static QQvmManager *sharedQvmManager = nil;
 				}
 			}
 			// remove obsolte keys
-			[[tempVM objectForKey:@"PC Data"] removeObjectForKey:@"name"];
+			[tempVM[@"PC Data"] removeObjectForKey:@"name"];
 			
-			[tempVM setObject:arguments forKey:@"Arguments"];
-			[tempVM setObject:@"0.3.0.Q" forKey:@"Version"];
+			tempVM[@"Arguments"] = arguments;
+			tempVM[@"Version"] = @"0.3.0.Q";
 		}
 
 		// get rid of old temporary items and add new
-		if ([tempVM objectForKey:@"Temporary"])
+		if (tempVM[@"Temporary"])
 			[tempVM removeObjectForKey:@"Temporary"];
-		[tempVM setObject:[NSMutableDictionary dictionary] forKey:@"Temporary"];
+		tempVM[@"Temporary"] = [NSMutableDictionary dictionary];
 		
 		// exploded arguments
-		[[tempVM objectForKey:@"Temporary"] setObject:[[QQvmManager sharedQvmManager] explodeVMArguments:[tempVM objectForKey:@"Arguments"]] forKey:@"explodedArguments"];
+		tempVM[@"Temporary"][@"explodedArguments"] = [[QQvmManager sharedQvmManager] explodeVMArguments:tempVM[@"Arguments"]];
 
 		// url
-		[[tempVM objectForKey:@"Temporary"] setObject:[NSURL fileURLWithPath:filename] forKey:@"URL"];
+		tempVM[@"Temporary"][@"URL"] = [NSURL fileURLWithPath:filename];
 
 		return tempVM;
 	}
@@ -215,7 +215,7 @@ static QQvmManager *sharedQvmManager = nil;
 	inSwitch = NO;
 	inArgument = NO;
 
-	for (i = 0; i < [argumentsString length]; i++) {
+	for (i = 0; i < argumentsString.length; i++) {
 		switch ([argumentsString characterAtIndex:i]) {
 			case ' ':
 				if (isEscapedChar) { // add escaped whitespace

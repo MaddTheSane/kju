@@ -30,7 +30,7 @@
 
 
 @implementation QDocumentWindowController
-- (id) initWithWindow:(NSWindow *)tWindow sender:(QDocument *)sender
+- (instancetype) initWithWindow:(NSWindow *)tWindow sender:(QDocument *)sender
 {
 	Q_DEBUG(@"initWithWindow:");
 
@@ -39,11 +39,11 @@
         
         // we are part of this document
         document = (QDocument *)sender;
-		screenView = (QDocumentOpenGLView *)[document screenView];
+		screenView = (QDocumentOpenGLView *)document.screenView;
         
         // we are delegate of this window
         window = tWindow;
-        [window setDelegate:self];
+        window.delegate = self;
         [window setAcceptsMouseMovedEvents:YES];
 
     }
@@ -74,10 +74,10 @@
     Q_DEBUG(@"QemuCocoaView: windowWillResize: toSize: NSSize(%f, %f)", proposedFrameSize.width, proposedFrameSize.height);
 
     // update zoom
-    [screenView displayPropertiesSetZoom:(proposedFrameSize.width / (float)[screenView screenProperties].width)];
+    [screenView displayPropertiesSetZoom:(proposedFrameSize.width / (float)screenView.screenProperties.width)];
 
     // Update the content to new size before window is resized, if the new size is bigger
-    if (proposedFrameSize.width > [tWindow frame].size.width || proposedFrameSize.height > [tWindow frame].size.height) {
+    if (proposedFrameSize.width > tWindow.frame.size.width || proposedFrameSize.height > tWindow.frame.size.height) {
         [screenView setContentDimensionsForFrame:NSMakeRect(0, 0, proposedFrameSize.width, proposedFrameSize.height - TITLE_BAR_HEIGHT - ICON_BAR_HEIGHT)];
     }
 

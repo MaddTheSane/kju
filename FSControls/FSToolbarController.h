@@ -43,18 +43,18 @@
 
 - (void) show;
 - (void) hide;
-- (BOOL) showsToolbar;
+@property (readonly) BOOL showsToolbar;
 - (void) setupToolbar;
 - (void) addToolbarItem:(NSString *)icon withTitle:(NSString *)title rectangle:(NSRect)rectangle target:(id) target action:(SEL)action;
 - (void) addCustomToolbarItem:(id)item;
 
-- (NSWindow *) createTransparentWindow;
+@property (readonly, strong) NSWindow *createTransparentWindow;
 
 // fading operations
 - (void) fadeIn;
 - (void) fadeOut;
 - (void) setAnimates:(BOOL)lock;
-- (BOOL) isAnimating;
+@property (getter=isAnimating, readonly) BOOL animating;
 - (IBAction) setFullscreen:(id)sender;
 - (IBAction) shutdownPC:(id)sender;
 @end

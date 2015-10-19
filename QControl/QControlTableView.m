@@ -35,7 +35,7 @@
 #define ICON_SPACE 2.0
 
 @implementation QControlTableView
-- (id) initWithCoder: (NSCoder *) decoder
+- (instancetype) initWithCoder: (NSCoder *) decoder
 {
 	Q_DEBUG(@"init");
 
@@ -61,7 +61,7 @@
     int i;
     id VM;
     BOOL clicked = false;
-    pointClicked = [self convertPoint:[event locationInWindow] fromView:nil];
+    pointClicked = [self convertPoint:event.locationInWindow fromView:nil];
     NSInteger row = [self rowAtPoint: pointClicked];
     NSRect cellRect = [self frameOfCellAtColumn:1 row:row];
     
@@ -72,7 +72,7 @@
             ICON_WIDTH,
             ICON_HEIGHT
         ))) {
-            VM = [[qControl VMs] objectAtIndex:row];
+            VM = [qControl VMs][row];
             switch (i) {
                 case 0: // edit
                     clicked = TRUE;
@@ -81,11 +81,11 @@
                     clicked = TRUE;
                 break;
                 case 2: // stop
-                    if (![[[VM objectForKey:@"PC Data"] objectForKey:@"state"] isEqual:@"shutdown"])
+                    if (![VM[@"PC Data"][@"state"] isEqual:@"shutdown"])
                         clicked = TRUE;
                 break;
                 case 3: // delete
-                    if ([[[VM objectForKey:@"PC Data"] objectForKey:@"state"] isEqual:@"shutdown"])
+                    if ([VM[@"PC Data"][@"state"] isEqual:@"shutdown"])
                         clicked = TRUE;
                 break;
             }
@@ -112,11 +112,11 @@
 	QDocument *document;
 	
 	clicked = false;
-    pointClicked = [self convertPoint:[event locationInWindow] fromView:nil];
+    pointClicked = [self convertPoint:event.locationInWindow fromView:nil];
     row = [self rowAtPoint: pointClicked];
     cellRect = [self frameOfCellAtColumn:1 row:row];
-	VM = [[qControl VMs] objectAtIndex:row];
-	document = [[NSDocumentController sharedDocumentController] documentForURL:[[VM objectForKey:@"Temporary"] objectForKey:@"URL"]];
+	VM = [qControl VMs][row];
+	document = [[NSDocumentController sharedDocumentController] documentForURL:VM[@"Temporary"][@"URL"]];
 	
     for (i = 0; i < 4; i++) {
         if (NSPointInRect(pointClicked, NSMakeRect(
@@ -131,7 +131,7 @@
                 break;
                 case 1: // play/pause
 					if (document) {
-						switch ([document VMState]) {
+						switch (document.VMState) {
 							case QDocumentShutdown:
 							case QDocumentSaved:
 								[document VMStart:self];
@@ -152,7 +152,7 @@
 					break;
                 case 2: // stop
                     if (document) {
-						if (([document VMState]==QDocumentRunning)||([document VMState]==QDocumentPaused)) {
+						if ((document.VMState==QDocumentRunning)||(document.VMState==QDocumentPaused)) {
 							[document VMShutDown:self];
 						}
 					}
@@ -188,9 +188,9 @@
     [super drawRect: rect];
 
 
-    for (i = 0; i < [[qControl VMs] count]; i++) {
-        VM = [[qControl VMs] objectAtIndex:i];
-		document = [[NSDocumentController sharedDocumentController] documentForURL:[[VM objectForKey:@"Temporary"] objectForKey:@"URL"]];
+    for (i = 0; i < [qControl VMs].count; i++) {
+        VM = [qControl VMs][i];
+		document = [[NSDocumentController sharedDocumentController] documentForURL:VM[@"Temporary"][@"URL"]];
         cellRect = [self frameOfCellAtColumn:1 row:i];
         
         // edit icon
@@ -198,21 +198,21 @@
         if (NSPointInRect(pointClicked, NSMakeRect(point.x, point.y, ICON_WIDTH, ICON_HEIGHT))) {
             qFraction = 1.0;
         } else if (document) {
-			switch ([document VMState]) {
+			switch (document.VMState) {
 				case QDocumentShutdown:
 					qFraction = 0.5;
 				default:
 					qFraction = 0.25;
 					break;
 			}
-		} else if ([[[VM objectForKey:@"PC Data"] objectForKey:@"state"] isEqual:@"saved"]) {
+		} else if ([VM[@"PC Data"][@"state"] isEqual:@"saved"]) {
             qFraction = 0.25;
         } else {
             qFraction = 0.5;
 		}
         [qEditIcon
             drawInRect: NSMakeRect(point.x, point.y, ICON_WIDTH, ICON_HEIGHT)
-            fromRect: NSMakeRect(0, 0, [qEditIcon size].width, [qEditIcon size].height)
+            fromRect: NSMakeRect(0, 0, qEditIcon.size.width, qEditIcon.size.height)
             operation: NSCompositeSourceOver
             fraction: qFraction
         ];
@@ -222,7 +222,7 @@
         if (NSPointInRect(pointClicked, NSMakeRect(point.x, point.y, ICON_WIDTH, ICON_HEIGHT))) {
             qFraction = 1.0;
         } else if (document) {
-			switch ([document VMState]) {
+			switch (document.VMState) {
 				case QDocumentShutdown:
 				case QDocumentSaved:
 				case QDocumentPaused:
@@ -239,8 +239,8 @@
 					break;
 			}
 		} else if (
-			[[[VM objectForKey:@"PC Data"] objectForKey:@"state"] isEqual:@"shutdown"] ||
-			[[[VM objectForKey:@"PC Data"] objectForKey:@"state"] isEqual:@"saved"]) {
+			[VM[@"PC Data"][@"state"] isEqual:@"shutdown"] ||
+			[VM[@"PC Data"][@"state"] isEqual:@"saved"]) {
             image = qPlayIcon;
 			qFraction = 0.5;
         } else {
@@ -249,7 +249,7 @@
 		}
         [image
             drawInRect: NSMakeRect(point.x, point.y, ICON_WIDTH, ICON_HEIGHT)
-            fromRect: NSMakeRect(0, 0, [image size].width, [image size].height)
+            fromRect: NSMakeRect(0, 0, image.size.width, image.size.height)
             operation: NSCompositeSourceOver
             fraction: qFraction
         ];
@@ -259,7 +259,7 @@
         if (NSPointInRect(pointClicked, NSMakeRect(point.x, point.y, ICON_WIDTH, ICON_HEIGHT))) {
             qFraction = 1.0;
         } else if (document) {
-			switch ([document VMState]) {
+			switch (document.VMState) {
 				case QDocumentPaused:
 				case QDocumentRunning:
 					qFraction = 0.5;
@@ -273,7 +273,7 @@
 		}
         [qStopIcon
             drawInRect: NSMakeRect(point.x, point.y, ICON_WIDTH, ICON_HEIGHT)
-            fromRect: NSMakeRect(0, 0, [qStopIcon size].width, [qStopIcon size].height)
+            fromRect: NSMakeRect(0, 0, qStopIcon.size.width, qStopIcon.size.height)
             operation: NSCompositeSourceOver
             fraction: qFraction
         ];
@@ -288,7 +288,7 @@
             qFraction = 0.5;
         [qDeleteIcon
             drawInRect: NSMakeRect(point.x, point.y, ICON_WIDTH, ICON_HEIGHT)
-            fromRect: NSMakeRect(0, 0, [qDeleteIcon size].width, [qDeleteIcon size].height)
+            fromRect: NSMakeRect(0, 0, qDeleteIcon.size.width, qDeleteIcon.size.height)
             operation: NSCompositeSourceOver
             fraction: qFraction
         ];

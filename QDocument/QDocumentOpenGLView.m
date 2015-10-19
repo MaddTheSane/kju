@@ -230,7 +230,7 @@ int cocoa_keycode_to_qemu(int keycode)
 
 - (void) drawRect:(NSRect) rect
 {
-    CGContextRef viewContextRef = [[NSGraphicsContext currentContext] graphicsPort];
+    CGContextRef viewContextRef = [NSGraphicsContext currentContext].graphicsPort;
     CGContextSetShouldAntialias (viewContextRef, NO);
     CGContextSetRGBFillColor(viewContextRef, 0, 0, 0, opacity);
     CGContextFillRect(viewContextRef, cgrect(rect));
@@ -270,8 +270,8 @@ int cocoa_keycode_to_qemu(int keycode)
 {
 	Q_DEBUG(@"reshape");
 	
-	[[self openGLContext] makeCurrentContext];
-    glViewport([self bounds].origin.x, [self bounds].origin.y, [self bounds].size.width, [self bounds].size.height);
+	[self.openGLContext makeCurrentContext];
+    glViewport(self.bounds.origin.x, self.bounds.origin.y, self.bounds.size.width, self.bounds.size.height);
 }
 
 - (void)awakeFromNib
@@ -294,10 +294,10 @@ int cocoa_keycode_to_qemu(int keycode)
 	// initialize OpenGL and load play overlay
 	[self prepareOpenGL];
 	[self updateSavedImage:self];
-	textures[QDocumentOpenGLTextureOverlay] = [self createTextureFromImagePath:[NSString stringWithFormat:@"%@/q_overlay_play.png", [[NSBundle mainBundle] resourcePath]]];
+	textures[QDocumentOpenGLTextureOverlay] = [self createTextureFromImagePath:[NSString stringWithFormat:@"%@/q_overlay_play.png", [NSBundle mainBundle].resourcePath]];
 
     // enable drag'n'drop for files
-    [self registerForDraggedTypes:[NSArray arrayWithObjects:NSFilenamesPboardType, nil]];
+    [self registerForDraggedTypes:@[NSFilenamesPboardType]];
 
     // QEMU state
     mouseGrabed = FALSE; // we start non grabbed
@@ -327,12 +327,12 @@ int cocoa_keycode_to_qemu(int keycode)
     onePixel[0] = 2.0 / displayProperties.width;
     onePixel[1] = 2.0 / displayProperties.height;
 
-	if ([document VMState] == QDocumentShutdown) {
+	if (document.VMState == QDocumentShutdown) {
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(.0, .0, .0, .0);
 
-	} else if ([document VMState] == QDocumentSaved) {
+	} else if (document.VMState == QDocumentSaved) {
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -426,21 +426,21 @@ int cocoa_keycode_to_qemu(int keycode)
     if (drag) {
 		
 		NSColor	 *rgbColor = [[NSColor selectedControlColor] colorUsingColorSpaceName:NSDeviceRGBColorSpace];
-		glColor3f([rgbColor redComponent], [rgbColor greenComponent], [rgbColor blueComponent]);
+		glColor3f(rgbColor.redComponent, rgbColor.greenComponent, rgbColor.blueComponent);
 
 		glBegin(GL_QUAD_STRIP);
 		{
 		glVertex2f(-1.0, -1.0); glVertex2f(3 * onePixel[0] - 1, 3 * onePixel[1] - 1);
 		glVertex2f(1.0, -1.0); glVertex2f((rect.size.width - 3) * onePixel[0] - 1, 3 * onePixel[1] - 1);
-		glVertex2f(1.0, 1.0); glVertex2f(([self bounds].size.width - 3) * onePixel[0] - 1, ([self bounds].size.height - 3) * onePixel[1] - 1);
-		glVertex2f(-1.0, 1.0); glVertex2f(3 * onePixel[0] - 1, ([self bounds].size.height - 3) * onePixel[1] - 1);
+		glVertex2f(1.0, 1.0); glVertex2f((self.bounds.size.width - 3) * onePixel[0] - 1, (self.bounds.size.height - 3) * onePixel[1] - 1);
+		glVertex2f(-1.0, 1.0); glVertex2f(3 * onePixel[0] - 1, (self.bounds.size.height - 3) * onePixel[1] - 1);
 		glVertex2f(-1.0, -1.0); glVertex2f(3 * onePixel[0] - 1, 3 * onePixel[1] - 1);
 		}
 		glEnd();
 	}
 
 	// play overlay
-	if ([document VMState] != QDocumentRunning) {
+	if (document.VMState != QDocumentRunning) {
 
 		// draw background
 		glEnable(GL_BLEND);
@@ -540,14 +540,14 @@ int cocoa_keycode_to_qemu(int keycode)
 	Q_DEBUG(@"updateSavedImage");
 
 
-	[[self openGLContext] makeCurrentContext];
+	[self.openGLContext makeCurrentContext];
 
 	// remove old texture
 	if( textures[QDocumentOpenGLTextureSavedImage] != 0) {
 		glDeleteTextures(1, &textures[QDocumentOpenGLTextureSavedImage]);
 	}
 
-	textures[QDocumentOpenGLTextureSavedImage] = [self createTextureFromImagePath:[NSString stringWithFormat:@"%@/QuickLook/Thumbnail.png", [[[[document configuration] objectForKey:@"Temporary"] objectForKey:@"URL"] path]]];
+	textures[QDocumentOpenGLTextureSavedImage] = [self createTextureFromImagePath:[NSString stringWithFormat:@"%@/QuickLook/Thumbnail.png", [[document configuration][@"Temporary"][@"URL"] path]]];
 	if (textures[QDocumentOpenGLTextureSavedImage] != 0) {
 		glBindTexture(GL_TEXTURE_RECTANGLE_ARB, textures[QDocumentOpenGLTextureSavedImage]);
 		glGetTexLevelParameteriv( GL_TEXTURE_RECTANGLE_ARB, 0, GL_TEXTURE_WIDTH, (GLint*)&screenProperties.width );
@@ -562,7 +562,7 @@ int cocoa_keycode_to_qemu(int keycode)
 
 	// if no size is set, make a fullsize shot
 	if (size.width == 0.0 || size.height == 0.0) 
-		size = [self bounds].size;
+		size = self.bounds.size;
 
 	NSBitmapImageRep* sBitmapImageRep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes:NULL
 		pixelsWide:size.width
@@ -581,7 +581,7 @@ int cocoa_keycode_to_qemu(int keycode)
 	[image lockFocusOnRepresentation:sBitmapImageRep];
 
 	// setup CG
-	CGContextRef viewContextRef = [[NSGraphicsContext currentContext] graphicsPort];
+	CGContextRef viewContextRef = [NSGraphicsContext currentContext].graphicsPort;
 	CGContextSetInterpolationQuality (viewContextRef, kCGInterpolationLow);
 	CGContextSetShouldAntialias (viewContextRef, YES);
 
@@ -630,7 +630,7 @@ int cocoa_keycode_to_qemu(int keycode)
            return; // else we have a doublegrab (Mouse will remain hidden)
        }
     } else {
-        [normalWindow setTitle: [NSString stringWithFormat:NSLocalizedStringFromTable(@"grabMouse:title", @"Localizable", @"cocoaQemu"), [document displayName]]];
+        normalWindow.title = [NSString stringWithFormat:NSLocalizedStringFromTable(@"grabMouse:title", @"Localizable", @"cocoaQemu"), document.displayName];
     }
     [NSCursor hide];
     CGAssociateMouseAndMouseCursorPosition(FALSE);
@@ -641,7 +641,7 @@ int cocoa_keycode_to_qemu(int keycode)
 {
 	Q_DEBUG(@"ungrabMouse");
 
-	[normalWindow setTitle:[document displayName]];
+	normalWindow.title = document.displayName;
     [NSCursor unhide];
     CGAssociateMouseAndMouseCursorPosition(TRUE);
     mouseGrabed = FALSE;
@@ -655,10 +655,10 @@ int cocoa_keycode_to_qemu(int keycode)
     Q_DEBUG(@"setContentDimensionsForFrame: NSRect(%f, %f, %f, %f)", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
 
 	if (isFullscreen) {
-		if (([[NSScreen mainScreen] frame].size.width / screenProperties.width) > ([[NSScreen mainScreen] frame].size.height / screenProperties.height)) {
-			displayProperties.dx = [[NSScreen mainScreen] frame].size.height / (float)screenProperties.height;
+		if (([NSScreen mainScreen].frame.size.width / screenProperties.width) > ([NSScreen mainScreen].frame.size.height / screenProperties.height)) {
+			displayProperties.dx = [NSScreen mainScreen].frame.size.height / (float)screenProperties.height;
 		} else {
-			displayProperties.dx = [[NSScreen mainScreen] frame].size.width / (float)screenProperties.width;
+			displayProperties.dx = [NSScreen mainScreen].frame.size.width / (float)screenProperties.width;
 		}
         if (displayProperties.dx < 2.0) {
             displayProperties.dx = (float)((int)(displayProperties.dx * 4)) / 4.0; //only allow factors of .25/.5/.75/1.0/1.25/1.5/1.75
@@ -668,9 +668,9 @@ int cocoa_keycode_to_qemu(int keycode)
         displayProperties.dy = displayProperties.dx;
         displayProperties.width = screenProperties.width * displayProperties.dx;
         displayProperties.height = screenProperties.height * displayProperties.dy;
-        displayProperties.x = ([[NSScreen mainScreen] frame].size.width - displayProperties.width) / 2.0;
-        displayProperties.y = ([[NSScreen mainScreen] frame].size.height - displayProperties.height) / 2.0;
-		[self setFrame:NSMakeRect(displayProperties.x, displayProperties.y, displayProperties.width, displayProperties.height)];
+        displayProperties.x = ([NSScreen mainScreen].frame.size.width - displayProperties.width) / 2.0;
+        displayProperties.y = ([NSScreen mainScreen].frame.size.height - displayProperties.height) / 2.0;
+		self.frame = NSMakeRect(displayProperties.x, displayProperties.y, displayProperties.width, displayProperties.height);
 	} else {
 		displayProperties.dx = rect.size.width / (float)screenProperties.width;
 		displayProperties.dy = rect.size.height / (float)screenProperties.height;
@@ -689,7 +689,7 @@ int cocoa_keycode_to_qemu(int keycode)
 {
 	Q_DEBUG(@"setFullScreen");
 
-    fullScreenWindow = [[NSWindow alloc] initWithContentRect:[[NSScreen mainScreen] frame]
+    fullScreenWindow = [[NSWindow alloc] initWithContentRect:[NSScreen mainScreen].frame
         styleMask:NSBorderlessWindowMask
         backing:NSBackingStoreBuffered
         defer:NO];
@@ -702,23 +702,23 @@ int cocoa_keycode_to_qemu(int keycode)
 		isFullscreen = TRUE;
         [self grabMouse];
 		
-        [fullScreenWindow setTitle: @"Q fullScreenWindow"];
-        [fullScreenWindow setBackgroundColor: [NSColor clearColor]]; // we want to have a transparent background
+        fullScreenWindow.title = @"Q fullScreenWindow";
+        fullScreenWindow.backgroundColor = [NSColor clearColor]; // we want to have a transparent background
         [fullScreenWindow setOpaque:NO]; // we want to see thru unrendered parts of the window
         [fullScreenWindow setReleasedWhenClosed:YES];
         [fullScreenWindow setHasShadow:NO];
-        [fullScreenWindow setContentView:[[BlackView alloc] initWithFrame:[[NSScreen mainScreen] frame]]];
-        [(BlackView*)[fullScreenWindow contentView] setOpacity:0.75];
+        fullScreenWindow.contentView = [[BlackView alloc] initWithFrame:[NSScreen mainScreen].frame];
+        ((BlackView*)fullScreenWindow.contentView).opacity = 0.75;
         [NSMenu setMenuBarVisible:NO];
 
         // grow transition
-		[fullScreenWindow setFrame:[normalWindow frame] display:NO animate:NO];		
+		[fullScreenWindow setFrame:normalWindow.frame display:NO animate:NO];		
         [fullScreenWindow makeKeyAndOrderFront:self];
-        [fullScreenWindow setFrame:[[NSScreen mainScreen] frame] display:YES animate:YES];
+        [fullScreenWindow setFrame:[NSScreen mainScreen].frame display:YES animate:YES];
 		
 		// add view
-        [[fullScreenWindow contentView] addSubview:self];
-        [self setContentDimensionsForFrame:NSMakeRect(0.0, 0.0, [[NSScreen mainScreen] frame].size.width, [[NSScreen mainScreen] frame].size.height)];
+        [fullScreenWindow.contentView addSubview:self];
+        [self setContentDimensionsForFrame:NSMakeRect(0.0, 0.0, [NSScreen mainScreen].frame.size.width, [NSScreen mainScreen].frame.size.height)];
         [fullScreenWindow display];
 
     }
@@ -730,7 +730,7 @@ int cocoa_keycode_to_qemu(int keycode)
     
     // show alert in the Future?
     if (returnCode == NSAlertOtherReturn) {
-        [[[document qApplication] userDefaults] setBool:FALSE forKey:@"showFullscreenWarning"];
+        [[document.qApplication userDefaults] setBool:FALSE forKey:@"showFullscreenWarning"];
     }
 
     [sheet orderOut:self];
@@ -750,20 +750,20 @@ int cocoa_keycode_to_qemu(int keycode)
         [self ungrabMouse];
 
         // shrink transition
-        [fullScreenWindow setFrame:[normalWindow frame] display:NO animate:YES];
+        [fullScreenWindow setFrame:normalWindow.frame display:NO animate:YES];
 
         // set view
         [fullScreenWindow close];
-        [[normalWindow contentView] addSubview:self];
+        [normalWindow.contentView addSubview:self];
         [self setContentDimensionsForFrame:NSMakeRect(0.0, 0.0, screenProperties.width * displayProperties.zoom, screenProperties.height * displayProperties.zoom)];
-		[self setFrame:NSMakeRect(displayProperties.x, displayProperties.y, displayProperties.width, displayProperties.height)];
+		self.frame = NSMakeRect(displayProperties.x, displayProperties.y, displayProperties.width, displayProperties.height);
         [normalWindow makeKeyAndOrderFront: self];
         [NSMenu setMenuBarVisible:YES];
 
     } else {
      
         // switch from desktop to fullscreen
-        if ([[[document qApplication] userDefaults] boolForKey:@"showFullscreenWarning"]) {
+        if ([[document.qApplication userDefaults] boolForKey:@"showFullscreenWarning"]) {
             NSBeginAlertSheet(
                 NSLocalizedStringFromTable(@"cocoa_refresh:showFullscreen:standardAlert", @"Localizable", @"cocoaQemu"),
                 NSLocalizedStringFromTable(@"cocoa_refresh:showFullscreen:defaultButton", @"Localizable", @"cocoaQemu"),
@@ -796,10 +796,10 @@ int cocoa_keycode_to_qemu(int keycode)
 			return;
 		}
 	}
-    fd = open([[NSString stringWithFormat:@"/private/tmp/qDocument_%D.vga", [document uniqueDocumentID]] fileSystemRepresentation], O_RDONLY); // open file
+    fd = open([NSString stringWithFormat:@"/private/tmp/qDocument_%D.vga", document.uniqueDocumentID].fileSystemRepresentation, O_RDONLY); // open file
     if(fd == -1) {
 		int errsv = errno;
-        NSLog(@"QDocumentOpenGLView: resizeContent: could not open '/private/tmp/qDocument_%D.vga': errno(%D) - %s", [document uniqueDocumentID], errsv, strerror(errsv));
+        NSLog(@"QDocumentOpenGLView: resizeContent: could not open '/private/tmp/qDocument_%D.vga': errno(%D) - %s", document.uniqueDocumentID, errsv, strerror(errsv));
 		screenProperties.screenBufferSize = 0;
 		return;
     }
@@ -807,7 +807,7 @@ int cocoa_keycode_to_qemu(int keycode)
 	screenBuffer = mmap(0, screenProperties.screenBufferSize, PROT_READ, MAP_FILE|MAP_SHARED, fd, 0);
     if(screenBuffer == MAP_FAILED) {
 		int errsv = errno;
-        NSLog(@"QDocumentOpenGLView: resizeContent: could not mmap '/private/tmp/qDocument_%D.vga': errno(%D) - %s", [document uniqueDocumentID], errsv, strerror(errsv));
+        NSLog(@"QDocumentOpenGLView: resizeContent: could not mmap '/private/tmp/qDocument_%D.vga': errno(%D) - %s", document.uniqueDocumentID, errsv, strerror(errsv));
 		screenProperties.screenBufferSize = 0;
 		close(fd);
 		return;
@@ -825,16 +825,16 @@ int cocoa_keycode_to_qemu(int keycode)
     );
 
     // keep Window in correct aspect ratio
-    [normalWindow setMaxSize:NSMakeSize(screenProperties.width, screenProperties.height + TITLE_BAR_HEIGHT + ICON_BAR_HEIGHT)];
+    normalWindow.maxSize = NSMakeSize(screenProperties.width, screenProperties.height + TITLE_BAR_HEIGHT + ICON_BAR_HEIGHT);
 //	[normalWindow setAspectRatio:NSMakeSize(screenProperties.width, screenProperties.height + TITLE_BAR_HEIGHT + ICON_BAR_HEIGHT)];
 //	[normalWindow setResizeIncrements:NSMakeSize(10,10)];
     // update windows
     if (isFullscreen) {
-        [self setContentDimensionsForFrame:[[NSScreen mainScreen] frame]];
-        [normalWindow setFrame:NSMakeRect([normalWindow frame].origin.x, [normalWindow frame].origin.y + [normalWindow frame].size.height - normalWindowSize.height, normalWindowSize.width, normalWindowSize.height) display:NO animate:NO];
+        [self setContentDimensionsForFrame:[NSScreen mainScreen].frame];
+        [normalWindow setFrame:NSMakeRect(normalWindow.frame.origin.x, normalWindow.frame.origin.y + normalWindow.frame.size.height - normalWindowSize.height, normalWindowSize.width, normalWindowSize.height) display:NO animate:NO];
     } else {
 		[self setContentDimensionsForFrame:NSMakeRect(0, 0, w * displayProperties.zoom, h * displayProperties.zoom)];
-        [normalWindow setFrame:NSMakeRect([normalWindow frame].origin.x, [normalWindow frame].origin.y + [normalWindow frame].size.height - normalWindowSize.height, normalWindowSize.width, normalWindowSize.height) display:YES animate:YES];
+        [normalWindow setFrame:NSMakeRect(normalWindow.frame.origin.x, normalWindow.frame.origin.y + normalWindow.frame.size.height - normalWindowSize.height, normalWindowSize.width, normalWindowSize.height) display:YES animate:YES];
 	}
 }
 
@@ -886,7 +886,7 @@ int cocoa_keycode_to_qemu(int keycode)
 	Q_DEBUG(@"performDragOperation");
     
     NSPasteboard *paste = [sender draggingPasteboard];
-    NSArray *types = [NSArray arrayWithObjects:NSTIFFPboardType, NSFilenamesPboardType, nil];
+    NSArray *types = @[NSTIFFPboardType, NSFilenamesPboardType];
     NSString *desiredType = [paste availableTypeFromArray:types];
     NSData *carriedData = [paste dataForType:desiredType];
 
@@ -900,8 +900,8 @@ int cocoa_keycode_to_qemu(int keycode)
             if ([document smbPath]) {
                 int i;
                 NSFileManager *fileManager = [NSFileManager defaultManager];
-                for (i=0; i<[fileArray count]; i++) {
-                    [fileManager copyPath:[fileArray objectAtIndex:i] toPath:[NSString stringWithFormat:@"%@/%@", [document smbPath], [[fileArray objectAtIndex:i] lastPathComponent]] handler:nil]; 
+                for (i=0; i<fileArray.count; i++) {
+                    [fileManager copyPath:fileArray[i] toPath:[NSString stringWithFormat:@"%@/%@", [document smbPath], [fileArray[i] lastPathComponent]] handler:nil]; 
                 }
             }
         } else {
@@ -936,67 +936,67 @@ int cocoa_keycode_to_qemu(int keycode)
 
     int buttons;
     int keycode;
-    switch ([event type]) {
+    switch (event.type) {
         case NSFlagsChanged:
-            keycode = cocoa_keycode_to_qemu([event keyCode]);
+            keycode = cocoa_keycode_to_qemu(event.keyCode);
             if (keycode) {
                 // emulate caps lock and num lock keydown and keyup
                 if (keycode == 58 || keycode == 69) {
-                    [[document distributedObject]setCommand:'K' arg1:keycode arg2:0 arg3:0 arg4:0];
-                    [[document distributedObject]setCommand:'K' arg1:keycode | 0x80 arg2:0 arg3:0 arg4:0];
+                    [document.distributedObjectsetCommand:'K' arg1:keycode arg2:0 arg3:0 arg4:0];
+                    [document.distributedObjectsetCommand:'K' arg1:keycode | 0x80 arg2:0 arg3:0 arg4:0];
                     
                 } else if (is_graphic_console) {
                     if (keycode & 0x80)
-                        [[document distributedObject]setCommand:'K' arg1:0xe0 arg2:0 arg3:0 arg4:0];
+                        [document.distributedObjectsetCommand:'K' arg1:0xe0 arg2:0 arg3:0 arg4:0];
 
                     // keydown
                     if (modifiers_state[keycode] == 0) {
-                        [[document distributedObject]setCommand:'K' arg1:keycode & 0x7f arg2:0 arg3:0 arg4:0];
+                        [document.distributedObjectsetCommand:'K' arg1:keycode & 0x7f arg2:0 arg3:0 arg4:0];
                         modifiers_state[keycode] = 1;
 
                     // keyup
                     } else {
-                        [[document distributedObject]setCommand:'K' arg1:keycode | 0x80 arg2:0 arg3:0 arg4:0];
+                        [document.distributedObjectsetCommand:'K' arg1:keycode | 0x80 arg2:0 arg3:0 arg4:0];
                         modifiers_state[keycode] = 0;
                     }
                 }
             }
                 
             // release Mouse grab when pressing ctrl+alt
-            if (!isFullscreen && ([event modifierFlags] & NSControlKeyMask) && ([event modifierFlags] & NSAlternateKeyMask)) {
+            if (!isFullscreen && (event.modifierFlags & NSControlKeyMask) && (event.modifierFlags & NSAlternateKeyMask)) {
                 [self ungrabMouse];
             }
             break;
         case NSKeyDown:
-            keycode = cocoa_keycode_to_qemu([event keyCode]);
+            keycode = cocoa_keycode_to_qemu(event.keyCode);
                                
             // handle control + alt Key Combos (ctrl+alt is reserved for QEMU)
-            if (([event modifierFlags] & NSControlKeyMask) && ([event modifierFlags] & NSAlternateKeyMask)) {
+            if ((event.modifierFlags & NSControlKeyMask) && (event.modifierFlags & NSAlternateKeyMask)) {
                 switch (keycode) {
 
                     // enable graphic console
                     case 0x02: // '1' to '9' keys
                         is_graphic_console = TRUE;
-                        [[document distributedObject]setCommand:'S' arg1:keycode - 0x02 arg2:0 arg3:0 arg4:0];
+                        [document.distributedObjectsetCommand:'S' arg1:keycode - 0x02 arg2:0 arg3:0 arg4:0];
                         break;
 
                     // enable monitor
                     case 0x03 ... 0x0a: // '1' to '9' keys
                         is_graphic_console = FALSE;
-                        [[document distributedObject]setCommand:'S' arg1:keycode - 0x02 arg2:0 arg3:0 arg4:0];
+                        [document.distributedObjectsetCommand:'S' arg1:keycode - 0x02 arg2:0 arg3:0 arg4:0];
                         break;
                 }
 
             // handle keys for graphic console
             } else if (is_graphic_console) {
                 if (keycode & 0x80) //check bit for e0 in front
-                    [[document distributedObject]setCommand:'K' arg1:0xe0 arg2:0 arg3:0 arg4:0];
-                [[document distributedObject]setCommand:'K' arg1:keycode & 0x7f arg2:0 arg3:0 arg4:0];
+                    [document.distributedObjectsetCommand:'K' arg1:0xe0 arg2:0 arg3:0 arg4:0];
+                [document.distributedObjectsetCommand:'K' arg1:keycode & 0x7f arg2:0 arg3:0 arg4:0];
 
             // handlekeys for Monitor
             } else {
                 int keysym = 0;
-                switch([event keyCode]) {
+                switch(event.keyCode) {
                 case 115:
                     keysym = 1 | 0xe100; // QEMU_KEY_HOME;
                     break;
@@ -1020,27 +1020,27 @@ int cocoa_keycode_to_qemu(int keycode)
                     break;
                 default:
                     {
-                        NSString *ks = [event characters];
-                        if ([ks length] > 0)
+                        NSString *ks = event.characters;
+                        if (ks.length > 0)
                             keysym = [ks characterAtIndex:0];
                     }
                 }
                 if (keysym)
-                    [[document distributedObject]setCommand:'C' arg1:keysym arg2:0 arg3:0 arg4:0];
+                    [document.distributedObjectsetCommand:'C' arg1:keysym arg2:0 arg3:0 arg4:0];
             }
             break;
         case NSKeyUp:
-            keycode = cocoa_keycode_to_qemu([event keyCode]);   
+            keycode = cocoa_keycode_to_qemu(event.keyCode);   
             if (is_graphic_console) {
                 if (keycode & 0x80)
-                    [[document distributedObject]setCommand:'K' arg1:0xe0 arg2:0 arg3:0 arg4:0];
-                [[document distributedObject]setCommand:'K' arg1:keycode | 0x80 arg2:0 arg3:0 arg4:0];
+                    [document.distributedObjectsetCommand:'K' arg1:0xe0 arg2:0 arg3:0 arg4:0];
+                [document.distributedObjectsetCommand:'K' arg1:keycode | 0x80 arg2:0 arg3:0 arg4:0];
             }
             break;
         case NSMouseMoved:
-            if ([document absolute_enabled]) {
-                NSPoint p = [event locationInWindow];
-                if (p.x < 0 || p.x > screenProperties.width || p.y < 0 || p.y > screenProperties.height || ![[self window] isKeyWindow]) {
+            if (document.absolute_enabled) {
+                NSPoint p = event.locationInWindow;
+                if (p.x < 0 || p.x > screenProperties.width || p.y < 0 || p.y > screenProperties.height || !self.window.keyWindow) {
                     if (tablet_enabled) {// if we leave the window, deactivate the tablet
                         [NSCursor unhide];
                         tablet_enabled = FALSE;
@@ -1050,51 +1050,51 @@ int cocoa_keycode_to_qemu(int keycode)
                         [NSCursor hide];
                         tablet_enabled = TRUE;
                     }
-                    [[document distributedObject]setCommand:'M' arg1:(int)(p.x * 0x7FFF / screenProperties.width) arg2:(int)((screenProperties.height - p.y) * 0x7FFF / screenProperties.height) arg3:(int)[event deltaZ] arg4:0];
+                    [document.distributedObjectsetCommand:'M' arg1:(int)(p.x * 0x7FFF / screenProperties.width) arg2:(int)((screenProperties.height - p.y) * 0x7FFF / screenProperties.height) arg3:(int)event.deltaZ arg4:0];
                     }
                 } else {
-                    [[document distributedObject]setCommand:'M' arg1:(int)[event deltaX] arg2:(int)[event deltaY] arg3:(int)[event deltaZ] arg4:0];
+                    [document.distributedObjectsetCommand:'M' arg1:(int)event.deltaX arg2:(int)event.deltaY arg3:(int)event.deltaZ arg4:0];
             }
             break;
         case NSLeftMouseDown:
         case NSLeftMouseDragged:
-            if ([event modifierFlags] & NSCommandKeyMask) {
+            if (event.modifierFlags & NSCommandKeyMask) {
                 buttons |= MOUSE_EVENT_RBUTTON;
             } else {
                 buttons |= MOUSE_EVENT_LBUTTON;
             }
             if (tablet_enabled) {
-                NSPoint p = [event locationInWindow];
-                [[document distributedObject]setCommand:'M' arg1:(int)(p.x * 0x7FFF / screenProperties.width) arg2:(int)((screenProperties.height - p.y) * 0x7FFF / screenProperties.height) arg3:(int)[event deltaZ] arg4:buttons];
+                NSPoint p = event.locationInWindow;
+                [document.distributedObjectsetCommand:'M' arg1:(int)(p.x * 0x7FFF / screenProperties.width) arg2:(int)((screenProperties.height - p.y) * 0x7FFF / screenProperties.height) arg3:(int)event.deltaZ arg4:buttons];
             } else {
-                [[document distributedObject]setCommand:'M' arg1:(int)[event deltaX] arg2:(int)[event deltaY] arg3:(int)[event deltaZ] arg4:buttons];
+                [document.distributedObjectsetCommand:'M' arg1:(int)event.deltaX arg2:(int)event.deltaY arg3:(int)event.deltaZ arg4:buttons];
             }
             break;
         case NSRightMouseDown:
         case NSRightMouseDragged:
             if (tablet_enabled) {
-                NSPoint p = [event locationInWindow];
-                [[document distributedObject]setCommand:'M' arg1:(int)(p.x * 0x7FFF / screenProperties.width) arg2:(int)((screenProperties.height - p.y) * 0x7FFF / screenProperties.height) arg3:(int)[event deltaZ] arg4:buttons |= MOUSE_EVENT_RBUTTON];
+                NSPoint p = event.locationInWindow;
+                [document.distributedObjectsetCommand:'M' arg1:(int)(p.x * 0x7FFF / screenProperties.width) arg2:(int)((screenProperties.height - p.y) * 0x7FFF / screenProperties.height) arg3:(int)event.deltaZ arg4:buttons |= MOUSE_EVENT_RBUTTON];
             } else {
-                [[document distributedObject]setCommand:'M' arg1:(int)[event deltaX] arg2:(int)[event deltaY] arg3:(int)[event deltaZ] arg4:buttons |= MOUSE_EVENT_RBUTTON];
+                [document.distributedObjectsetCommand:'M' arg1:(int)event.deltaX arg2:(int)event.deltaY arg3:(int)event.deltaZ arg4:buttons |= MOUSE_EVENT_RBUTTON];
             }
             break;
         case NSOtherMouseDown:
         case NSOtherMouseDragged:
             if (tablet_enabled) {
-                NSPoint p = [event locationInWindow];
-                [[document distributedObject]setCommand:'M' arg1:(int)(p.x * 0x7FFF / screenProperties.width) arg2:(int)((screenProperties.height - p.y) * 0x7FFF / screenProperties.height) arg3:(int)[event deltaZ] arg4:buttons |= MOUSE_EVENT_MBUTTON];
+                NSPoint p = event.locationInWindow;
+                [document.distributedObjectsetCommand:'M' arg1:(int)(p.x * 0x7FFF / screenProperties.width) arg2:(int)((screenProperties.height - p.y) * 0x7FFF / screenProperties.height) arg3:(int)event.deltaZ arg4:buttons |= MOUSE_EVENT_MBUTTON];
             } else {
-                [[document distributedObject]setCommand:'M' arg1:(int)[event deltaX] arg2:(int)[event deltaY] arg3:(int)[event deltaZ] arg4:buttons |= MOUSE_EVENT_MBUTTON];
+                [document.distributedObjectsetCommand:'M' arg1:(int)event.deltaX arg2:(int)event.deltaY arg3:(int)event.deltaZ arg4:buttons |= MOUSE_EVENT_MBUTTON];
             }
             break;
         case NSLeftMouseUp:
         case NSRightMouseUp:
         case NSOtherMouseUp:
-            [[document distributedObject]setCommand:'M' arg1:0 arg2:0 arg3:0 arg4:0];
+            [document.distributedObjectsetCommand:'M' arg1:0 arg2:0 arg3:0 arg4:0];
             break;
         case NSScrollWheel:
-            [[document distributedObject]setCommand:'M' arg1:0 arg2:0 arg3:[event deltaY] arg4:0];
+            [document.distributedObjectsetCommand:'M' arg1:0 arg2:0 arg3:event.deltaY arg4:0];
             break;
     }
 }
@@ -1110,7 +1110,7 @@ int cocoa_keycode_to_qemu(int keycode)
 - (void) otherMouseDraged:(NSEvent *)event { if(tablet_enabled) {[self handleEvent:event];}}
 - (void) mouseUp:(NSEvent *)event
 {
-    if ([document VMState]==QDocumentShutdown||[document VMState]==QDocumentSaved) {
+    if (document.VMState==QDocumentShutdown||document.VMState==QDocumentSaved) {
 		[document VMStart:self];
     } else if (tablet_enabled) {
         [self handleEvent:event];

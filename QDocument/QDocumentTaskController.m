@@ -60,7 +60,7 @@
 
     // make sure QEMU does not survive!
     if (task) {
-		if ([task isRunning]) { //make shure it's dead
+		if (task.running) { //make shure it's dead
 			[task terminate];
 		}
     }
@@ -73,33 +73,33 @@
 	Q_DEBUG(@"checkATaskStatus: %D", [[aNotification object] terminationStatus]);
 
     // we are only intrested in our instance of QEMU!
-    if ([task processIdentifier] != [[aNotification object] processIdentifier])
+    if (task.processIdentifier != [aNotification.object processIdentifier])
         return;
 
-    int status = [[aNotification object] terminationStatus];
+    int status = [aNotification.object terminationStatus];
 
     // we have clean shutdown
     if (status == 0) {
-		[document setVMState:QDocumentShutdown];
+		document.VMState = QDocumentShutdown;
 
     // we have clean save and shutdown
     } else if (status == 2) {
-		[document setVMState:QDocumentSaved];
+		document.VMState = QDocumentSaved;
 
     // we have an error here
     } else {
         
         // save shutdownstate
-		[document setVMState:QDocumentShutdown];
+		document.VMState = QDocumentShutdown;
 
         // error management here, we display the qemu output, if the user has enabled it
-        if ([[[document qApplication] userDefaults] boolForKey:@"enableLogToConsole"]) {
+        if ([[document.qApplication userDefaults] boolForKey:@"enableLogToConsole"]) {
             NSData * pipedata;
-            while ((pipedata = [[[task standardOutput] fileHandleForReading] availableData]) && [pipedata length]) {
+            while ((pipedata = [task.standardOutput fileHandleForReading].availableData) && pipedata.length) {
                 NSString * console_out = [[NSString alloc] initWithData:pipedata encoding:NSUTF8StringEncoding];
                 // trim string to only contain the error
                 NSArray * comps = [console_out componentsSeparatedByString:@": "];
-                [document defaultAlertMessage:@"Error: QEMU quited unexpected!" informativeText:[comps objectAtIndex:1]];
+                [document defaultAlertMessage:@"Error: QEMU quited unexpected!" informativeText:comps[1]];
             }
         } else {
 			[document defaultAlertMessage:@"Error: QEMU quited unexpected!" informativeText:@"TODO: This should be replaced by real output"];
@@ -107,10 +107,10 @@
     }
 
     // cleanup
-	if ([document canCloseDocumentClose]) { // callback for closeAllDocumentsWithDelegate
+	if (document.canCloseDocumentClose) { // callback for closeAllDocumentsWithDelegate
 		[document docShouldClose:self];
 	} else {
-		[[document screenView] display];
+		[document.screenView display];
 	}
 }
 
@@ -121,7 +121,7 @@
 	Q_DEBUG(@"addArgumentTo: option:%@ argument:%@ filename:%@", option, argument, filename);
 
     NSFileManager *fileManager = [NSFileManager defaultManager];
-	NSArray *relativePathKeys = [NSArray arrayWithObjects:@"-fda", @"-fdb", @"-hda", @"-hdb", @"-hdc", @"-hdd", @"-cdrom", @"-kernel", @"-initrd", nil];
+	NSArray *relativePathKeys = @[@"-fda", @"-fdb", @"-hda", @"-hdb", @"-hdc", @"-hdd", @"-cdrom", @"-kernel", @"-initrd"];
 
     // find the first cdrom of the mac
     if ([argument isEqual:@"/dev/cdrom"]) {
@@ -145,9 +145,9 @@
     } else if ([option isEqual:@"-smb"]) {
         // Q Filesharing
         if ([argument isEqual:@"~/Desktop/Q Shared Files/"]) {
-			[fileManager createDirectoryAtPath:[@"~/Desktop/Q Shared Files/" stringByExpandingTildeInPath] attributes: @{}];
+			[fileManager createDirectoryAtPath:(@"~/Desktop/Q Shared Files/").stringByExpandingTildeInPath attributes: @{}];
             [arguments addObject:@"-smb"];
-            [arguments addObject:[@"~/Desktop/Q Shared Files/" stringByExpandingTildeInPath]];
+            [arguments addObject:(@"~/Desktop/Q Shared Files/").stringByExpandingTildeInPath];
         // normal SMB
         } else if ([fileManager fileExistsAtPath:argument]) {
             [arguments addObject:@"-smb"];
@@ -176,42 +176,42 @@
 	NSString *key;
 	NSMutableArray *explodedArguments;
 	
-	cpuTypes = [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:@"i386-softmmu",@"x86_64-softmmu",@"ppc-softmmu",@"sparc-softmmu",@"mips-softmmu",@"arm-softmmu",nil] forKeys:[NSArray arrayWithObjects:@"x86",@"x86-64",@"PowerPC",@"SPARC",@"MIPS",@"ARM",nil]];
+	cpuTypes = @{@"x86": @"i386-softmmu",@"x86-64": @"x86_64-softmmu",@"PowerPC": @"ppc-softmmu",@"SPARC": @"sparc-softmmu",@"MIPS": @"mips-softmmu",@"ARM": @"arm-softmmu"};
 
     // if this PC is already running, abort
-    if ([[[[document configuration] objectForKey:@"PC Data"] objectForKey:@"state"] isEqual:@"running"]) {
+    if ([[document configuration][@"PC Data"][@"state"] isEqual:@"running"]) {
         [document defaultAlertMessage:@"QDocumentTaskController: Guest already running!" informativeText:nil];
         return;
     }
     
     // set qemu properties
     // WMStopWhenInactive
-    if ([[[document configuration] objectForKey:@"Temporary"] objectForKey:@"WMStopWhenInactive"])
+    if ([document configuration][@"Temporary"][@"WMStopWhenInactive"])
         [document VMSetPauseWhileInactive:TRUE];
         
     // add Arguments for Q
     arguments = [[NSMutableArray alloc] init];
 
     // Q Windows Drivers
-    if ([[[document configuration] objectForKey:@"Temporary"] objectForKey:@"QWinDrivers"]) {
+    if ([document configuration][@"Temporary"][@"QWinDrivers"]) {
         [arguments addObject: @"-hdb"];
-        [arguments addObject:[NSString stringWithFormat:@"%@/Contents/Resources/qdrivers.qcow", [[NSBundle mainBundle] bundlePath]]];
+        [arguments addObject:[NSString stringWithFormat:@"%@/Contents/Resources/qdrivers.qcow", [NSBundle mainBundle].bundlePath]];
     }
  
     // Arguments of configuration
-	explodedArguments = [[QQvmManager sharedQvmManager] explodeVMArguments:[[document configuration] objectForKey:@"Arguments"]];
+	explodedArguments = [[QQvmManager sharedQvmManager] explodeVMArguments:[document configuration][@"Arguments"]];
 	key = nil;
-	for (i = 0; i < [explodedArguments count]; i++) {
-		if ([[explodedArguments objectAtIndex:i] characterAtIndex:0] == '-') { // key
+	for (i = 0; i < explodedArguments.count; i++) {
+		if ([explodedArguments[i] characterAtIndex:0] == '-') { // key
 			if (key) { // store previous key
 				if (![self addArgumentTo:arguments option:key argument:@"" filename:filename]) {
 					[document defaultAlertMessage:@"QDocumentTaskController: can't add argument" informativeText:nil];
 					return;
 				}
 			}
-			key = [explodedArguments objectAtIndex:i];
+			key = explodedArguments[i];
 		} else { // argument
-			if (![self addArgumentTo:arguments option:key argument:[explodedArguments objectAtIndex:i] filename:filename]) {
+			if (![self addArgumentTo:arguments option:key argument:explodedArguments[i] filename:filename]) {
                 [document defaultAlertMessage:@"QDocumentTaskController: can't add argument" informativeText:nil];
                 return;
 			}
@@ -226,33 +226,33 @@
 	}
               
     // start a saved vm
-    if ([[[[document configuration] objectForKey:@"PC Data"] objectForKey:@"state"] isEqual:@"saved"]) {
+    if ([[document configuration][@"PC Data"][@"state"] isEqual:@"saved"]) {
         [arguments addObject: @"-loadvm"];
         [arguments addObject: @"kju"];
     }
     
     // add uniqueDocumentID for distributed object
     [arguments addObject: @"-distributedobject"];
-    [arguments addObject: [NSString stringWithFormat:@"qDocument_%D", [document uniqueDocumentID]]];
+    [arguments addObject: [NSString stringWithFormat:@"qDocument_%D", document.uniqueDocumentID]];
 NSLog(@"ARGUMENTS: %@", arguments);
     // save Status
-    [[[document configuration] objectForKey:@"PC Data"] setObject:@"running" forKey:@"state"];
+    [document configuration][@"PC Data"][@"state"] = @"running";
     [[QQvmManager sharedQvmManager] saveVMConfiguration:[document configuration]];
 
     task = [[NSTask alloc] init];
-    [task setCurrentDirectoryPath:[NSString stringWithFormat:@"%@/Contents/Resources/bin/", [[NSBundle mainBundle] bundlePath]]];
-    [task setLaunchPath:[NSString stringWithFormat:@"%@/Contents/Resources/bin/%@", [[NSBundle mainBundle] bundlePath], [cpuTypes objectForKey:[[[document configuration] objectForKey:@"PC Data"] objectForKey:@"architecture"]], [cpuTypes objectForKey:[[[document configuration] objectForKey:@"PC Data"] objectForKey:@"architecture"]]]];
-    [task setArguments:arguments];
+    task.currentDirectoryPath = [NSString stringWithFormat:@"%@/Contents/Resources/bin/", [NSBundle mainBundle].bundlePath];
+    task.launchPath = [NSString stringWithFormat:@"%@/Contents/Resources/bin/%@", [NSBundle mainBundle].bundlePath, cpuTypes[[document configuration][@"PC Data"][@"architecture"]], cpuTypes[[document configuration][@"PC Data"][@"architecture"]]];
+    task.arguments = arguments;
 
-    if ([[[document qApplication] userDefaults] boolForKey:@"enableLogToConsole"]) {
+    if ([[document.qApplication userDefaults] boolForKey:@"enableLogToConsole"]) {
         // prepare nstask output to grab exit codes and display a standardAlert when the qemu instance crashed
         NSPipe * pipe = [[NSPipe alloc] init];
-        [task setStandardOutput:pipe];
-        [task setStandardError:pipe];
+        task.standardOutput = pipe;
+        task.standardError = pipe;
         
     }
     
-	[document setVMState:QDocumentLoading];
+	document.VMState = QDocumentLoading;
     [task launch];
 }
 

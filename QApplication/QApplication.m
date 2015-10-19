@@ -37,7 +37,7 @@
     self = [super init];
     if (self) {
         applicationController = [[QApplicationController alloc] init];
-        [self setDelegate: applicationController];
+        self.delegate = applicationController;
     }
     return self;
 }
@@ -55,21 +55,21 @@
 {
 	Q_DEBUG(@"sendEvent");
 
-    QDocument *document = [[NSDocumentController sharedDocumentController] currentDocument];
+    QDocument *document = [NSDocumentController sharedDocumentController].currentDocument;
     
     // handle command Key Combos
-    if (([anEvent type] == NSKeyDown) && ([anEvent modifierFlags] & NSCommandKeyMask)) {
-        switch ([anEvent keyCode]) {
+    if ((anEvent.type == NSKeyDown) && (anEvent.modifierFlags & NSCommandKeyMask)) {
+        switch (anEvent.keyCode) {
                     
             // fullscreen
             case 3: // cmd+f
-                [[document screenView] toggleFullScreen];
+                [document.screenView toggleFullScreen];
                 break;
 
             // fullscreen toolbar
             case 11: // cmd+b
-                if ([[document screenView] isFullscreen]) {
-                    [[[document screenView] fullscreenController] toggleToolbar];
+                if (document.screenView.fullscreen) {
+                    [document.screenView.fullscreenController toggleToolbar];
                 }
                 break;
             
@@ -80,8 +80,8 @@
         }
 
     // handle mouseGrabed
-    } else if ([[document screenView] mouseGrabed]) {
-        [[document screenView] handleEvent:anEvent];
+    } else if (document.screenView.mouseGrabed) {
+        [document.screenView handleEvent:anEvent];
 
     // default
     } else {

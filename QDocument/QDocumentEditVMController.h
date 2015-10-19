@@ -111,7 +111,7 @@ typedef NS_ENUM(NSInteger, QDocumentEditVMMachine) {
 
 }
 - (void)showEditVMPanel:(QDocument*)sender;
-- (NSPanel *) editVMPanel;
+@property (readonly, strong) NSPanel *editVMPanel;
 
 - (IBAction)OK:(id)sender;
 - (IBAction)cancel:(id)sender;

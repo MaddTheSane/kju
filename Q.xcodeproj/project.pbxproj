@@ -56,6 +56,16 @@
 		8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		2796F66C0D58EA50006DA3A0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2A37F4A9FDCFA73011CA2CEA /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2796F6680D58E9E8006DA3A0;
+			remoteInfo = qemu;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		274EB3F40D37C71900E1A75D /* Copy Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -326,6 +336,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				2796F66D0D58EA50006DA3A0 /* PBXTargetDependency */,
 			);
 			name = Q;
 			productInstallPath = "$(HOME)/Applications";
@@ -424,6 +435,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		2796F66D0D58EA50006DA3A0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2796F6680D58E9E8006DA3A0 /* qemu */;
+			targetProxy = 2796F66C0D58EA50006DA3A0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		089C165FFE840EACC02AAC07 /* InfoPlist.strings */ = {

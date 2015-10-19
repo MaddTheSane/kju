@@ -34,5 +34,5 @@
     NSToolbar *toolbar;
     NSTimer *cpuTimer; // Timer to update the cpu Icon
 }
-- (instancetype) initWithWindow:(NSWindow *)tWindow sender:(QDocument *)sender;
+- (instancetype) initWithWindow:(NSWindow *)tWindow sender:(QDocument *)sender NS_DESIGNATED_INITIALIZER;
 @end

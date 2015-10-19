@@ -26,7 +26,7 @@
 
 
 @implementation QButtonCell
-- (id)initImageCell:(NSImage *)anImage
+- (instancetype)initImageCell:(NSImage *)anImage
 {
 	Q_DEBUG(@"initImageCell");
 
@@ -36,21 +36,21 @@
 		[imageNormal setFlipped:TRUE];
 		imagePressed = [NSImage imageNamed:@"q_button_p"];
 		[imagePressed setFlipped:TRUE];
-		[[self image] setFlipped:TRUE];
-		[self setBezelStyle:NSRegularSquareBezelStyle];
+		[self.image setFlipped:TRUE];
+		self.bezelStyle = NSRegularSquareBezelStyle;
 	}
 	return self;
 }
 
-- (id)initImageCell:(NSImage *)anImage buttonType:(QButtonCellType)aButtonType target:(id)aTarget action:(SEL)anAction
+- (instancetype)initImageCell:(NSImage *)anImage buttonType:(QButtonCellType)aButtonType target:(id)aTarget action:(SEL)anAction
 {
 	Q_DEBUG(@"initImageCell");
 
 	self = [self initImageCell:anImage];
 	if (self) {
 		buttonType = aButtonType;
-		[self setTarget:aTarget];
-		[self setAction:anAction];
+		self.target = aTarget;
+		self.action = anAction;
 	}
 	return self;
 }
@@ -61,7 +61,7 @@
 
 	NSImage *bgImage;
 	
-	if ([self state] == NSOffState) {
+	if (self.state == NSOffState) {
 		bgImage = imageNormal;
 	} else {
 		bgImage = imagePressed;
@@ -86,7 +86,7 @@
 			break;
 	}
 	[bgImage drawInRect:NSMakeRect(5.0, 0.0, frame.size.width-10.0, 19.0) fromRect:NSMakeRect(5.0, 0.0, 10.0, 19.0) operation:NSCompositeSourceOver fraction:1.0];
-	[[self image] drawInRect:NSMakeRect((frame.size.width - [[self image] size].width) * 0.5 + 0.5, 1.0, [[self image] size].width, [[self image] size].height - 1) fromRect:NSMakeRect(0.0, 0.0, [[self image] size].width, [[self image] size].height) operation:NSCompositeSourceOver fraction:1.0];
+	[self.image drawInRect:NSMakeRect((frame.size.width - self.image.size.width) * 0.5 + 0.5, 1.0, self.image.size.width, self.image.size.height - 1) fromRect:NSMakeRect(0.0, 0.0, self.image.size.width, self.image.size.height) operation:NSCompositeSourceOver fraction:1.0];
 
 }
 
@@ -101,7 +101,7 @@
 {
 	Q_DEBUG(@"startTrackingAt");
 
-	[self setState:NSOnState];
+	self.state = NSOnState;
 	return YES;
 }
 @end

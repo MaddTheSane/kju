@@ -29,7 +29,7 @@
 
 
 @implementation QControlTableViewController
-- (id) init
+- (instancetype) init
 {
 	Q_DEBUG(@"init");
 
@@ -58,8 +58,8 @@
 
 	// set infos for microIcons
 	[table setQControl:qControl];
-	[table setTarget:self];
-	[table setDoubleAction:@selector(tableDoubleClick:)];
+	table.target = self;
+	table.doubleAction = @selector(tableDoubleClick:);
 
 	// loading initial Thumbnails
 	[self updateThumbnails:self];
@@ -71,7 +71,7 @@
 {
 	Q_DEBUG(@"numberOfRowsInTableView");
 
-    return [[qControl VMs] count];
+    return [qControl VMs].count;
 }
 
 - (id) tableView:(NSTableView *)aTableView objectValueForTableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex
@@ -86,19 +86,19 @@
 	NSMutableAttributedString *attrString;
 
     
-    if ([[aTableColumn identifier] isEqualTo: @"image"]) {
-        if ([VMsImages count] < rowIndex) { // return default image if no image available
+    if ([aTableColumn.identifier isEqualTo: @"image"]) {
+        if (VMsImages.count < rowIndex) { // return default image if no image available
             return [NSImage imageNamed: @"q_table_shutdown.png"];
 		} else {
-            return [VMsImages objectAtIndex:rowIndex];
+            return VMsImages[rowIndex];
         }
     }
-    else if ([[aTableColumn identifier] isEqualTo: @"description"]) {
+    else if ([aTableColumn.identifier isEqualTo: @"description"]) {
 
-		VM = [[qControl VMs] objectAtIndex:rowIndex];
-		qDocument = [[NSDocumentController sharedDocumentController] documentForURL:[[VM objectForKey:@"Temporary"] objectForKey:@"URL"]];
+		VM = [qControl VMs][rowIndex];
+		qDocument = [[NSDocumentController sharedDocumentController] documentForURL:VM[@"Temporary"][@"URL"]];
 		if (qDocument) {
-			switch ([qDocument VMState]) {
+			switch (qDocument.VMState) {
 				case(QDocumentSaving):
 					state = NSLocalizedStringFromTable(@"saving", @"Localizable", @"vmstate");
 					break;
@@ -125,14 +125,14 @@
 					break;
 			}
 		} else {
-			state = NSLocalizedStringFromTable([[VM objectForKey:@"PC Data"] objectForKey:@"state"], @"Localizable", @"vmstate");
+			state = NSLocalizedStringFromTable(VM[@"PC Data"][@"state"], @"Localizable", @"vmstate");
 		}
-		path = [[[VM objectForKey:@"Temporary"] objectForKey:@"URL"] path];
-		name = [path lastPathComponent];
-		name = [name substringToIndex:[name length] - 4];
+		path = [VM[@"Temporary"][@"URL"] path];
+		name = path.lastPathComponent;
+		name = [name substringToIndex:name.length - 4];
 
-        attrString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat: @"%@\n", name] attributes:[NSDictionary dictionaryWithObject: [NSFont boldSystemFontOfSize:[NSFont smallSystemFontSize]] forKey:NSFontAttributeName]];
-        [attrString appendAttributedString: [[NSAttributedString alloc] initWithString:[NSString stringWithFormat: @"%@\n", state] attributes:[NSDictionary dictionaryWithObject:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]] forKey:NSFontAttributeName]]];
+        attrString = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat: @"%@\n", name] attributes:@{NSFontAttributeName: [NSFont boldSystemFontOfSize:[NSFont smallSystemFontSize]]}];
+        [attrString appendAttributedString: [[NSAttributedString alloc] initWithString:[NSString stringWithFormat: @"%@\n", state] attributes:@{NSFontAttributeName: [NSFont systemFontOfSize:[NSFont smallSystemFontSize]]}]];
 
         return attrString;
     }
@@ -148,8 +148,8 @@
 	Q_DEBUG(@"toolTipForCell");
 	NSString *path;
 	
-	path = [[[[[qControl VMs] objectAtIndex:rowIndex] objectForKey:@"Temporary"] objectForKey:@"URL"] path];
-    return [NSString stringWithFormat:@"%@\n\n%@", [[[qControl VMs] objectAtIndex:rowIndex] objectForKey:@"Arguments"], [path stringByDeletingLastPathComponent]];
+	path = [[qControl VMs][rowIndex][@"Temporary"][@"URL"] path];
+    return [NSString stringWithFormat:@"%@\n\n%@", [qControl VMs][rowIndex][@"Arguments"], path.stringByDeletingLastPathComponent];
 }
 
 
@@ -160,15 +160,15 @@
 	Q_DEBUG(@"validateDrop");
 
 	NSPasteboard *paste = [info draggingPasteboard];
-    NSArray *types = [NSArray arrayWithObjects: NSFilenamesPboardType, nil];
+    NSArray *types = @[NSFilenamesPboardType];
     NSString *desiredType = [paste availableTypeFromArray:types];
-    [table setDropRow:[table numberOfRows] dropOperation: NSTableViewDropAbove];
+    [table setDropRow:table.numberOfRows dropOperation: NSTableViewDropAbove];
 
 	if ([desiredType isEqualToString:NSFilenamesPboardType]) { // we only accept files to be dragged onto Q Control
-		if ([@"qvm" isEqual:[[[paste propertyListForType:@"NSFilenamesPboardType"] objectAtIndex:0] pathExtension]]) { // add an existing VM to the Browser
-			[table setDropRow:[table numberOfRows] dropOperation: NSTableViewDropAbove]; //drop to last row
-		} else if([FILE_TYPES containsObject:[[[paste propertyListForType:@"NSFilenamesPboardType"] objectAtIndex:0] pathExtension]]) { // create a new VM with this diskimage
-			[table setDropRow:[table numberOfRows] dropOperation: NSTableViewDropAbove]; //drop to last row
+		if ([@"qvm" isEqual:[[paste propertyListForType:@"NSFilenamesPboardType"][0] pathExtension]]) { // add an existing VM to the Browser
+			[table setDropRow:table.numberOfRows dropOperation: NSTableViewDropAbove]; //drop to last row
+		} else if([FILE_TYPES containsObject:[[paste propertyListForType:@"NSFilenamesPboardType"][0] pathExtension]]) { // create a new VM with this diskimage
+			[table setDropRow:table.numberOfRows dropOperation: NSTableViewDropAbove]; //drop to last row
 		} else { // copy all dragged Files to the Q shared folder of this PC
 			[table setDropRow:row dropOperation: NSTableViewDropAbove]; //drop to propsed row
 		}
@@ -182,7 +182,7 @@
 	Q_DEBUG(@"acceptDrop");
 
     NSPasteboard *paste = [info draggingPasteboard];
-    NSArray *types = [NSArray arrayWithObjects: NSFilenamesPboardType, nil];
+    NSArray *types = @[NSFilenamesPboardType];
     NSString *desiredType = [paste availableTypeFromArray:types];
     NSData *carriedData = [paste dataForType:desiredType];
 
@@ -192,17 +192,17 @@
         return NO;
     } else {
 //        if ([desiredType isEqualToString:NSFilenamesPboardType]) {
-		if ([@"qvm" isEqual:[[[paste propertyListForType:@"NSFilenamesPboardType"] objectAtIndex:0] pathExtension]]) { // add an existing VM to the Browser
-			[qControl addVMToKnownVMs:[[paste propertyListForType:@"NSFilenamesPboardType"] objectAtIndex:0]];
-		} else if([FILE_TYPES containsObject:[[[paste propertyListForType:@"NSFilenamesPboardType"] objectAtIndex:0] pathExtension]]) { // create a new VM with this diskimage
-			[qControl addVMFromDragDrop:[[paste propertyListForType:@"NSFilenamesPboardType"] objectAtIndex:0]];
+		if ([@"qvm" isEqual:[[paste propertyListForType:@"NSFilenamesPboardType"][0] pathExtension]]) { // add an existing VM to the Browser
+			[qControl addVMToKnownVMs:[paste propertyListForType:@"NSFilenamesPboardType"][0]];
+		} else if([FILE_TYPES containsObject:[[paste propertyListForType:@"NSFilenamesPboardType"][0] pathExtension]]) { // create a new VM with this diskimage
+			[qControl addVMFromDragDrop:[paste propertyListForType:@"NSFilenamesPboardType"][0]];
 		} else { // copy all dragged Files to the Q shared folder of this PC
             NSArray *fileArray = [paste propertyListForType:@"NSFilenamesPboardType"];
-			if ([[[[qControl VMs] objectAtIndex:row] objectForKey:@"Temporary"] objectForKey:@"-smb"]) {
+			if ([qControl VMs][row][@"Temporary"][@"-smb"]) {
 				int i;
 				NSFileManager *fileManager = [NSFileManager defaultManager];
-				for (i = 0; i < [fileArray count]; i++) {
-					[fileManager copyPath:[fileArray objectAtIndex:i] toPath:[NSString stringWithFormat:@"%@/%@", [[[[qControl VMs] objectAtIndex:row] objectForKey:@"Temporary"] objectForKey:@"-smb"], [[fileArray objectAtIndex:i] lastPathComponent]] handler:nil]; 
+				for (i = 0; i < fileArray.count; i++) {
+					[fileManager copyPath:fileArray[i] toPath:[NSString stringWithFormat:@"%@/%@", [qControl VMs][row][@"Temporary"][@"-smb"], [fileArray[i] lastPathComponent]] handler:nil]; 
 				}
 			}
         }// else {
@@ -220,12 +220,12 @@
 {
 	Q_DEBUG(@"tableDoubleClick");
 
-    if ([table selectedRow] < 0) { // no empty line selection
+    if (table.selectedRow < 0) { // no empty line selection
 //TODO:        [qControl addPC:self]; // addNewVM
-    } else if ([[[[[qControl VMs] objectAtIndex:[sender clickedRow]] objectForKey:@"PC Data"] objectForKey:@"state"] isEqualTo:@"running"]) {  // move VM to front
-		[(QDocument *)[[NSDocumentController sharedDocumentController] documentForURL:[[[[qControl VMs] objectAtIndex:[table selectedRow]] objectForKey:@"Temporary"] objectForKey:@"URL"]] showWindows];
+    } else if ([[qControl VMs][[sender clickedRow]][@"PC Data"][@"state"] isEqualTo:@"running"]) {  // move VM to front
+		[(QDocument *)[[NSDocumentController sharedDocumentController] documentForURL:[qControl VMs][table.selectedRow][@"Temporary"][@"URL"]] showWindows];
 	} else {
-        [qControl startVMWithURL:[[[[qControl VMs] objectAtIndex:[sender clickedRow]] objectForKey:@"Temporary"] objectForKey:@"URL"]]; // start VM
+        [qControl startVMWithURL:[qControl VMs][[sender clickedRow]][@"Temporary"][@"URL"]]; // start VM
     }
 }
 
@@ -239,16 +239,16 @@
 	NSImage *thumbnail;
 	NSImage *savedImage;
 
-	if ([[[VM objectForKey:@"PC Data"] objectForKey:@"state"] isEqual:@"saved"]) { // only return thumbnail for saved VMs
-		savedImage = [[NSImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/QuickLook/Thumbnail.png", [[[VM objectForKey:@"Temporary"] objectForKey:@"URL"] path]]];
+	if ([VM[@"PC Data"][@"state"] isEqual:@"saved"]) { // only return thumbnail for saved VMs
+		savedImage = [[NSImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/QuickLook/Thumbnail.png", [VM[@"Temporary"][@"URL"] path]]];
 		if (savedImage) { // try screen.png
 			thumbnail = [[NSImage alloc] initWithSize:NSMakeSize(80.0,  60.0)];
 			[thumbnail lockFocus];
-			[savedImage drawInRect:NSMakeRect(0.0, 0.0, 80.0, 60.0) fromRect:NSMakeRect(0.0, 0.0, [savedImage size].width, [savedImage size].height) operation:NSCompositeSourceOver fraction:1.0];
+			[savedImage drawInRect:NSMakeRect(0.0, 0.0, 80.0, 60.0) fromRect:NSMakeRect(0.0, 0.0, savedImage.size.width, savedImage.size.height) operation:NSCompositeSourceOver fraction:1.0];
 			[thumbnail unlockFocus];
 			return thumbnail;
 		} else { // try old thumbnail.png
-			savedImage = [[NSImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/thumbnail.png", [[[VM objectForKey:@"Temporary"] objectForKey:@"URL"] path]]];
+			savedImage = [[NSImage alloc] initWithContentsOfFile:[NSString stringWithFormat:@"%@/thumbnail.png", [VM[@"Temporary"][@"URL"] path]]];
 			if (savedImage) {
 				return savedImage;
 			}
@@ -268,31 +268,31 @@
 	
 	updateAll = FALSE;
 
-	if ((!VMsImages) || ([VMsImages count] != [[qControl VMs] count])) {
+	if ((!VMsImages) || (VMsImages.count != [qControl VMs].count)) {
 		updateAll = TRUE;
-		VMsImages = [[NSMutableArray alloc] initWithCapacity:[[qControl VMs] count]];
+		VMsImages = [[NSMutableArray alloc] initWithCapacity:[qControl VMs].count];
 	}
-    for (i = 0; i < [[qControl VMs] count]; i++ ) {
-		qDocument = [[NSDocumentController sharedDocumentController] documentForURL:[[[[qControl VMs] objectAtIndex:i] objectForKey:@"Temporary"] objectForKey:@"URL"]];
+    for (i = 0; i < [qControl VMs].count; i++ ) {
+		qDocument = [[NSDocumentController sharedDocumentController] documentForURL:[qControl VMs][i][@"Temporary"][@"URL"]];
         if (qDocument) {
-			switch ([qDocument VMState]) {
+			switch (qDocument.VMState) {
 				case QDocumentPaused:
 				case QDocumentRunning:
 				case QDocumentSaving:
-					thumbnail = [(QDocumentOpenGLView *)[qDocument screenView] screenshot:NSMakeSize(80.0, 60.0)];
-					[VMsImages replaceObjectAtIndex:i withObject:thumbnail];
+					thumbnail = [(QDocumentOpenGLView *)qDocument.screenView screenshot:NSMakeSize(80.0, 60.0)];
+					VMsImages[i] = thumbnail;
 					break;
 				case QDocumentShutdown:
-					[VMsImages replaceObjectAtIndex:i withObject:shutdownImage];
+					VMsImages[i] = shutdownImage;
 					break;
 				default:
 					if (updateAll) {
-						[VMsImages addObject:[self loadThumbnailForVM:[[qControl VMs] objectAtIndex:i]]];
+						[VMsImages addObject:[self loadThumbnailForVM:[qControl VMs][i]]];
 					}
 					break;
 			}
         } else if (updateAll) {
-			[VMsImages addObject:[self loadThumbnailForVM:[[qControl VMs] objectAtIndex:i]]];
+			[VMsImages addObject:[self loadThumbnailForVM:[qControl VMs][i]]];
         }
     }
 

@@ -41,11 +41,11 @@
 	// create a transparent window
 	window = [self createTransparentWindow];
 	// we want to become the window's delegate to receive notifications
-	[window setDelegate: self];
+	window.delegate = self;
 	
 	// create a rounded view and make it the window's contentView
 	view = [[FSRoundedView alloc] init];
-	[window setContentView:view];
+	window.contentView = view;
 	
     [self setupToolbar];
 	
@@ -96,7 +96,7 @@
 	[self addToolbarItem:@"q_tbfs_shutdown.png" withTitle: NSLocalizedStringFromTable(@"toolbar:label:shutdown", @"Localizable", @"FSToolbarController") rectangle:NSMakeRect(220,20,itemWidth,itemHeight) target:self action:@selector(shutdownPC:)];
 	
 	// add seperator item and last item at the end of the window
-	NSRect viewFrame = [[[window contentView] superview] frame];
+	NSRect viewFrame = window.contentView.superview.frame;
 	float lastItemOriginX = viewFrame.size.width - margin_h - itemWidth;
 	[self addToolbarItem:@"q_tbfs_fullscreen.png" withTitle: NSLocalizedStringFromTable(@"toolbar:label:fullscreen", @"Localizable", @"FSToolbarController") rectangle:NSMakeRect(lastItemOriginX,20,itemWidth,itemHeight) target:self action:@selector(setFullscreen:)];
 	
@@ -107,7 +107,7 @@
 	seperatorRect.origin.y = viewFrame.origin.y + ((viewFrame.size.height - seperatorRect.size.height) / 2);
 
 	NSBox * seperator = [[NSBox alloc] initWithFrame:seperatorRect];
-	[seperator setBoxType: NSBoxSeparator];
+	seperator.boxType = NSBoxSeparator;
 	[self addCustomToolbarItem: seperator];    
 }
 
@@ -115,16 +115,16 @@
 {
 	Q_DEBUG(@"addToolbarItem");
 
-	id cView = [[window contentView] superview];	
+	id cView = window.contentView.superview;	
 
 	// add button
 	FSTransparentButton * button = [[FSTransparentButton alloc] initWithFrame: rectangle];
 	[button setButtonType: NSMomentaryChangeButton];
-	[button setBezelStyle: NSRegularSquareBezelStyle];
+	button.bezelStyle = NSRegularSquareBezelStyle;
 	[button setBordered: NO];
-	[button setImage: [NSImage imageNamed: icon]];
-	[button setTarget: target];
-	[button setAction: action];
+	button.image = [NSImage imageNamed: icon];
+	button.target = target;
+	button.action = action;
 	[cView addSubview: button];
 	
 	// add title label
@@ -138,11 +138,11 @@
 	NSTextField * textField = [[NSTextField alloc] initWithFrame: textFieldRect];
 	[textField setEditable: NO];
 	[textField setBackgroundColor: SEMI_TRANSPARENT_COLOR];
-	[textField setTextColor: [NSColor whiteColor]];
-	[textField setFont:[NSFont systemFontOfSize:[NSFont smallSystemFontSize]]];
+	textField.textColor = [NSColor whiteColor];
+	textField.font = [NSFont systemFontOfSize:[NSFont smallSystemFontSize]];
 	[textField setBordered: NO];
-	[textField setAlignment: NSCenterTextAlignment];
-	[textField setStringValue: title];
+	textField.alignment = NSCenterTextAlignment;
+	textField.stringValue = title;
 	[cView addSubview: textField];
 	
 	[cView setNeedsDisplay: YES];
@@ -152,7 +152,7 @@
 {
 	Q_DEBUG(@"addCustomToolbarItem");
 
-	id cView = [[window contentView] superview];	
+	id cView = window.contentView.superview;	
 	[cView addSubview: item];
 
 	[cView setNeedsDisplay: YES];
@@ -162,7 +162,7 @@
 {
 	Q_DEBUG(@"createTransparentWindow");
 
-    NSRect frameRect = [[NSScreen mainScreen] frame];
+    NSRect frameRect = [NSScreen mainScreen].frame;
     NSRect contentRect;
     contentRect.size.width = 800.0;
     contentRect.size.height = 100.0;
@@ -173,11 +173,11 @@
     // create a borderless window
     NSWindow * aWindow = [[NSWindow alloc] initWithContentRect:contentRect styleMask:NSBorderlessWindowMask backing:NSBackingStoreBuffered defer:NO];
     // actually make it transparent
-    [aWindow setBackgroundColor: [NSColor clearColor]];
+    aWindow.backgroundColor = [NSColor clearColor];
     [aWindow setOpaque: NO];
 	[aWindow setHasShadow: NO];
 	[aWindow setLevel: NSScreenSaverWindowLevel - 1];
-	[aWindow setAlphaValue: 0.0]; // fade to 1.0
+	aWindow.alphaValue = 0.0; // fade to 1.0
 	
 	return aWindow;
 }
@@ -186,10 +186,10 @@
 {
 	Q_DEBUG(@"fadeIn");
 
-	if([window alphaValue] < 1.0) {
+	if(window.alphaValue < 1.0) {
 		// fade in..
-		float nextAlphaValue = [window alphaValue] + 0.2;
-		[window setAlphaValue: nextAlphaValue];
+		float nextAlphaValue = window.alphaValue + 0.2;
+		window.alphaValue = nextAlphaValue;
 	} else {
 		// fadeIn complete
 		[fadeTimer invalidate];
@@ -202,10 +202,10 @@
 {
 	Q_DEBUG(@"fadeOut");
 
-	if([window alphaValue] > 0.0) {
+	if(window.alphaValue > 0.0) {
 		// fade out..
-		float nextAlphaValue = [window alphaValue] - 0.2;
-		[window setAlphaValue: nextAlphaValue];
+		float nextAlphaValue = window.alphaValue - 0.2;
+		window.alphaValue = nextAlphaValue;
 	} else {
 		// fadeOut complete
 		[fadeTimer invalidate];
@@ -233,9 +233,9 @@
 {
 	Q_DEBUG(@"setFullscreen");
 
-    [[pc screenView] toggleFullScreen];
+    [pc.screenView toggleFullScreen];
     // release ourselves with the FSController
-    [[pc screenView] fullscreenController];
+    pc.screenView.fullscreenController;
 }
 
 - (void) shutdownPC:(id)sender
@@ -244,7 +244,7 @@
 
     [pc VMShutDown:self];
     // release ourselves with the FSController
-    [[pc screenView] fullscreenController];
+    pc.screenView.fullscreenController;
 }
 
 - (void) dealloc

@@ -8,7 +8,7 @@
 
 @implementation FSRoundedView
 
-- (id)initWithFrame:(NSRect)frameRect
+- (instancetype)initWithFrame:(NSRect)frameRect
 {
 	Q_DEBUG(@"iniWithFrame");
 

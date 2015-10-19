@@ -133,6 +133,6 @@
 - (void)standardAlert:(NSString *)messageText informativeText:(NSString *)informativeText;
 
 // getters & setters
-- (NSMutableArray *) VMs;
+@property (readonly, copy) NSMutableArray *VMs;
 @property (readonly, unsafe_unretained) IBOutlet QWindow *mainWindow;
 @end

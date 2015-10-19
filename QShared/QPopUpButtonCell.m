@@ -27,17 +27,17 @@
 
 
 @implementation QPopUpButtonCell
-- (id)initTextCell:(NSString *)stringValue buttonType:(QButtonCellType)aButtonType pullsDown:(BOOL)pullDown menu:(NSMenu *)menu image:(NSImage *)anImage
+- (instancetype)initTextCell:(NSString *)stringValue buttonType:(QButtonCellType)aButtonType pullsDown:(BOOL)pullDown menu:(NSMenu *)menu image:(NSImage *)anImage
 {
 	Q_DEBUG(@"initImageCell");
 
 	self = [self initTextCell:stringValue];
 	if (self) {
 
-		[self setMenu:menu];
-		[self setPullsDown:pullDown];
-		[self setBezelStyle:NSRegularSquareBezelStyle];
-		[self setArrowPosition:NSPopUpNoArrow];
+		self.menu = menu;
+		self.pullsDown = pullDown;
+		self.bezelStyle = NSRegularSquareBezelStyle;
+		self.arrowPosition = NSPopUpNoArrow;
 
 		image = anImage;
 		[image setFlipped:TRUE];
@@ -73,7 +73,7 @@
 			break;
 	}
 	[imageNormal drawInRect:NSMakeRect(5.0, 0.0, frame.size.width-10.0, 19.0) fromRect:NSMakeRect(5.0, 0.0, 10.0, 19.0) operation:NSCompositeSourceOver fraction:1.0];
-	[image drawInRect:NSMakeRect((frame.size.width - [image size].width) * 0.5 + 0.5, 1.0, [image size].width, [image size].height - 1) fromRect:NSMakeRect(0.0, 0.0, [image size].width, [image size].height) operation:NSCompositeSourceOver fraction:1.0];
+	[image drawInRect:NSMakeRect((frame.size.width - image.size.width) * 0.5 + 0.5, 1.0, image.size.width, image.size.height - 1) fromRect:NSMakeRect(0.0, 0.0, image.size.width, image.size.height) operation:NSCompositeSourceOver fraction:1.0];
 
 }
 

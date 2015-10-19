@@ -53,7 +53,7 @@
 @implementation QWindow
 
 
-- (id)initWithContentRect:(NSRect)contentRect styleMask:(NSUInteger)styleMask backing:(NSBackingStoreType)bufferingType defer:(BOOL)flag
+- (instancetype)initWithContentRect:(NSRect)contentRect styleMask:(NSUInteger)styleMask backing:(NSBackingStoreType)bufferingType defer:(BOOL)flag
 {
 	Q_DEBUG(@"initWithContentRect");
     
@@ -71,7 +71,7 @@
 		yellow = [[NSUserDefaults standardUserDefaults] boolForKey:@"yellow"];
         
         [self setMovableByWindowBackground:YES];
-        [self setBackgroundColor:[self sizedPolishedBackground]];
+        self.backgroundColor = [self sizedPolishedBackground];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowNeedsUpdate:) name:NSWindowDidResizeNotification object:self];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowNeedsUpdate:) name:NSWindowDidResignKeyNotification object:self];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(windowNeedsUpdate:) name:NSWindowDidBecomeKeyNotification object:self];
@@ -106,7 +106,7 @@
 	Q_DEBUG(@"setYellow");
 
 	yellow = [[NSUserDefaults standardUserDefaults] boolForKey:@"yellow"];
-    [self setBackgroundColor:[self sizedPolishedBackground]];
+    self.backgroundColor = [self sizedPolishedBackground];
 	[self display];
 }
 
@@ -120,7 +120,7 @@
         [toolbar setShowsBaselineSeparator:NO];
     }
     
-    [super setToolbar:toolbar];
+    super.toolbar = toolbar;
 }
 #endif
 
@@ -128,7 +128,7 @@
 {
 	Q_DEBUG(@"awakeFromNib");
 
-    [self setBackgroundColor:[self sizedPolishedBackground]];
+    self.backgroundColor = [self sizedPolishedBackground];
     [self display];
 }
 
@@ -136,7 +136,7 @@
 {
 	Q_DEBUG(@"windowNeedsUpdate: %@", aNotification);
 
-    [self setBackgroundColor:[self sizedPolishedBackground]];
+    self.backgroundColor = [self sizedPolishedBackground];
     if (forceDisplay) {
         [self display];
     }
@@ -146,7 +146,7 @@
 {
 	Q_DEBUG(@"setMinSize");
     
-    [super setMinSize:NSMakeSize(MAX(aSize.width, 128.0), MAX(aSize.height, 128.0))];
+    super.minSize = NSMakeSize(MAX(aSize.width, 128.0), MAX(aSize.height, 128.0));
 }
 
 - (void)setFrame:(NSRect)frameRect display:(BOOL)displayFlag animate:(BOOL)animationFlag
@@ -162,7 +162,7 @@
 {
 	Q_DEBUG(@"sizedPolishedBackground");
     
-    NSImage *bg = [[NSImage alloc] initWithSize:[self frame].size];
+    NSImage *bg = [[NSImage alloc] initWithSize:self.frame.size];
   
     // Begin drawing into our main image
     [bg lockFocus];
@@ -170,15 +170,15 @@
 	NSRect top;
 	NSRect middle;
 	NSRect footer;
-	if ([self isKeyWindow] && yellow) {
+	if (self.keyWindow && yellow) {
 		top = HEADER_ACTIVE_YELLOW;
 		middle = MIDDLE_ACTIVE_YELLOW;
 		footer = FOOTER_ACTIVE_YELLOW;
-	} else if ([self isKeyWindow]) {
+	} else if (self.keyWindow) {
 		top = HEADER_ACTIVE;
 		middle = MIDDLE_ACTIVE;
 		footer = FOOTER_ACTIVE;
-	} else if ([NSApp isActive] && yellow) {
+	} else if (NSApp.active && yellow) {
 		top = HEADER_INACTIVE_YELLOW;
 		middle = MIDDLE_INACTIVE_YELLOW;
 		footer = FOOTER_INACTIVE_YELLOW;
@@ -190,21 +190,21 @@
 
     // header
     [template
-        drawInRect:NSMakeRect(0, [bg size].height - BG_TOP -.1, [bg size].width, BG_TOP) 
+        drawInRect:NSMakeRect(0, bg.size.height - BG_TOP -.1, bg.size.width, BG_TOP) 
         fromRect:top
         operation:NSCompositeSourceOver 
         fraction:1.0];
 		
     // middle
     [template
-        drawInRect:NSMakeRect(0, BG_BOTTOM, [bg size].width, [bg size].height - BG_TOP - BG_BOTTOM) 
+        drawInRect:NSMakeRect(0, BG_BOTTOM, bg.size.width, bg.size.height - BG_TOP - BG_BOTTOM) 
         fromRect:middle
         operation:NSCompositeSourceOver 
         fraction:1.0];
 		
     // footer
     [template
-        drawInRect:NSMakeRect(0, 0, [bg size].width, BG_BOTTOM) 
+        drawInRect:NSMakeRect(0, 0, bg.size.width, BG_BOTTOM) 
         fromRect:footer
         operation:NSCompositeSourceOver 
         fraction:1.0];

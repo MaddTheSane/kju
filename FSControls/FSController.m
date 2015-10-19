@@ -28,7 +28,7 @@
 
 @implementation FSController
 
-- (id) initWithSender:(QDocument*)sender
+- (instancetype) initWithSender:(QDocument*)sender
 {
 	Q_DEBUG(@"initWithSender");
 	
@@ -57,10 +57,10 @@
     // avoid animation loop
         if([toolbar showsToolbar]) {
             [toolbar hide];
-            [[pc screenView] grabMouse];
+            [pc.screenView grabMouse];
         } else {
             [toolbar show];
-            [[pc screenView] ungrabMouse];
+            [pc.screenView ungrabMouse];
         }
     }
 }

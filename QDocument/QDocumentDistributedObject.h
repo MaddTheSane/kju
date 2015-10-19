@@ -38,7 +38,7 @@ typedef struct QCommand
 
 // to be implemented by QEMU
 @protocol QDocumentDistributedObjectClientProto <NSObject>
-- (NSString*) testClient;
+@property (readonly, copy) NSString *testClient;
 - (BOOL) do_kbd_put_keycode:(int)keycode;
 - (BOOL) do_kbd_mouse_eventDx:(int)dx dy:(int)dy dz:(int)dz bs:(int)sb;
 @end
@@ -66,8 +66,8 @@ typedef struct QCommand
     QCommand *commandPointer;
     int commandCount;
 }
-- (id) qemu;
-- (instancetype) initWithSender:(QDocument*)sender;
+@property (readonly, strong) id qemu;
+- (instancetype) initWithSender:(QDocument*)sender NS_DESIGNATED_INITIALIZER;
 - (void) setCommand:(char)command arg1:(int)arg1 arg2:(int)arg2 arg3:(int)arg3 arg4:(int)arg4;
 
 - (BOOL) qemuRegister:(id)sender;

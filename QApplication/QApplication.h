@@ -30,5 +30,5 @@
 @interface QApplication : NSApplication {
     QApplicationController *applicationController;
 }
-- (QApplicationController *) applicationController;
+@property (readonly, strong) QApplicationController *applicationController;
 @end

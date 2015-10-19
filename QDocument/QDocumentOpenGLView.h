@@ -102,7 +102,7 @@ typedef NS_ENUM(NSInteger, QDocumentOpenGLTextures) {
 // getters
 @property (readonly) BOOL mouseGrabed;
 @property (readonly, getter=isFullscreen) BOOL fullscreen;
-- (NSWindow *) normalWindow;
+@property (readonly, strong) NSWindow *normalWindow;
 @property (readonly) QScreen screenProperties;
 @property (readonly) QDisplayProperties displayProperties;
 - (void) displayPropertiesSetZoom:(float)tZoom;

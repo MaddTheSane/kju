@@ -45,9 +45,9 @@
         NSConnection *theConnection;
         theConnection = [NSConnection defaultConnection];
 		[theConnection runInNewThread]; //we must run multithreaded: applicationShouldTerminate blocks the main thread
-        [theConnection setRootObject:self];
-        if ([theConnection registerName:[NSString stringWithFormat:@"qDocument_%D", [document uniqueDocumentID]]] == NO) {
-            NSLog(@"QDistributedObject: could not establisch qDocument_%D server", [document uniqueDocumentID]);
+        theConnection.rootObject = self;
+        if ([theConnection registerName:[NSString stringWithFormat:@"qDocument_%D", document.uniqueDocumentID]] == NO) {
+            NSLog(@"QDistributedObject: could not establisch qDocument_%D server", document.uniqueDocumentID);
             return nil;
         }
 
@@ -90,7 +90,7 @@
 {
 	Q_DEBUG(@"sendMessage");
 
-    NSLog(@"QDistributedObject: sendMessage: %s", [data bytes]);
+    NSLog(@"QDistributedObject: sendMessage: %s", data.bytes);
     return TRUE;
 }
 /*
@@ -115,12 +115,12 @@
 
     NSRect tRect;
 	tRect = NSMakeRect(
-		rect.origin.x * [[document screenView] displayProperties].dx,
-		([[document screenView] screenProperties].height - rect.origin.y - rect.size.height) * [[document screenView]  displayProperties].dy,
-		rect.size.width * [[document screenView] displayProperties].dx,
-		rect.size.height * [[document screenView] displayProperties].dy);
+		rect.origin.x * document.screenView.displayProperties.dx,
+		(document.screenView.screenProperties.height - rect.origin.y - rect.size.height) * document.screenView.displayProperties.dy,
+		rect.size.width * document.screenView.displayProperties.dx,
+		rect.size.height * document.screenView.displayProperties.dy);
 
-    [[document screenView] displayRect:tRect];
+    [document.screenView displayRect:tRect];
 
     return true;
 }
@@ -131,7 +131,7 @@
     NSLog(@"QDistributedObject: resizeTo: rect(%f, %f)", size.width, size.height);
 #endif
 
-    [[document screenView] resizeContentToWidth:(int)size.width height:(int)size.height];
+    [document.screenView resizeContentToWidth:(int)size.width height:(int)size.height];
     
     return true;
 }
@@ -143,10 +143,10 @@
 #endif
 
     // mouse absolute_enabled
-    if (absolute != [document absolute_enabled]) { // action is needed
+    if (absolute != document.absolute_enabled) { // action is needed
         if (absolute) { // enable  tablet
-            if ([[document screenView] mouseGrabed])
-                [[document screenView] ungrabMouse];
+            if (document.screenView.mouseGrabed)
+                [document.screenView ungrabMouse];
             [document setAbsolute_enabled:TRUE];
         } else { // disable tablet
             [document setAbsolute_enabled:FALSE];
@@ -169,8 +169,8 @@
     NSLog(@"getFilename: drive %D", drive);
 #endif
 
-	NSString *fileStr = [[document driveFileNames] objectAtIndex:drive];
-	const char* fileSysRep = [fileStr fileSystemRepresentation];
+	NSString *fileStr = document.driveFileNames[drive];
+	const char* fileSysRep = fileStr.fileSystemRepresentation;
 	
     return [NSData dataWithBytes:fileSysRep length:strlen(fileSysRep)];
 }
@@ -181,8 +181,8 @@
     NSLog(@"QDistributedObject: tCpuUsage: %f %D", tCpuUsage, tIdeActivity);
 #endif
 
-    [document setCpuUsage:tCpuUsage];
-    [document setIdeActivity:tIdeActivity];
+    document.cpuUsage = tCpuUsage;
+    document.ideActivity = tIdeActivity;
 }
 
 - (BOOL) setVm_running:(BOOL)isRunning
@@ -191,9 +191,9 @@
     NSLog(@"QDistributedObject: setVm_running: %D", isRunning);
 #endif
 	if (isRunning) {
-		[document setVMState:QDocumentRunning];
+		document.VMState = QDocumentRunning;
 	} else {
-		[document setVMState:QDocumentPaused];
+		document.VMState = QDocumentPaused;
 	}
 	return TRUE;
 }

@@ -32,5 +32,5 @@
 -(int) leaseAUniqueDocumentID:(id)sender;
 
 // getters
-- (NSUserDefaults *) userDefaults;
+@property (readonly, strong) NSUserDefaults *userDefaults;
 @end

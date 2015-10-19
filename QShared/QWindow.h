@@ -31,6 +31,6 @@
     NSImage *template;
 }
 - (void) setYellow:(id)sender;
-- (NSColor *)sizedPolishedBackground;
+@property (readonly, copy) NSColor *sizedPolishedBackground;
 - (void)windowNeedsUpdate:(NSNotification *)aNotification;
 @end

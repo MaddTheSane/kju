@@ -59,7 +59,7 @@
     if (self) {
     
         // Application
-        qApplication = [NSApp delegate];
+        qApplication = NSApp.delegate;
         uniqueDocumentID = [qApplication leaseAUniqueDocumentID:self];
     
         // initialize QEMU state
@@ -83,7 +83,7 @@
     return self;
 }
 
-- (id)initWithContentsOfURL:(NSURL *)absoluteURL ofType:(NSString *)typeName error:(NSError **)outError
+- (instancetype)initWithContentsOfURL:(NSURL *)absoluteURL ofType:(NSString *)typeName error:(NSError **)outError
 {
 	Q_DEBUG(@"initWithContentsOfURL:%@", absoluteURL);
 
@@ -91,25 +91,25 @@
     
     if (self) {
 		if ([[absoluteURL class] isEqual:[NSURL class]]) {
-			[self setFileURL:absoluteURL];
+			self.fileURL = absoluteURL;
 		} else {
-			[self setFileURL:[NSURL fileURLWithPath:(NSString *)absoluteURL]];
+			self.fileURL = [NSURL fileURLWithPath:(NSString *)absoluteURL];
 		}
-        [self setFileType:typeName];
-        [self setFileModificationDate:[NSDate date]];
+        self.fileType = typeName;
+        self.fileModificationDate = [NSDate date];
 
 
 
         // initialize the guest (we want this to be done before the nib loads!)
 
         // read the .qvm file
-        configuration = [[QQvmManager sharedQvmManager] loadVMConfiguration:[[self fileURL] path]];
+        configuration = [[QQvmManager sharedQvmManager] loadVMConfiguration:self.fileURL.path];
 		if (configuration) {
 			// is this VM saveable (only -hda qcow2 is)
 			NSRange hdb;
 			NSRange qcow2;
-			hdb = [[configuration objectForKey:@"Arguments"] rangeOfString:@"-hdb"];
-			qcow2 = [[configuration objectForKey:@"Arguments"] rangeOfString:@"qcow2"];
+			hdb = [configuration[@"Arguments"] rangeOfString:@"-hdb"];
+			qcow2 = [configuration[@"Arguments"] rangeOfString:@"qcow2"];
         
 			if (qcow2.length > 0) {
 				if (hdb.length > 0) {
@@ -122,7 +122,7 @@
 			}
 
 			// set VMState
-			if ([[[configuration objectForKey:@"PC Data"] objectForKey:@"state"] isEqual:@"saved"]) {
+			if ([configuration[@"PC Data"][@"state"] isEqual:@"saved"]) {
 				VMState = QDocumentSaved;
 			} else {
 				VMState = QDocumentShutdown;
@@ -138,10 +138,10 @@
         videoRAMSize = 1024 * 768 * 4;
         void *dummyFile;
         dummyFile = malloc(videoRAMSize);
-        fd = open([[NSString stringWithFormat:@"/tmp/qDocument_%D.vga", uniqueDocumentID] fileSystemRepresentation], O_CREAT|O_RDWR, 0666); // open (trunkate/create) for read/write
+        fd = open([NSString stringWithFormat:@"/tmp/qDocument_%D.vga", uniqueDocumentID].fileSystemRepresentation, O_CREAT|O_RDWR, 0666); // open (trunkate/create) for read/write
         if (fd == -1) {
             [self defaultAlertMessage:[NSString stringWithFormat:@"QDocument: could not create '/tmp/qDocument_%D.vga' file", uniqueDocumentID] informativeText:nil];
-            [self setVMState:QDocumentInvalid];
+            self.VMState = QDocumentInvalid;
             return nil;
         }
         ret = write(fd, dummyFile, videoRAMSize);
@@ -183,20 +183,20 @@
     // Add any code here that needs to be executed once the windowController has loaded the document's window.
 
 	// Tiger compatible custom butoonCell
-	[buttonEdit setCell:[[QButtonCell alloc] initImageCell:[[buttonEdit cell] image] buttonType:QButtonCellAlone target:[[buttonEdit cell] target] action:[[buttonEdit cell] action]]];
+	buttonEdit.cell = [[QButtonCell alloc] initImageCell:[buttonEdit.cell image] buttonType:QButtonCellAlone target:buttonEdit.cell.target action:[buttonEdit.cell action]];
 
-	[buttonFloppy setCell:[[QPopUpButtonCell alloc] initTextCell:@"" buttonType:QButtonCellLeft pullsDown:[[buttonFloppy cell] pullsDown] menu:[[buttonFloppy cell] menu] image:[NSImage imageNamed:@"q_d_disk_drop"]]];
-	[buttonCDROM setCell:[[QPopUpButtonCell alloc] initTextCell:@"" buttonType:QButtonCellRight pullsDown:[[buttonCDROM cell] pullsDown] menu:[[buttonCDROM cell] menu] image:[NSImage imageNamed:@"q_d_cd_drop"]]];
+	buttonFloppy.cell = [[QPopUpButtonCell alloc] initTextCell:@"" buttonType:QButtonCellLeft pullsDown:buttonFloppy.cell.pullsDown menu:buttonFloppy.cell.menu image:[NSImage imageNamed:@"q_d_disk_drop"]];
+	buttonCDROM.cell = [[QPopUpButtonCell alloc] initTextCell:@"" buttonType:QButtonCellRight pullsDown:buttonCDROM.cell.pullsDown menu:buttonCDROM.cell.menu image:[NSImage imageNamed:@"q_d_cd_drop"]];
 
-	[buttonToggleFullscreen setCell:[[QButtonCell alloc] initImageCell:[[buttonToggleFullscreen cell] image] buttonType:QButtonCellLeft target:[[buttonToggleFullscreen cell] target] action:[[buttonToggleFullscreen cell] action]]];
-	[buttonTakeScreenshot setCell:[[QButtonCell alloc] initImageCell:[[buttonTakeScreenshot cell] image] buttonType:QButtonCellRight target:[[buttonTakeScreenshot cell] target] action:[[buttonTakeScreenshot cell] action]]];
-	[buttonCtrlAltDel setCell:[[QButtonCell alloc] initImageCell:[[buttonCtrlAltDel cell] image] buttonType:QButtonCellLeft target:[[buttonCtrlAltDel cell] target] action:[[buttonCtrlAltDel cell] action]]];
-	[buttonReset setCell:[[QButtonCell alloc] initImageCell:[[buttonReset cell] image] buttonType:QButtonCellMiddle target:[[buttonReset cell] target] action:[[buttonReset cell] action]]];
-	[buttonTogglePause setCell:[[QButtonCell alloc] initImageCell:[[buttonTogglePause cell] image] buttonType:QButtonCellMiddle target:[[buttonTogglePause cell] target] action:[[buttonTogglePause cell] action]]];
-	[buttonTogleStartShutdown setCell:[[QButtonCell alloc] initImageCell:[[buttonTogleStartShutdown cell] image] buttonType:QButtonCellRight target:[[buttonTogleStartShutdown cell] target] action:[[buttonTogleStartShutdown cell] action]]];
+	buttonToggleFullscreen.cell = [[QButtonCell alloc] initImageCell:[buttonToggleFullscreen.cell image] buttonType:QButtonCellLeft target:buttonToggleFullscreen.cell.target action:[buttonToggleFullscreen.cell action]];
+	buttonTakeScreenshot.cell = [[QButtonCell alloc] initImageCell:[buttonTakeScreenshot.cell image] buttonType:QButtonCellRight target:buttonTakeScreenshot.cell.target action:[buttonTakeScreenshot.cell action]];
+	buttonCtrlAltDel.cell = [[QButtonCell alloc] initImageCell:[buttonCtrlAltDel.cell image] buttonType:QButtonCellLeft target:buttonCtrlAltDel.cell.target action:[buttonCtrlAltDel.cell action]];
+	buttonReset.cell = [[QButtonCell alloc] initImageCell:[buttonReset.cell image] buttonType:QButtonCellMiddle target:buttonReset.cell.target action:[buttonReset.cell action]];
+	buttonTogglePause.cell = [[QButtonCell alloc] initImageCell:[buttonTogglePause.cell image] buttonType:QButtonCellMiddle target:buttonTogglePause.cell.target action:[buttonTogglePause.cell action]];
+	buttonTogleStartShutdown.cell = [[QButtonCell alloc] initImageCell:[buttonTogleStartShutdown.cell image] buttonType:QButtonCellRight target:buttonTogleStartShutdown.cell.target action:[buttonTogleStartShutdown.cell action]];
 	
     // create a controller for the document window
-    windowController = [[QDocumentWindowController alloc] initWithWindow:[[[self windowControllers] objectAtIndex:0] window] sender:self];
+    windowController = [[QDocumentWindowController alloc] initWithWindow:[self.windowControllers[0] window] sender:self];
 }
 /*
 - (NSData *)dataRepresentationOfType:(NSString *)aType
@@ -260,9 +260,9 @@
 		fileManager = [NSFileManager defaultManager];
 		
 		// move untitled Document to named document
-		if ([fileManager movePath:[[[configuration objectForKey:@"Temporary"] objectForKey:@"URL"] path] toPath:[panel filename] handler:nil]) {
-			[[configuration objectForKey:@"Temporary"] setObject:[panel URL] forKey:@"URL"];
-			[self setFileURL:[panel URL]];
+		if ([fileManager movePath:[configuration[@"Temporary"][@"URL"] path] toPath:[panel filename] handler:nil]) {
+			configuration[@"Temporary"][@"URL"] = panel.URL;
+			self.fileURL = panel.URL;
 	
 			// if outside default path, add to knownVNs
 			if (![[[qApplication userDefaults] objectForKey:@"knownVMs"] containsObject:[panel filename]]) {
@@ -273,7 +273,7 @@
 			
 			[[NSNotificationCenter defaultCenter] postNotificationName:@"QVMStatusDidChange" object:nil]; //communicate new state
 		} else {
-			[self defaultAlertMessage:@"Could not save %@" informativeText:[NSString stringWithFormat:@"There was an error while saving %@", [self displayName],  [self displayName]]];
+			[self defaultAlertMessage:@"Could not save %@" informativeText:[NSString stringWithFormat:@"There was an error while saving %@", self.displayName,  self.displayName]];
 		}
     }
 }
@@ -284,9 +284,9 @@
 
 	if (VMState == QDocumentShutdown || VMState == QDocumentSaved) {	
 		NSSavePanel *savePanel = [NSSavePanel savePanel];
-		[savePanel setAllowedFileTypes:[NSArray arrayWithObject:@"qvm"]];
+		savePanel.allowedFileTypes = @[@"qvm"];
 		[savePanel setCanSelectHiddenExtension:YES];
-		[savePanel beginSheetForDirectory:NSHomeDirectory() file:[self displayName] modalForWindow:[screenView window] modalDelegate:self didEndSelector:@selector(savePanelDidEnd:returnCode:contextInfo:) contextInfo:nil];
+		[savePanel beginSheetForDirectory:NSHomeDirectory() file:self.displayName modalForWindow:screenView.window modalDelegate:self didEndSelector:@selector(savePanelDidEnd:returnCode:contextInfo:) contextInfo:nil];
 	} else {
 		[self defaultAlertMessage:@"VM is running" informativeText:@"Please shutdown the VM before saving the VM to a new Name"];
 	}
@@ -302,7 +302,7 @@
 
 	// if the VM is running, we make a snapshot
 	} else if (VMState == QDocumentPaused || VMState == QDocumentRunning) {
-		[self setVMState:QDocumentSaving];
+		self.VMState = QDocumentSaving;
 		[distributedObject setCommand:'W' arg1:0 arg2:0 arg3:0 arg4:0];
 	}
 }
@@ -312,7 +312,7 @@
 	Q_DEBUG(@"revertDocumentToSaved");
 	
 	if (VMState == QDocumentPaused || VMState == QDocumentRunning) {
-		[self setVMState:QDocumentLoading];
+		self.VMState = QDocumentLoading;
 		[distributedObject setCommand:'X' arg1:0 arg2:0 arg3:0 arg4:0];
 	}
 }
@@ -360,61 +360,61 @@
 	// take action for this document
 	switch (VMState) {
 		case QDocumentShutdown:
-			[[configuration objectForKey:@"PC Data"] setObject:@"shutdown" forKey:@"state"];
+			configuration[@"PC Data"][@"state"] = @"shutdown";
 			[[QQvmManager sharedQvmManager] saveVMConfiguration:configuration];
-			if ([progressPanel isVisible]) {
+			if (progressPanel.visible) {
 				[NSApp endSheet:progressPanel];
 				[progressPanel orderOut:self];
 				[progressIndicator stopAnimation:self];
 			}
-			[buttonTogglePause setImage:[NSImage imageNamed:@"q_d_start.png"]];
+			buttonTogglePause.image = [NSImage imageNamed:@"q_d_start.png"];
 			[buttonEdit setEnabled:TRUE];
 			break;
 		case QDocumentSaving:
-			if (![progressPanel isVisible]) {
-				[progressText setStringValue:@"Saving"];
+			if (!progressPanel.visible) {
+				progressText.stringValue = @"Saving";
 				[progressIndicator startAnimation:self];
 				[NSApp beginSheet:progressPanel 
-					modalForWindow:[screenView window]
+					modalForWindow:screenView.window
 					modalDelegate:nil
 					didEndSelector:nil
 					contextInfo:nil];
 			}
 			break;
 		case QDocumentSaved:
-			[[configuration objectForKey:@"PC Data"] setObject:@"saved" forKey:@"state"];
+			configuration[@"PC Data"][@"state"] = @"saved";
 			[[QQvmManager sharedQvmManager] saveVMConfiguration:configuration];
-			if ([progressPanel isVisible]) {
+			if (progressPanel.visible) {
 				[NSApp endSheet:progressPanel];
 				[progressPanel orderOut:self];
 				[progressIndicator stopAnimation:self];
 			}
-			[buttonTogglePause setImage:[NSImage imageNamed:@"q_d_start.png"]];
+			buttonTogglePause.image = [NSImage imageNamed:@"q_d_start.png"];
 			[buttonEdit setEnabled:FALSE];
 			break;
 		case QDocumentLoading:
-			if (![progressPanel isVisible]) {
-				[progressText setStringValue:@"Loading"];
+			if (!progressPanel.visible) {
+				progressText.stringValue = @"Loading";
 				[progressIndicator startAnimation:self];
 				[NSApp beginSheet:progressPanel 
-					modalForWindow:[screenView window]
+					modalForWindow:screenView.window
 					modalDelegate:nil
 					didEndSelector:nil
 					contextInfo:nil];
 			}
 			break;
 		case QDocumentPaused:
-			[buttonTogglePause setImage:[NSImage imageNamed:@"q_d_start.png"]];
+			buttonTogglePause.image = [NSImage imageNamed:@"q_d_start.png"];
 			[buttonEdit setEnabled:FALSE];
 			[screenView display];
 			break;
 		case QDocumentRunning:
-			if ([progressPanel isVisible]) {
+			if (progressPanel.visible) {
 				[NSApp endSheet:progressPanel];
 				[progressPanel orderOut:self];
 				[progressIndicator stopAnimation:self];
 			}
-			[buttonTogglePause setImage:[NSImage imageNamed:@"q_d_pause.png"]];
+			buttonTogglePause.image = [NSImage imageNamed:@"q_d_pause.png"];
 			[buttonEdit setEnabled:FALSE];
 			[screenView display];
 			break;
@@ -456,7 +456,7 @@
     NSLog(@"%@ %@", message, text);
 	
 	// remove progressPanel
-	if ([progressPanel isVisible]) {
+	if (progressPanel.visible) {
 		[NSApp endSheet:progressPanel];
 		[progressPanel orderOut:self];
 		[progressIndicator stopAnimation:self];
@@ -468,7 +468,7 @@
 		nil, //default button
 		nil,
 		nil,
-		[screenView window],
+		screenView.window,
 		self,
 		@selector(errorSheetDidEnd:returnCode:contextInfo:),
 		nil,
@@ -505,7 +505,7 @@
     }
 
     // start a qemu instance
-    qemuTask = [[QDocumentTaskController alloc] initWithFile:[[self fileURL] path] sender:self];
+    qemuTask = [[QDocumentTaskController alloc] initWithFile:self.fileURL.path sender:self];
     if (!qemuTask) {
         [self defaultAlertMessage:@"QDocument: could not create a QEMU instance" informativeText:nil];
         return;
@@ -522,19 +522,19 @@
 	NSBitmapImageRep *bitmapImageRep;
 	NSFileManager * fileManager;
 	
-    [[alert window] orderOut:self];
+    [alert.window orderOut:self];
     
     // saving enabled
     if (VMSupportsSnapshots) {
         if (returnCode == NSAlertDefaultReturn) { // save and shutdown
-			[self setVMState:QDocumentSaving];
+			self.VMState = QDocumentSaving;
             [distributedObject setCommand:'Z' arg1:0 arg2:0 arg3:0 arg4:0];
-			bitmapImageRep = [NSBitmapImageRep imageRepWithData:[[screenView screenshot:NSMakeSize(0.0, 0.0)] TIFFRepresentation]];
+			bitmapImageRep = [NSBitmapImageRep imageRepWithData:[screenView screenshot:NSMakeSize(0.0, 0.0)].TIFFRepresentation];
 			data =[bitmapImageRep representationUsingType: NSPNGFileType properties: @{}];
 			fileManager = [NSFileManager defaultManager];
-			if(![fileManager fileExistsAtPath: [NSString stringWithFormat: @"%@/QuickLook", [[[configuration objectForKey:@"Temporary"] objectForKey:@"URL"] path]]])
-				[fileManager createDirectoryAtPath: [NSString stringWithFormat: @"%@/QuickLook", [[[configuration objectForKey:@"Temporary"] objectForKey:@"URL"] path]] withIntermediateDirectories: NO attributes: nil error: NULL];
-			[data writeToFile: [NSString stringWithFormat: @"%@/QuickLook/Thumbnail.png", [[[configuration objectForKey:@"Temporary"] objectForKey:@"URL"] path]] atomically: YES];
+			if(![fileManager fileExistsAtPath: [NSString stringWithFormat: @"%@/QuickLook", [configuration[@"Temporary"][@"URL"] path]]])
+				[fileManager createDirectoryAtPath: [NSString stringWithFormat: @"%@/QuickLook", [configuration[@"Temporary"][@"URL"] path]] withIntermediateDirectories: NO attributes: nil error: NULL];
+			[data writeToFile: [NSString stringWithFormat: @"%@/QuickLook/Thumbnail.png", [configuration[@"Temporary"][@"URL"] path]] atomically: YES];
 			[screenView updateSavedImage:self];
         } else if (returnCode == NSAlertOtherReturn) { // shutdown
 			[distributedObject setCommand:'Q' arg1:0 arg2:0 arg3:0 arg4:0];
@@ -559,10 +559,10 @@
 	Q_DEBUG(@"VMShutDown");
 
     // exit fullscreen
-    if ([(QDocumentOpenGLView *)screenView isFullscreen])
+    if (((QDocumentOpenGLView *)screenView).fullscreen)
         [screenView toggleFullScreen];
 	
-    if ([(QDocumentOpenGLView *)screenView mouseGrabed])
+    if (((QDocumentOpenGLView *)screenView).mouseGrabed)
 		[screenView ungrabMouse];
 
     if (!VMSupportsSnapshots) {
@@ -571,7 +571,7 @@
             alternateButton: NSLocalizedStringFromTable(@"shutdownPC:alternateButton:1", @"Localizable", @"cocoaQemu")
             otherButton:@""
             informativeTextWithFormat: NSLocalizedStringFromTable(@"shutdownPC:informativeTextWithFormat:1", @"Localizable", @"cocoaQemu")];
-        [alert beginSheetModalForWindow:[screenView window]
+        [alert beginSheetModalForWindow:screenView.window
             modalDelegate:self
             didEndSelector:@selector(shutdownVMSheetDidEnd:returnCode:contextInfo:)
             contextInfo:(__bridge void * _Nullable)(sender)];
@@ -581,7 +581,7 @@
             alternateButton: NSLocalizedStringFromTable(@"shutdownPC:alternateButton:2", @"Localizable", @"cocoaQemu")
             otherButton: NSLocalizedStringFromTable(@"shutdownPC:otherButton:2", @"Localizable", @"cocoaQemu")
             informativeTextWithFormat: NSLocalizedStringFromTable(@"shutdownPC:informativeTextWithFormat:2", @"Localizable", @"cocoaQemu")];
-        [alert beginSheetModalForWindow:[screenView window]
+        [alert beginSheetModalForWindow:screenView.window
             modalDelegate:self
             didEndSelector:@selector(shutdownVMSheetDidEnd:returnCode:contextInfo:)
             contextInfo:(__bridge void * _Nullable)(sender)];
@@ -755,8 +755,8 @@
 	Q_DEBUG(@"changeDeviceSheetDidEnd");
 
     if(returnCode == NSOKButton) {
-        [driveFileNames insertObject:[sheet filename] atIndex:[contextInfo intValue]];
-        [distributedObject setCommand:'D' arg1:[contextInfo intValue] arg2:0 arg3:0 arg4:0];
+        [driveFileNames insertObject:[sheet filename] atIndex:contextInfo.intValue];
+        [distributedObject setCommand:'D' arg1:contextInfo.intValue arg2:0 arg3:0 arg4:0];
     }
 }
 
@@ -770,10 +770,10 @@
         [op beginSheetForDirectory:nil
         file:nil
         types:fileTypes
-        modalForWindow:[screenView window]
+        modalForWindow:screenView.window
         modalDelegate:self
         didEndSelector:@selector(changeDeviceSheetDidEnd:returnCode:contextInfo:)
-        contextInfo:(__bridge void * _Nullable)([NSNumber numberWithInt:0])];
+        contextInfo:(__bridge void * _Nullable)(@0)];
 }
 
 - (IBAction) VMChangeFdb:(id)sender
@@ -786,10 +786,10 @@
         [op beginSheetForDirectory:nil
         file:nil
         types:fileTypes
-        modalForWindow:[screenView window]
+        modalForWindow:screenView.window
         modalDelegate:self
         didEndSelector:@selector(changeDeviceSheetDidEnd:returnCode:contextInfo:)
-        contextInfo:(__bridge void * _Nullable)([NSNumber numberWithInt:1])];
+        contextInfo:(__bridge void * _Nullable)(@1)];
 }
 
 - (IBAction) VMChangeCdrom:(id)sender
@@ -802,10 +802,10 @@
         [op beginSheetForDirectory:nil
         file:nil
         types:fileTypes
-        modalForWindow:[screenView window]
+        modalForWindow:screenView.window
         modalDelegate:self
         didEndSelector:@selector(changeDeviceSheetDidEnd:returnCode:contextInfo:)
-        contextInfo:(__bridge void * _Nullable)([NSNumber numberWithInt:2])];
+        contextInfo:(__bridge void * _Nullable)(@2)];
 }
 
 - (IBAction) VMEjectFda:(id)sender
@@ -841,15 +841,15 @@
 	NSData *data;
 	NSFileManager *fileManager;
 	
-	bitmapImageRep = [NSBitmapImageRep imageRepWithData:[[screenView screenshot:NSMakeSize(0.0, 0.0)] TIFFRepresentation]];
+	bitmapImageRep = [NSBitmapImageRep imageRepWithData:[screenView screenshot:NSMakeSize(0.0, 0.0)].TIFFRepresentation];
 	data =[bitmapImageRep representationUsingType: NSPNGFileType properties: @{}];
 
     // find next free number for name and save it to the desktop
     fileManager = [NSFileManager defaultManager];
     i = 1;
-    while ([fileManager fileExistsAtPath:[NSString stringWithFormat:@"%@/Q Screenshot %D.png", [@"~/Desktop" stringByExpandingTildeInPath], i]])
+    while ([fileManager fileExistsAtPath:[NSString stringWithFormat:@"%@/Q Screenshot %D.png", (@"~/Desktop").stringByExpandingTildeInPath, i]])
         i++;
-    [data writeToFile: [NSString stringWithFormat:@"%@/Q Screenshot %D.png", [@"~/Desktop" stringByExpandingTildeInPath], i] atomically: YES];
+    [data writeToFile: [NSString stringWithFormat:@"%@/Q Screenshot %D.png", (@"~/Desktop").stringByExpandingTildeInPath, i] atomically: YES];
 }
 
 

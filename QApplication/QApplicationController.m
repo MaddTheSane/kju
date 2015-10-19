@@ -35,18 +35,10 @@
     if (self) {
 
 		// preferences
-		[[NSUserDefaults standardUserDefaults] registerDefaults:[NSDictionary dictionaryWithObjects:[NSArray arrayWithObjects:
-			@NO, // disable log to console
-			@YES, // yellow
-			@YES, // showFullscreenWarning
-			[NSMutableArray array], // known VMs
-			nil
-		] forKeys:[NSArray arrayWithObjects:
-			@"enableLogToConsole",
-			@"yellow",
-			@"showFullscreenWarning",
-			@"knownVMs",
-			nil]]];
+		[[NSUserDefaults standardUserDefaults] registerDefaults:@{@"enableLogToConsole": @NO, // disable log to console
+			@"yellow": @YES, // yellow
+			@"showFullscreenWarning": @YES, // showFullscreenWarning
+			@"knownVMs": [NSMutableArray array]}]; // known VMs
 		userDefaults = [NSUserDefaults standardUserDefaults];
 
 		// remove obsolete entries form old preferences
@@ -107,10 +99,10 @@
         NSDocument *document;
         
 //        path = [NSURL URLWithString:[[panel filenames] objectAtIndex:0]];
-        if ([[panel URLs] count] < 1) {
+        if (panel.URLs.count < 1) {
             return;
         }
-        path = [[panel URLs] objectAtIndex:0];
+        path = panel.URLs[0];
         documentController = [NSDocumentController sharedDocumentController];
         
         // is this document already open?

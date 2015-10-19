@@ -122,11 +122,11 @@ typedef struct {
 - (void) VMSetPauseWhileInactive:(BOOL)value;
 - (IBAction) VMPause:(id)sender;
 - (IBAction) VMUnpause:(id)sender;
-- (BOOL) VMPauseWhileInactive;
+@property (readonly) BOOL VMPauseWhileInactive;
 - (IBAction) togglePause:(id)sender;
 
 // change drives of VM
-- (NSString *) firstCDROMDrive;
+@property (readonly, copy) NSString *firstCDROMDrive;
 - (IBAction) VMUseCdrom:(id)sender;
 - (void)changeDeviceSheetDidEnd: (NSOpenPanel *)sheet returnCode:(int)returnCode contextInfo:(NSString *)contextInfo;
 - (IBAction) VMChangeFda:(id)sender;
@@ -150,11 +150,11 @@ typedef struct {
 @property (readonly, strong) QDocumentTaskController *qemuTask;
 @property (readonly, strong) QDocumentOpenGLView* screenView;
 @property (nonatomic) QDocumentVMState VMState;
-- (NSString *) smbPath;
+@property (readonly, copy) NSString *smbPath;
 @property float cpuUsage;
 @property BOOL ideActivity;
 @property (readonly, copy) NSArray<NSString*> *driveFileNames;
 @property BOOL absolute_enabled;
-- (NSMutableDictionary *) configuration;
+@property (readonly, copy) NSMutableDictionary *configuration;
 
 @end
