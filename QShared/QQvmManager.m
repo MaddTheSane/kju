@@ -96,12 +96,11 @@ static QQvmManager *sharedQvmManager = nil;
 	id key;
 	NSArray *lookForArguments;
 	NSArray *singleArguments;
-	NSEnumerator *enumerator;
 	NSMutableString *arguments;
 	NSMutableString *argument;
 	NSString *option;
 
-	data = [NSData dataWithContentsOfFile:[NSString stringWithFormat:@"%@/configuration.plist", filename]];
+	data = [NSData dataWithContentsOfFile:[filename stringByAppendingPathComponent:@"configuration.plist"]];
 	if (data) {
 		tempVM = [NSPropertyListSerialization
 			propertyListFromData: data
@@ -112,17 +111,16 @@ static QQvmManager *sharedQvmManager = nil;
 		// upgrade Version 0.1.0.Q to 0.2.0.Q
 		if ([tempVM[@"Version"] isEqual:@"0.1.0.Q"]) {
 			lookForArguments = @[@"-snapshot", @"-nographic", @"-audio-help", @"-localtime", @"-full-screen", @"-win2k-hack", @"-usb", @"-s", @"-S", @"-d", @"-std-vga"];
-			enumerator = [tempVM[@"Arguments"] keyEnumerator];
 			arguments = [[NSMutableString alloc] init];
-			while ((key = [enumerator nextObject])) {
+			for (key in tempVM[@"Arguments"]) {
 				if (tempVM[@"Arguments"][key]) {
 					if ([key isEqual:@"-net"] && [tempVM[@"Arguments"][key] isEqual:@"user"]) {
-						[arguments appendFormat:[NSString stringWithFormat:@" -net nic"]];
+						[arguments appendString:@" -net nic"];
 					}
 					if ([lookForArguments containsObject:key]) {
-						[arguments appendFormat:[NSString stringWithFormat:@" %@", key]];
+						[arguments appendFormat:@" %@", key];
 					} else {
-						[arguments appendFormat:[NSString stringWithFormat:@" %@ %@", key, tempVM[@"Arguments"][key]]];
+						[arguments appendFormat:@" %@ %@", key, tempVM[@"Arguments"][key]];
 					}
 				}
 			}
@@ -148,10 +146,10 @@ static QQvmManager *sharedQvmManager = nil;
 					if (option) { // handle previous key
 						[arguments appendString:[NSString stringWithFormat:@"%@ ", option]];
 						if ([lookForArguments containsObject:option]) { // path or command
-							[arguments appendFormat:[NSString stringWithFormat:@"\"%@\" ", argument]];
+							[arguments appendFormat:@"\"%@\" ", argument];
 							argument = nil;
 						} else if (argument) {
-							[arguments appendFormat:[NSString stringWithFormat:@"%@ ", argument]];
+							[arguments appendFormat:@"%@ ", argument];
 							argument = nil;
 						}
 						option = nil;
@@ -162,9 +160,9 @@ static QQvmManager *sharedQvmManager = nil;
 			if (option) { // handle last option, argument pair
 				[arguments appendString:[NSString stringWithFormat:@"%@ ", option]];
 				if ([lookForArguments containsObject:option]) { // path or command
-					[arguments appendFormat:[NSString stringWithFormat:@"\"%@\"", argument]];
+					[arguments appendFormat:@"\"%@\"", argument];
 				} else if (argument) {
-					[arguments appendFormat:[NSString stringWithFormat:@"%@", argument]];
+					[arguments appendFormat:@"%@", argument];
 				}
 			}
 			// remove obsolte keys
@@ -198,7 +196,7 @@ static QQvmManager *sharedQvmManager = nil;
 
 	int i;
 	BOOL inQuote;
-	unichar quoteChar;
+	unichar quoteChar = 0;
 	BOOL isEscapedChar;
 	BOOL inSwitch;
 	BOOL inArgument;

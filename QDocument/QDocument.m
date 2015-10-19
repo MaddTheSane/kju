@@ -50,6 +50,9 @@
 @synthesize distributedObject;
 @synthesize qemuTask;
 @synthesize qApplication;
+@synthesize VMPauseWhileInactive;
+@synthesize smbPath;
+@synthesize configuration;
 
 - (instancetype)init
 {
@@ -83,7 +86,7 @@
     return self;
 }
 
-- (instancetype)initWithContentsOfURL:(NSURL *)absoluteURL ofType:(NSString *)typeName error:(NSError **)outError
+- (instancetype)initWithContentsOfURL:(NSURL *)absoluteURL ofType:(NSString *)typeName error:(NSError *__autoreleasing*)outError
 {
 	Q_DEBUG(@"initWithContentsOfURL:%@", absoluteURL);
 
@@ -225,12 +228,12 @@
 //readFromURL:ofType:error:
 //writeToURL:ofType:error:
 //writeToURL:ofType:forSaveOperation:originalContentsURL:error:
-- (BOOL)readFromURL:(NSURL *)absoluteURL ofType:(NSString *)typeName error:(NSError **)outError
+- (BOOL)readFromURL:(NSURL *)absoluteURL ofType:(NSString *)typeName error:(NSError *__autoreleasing*)outError
 {
     NSLog(@"readFromURL");
 	return TRUE;
 }
-- (BOOL)writeToURL:(NSURL *)absoluteURL ofType:(NSString *)typeName error:(NSError **)outError
+- (BOOL)writeToURL:(NSURL *)absoluteURL ofType:(NSString *)typeName error:(NSError *__autoreleasing*)outError
 {
     NSLog(@"writeToURL");
 	return TRUE;
@@ -558,10 +561,10 @@
 	Q_DEBUG(@"VMShutDown");
 
     // exit fullscreen
-    if (((QDocumentOpenGLView *)screenView).fullscreen)
+    if (screenView.fullscreen)
         [screenView toggleFullScreen];
 	
-    if (((QDocumentOpenGLView *)screenView).mouseGrabed)
+    if (screenView.mouseGrabed)
 		[screenView ungrabMouse];
 
     if (!VMSupportsSnapshots) {
@@ -679,7 +682,6 @@
 			break;
 	}
 }
-- (BOOL) VMPauseWhileInactive {return VMPauseWhileInactive;}
 
 
 
@@ -871,11 +873,7 @@
 
 
 #pragma mark getters
-- (NSString *) smbPath { return smbPath;}
 - (NSArray *) driveFileNames { return [driveFileNames copy];}
-- (NSMutableDictionary *) configuration {return configuration;}
-
-
 
 @end
 

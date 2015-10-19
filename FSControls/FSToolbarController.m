@@ -29,6 +29,8 @@
 #import "../QDocument/QDocumentOpenGLView.h"
 
 @implementation FSToolbarController
+@synthesize showsToolbar;
+@synthesize animating = isAnimating;
 
 - (instancetype) initWithSender:(QDocument*)sender
 {
@@ -92,8 +94,8 @@
 	//float margin_space = 40;
 	float itemWidth = 64 + 5;
 	float itemHeight = 64 + 5;
-	[self addToolbarItem:@"q_tbfs_screenshot" withTitle: NSLocalizedStringFromTable(@"toolbar:label:screenshot", @"Localizable", @"FSToolbarController") rectangle:NSMakeRect(margin_h,20,itemWidth,itemHeight) target:pc action:@selector(screenShot:)];
-	[self addToolbarItem:@"q_tbfs_ctrlaltdel" withTitle: NSLocalizedStringFromTable(@"toolbar:label:ctrlaltdel", @"Localizable", @"FSToolbarController") rectangle:NSMakeRect(120,20,itemWidth,itemHeight) target:pc action:@selector(ctrlAltDel:)];
+	[self addToolbarItem:@"q_tbfs_screenshot" withTitle: NSLocalizedStringFromTable(@"toolbar:label:screenshot", @"Localizable", @"FSToolbarController") rectangle:NSMakeRect(margin_h,20,itemWidth,itemHeight) target:pc action:@selector(takeScreenShot:)];
+	[self addToolbarItem:@"q_tbfs_ctrlaltdel" withTitle: NSLocalizedStringFromTable(@"toolbar:label:ctrlaltdel", @"Localizable", @"FSToolbarController") rectangle:NSMakeRect(120,20,itemWidth,itemHeight) target:pc action:@selector(VMCtrlAltDel:)];
 	[self addToolbarItem:@"q_tbfs_shutdown" withTitle: NSLocalizedStringFromTable(@"toolbar:label:shutdown", @"Localizable", @"FSToolbarController") rectangle:NSMakeRect(220,20,itemWidth,itemHeight) target:self action:@selector(shutdownPC:)];
 	
 	// add seperator item and last item at the end of the window
@@ -116,7 +118,7 @@
 {
 	Q_DEBUG(@"addToolbarItem");
 
-	id cView = window.contentView.superview;	
+	NSView *cView = window.contentView.superview;
 
 	// add button
 	FSTransparentButton * button = [[FSTransparentButton alloc] initWithFrame: rectangle];
@@ -236,7 +238,7 @@
 
     [pc.screenView toggleFullScreen];
     // release ourselves with the FSController
-    pc.screenView.fullscreenController;
+    [pc.screenView fullscreenController];
 }
 
 - (void) shutdownPC:(id)sender
@@ -245,13 +247,14 @@
 
     [pc VMShutDown:self];
     // release ourselves with the FSController
-    pc.screenView.fullscreenController;
+    [pc.screenView fullscreenController];
 }
 
 - (void) dealloc
 {
 	Q_DEBUG(@"dealloc");
 
+	[fadeTimer invalidate];
     [window close];
 }
 
