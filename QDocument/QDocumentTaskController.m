@@ -24,7 +24,6 @@
 
 #import "QDocumentTaskController.h"
 #import "QDocument.h"
-#import "../QShared/QQvmManager.h"
 #import "QDocumentOpenGLView.h"
 
 #import "Q-Swift.h"

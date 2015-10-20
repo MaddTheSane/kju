@@ -26,7 +26,6 @@
 #import "QDocumentOpenGLView.h"
 #import "../QShared/QButtonCell.h"
 #import "../QShared/QPopUpButtonCell.h"
-#import "../QShared/QQvmManager.h"
 
 #import "Q-Swift.h"
 

@@ -28,7 +28,6 @@
 
 #import "../QDocument/QDocument.h"
 #import "../QShared/QButtonCell.h"
-#import "../QShared/QQvmManager.h"
 #import "../QShared/QWindow.h"
 
 #import "Q-Swift.h"

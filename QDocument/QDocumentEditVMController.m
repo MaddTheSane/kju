@@ -25,9 +25,9 @@
 #import "QDocumentEditVMController.h"
 
 #import "QDocument.h"
-#import "QQvmManager.h"
 #import "QDocumentOpenGLView.h"
 
+#import "Q-Swift.h"
 
 @implementation QDocumentEditVMController
 {

@@ -38,7 +38,6 @@
 		275DFE160D42015300889562 /* killall9.sh in Resources */ = {isa = PBXBuildFile; fileRef = 275DFE130D42015300889562 /* killall9.sh */; };
 		27626CC70D5A6E6F0081F814 /* QPopUpButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 27626CC60D5A6E6F0081F814 /* QPopUpButtonCell.m */; };
 		279547B40D3B866000CB2BE3 /* QWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 279547B30D3B866000CB2BE3 /* QWindow.m */; };
-		27A2546D0D45F26D006BDDD5 /* QQvmManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A2546C0D45F26D006BDDD5 /* QQvmManager.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		27A258D00D479EA1006BDDD5 /* QDocumentEditVMController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27A258CF0D479EA1006BDDD5 /* QDocumentEditVMController.m */; };
 		27C9788C0CC3BE4B00A5F3AF /* FSController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C978850CC3BE4B00A5F3AF /* FSController.m */; };
 		27C9788D0CC3BE4B00A5F3AF /* FSRoundedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C978870CC3BE4B00A5F3AF /* FSRoundedView.m */; };
@@ -50,6 +49,7 @@
 		55BA7AA91BD40CB800A404A1 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55BA7AA81BD40CB800A404A1 /* Media.xcassets */; settings = {ASSET_TAGS = (); }; };
 		55BA7AAC1BD4144800A404A1 /* QEditVM.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55BA7AAE1BD4144800A404A1 /* QEditVM.xib */; };
 		55BA7AB11BD4146600A404A1 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55BA7AB31BD4146600A404A1 /* MainMenu.xib */; };
+		55CB13471BD6C9F800D9C595 /* QQvmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55CB13461BD6C9F800D9C595 /* QQvmManager.swift */; settings = {ASSET_TAGS = (); }; };
 		8D15AC2C0486D014006FF6A4 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */; };
 		8D15AC2F0486D014006FF6A4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165FFE840EACC02AAC07 /* InfoPlist.strings */; };
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -112,8 +112,6 @@
 		27626CC60D5A6E6F0081F814 /* QPopUpButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QPopUpButtonCell.m; sourceTree = "<group>"; };
 		279547B20D3B866000CB2BE3 /* QWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QWindow.h; sourceTree = "<group>"; };
 		279547B30D3B866000CB2BE3 /* QWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QWindow.m; sourceTree = "<group>"; };
-		27A2546B0D45F26D006BDDD5 /* QQvmManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QQvmManager.h; sourceTree = "<group>"; };
-		27A2546C0D45F26D006BDDD5 /* QQvmManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QQvmManager.m; sourceTree = "<group>"; };
 		27A258CE0D479EA1006BDDD5 /* QDocumentEditVMController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QDocumentEditVMController.h; sourceTree = "<group>"; };
 		27A258CF0D479EA1006BDDD5 /* QDocumentEditVMController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QDocumentEditVMController.m; sourceTree = "<group>"; };
 		27C978840CC3BE4B00A5F3AF /* FSController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FSController.h; sourceTree = "<group>"; };
@@ -139,6 +137,7 @@
 		55BA7AA81BD40CB800A404A1 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		55BA7AAD1BD4144800A404A1 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/QEditVM.xib; sourceTree = "<group>"; };
 		55BA7AB21BD4146600A404A1 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		55CB13461BD6C9F800D9C595 /* QQvmManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QQvmManager.swift; sourceTree = "<group>"; };
 		8D15AC360486D014006FF6A4 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Info.plist; sourceTree = "<group>"; };
 		8D15AC370486D014006FF6A4 /* Q.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Q.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -235,8 +234,7 @@
 				275D5ED00D411D3B0061152C /* QButtonCell.m */,
 				27626CC50D5A6E6F0081F814 /* QPopUpButtonCell.h */,
 				27626CC60D5A6E6F0081F814 /* QPopUpButtonCell.m */,
-				27A2546B0D45F26D006BDDD5 /* QQvmManager.h */,
-				27A2546C0D45F26D006BDDD5 /* QQvmManager.m */,
+				55CB13461BD6C9F800D9C595 /* QQvmManager.swift */,
 				279547B20D3B866000CB2BE3 /* QWindow.h */,
 				279547B30D3B866000CB2BE3 /* QWindow.m */,
 			);
@@ -416,6 +414,7 @@
 				27C9788E0CC3BE4B00A5F3AF /* FSToolbarController.m in Sources */,
 				27C9788F0CC3BE4B00A5F3AF /* FSTransparentButton.m in Sources */,
 				274EB4450D37CCF600E1A75D /* QDocumentWindowController.m in Sources */,
+				55CB13471BD6C9F800D9C595 /* QQvmManager.swift in Sources */,
 				274EB4460D37CCF600E1A75D /* QDocumentTaskController.m in Sources */,
 				274EB4480D37CCF600E1A75D /* QDocumentDistributedObject.m in Sources */,
 				274EB44A0D37CCF600E1A75D /* QDocument.m in Sources */,
@@ -426,7 +425,6 @@
 				275D5ED10D411D3B0061152C /* QButtonCell.m in Sources */,
 				5516AC831BD5A2FB00A47DC6 /* QApplicationController.swift in Sources */,
 				5516AC811BD5A25400A47DC6 /* QApplication.swift in Sources */,
-				27A2546D0D45F26D006BDDD5 /* QQvmManager.m in Sources */,
 				27A258D00D479EA1006BDDD5 /* QDocumentEditVMController.m in Sources */,
 				27210CC70D51A0310067EBF6 /* QDocumentOpenGLView.m in Sources */,
 				27626CC70D5A6E6F0081F814 /* QPopUpButtonCell.m in Sources */,
