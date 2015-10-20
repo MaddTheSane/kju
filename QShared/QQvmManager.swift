@@ -63,12 +63,14 @@ final class QQvmManager : NSObject {
 			// upgrade Version 0.2.0.Q to 0.2.1.Q (i.e. use doublequotes on all commands and paths)
 			if tempVM["Version"] as? String == "0.2.0.Q" {
 				let lookForArguments = ["-hda", "-hdb", "-hdc", "-hdd", "-fda", "-fdb", "-cdrom", "-append", "-kernel", "-initrd", "-smb"];
-				let singleArguments = (tempVM["Arguments"] as! String).componentsSeparatedByString(" ")
+				let singleArguments = (tempVM["Arguments"] as! String).componentsSeparatedByString(" ").filter({
+					return $0 != ""
+				})
 				
 				var arguments: String = {
 					let aName = (tempVM["PC Data"] as! [String: AnyObject])["name"]
 					
-					return "-name \"\(aName)\" "
+					return "-name \"\(aName!)\" "
 				}()
 				var option = ""
 				var argument = ""
@@ -92,6 +94,7 @@ final class QQvmManager : NSObject {
 							}
 							option = ""
 						}
+						option = tmpArgument
 					}
 				}
 				if !option.isEmpty { // handle last option, argument pair
@@ -132,13 +135,13 @@ final class QQvmManager : NSObject {
 	
 	func explodeVMArguments(argumentsString: String) -> [String] {
 		Q_DEBUG("explodeVMArguments: \(argumentsString)");
-
+		
 		//argumentsString = @"   -emptySwitchWithWhite  -emptySwitch -test1 escaped\\ -fakeSwitch\\ example -test2 \"doublequoted -fakeSwitch example\" -test3 'singlequoted -fakeSwitch example' nokey\\ escaped\\ 'singlequoted '\"doublequoted ' -fakeSwitch ' example\"";
 		
 		var argumentsArray = [String]()
-		var quoteChar = Character("");
+		var quoteChar: Character?
 		var argument = [Character]()
-
+		
 		var isEscapedChar = false;
 		var inQuote = false;
 		var inSwitch = false;
@@ -148,19 +151,19 @@ final class QQvmManager : NSObject {
 		for aChar in argumentsString.characters {
 			switch aChar {
 			case " ":
-				if (isEscapedChar) { // add escaped whitespace
+				if isEscapedChar { // add escaped whitespace
 					argument.append(aChar)
 					isEscapedChar = false;
-				} else if (inQuote) { // if we are inside a quote, accept white space
+				} else if inQuote { // if we are inside a quote, accept white space
 					argument.append(aChar)
-				} else if (inSwitch) { // else, this whitespace is a separator
+				} else if inSwitch { // else, this whitespace is a separator
 					key = String(argument)
 					// clear the arguments
 					argument = []
 					inSwitch = false;
-				} else if (inArgument) {
+				} else if inArgument {
 					argumentsArray.append(key)
-					key = String(argument)
+					argumentsArray.append(String(argument))
 					// clear the arguments
 					argument = []
 					key = "";
@@ -170,8 +173,8 @@ final class QQvmManager : NSObject {
 				}
 				
 			case "-":
-				if (!inArgument && !inSwitch) { // start of a switch
-					if (!key.isEmpty) { // store previous switch-only argument
+				if !inArgument && !inSwitch { // start of a switch
+					if !key.isEmpty { // store previous switch-only argument
 						argumentsArray.append(key)
 						key = "";
 					}
@@ -185,9 +188,9 @@ final class QQvmManager : NSObject {
 					isEscapedChar = false;
 					argument.append(aChar)
 				} else {
-					if (inQuote) {
-						if (quoteChar == "\"") { // remove "
-							inQuote = true;
+					if inQuote {
+						if quoteChar == "\"" { // remove "
+							inQuote = false;
 						} else { // ignore "
 							argument.append(aChar)
 						}
@@ -198,13 +201,13 @@ final class QQvmManager : NSObject {
 				}
 				
 			case "'":
-				if (isEscapedChar) { // ignore escaped '
+				if isEscapedChar { // ignore escaped '
 					argument.append("\\") // we are only intrested in escaped whitespace, readd escape
 					isEscapedChar = false;
 					argument.append(aChar)
 				} else {
-					if (inQuote) {
-						if (quoteChar == "'") { // remove '
+					if inQuote {
+						if quoteChar == "'" { // remove '
 							inQuote = false;
 						} else { // ignore '
 							argument.append(aChar)
@@ -216,20 +219,20 @@ final class QQvmManager : NSObject {
 				}
 				
 			case "\\":
-				if (!inQuote && !isEscapedChar) { // remove /
+				if !inQuote && !isEscapedChar { // remove /
 					isEscapedChar = true;
 				} else { // ignore /
 					argument.append(aChar)
 				}
 				
 			default:
-				if (!inSwitch && !inArgument) { //start of new argument
+				if !inSwitch && !inArgument { //start of new argument
 					inArgument = true;
 					if key.isEmpty {
 						key = "-hda"; // only argument without key is -hda
 					}
 				}
-				if (isEscapedChar) {
+				if isEscapedChar {
 					argument.append("\\") // we are only intrested in escaped whitespace, readd escape
 					isEscapedChar = false;
 				}
@@ -237,15 +240,15 @@ final class QQvmManager : NSObject {
 			}
 		}
 		
-		if (inSwitch) { // switch
+		if inSwitch { // switch
 			argumentsArray.append(String(argument))
-		} else if (inArgument) { // switch and argument
+		} else if inArgument { // switch and argument
 			argumentsArray.append(key)
 			argumentsArray.append(String(argument))
 		} else {
 			// must have been an empty string
 		}
-
+		
 		return argumentsArray
 	}
 }

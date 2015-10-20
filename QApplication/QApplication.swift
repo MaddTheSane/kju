@@ -31,27 +31,27 @@ class QApplication : NSApplication {
 	
 	override func sendEvent(anEvent: NSEvent) {
 		
-		let document = NSDocumentController.sharedDocumentController().currentDocument as! QDocument
+		let document = NSDocumentController.sharedDocumentController().currentDocument as? QDocument
 		// handle command Key Combos
 		if ((anEvent.type == .KeyDown) && (anEvent.modifierFlags.contains(.CommandKeyMask))) {
 			switch anEvent.keyCode {
 				
 				// fullscreen
 			case 3: // cmd+f
-				document.screenView.toggleFullScreen()
+				document?.screenView.toggleFullScreen()
 				
 				// fullscreen toolbar
 			case 11: // cmd+b
-				if (document.screenView.fullscreen) {
-					document.screenView.fullscreenController.toggleToolbar()
+				if let aDoc = document where aDoc.screenView.fullscreen {
+					aDoc.screenView.fullscreenController.toggleToolbar()
 				}
 
 			default:
 				super.sendEvent(anEvent)
 			}
 			// handle mouseGrabed
-		} else if (document.screenView.mouseGrabed) {
-			document.screenView.handleEvent(anEvent)
+		} else if (document?.screenView.mouseGrabed ?? false) {
+			document?.screenView.handleEvent(anEvent)
 			// default
 		} else {
 			super.sendEvent(anEvent)

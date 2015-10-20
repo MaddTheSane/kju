@@ -102,7 +102,7 @@
         // Application
         qApplication = NSApp.delegate;
         uniqueDocumentID = [qApplication leaseAUniqueDocumentID:self];
-    
+		configuration = [[NSMutableDictionary alloc] init];
         // initialize QEMU state
         cpuUsage = 0.0;
         ideActivity = FALSE;
@@ -122,6 +122,21 @@
 
     }
     return self;
+}
+
+- (instancetype)initWithType:(NSString *)typeName error:(NSError *__autoreleasing*)outError
+{
+	static int i = 0;
+	if (self = [super initWithType:typeName error:outError]) {
+		//Create a temp directory for the virtual machine
+		NSFileManager *fm = [NSFileManager defaultManager];
+		NSURL *tmpURL = [fm URLForDirectory:NSItemReplacementDirectory inDomain:NSUserDomainMask appropriateForURL: [NSURL fileURLWithPath:@"Temporary VM"]/*[[NSBundle mainBundle] bundleURL]*/ create:YES error:NULL];
+		tmpURL = [tmpURL URLByAppendingPathComponent:[NSString stringWithFormat:@"%d.qvm", i++]];
+		configuration[@"Temporary"] = [NSMutableDictionary dictionary];
+		configuration[@"Temporary"][@"URL"] = tmpURL;
+		[fm createDirectoryAtURL:tmpURL withIntermediateDirectories:YES attributes:nil error:NULL];
+	}
+	return self;
 }
 
 - (instancetype)initWithContentsOfURL:(NSURL *)absoluteURL ofType:(NSString *)typeName error:(NSError *__autoreleasing*)outError
