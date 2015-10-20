@@ -28,6 +28,8 @@
 #import "../QShared/QPopUpButtonCell.h"
 #import "../QShared/QQvmManager.h"
 
+#import "Q-Swift.h"
+
 //for CDROM
 #import <paths.h>
 #import <sys/param.h>

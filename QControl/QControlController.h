@@ -29,7 +29,7 @@
 #import "cocoaControlPreferences.h"
 #import "cocoaDownloadController.h"
 */
-#import "QApplicationController.h"
+@class QApplicationController;
 #import "QControlTableView.h"
 
 @class QWindow;

@@ -31,6 +31,7 @@ Todo:
 #include <AvailabilityMacros.h>
 
 #import "QDocumentOpenGLView.h"
+#import "Q-Swift.h"
 
 
 //#import "../CGSPrivate.h"
@@ -654,10 +655,10 @@ int cocoa_keycode_to_qemu(int keycode)
 			(screenProperties.width * 4), //bytesPerRow
 #if __LITTLE_ENDIAN__
 			CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB), //colorspace for OX S >= 10.4
-			kCGImageAlphaNoneSkipLast,
+			(CGBitmapInfo)kCGImageAlphaNoneSkipLast,
 #else
 			CGColorSpaceCreateDeviceRGB(), //colorspace for OS X < 10.4 (actually ppc)
-			kCGImageAlphaNoneSkipFirst, //bitmapInfo
+			(CGBitmapInfo)kCGImageAlphaNoneSkipFirst, //bitmapInfo
 #endif
 			dataProviderRef, //provider
 			NULL, //decode

@@ -25,7 +25,6 @@
 #import <Cocoa/Cocoa.h>
 #import <OpenGL/gl.h>
 
-#import "../QApplication/QApplicationController.h"
 #import "QDocument.h"
 
 // some defines from from vl.h

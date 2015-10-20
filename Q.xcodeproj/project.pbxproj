@@ -31,8 +31,6 @@
 		274EB4460D37CCF600E1A75D /* QDocumentTaskController.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EB43A0D37CCF600E1A75D /* QDocumentTaskController.m */; };
 		274EB4480D37CCF600E1A75D /* QDocumentDistributedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EB43F0D37CCF600E1A75D /* QDocumentDistributedObject.m */; };
 		274EB44A0D37CCF600E1A75D /* QDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EB4430D37CCF600E1A75D /* QDocument.m */; };
-		274EB45E0D37CE1D00E1A75D /* QApplicationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EB45A0D37CE1D00E1A75D /* QApplicationController.m */; };
-		274EB45F0D37CE1D00E1A75D /* QApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EB45C0D37CE1D00E1A75D /* QApplication.m */; };
 		274EB4970D37D1B800E1A75D /* QControlTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EB4960D37D1B800E1A75D /* QControlTableView.m */; };
 		274EB4A40D381F2100E1A75D /* QControlTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EB4A30D381F2100E1A75D /* QControlTableViewController.m */; };
 		274EB4AB0D38247E00E1A75D /* QControlController.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EB49C0D37D21100E1A75D /* QControlController.m */; };
@@ -46,6 +44,8 @@
 		27C9788D0CC3BE4B00A5F3AF /* FSRoundedView.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C978870CC3BE4B00A5F3AF /* FSRoundedView.m */; };
 		27C9788E0CC3BE4B00A5F3AF /* FSToolbarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C978890CC3BE4B00A5F3AF /* FSToolbarController.m */; };
 		27C9788F0CC3BE4B00A5F3AF /* FSTransparentButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C9788B0CC3BE4B00A5F3AF /* FSTransparentButton.m */; };
+		5516AC811BD5A25400A47DC6 /* QApplication.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5516AC801BD5A25400A47DC6 /* QApplication.swift */; settings = {ASSET_TAGS = (); }; };
+		5516AC831BD5A2FB00A47DC6 /* QApplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5516AC821BD5A2FB00A47DC6 /* QApplicationController.swift */; settings = {ASSET_TAGS = (); }; };
 		554512DA1BD4ADF800EDF6EE /* QDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = 554512DC1BD4ADF800EDF6EE /* QDocument.xib */; };
 		55BA7AA91BD40CB800A404A1 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55BA7AA81BD40CB800A404A1 /* Media.xcassets */; settings = {ASSET_TAGS = (); }; };
 		55BA7AAC1BD4144800A404A1 /* QEditVM.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55BA7AAE1BD4144800A404A1 /* QEditVM.xib */; };
@@ -99,10 +99,6 @@
 		274EB4400D37CCF600E1A75D /* QDocumentDistributedObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QDocumentDistributedObject.h; sourceTree = "<group>"; };
 		274EB4430D37CCF600E1A75D /* QDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QDocument.m; sourceTree = "<group>"; };
 		274EB4440D37CCF600E1A75D /* QDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QDocument.h; sourceTree = "<group>"; };
-		274EB45A0D37CE1D00E1A75D /* QApplicationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QApplicationController.m; sourceTree = "<group>"; };
-		274EB45B0D37CE1D00E1A75D /* QApplicationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QApplicationController.h; sourceTree = "<group>"; };
-		274EB45C0D37CE1D00E1A75D /* QApplication.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QApplication.m; sourceTree = "<group>"; };
-		274EB45D0D37CE1D00E1A75D /* QApplication.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QApplication.h; sourceTree = "<group>"; };
 		274EB4950D37D1B800E1A75D /* QControlTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QControlTableView.h; sourceTree = "<group>"; };
 		274EB4960D37D1B800E1A75D /* QControlTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QControlTableView.m; sourceTree = "<group>"; };
 		274EB49B0D37D21100E1A75D /* QControlController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QControlController.h; sourceTree = "<group>"; };
@@ -133,6 +129,9 @@
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		32DBCF750370BD2300C91783 /* Q_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Q_Prefix.pch; sourceTree = "<group>"; };
+		5516AC7F1BD5A25300A47DC6 /* Q-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Q-Bridging-Header.h"; sourceTree = "<group>"; };
+		5516AC801BD5A25400A47DC6 /* QApplication.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QApplication.swift; sourceTree = "<group>"; };
+		5516AC821BD5A2FB00A47DC6 /* QApplicationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QApplicationController.swift; sourceTree = "<group>"; };
 		554512D01BD4AA6900EDF6EE /* fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		554512D51BD4AA9500EDF6EE /* de */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		554512D91BD4AACB00EDF6EE /* pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -210,10 +209,8 @@
 		274EB4590D37CE0400E1A75D /* QApplication */ = {
 			isa = PBXGroup;
 			children = (
-				274EB45D0D37CE1D00E1A75D /* QApplication.h */,
-				274EB45C0D37CE1D00E1A75D /* QApplication.m */,
-				274EB45B0D37CE1D00E1A75D /* QApplicationController.h */,
-				274EB45A0D37CE1D00E1A75D /* QApplicationController.m */,
+				5516AC801BD5A25400A47DC6 /* QApplication.swift */,
+				5516AC821BD5A2FB00A47DC6 /* QApplicationController.swift */,
 			);
 			path = QApplication;
 			sourceTree = "<group>";
@@ -277,6 +274,7 @@
 		2A37F4ABFDCFA73011CA2CEA /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				5516AC7F1BD5A25300A47DC6 /* Q-Bridging-Header.h */,
 				274EB4590D37CE0400E1A75D /* QApplication */,
 				274EB4880D37D0DB00E1A75D /* QControl */,
 				274EB4380D37CCD200E1A75D /* QDocument */,
@@ -350,6 +348,7 @@
 		2A37F4A9FDCFA73011CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0700;
 			};
 			buildConfigurationList = C05733CB08A9546B00998B17 /* Build configuration list for PBXProject "Q" */;
@@ -421,13 +420,13 @@
 				274EB4460D37CCF600E1A75D /* QDocumentTaskController.m in Sources */,
 				274EB4480D37CCF600E1A75D /* QDocumentDistributedObject.m in Sources */,
 				274EB44A0D37CCF600E1A75D /* QDocument.m in Sources */,
-				274EB45E0D37CE1D00E1A75D /* QApplicationController.m in Sources */,
-				274EB45F0D37CE1D00E1A75D /* QApplication.m in Sources */,
 				274EB4970D37D1B800E1A75D /* QControlTableView.m in Sources */,
 				274EB4A40D381F2100E1A75D /* QControlTableViewController.m in Sources */,
 				274EB4AB0D38247E00E1A75D /* QControlController.m in Sources */,
 				279547B40D3B866000CB2BE3 /* QWindow.m in Sources */,
 				275D5ED10D411D3B0061152C /* QButtonCell.m in Sources */,
+				5516AC831BD5A2FB00A47DC6 /* QApplicationController.swift in Sources */,
+				5516AC811BD5A25400A47DC6 /* QApplication.swift in Sources */,
 				27A2546D0D45F26D006BDDD5 /* QQvmManager.m in Sources */,
 				27A258D00D479EA1006BDDD5 /* QDocumentEditVMController.m in Sources */,
 				27210CC70D51A0310067EBF6 /* QDocumentOpenGLView.m in Sources */,
@@ -543,6 +542,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.kberg.Q;
 				PRODUCT_NAME = Q;
+				SWIFT_OBJC_BRIDGING_HEADER = "Q-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -568,6 +569,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = ch.kberg.Q;
 				PRODUCT_NAME = Q;
+				SWIFT_OBJC_BRIDGING_HEADER = "Q-Bridging-Header.h";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -602,8 +604,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_SWIFT_FLAGS = "-DDEBUG";
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -636,7 +639,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				SDKROOT = macosx;
 			};
 			name = Release;

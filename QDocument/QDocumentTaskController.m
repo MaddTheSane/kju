@@ -27,6 +27,8 @@
 #import "../QShared/QQvmManager.h"
 #import "QDocumentOpenGLView.h"
 
+#import "Q-Swift.h"
+
 
 @implementation QDocumentTaskController
 @synthesize task;
@@ -201,7 +203,7 @@
     }
  
     // Arguments of configuration
-	explodedArguments = [[QQvmManager sharedQvmManager] explodeVMArguments:[document configuration][@"Arguments"]];
+	explodedArguments = [[[QQvmManager sharedQvmManager] explodeVMArguments:[document configuration][@"Arguments"]] mutableCopy];
 	key = nil;
 	for (i = 0; i < explodedArguments.count; i++) {
 		if ([explodedArguments[i] characterAtIndex:0] == '-') { // key

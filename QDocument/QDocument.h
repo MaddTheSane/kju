@@ -25,13 +25,13 @@
 
 #import <Cocoa/Cocoa.h>
 
-#import "../QApplication/QApplicationController.h"
 #import "QDocumentWindowController.h"
 #import "QDocumentDistributedObject.h"
 #import "QDocumentTaskController.h"
 #import "QDocumentEditVMController.h"
 
 @class QDocumentOpenGLView;
+@class QApplicationController;
 
 typedef NS_ENUM(NSInteger, QDocumentVMState) {
    QDocumentShutdown = 0,

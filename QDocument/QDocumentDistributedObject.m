@@ -28,6 +28,9 @@
 
 
 @implementation QDocumentDistributedObject
+{
+	NSConnection *theConnection;
+}
 - (instancetype) initWithSender:(QDocument*)sender
 {
 	Q_DEBUG(@"init");
@@ -42,8 +45,7 @@
         commandBuffer = malloc(Q_COMMANDS_MAX*sizeof(QCommand));
 
         // Open a connection, so the QEMU instance can connect to us
-        NSConnection *theConnection;
-        theConnection = [NSConnection defaultConnection];
+        theConnection = [NSConnection new];
 		[theConnection runInNewThread]; //we must run multithreaded: applicationShouldTerminate blocks the main thread
         theConnection.rootObject = self;
         if ([theConnection registerName:[NSString stringWithFormat:@"qDocument_%D", document.uniqueDocumentID]] == NO) {
