@@ -36,6 +36,8 @@
 #define TITLE_BAR_HEIGHT 21.0
 #define ICON_BAR_HEIGHT 30.0
 
+NS_ASSUME_NONNULL_BEGIN
+
 typedef struct {
 	int width;
 	int height;
@@ -71,7 +73,7 @@ typedef NS_ENUM(NSInteger, QDocumentOpenGLTextures) {
 - (GLuint) createTextureFromImage:(NSImage *)image;
 - (GLuint) createTextureFromImagePath:(NSString *)path DEPRECATED_ATTRIBUTE;
 - (GLuint) createTextureFromImageURL:(NSURL *)url;
-- (void) updateSavedImage:(id)sender;
+- (void) updateSavedImage:(nullable id)sender;
 - (NSImage *) screenshot:(NSSize)size;
 
 // QEMU
@@ -97,3 +99,4 @@ typedef NS_ENUM(NSInteger, QDocumentOpenGLTextures) {
 @property (readonly, strong) FSController *fullscreenController;
 @end
 
+NS_ASSUME_NONNULL_END

@@ -24,6 +24,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface QQvmManager : NSDocument
 
 + (instancetype)sharedQvmManager;
@@ -31,3 +33,5 @@
 - (NSMutableDictionary *) loadVMConfiguration:(NSString *) filepath;
 - (NSArray<NSString*> *) explodeVMArguments:(NSString *) argumentsString;
 @end
+
+NS_ASSUME_NONNULL_END

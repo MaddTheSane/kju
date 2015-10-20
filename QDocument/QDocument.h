@@ -31,6 +31,8 @@
 #import "QDocumentTaskController.h"
 #import "QDocumentEditVMController.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class QDocumentOpenGLView;
 
 typedef NS_ENUM(NSInteger, QDocumentVMState) {
@@ -71,55 +73,55 @@ typedef struct {
 - (void)docShouldClose:(id)sender;
 
 // save configuration.plist
-- (void) errorSheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(id)contextInfo;
-- (void) defaultAlertMessage:(NSString *)message informativeText:(NSString *)text;
+- (void) errorSheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(nullable id)contextInfo;
+- (void) defaultAlertMessage:(NSString *)message informativeText:(nullable NSString *)text;
 
 // edit
-- (IBAction) VMEdit:(id)sender;
+- (IBAction) VMEdit:(nullable id)sender;
 
 // start/shutdown VM
-- (IBAction) VMStart:(id)sender;
-- (void) shutdownVMSheetDidEnd: (NSAlert *)alert returnCode: (NSInteger)returnCode contextInfo: (void *)contextInfo;
-- (IBAction) VMShutDown:(id)sender;
-- (IBAction) toggleStartShutdown:(id)sender;
+- (IBAction) VMStart:(nullable id)sender;
+- (void) shutdownVMSheetDidEnd: (NSAlert *)alert returnCode: (NSInteger)returnCode contextInfo: (nullable void *)contextInfo;
+- (IBAction) VMShutDown:(nullable id)sender;
+- (IBAction) toggleStartShutdown:(nullable id)sender;
 
 // reset VM
-- (IBAction) VMReset:(id)sender;
+- (IBAction) VMReset:(nullable id)sender;
 
 // send ctrl-alt-del to VM
-- (IBAction) VMCtrlAltDel: (id)sender;
+- (IBAction) VMCtrlAltDel: (nullable id)sender;
 
 // pause VM
-- (IBAction) VMPause:(id)sender;
-- (IBAction) VMUnpause:(id)sender;
+- (IBAction) VMPause:(nullable id)sender;
+- (IBAction) VMUnpause:(nullable id)sender;
 @property (nonatomic, setter=VMSetPauseWhileInactive:) BOOL VMPauseWhileInactive;
-- (IBAction) togglePause:(id)sender;
+- (IBAction) togglePause:(nullable id)sender;
 
 // change drives of VM
-@property (readonly, copy) NSString *firstCDROMDrive;
-- (IBAction) VMUseCdrom:(id)sender;
-- (IBAction) VMChangeFda:(id)sender;
-- (IBAction) VMChangeFdb:(id)sender;
-- (IBAction) VMChangeCdrom:(id)sender;
-- (IBAction) VMEjectFda:(id)sender;
-- (IBAction) VMEjectFdb:(id)sender;
-- (IBAction) VMEjectCdrom:(id)sender;
+@property (readonly, copy, nullable) NSString *firstCDROMDrive;
+- (IBAction) VMUseCdrom:(nullable id)sender;
+- (IBAction) VMChangeFda:(nullable id)sender;
+- (IBAction) VMChangeFdb:(nullable id)sender;
+- (IBAction) VMChangeCdrom:(nullable id)sender;
+- (IBAction) VMEjectFda:(nullable id)sender;
+- (IBAction) VMEjectFdb:(nullable id)sender;
+- (IBAction) VMEjectCdrom:(nullable id)sender;
 
 // take screenshot of VM
-- (IBAction) takeScreenShot: (id)sender;
+- (IBAction) takeScreenShot: (nullable id)sender;
 
 // toggle fullscreen of VM
-- (IBAction) toggleFullscreen:(id)sender;
+- (IBAction) toggleFullscreen:(nullable id)sender;
 
 // getters/setters
-@property (readonly, unsafe_unretained) QApplicationController *qApplication;
+@property (readonly, weak) QApplicationController *qApplication;
 @property (readonly) BOOL canCloseDocumentClose;
 @property (readonly) int uniqueDocumentID;
 @property (readonly, strong) QDocumentDistributedObject *distributedObject;
 @property (readonly, strong) QDocumentTaskController *qemuTask;
 @property (readonly, strong) QDocumentOpenGLView* screenView;
 @property (nonatomic) QDocumentVMState VMState;
-@property (readonly, copy) NSString *smbPath;
+@property (readonly, copy, nullable) NSString *smbPath;
 @property float cpuUsage;
 @property BOOL ideActivity;
 @property (readonly, copy) NSArray<NSString*> *driveFileNames;
@@ -127,3 +129,5 @@ typedef struct {
 @property (readonly, copy) NSMutableDictionary *configuration;
 
 @end
+
+NS_ASSUME_NONNULL_END

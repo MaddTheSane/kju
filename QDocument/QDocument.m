@@ -41,7 +41,6 @@
 
 @implementation QDocument
 {
-	QApplicationController *__unsafe_unretained qApplication;
 	QDocumentWindowController *windowController;
 	QDocumentDistributedObject *distributedObject;
 	QDocumentTaskController *qemuTask;
@@ -717,7 +716,7 @@
     io_iterator_t mediaIterator;
     kern_return_t kernResult = KERN_FAILURE; 
     mach_port_t masterPort;
-    CFMutableDictionaryRef  classesToMatch;
+    NSMutableDictionary *classesToMatch;
     io_object_t nextMedia;
     char *bsdPath = NULL;
     CFIndex maxPathSize = 1024;
@@ -728,14 +727,14 @@
         NSLog(@"QDocument: firstCDROMDrive: IOMasterPort returned %d", kernResult);
         return nil;
     }
-    classesToMatch = IOServiceMatching(kIOCDMediaClass); 
+    classesToMatch = CFBridgingRelease(IOServiceMatching(kIOCDMediaClass)); 
     if (classesToMatch == NULL) {
         NSLog(@"QDocument: firstCDROMDrive: IOServiceMatching returned a NULL dictionary.");
         return nil;
     } else {
-        CFDictionarySetValue(classesToMatch, CFSTR(kIOMediaEjectableKey), kCFBooleanTrue);
+		classesToMatch[@kIOMediaEjectableKey] = @YES;
     }
-    kernResult = IOServiceGetMatchingServices( masterPort, classesToMatch, &mediaIterator);
+    kernResult = IOServiceGetMatchingServices(masterPort, CFBridgingRetain(classesToMatch), &mediaIterator);
     if (KERN_SUCCESS != kernResult) {
         NSLog(@"QDocument: firstCDROMDrive: IOServiceGetMatchingServices returned %d", kernResult);
         return nil;

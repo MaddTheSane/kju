@@ -25,6 +25,8 @@
 #import <Cocoa/Cocoa.h>
 #import "FSToolbarController.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class QDocument;
 
 @interface FSController : NSObject
@@ -35,3 +37,5 @@
 - (void) toggleToolbar;
 
 @end
+
+NS_ASSUME_NONNULL_END

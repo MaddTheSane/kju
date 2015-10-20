@@ -24,6 +24,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class QDocument;
 
 typedef NS_ENUM(NSInteger, QDocumentEditVMMachine) {
@@ -103,11 +105,13 @@ typedef NS_ENUM(NSInteger, QDocumentEditVMMachine) {
 
 - (void)showEditVMPanel:(QDocument*)sender;
 
-- (IBAction)OK:(id)sender;
-- (IBAction)cancel:(id)sender;
+- (IBAction)OK:(nullable id)sender;
+- (IBAction)cancel:(nullable id)sender;
 
-- (IBAction) resetPanel:(id)sender;
+- (IBAction) resetPanel:(nullable id)sender;
 - (void) setMachine:(QDocumentEditVMMachine)machine;
 - (BOOL) setOption:(NSString *)key withArgument:(NSString *)argument;
-- (IBAction) populatePanel:(id)sender;
+- (IBAction) populatePanel:(nullable id)sender;
 @end
+
+NS_ASSUME_NONNULL_END

@@ -25,6 +25,8 @@
 #import <Cocoa/Cocoa.h>
 #import "FSRoundedView.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class QDocument;
 
 #define SEMI_TRANSPARENT_COLOR [NSColor colorWithCalibratedWhite:0.0 alpha:0.6]
@@ -38,7 +40,7 @@
 @property (readonly) BOOL showsToolbar;
 - (void) setupToolbar;
 - (void) addToolbarItem:(NSString *)icon withTitle:(NSString *)title rectangle:(NSRect)rectangle target:(id) target action:(SEL)action;
-- (void) addCustomToolbarItem:(id)item;
+- (void) addCustomToolbarItem:(nullable id)item;
 
 - (NSWindow *) createTransparentWindow NS_RETURNS_RETAINED;
 
@@ -46,6 +48,8 @@
 - (void) fadeIn;
 - (void) fadeOut;
 @property (getter=isAnimating, setter=setAnimates:) BOOL animating;
-- (IBAction) setFullscreen:(id)sender;
-- (IBAction) shutdownPC:(id)sender;
+- (IBAction) setFullscreen:(nullable id)sender;
+- (IBAction) shutdownPC:(nullable id)sender;
 @end
+
+NS_ASSUME_NONNULL_END

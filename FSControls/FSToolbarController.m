@@ -30,7 +30,7 @@
 
 @implementation FSToolbarController
 {
-	__weak NSWindow * window;
+	NSWindow * window;
 	__weak FSRoundedView * view;
 	NSTimer * fadeTimer;
 	

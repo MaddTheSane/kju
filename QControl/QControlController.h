@@ -32,6 +32,8 @@
 #import "QApplicationController.h"
 #import "QControlTableView.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class QWindow;
 
 @interface QControlController : NSObject <NSAnimationDelegate, NSMetadataQueryDelegate>
@@ -52,7 +54,7 @@
 
 // IBActions
 //- (IBAction) addPC:(id)sender;
-- (IBAction) showQControl:(id)sender;
+- (IBAction) showQControl:(nullable id)sender;
 //- (IBAction) addVMFromAssistant:(NSMutableDictionary *)VM;
 //- (IBAction) editPC:(id)sender;
 
@@ -68,11 +70,11 @@
 - (void) stopVM:(NSMutableDictionary *)VM;
 - (void) deleteVM:(NSMutableDictionary *)VM;
 
-- (IBAction) togglePreferences:(id)sender;
-- (IBAction) prefUpdates:(id)sender;
-- (IBAction) prefLog:(id)sender;
-- (IBAction) prefYellow:(id)sender;
-- (IBAction) prefFSWarning:(id)sender;
+- (IBAction) togglePreferences:(nullable id)sender;
+- (IBAction) prefUpdates:(nullable id)sender;
+- (IBAction) prefLog:(nullable id)sender;
+- (IBAction) prefYellow:(nullable id)sender;
+- (IBAction) prefFSWarning:(nullable id)sender;
 
 /*
 - (BOOL) importFreeOSZooPC:(NSString *)name withPath:(NSString *)path;
@@ -101,6 +103,8 @@
 - (void)standardAlert:(NSString *)messageText informativeText:(NSString *)informativeText;
 
 // getters & setters
-@property (readonly, copy) NSMutableArray *VMs;
+@property (readonly, strong) NSMutableArray *VMs;
 @property (readonly, weak) IBOutlet QWindow *mainWindow;
 @end
+
+NS_ASSUME_NONNULL_END

@@ -24,6 +24,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 typedef NS_ENUM(NSInteger, QButtonCellType) {
 	QButtonCellAlone = 0,
 	QButtonCellLeft = 1,
@@ -34,3 +36,5 @@ typedef NS_ENUM(NSInteger, QButtonCellType) {
 @interface QButtonCell : NSButtonCell
 - (instancetype)initImageCell:(NSImage *)anImage buttonType:(QButtonCellType)aButtonType target:(id)aTarget action:(SEL)anAction;
 @end
+
+NS_ASSUME_NONNULL_END
