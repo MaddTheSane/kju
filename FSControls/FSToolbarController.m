@@ -100,17 +100,17 @@
 	Q_DEBUG(@"setupToolbar");
 
     // set up toolbar items
-	float margin_h = 30; // left and right margin of the toolbar on the window
-	//float margin_space = 40;
-	float itemWidth = 64 + 5;
-	float itemHeight = 64 + 5;
+	CGFloat margin_h = 30; // left and right margin of the toolbar on the window
+	//CGFloat margin_space = 40;
+	CGFloat itemWidth = 64 + 5;
+	CGFloat itemHeight = 64 + 5;
 	[self addToolbarItem:@"q_tbfs_screenshot" withTitle: NSLocalizedStringFromTable(@"toolbar:label:screenshot", @"Localizable", @"FSToolbarController") rectangle:NSMakeRect(margin_h,20,itemWidth,itemHeight) target:pc action:@selector(takeScreenShot:)];
 	[self addToolbarItem:@"q_tbfs_ctrlaltdel" withTitle: NSLocalizedStringFromTable(@"toolbar:label:ctrlaltdel", @"Localizable", @"FSToolbarController") rectangle:NSMakeRect(120,20,itemWidth,itemHeight) target:pc action:@selector(VMCtrlAltDel:)];
 	[self addToolbarItem:@"q_tbfs_shutdown" withTitle: NSLocalizedStringFromTable(@"toolbar:label:shutdown", @"Localizable", @"FSToolbarController") rectangle:NSMakeRect(220,20,itemWidth,itemHeight) target:self action:@selector(shutdownPC:)];
 	
 	// add seperator item and last item at the end of the window
 	NSRect viewFrame = window.contentView.superview.frame;
-	float lastItemOriginX = viewFrame.size.width - margin_h - itemWidth;
+	CGFloat lastItemOriginX = viewFrame.size.width - margin_h - itemWidth;
 	[self addToolbarItem:@"q_tbfs_fullscreen" withTitle: NSLocalizedStringFromTable(@"toolbar:label:fullscreen", @"Localizable", @"FSToolbarController") rectangle:NSMakeRect(lastItemOriginX,20,itemWidth,itemHeight) target:self action:@selector(setFullscreen:)];
 	
 	NSRect seperatorRect;
@@ -201,7 +201,7 @@
 
 	if(window.alphaValue < 1.0) {
 		// fade in..
-		float nextAlphaValue = window.alphaValue + 0.2;
+		CGFloat nextAlphaValue = window.alphaValue + 0.2;
 		window.alphaValue = nextAlphaValue;
 	} else {
 		// fadeIn complete

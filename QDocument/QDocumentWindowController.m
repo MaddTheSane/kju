@@ -81,7 +81,7 @@
     Q_DEBUG(@"QemuCocoaView: windowWillResize: toSize: NSSize(%f, %f)", proposedFrameSize.width, proposedFrameSize.height);
 
     // update zoom
-    [screenView displayPropertiesSetZoom:(proposedFrameSize.width / (float)screenView.screenProperties.width)];
+    [screenView displayPropertiesSetZoom:(proposedFrameSize.width / (CGFloat)screenView.screenProperties.width)];
 
     // Update the content to new size before window is resized, if the new size is bigger
     if (proposedFrameSize.width > tWindow.frame.size.width || proposedFrameSize.height > tWindow.frame.size.height) {
@@ -97,7 +97,7 @@
 
 	if (![screenView isFullscreen]) {
 		// update zoom
-		[screenView displayPropertiesSetZoom:([window frame].size.width / (float)[screenView screenProperties].width)];
+		[screenView displayPropertiesSetZoom:([window frame].size.width / (CGFloat)[screenView screenProperties].width)];
 	
 		[screenView setContentDimensionsForFrame:NSMakeRect(0, 0, [window frame].size.width, [window frame].size.height - TITLE_BAR_HEIGHT - ICON_BAR_HEIGHT)];
 		[screenView reshape];

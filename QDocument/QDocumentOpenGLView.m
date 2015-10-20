@@ -734,14 +734,14 @@ int cocoa_keycode_to_qemu(int keycode)
 
 	if (isFullscreen) {
 		if (([NSScreen mainScreen].frame.size.width / screenProperties.width) > ([NSScreen mainScreen].frame.size.height / screenProperties.height)) {
-			displayProperties.dx = [NSScreen mainScreen].frame.size.height / (float)screenProperties.height;
+			displayProperties.dx = [NSScreen mainScreen].frame.size.height / (CGFloat)screenProperties.height;
 		} else {
-			displayProperties.dx = [NSScreen mainScreen].frame.size.width / (float)screenProperties.width;
+			displayProperties.dx = [NSScreen mainScreen].frame.size.width / (CGFloat)screenProperties.width;
 		}
         if (displayProperties.dx < 2.0) {
-            displayProperties.dx = (float)((int)(displayProperties.dx * 4)) / 4.0; //only allow factors of .25/.5/.75/1.0/1.25/1.5/1.75
+            displayProperties.dx = (CGFloat)((int)(displayProperties.dx * 4)) / 4.0; //only allow factors of .25/.5/.75/1.0/1.25/1.5/1.75
         } else {
-            displayProperties.dx = (float)(int)displayProperties.dx; //only allow full factors
+            displayProperties.dx = (CGFloat)(int)displayProperties.dx; //only allow full factors
         }
         displayProperties.dy = displayProperties.dx;
         displayProperties.width = screenProperties.width * displayProperties.dx;
@@ -750,8 +750,8 @@ int cocoa_keycode_to_qemu(int keycode)
         displayProperties.y = ([NSScreen mainScreen].frame.size.height - displayProperties.height) / 2.0;
 		self.frame = NSMakeRect(displayProperties.x, displayProperties.y, displayProperties.width, displayProperties.height);
 	} else {
-		displayProperties.dx = rect.size.width / (float)screenProperties.width;
-		displayProperties.dy = rect.size.height / (float)screenProperties.height;
+		displayProperties.dx = rect.size.width / (CGFloat)screenProperties.width;
+		displayProperties.dy = rect.size.height / (CGFloat)screenProperties.height;
 		displayProperties.width = rect.size.width;
 		displayProperties.height = rect.size.height;
 		displayProperties.x = 0.0;

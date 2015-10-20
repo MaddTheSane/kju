@@ -188,15 +188,14 @@
     NSPoint point;
     id VM;
     NSImage *image;
-    float qFraction;
-    int i;
 	QDocument *document;
 
 	if (qControl) {
     [super drawRect: rect];
 
 
-    for (i = 0; i < [qControl VMs].count; i++) {
+    for (NSInteger i = 0; i < [qControl VMs].count; i++) {
+		CGFloat qFraction;
         VM = [qControl VMs][i];
 		document = [[NSDocumentController sharedDocumentController] documentForURL:VM[@"Temporary"][@"URL"]];
         cellRect = [self frameOfCellAtColumn:1 row:i];
