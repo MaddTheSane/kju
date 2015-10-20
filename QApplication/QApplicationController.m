@@ -25,7 +25,6 @@
 #import "QApplicationController.h"
 
 
-
 @implementation QApplicationController
 {
 	int uniqueDocumentID;

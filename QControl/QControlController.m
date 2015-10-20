@@ -40,7 +40,6 @@
 	
 	// controlWindow
 	NSMutableArray *VMs;
-	QWindow *__unsafe_unretained mainWindow;
 	
 	NSTimer *timer;	 //to update Table Thumbnails
 	
@@ -75,13 +74,11 @@
 @synthesize prefLog;
 @synthesize prefYellow;
 @synthesize prefFSWarning;
-
 @synthesize buttonEdit;
 @synthesize buttonAdd;
-
 @synthesize loadProgressIndicator;
 @synthesize loadProgressText;
-
+@synthesize mainWindow;
 
 -(instancetype)init
 {
@@ -164,13 +161,10 @@
 
 
 #pragma mark configurations
-NSInteger revCaseInsensitiveCompare(id string1, id string2, void *context)
-
+static NSComparisonResult revCaseInsensitiveCompare(id string1, id string2, void *context)
 {
     return [[string2 lastPathComponent] caseInsensitiveCompare:[string1 lastPathComponent] ];
 }
-
-
 
 - (void) loadConfigurations
 {
@@ -433,7 +427,6 @@ NSInteger revCaseInsensitiveCompare(id string1, id string2, void *context)
 */
 
 
-
 #pragma mark preferences
 - (void)animationDidEnd:(NSAnimation*)animation
 {
@@ -525,7 +518,6 @@ NSInteger revCaseInsensitiveCompare(id string1, id string2, void *context)
 }
 
 
-
 #pragma mark query handlers
   - (void)queryFinished:(NSNotification*)note
 {
@@ -582,7 +574,5 @@ NSInteger revCaseInsensitiveCompare(id string1, id string2, void *context)
 
 
 #pragma mark getters and setter
-@synthesize mainWindow;
-- (id) mainWindow {return mainWindow;}
 - (NSMutableArray *) VMs {return VMs;}
 @end

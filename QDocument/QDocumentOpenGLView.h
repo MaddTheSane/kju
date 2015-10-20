@@ -94,6 +94,6 @@ typedef NS_ENUM(NSInteger, QDocumentOpenGLTextures) {
 @property (readonly) QDisplayProperties displayProperties;
 - (void) displayPropertiesSetZoom:(CGFloat)tZoom;
 @property (readonly) void *screenBuffer NS_RETURNS_INNER_POINTER;
-@property (readonly) FSController *fullscreenController;
+@property (readonly, strong) FSController *fullscreenController;
 @end
 

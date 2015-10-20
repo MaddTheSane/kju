@@ -33,7 +33,7 @@
 {
 	__weak QDocument *document;
 	__weak QDocumentOpenGLView *screenView;
-	NSWindow *window;
+	__weak NSWindow *window;
 	NSToolbar *toolbar;
 	NSTimer *cpuTimer; // Timer to update the cpu Icon
 }

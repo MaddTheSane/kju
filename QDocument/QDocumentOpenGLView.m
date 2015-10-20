@@ -243,10 +243,7 @@ int cocoa_keycode_to_qemu(int keycode)
 @implementation QDocumentOpenGLView
 {
 	NSWindow *fullScreenWindow;
-	QScreen screenProperties;
-	QDisplayProperties displayProperties;
 	void *screenBuffer;
-	FSController *fullscreenController;
 	
 	GLuint textures[3];
 	

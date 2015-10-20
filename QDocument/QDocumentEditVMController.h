@@ -57,7 +57,6 @@ typedef NS_ENUM(NSInteger, QDocumentEditVMMachine) {
    QDocumentEditVMMachineCris = 27
 };
 
-
 @interface QDocumentEditVMController : NSObject
 
 // Panel

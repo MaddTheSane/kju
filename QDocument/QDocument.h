@@ -67,12 +67,11 @@ typedef struct {
 @property (weak) IBOutlet NSTextField *progressText;
 @property (weak) IBOutlet NSProgressIndicator *progressIndicator;
 
-
 // "canCloseDocumentWithDelegate" callback
 - (void)docShouldClose:(id)sender;
 
 // save configuration.plist
-- (void) errorSheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(id)contextInfo;
+- (void) errorSheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(id)contextInfo;
 - (void) defaultAlertMessage:(NSString *)message informativeText:(NSString *)text;
 
 // edit
@@ -80,7 +79,7 @@ typedef struct {
 
 // start/shutdown VM
 - (IBAction) VMStart:(id)sender;
-- (void) shutdownVMSheetDidEnd: (NSAlert *)alert returnCode: (int)returnCode contextInfo: (void *)contextInfo;
+- (void) shutdownVMSheetDidEnd: (NSAlert *)alert returnCode: (NSInteger)returnCode contextInfo: (void *)contextInfo;
 - (IBAction) VMShutDown:(id)sender;
 - (IBAction) toggleStartShutdown:(id)sender;
 
@@ -91,10 +90,9 @@ typedef struct {
 - (IBAction) VMCtrlAltDel: (id)sender;
 
 // pause VM
-- (void) VMSetPauseWhileInactive:(BOOL)value;
 - (IBAction) VMPause:(id)sender;
 - (IBAction) VMUnpause:(id)sender;
-@property (readonly) BOOL VMPauseWhileInactive;
+@property (nonatomic, setter=VMSetPauseWhileInactive:) BOOL VMPauseWhileInactive;
 - (IBAction) togglePause:(id)sender;
 
 // change drives of VM

@@ -102,5 +102,5 @@
 
 // getters & setters
 @property (readonly, copy) NSMutableArray *VMs;
-@property (readonly, unsafe_unretained) IBOutlet QWindow *mainWindow;
+@property (readonly, weak) IBOutlet QWindow *mainWindow;
 @end

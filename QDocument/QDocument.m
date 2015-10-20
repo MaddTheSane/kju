@@ -50,13 +50,9 @@
 	
 	// QEMU state
 	NSMutableDictionary *configuration;
-	BOOL VMPauseWhileInactive;
 	BOOL VMPausedByUser;
 	NSString *smbPath;
-	float cpuUsage;
-	BOOL ideActivity;
 	NSMutableArray<NSString*> *driveFileNames;
-	BOOL absolute_enabled;
 	BOOL VMSupportsSnapshots;
 		
 	//Edit VM panel
@@ -66,7 +62,6 @@
 	
 	// overriding "canCloseDocumentWithDelegate"
 	// http://lists.apple.com/archives/cocoa-dev/2001/Nov/msg00940.html
-	BOOL canCloseDocumentClose;
 	CanCloseDocumentContext *canCloseDocumentContext;
 }
 @synthesize VMState;
@@ -282,7 +277,6 @@
 	return TRUE;
 }
 
-
 #pragma mark delegates and overrides for NSDocument
 - (IBAction) newDocument:(id)sender
 {
@@ -392,8 +386,6 @@
 	}
 }
 
-
-
 #pragma mark QEMU related
 - (void) setVMState:(QDocumentVMState)tVMState
 {
@@ -482,10 +474,9 @@
 	
 	//communicate new state
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"QVMStatusDidChange" object:nil];
-
 }
 
-- (void) errorSheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(id)contextInfo
+- (void) errorSheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(id)contextInfo
 {
 	Q_DEBUG(@"errorSheetDidEnd");
 
@@ -521,8 +512,6 @@
 		@"%@", text); //informative text
 }
 
-
-
 #pragma mark edit VM
 - (IBAction) VMEdit:(id)sender
 {
@@ -530,8 +519,6 @@
 
 	[editVMController showEditVMPanel:self];
 }
-
-
 
 #pragma mark start/shutdown VM
 - (IBAction) VMStart:(id)sender
@@ -557,9 +544,7 @@
     }
 }
 
-
-
-- (void) shutdownVMSheetDidEnd: (NSAlert *)alert returnCode: (int)returnCode contextInfo: (void *)contextInfo
+- (void) shutdownVMSheetDidEnd: (NSAlert *)alert returnCode: (NSInteger)returnCode contextInfo: (void *)contextInfo
 {
 	Q_DEBUG(@"shutdownVMSheetDidEnd %@", (NSDictionary *)contextInfo);
 
@@ -651,8 +636,6 @@
 	}
 }
 
-
-
 #pragma mark reset VM
 - (IBAction) VMReset:(id)sender
 {
@@ -660,8 +643,6 @@
 
     [distributedObject setCommand:'R' arg1:0 arg2:0 arg3:0 arg4:0];
 }
-
-
 
 #pragma mark send ctrl-alt-del to VM
 - (IBAction) VMCtrlAltDel: (id)sender
@@ -725,8 +706,6 @@
 			break;
 	}
 }
-
-
 
 #pragma mark change drives of VM
 - (NSString *) firstCDROMDrive
@@ -878,8 +857,6 @@
 
     [distributedObject setCommand:'E' arg1:2 arg2:0 arg3:0 arg4:0];
 }
-
-
 
 #pragma mark take screenshot of VM
 - (IBAction) takeScreenShot:(id)sender

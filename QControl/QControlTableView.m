@@ -23,10 +23,8 @@
  */
 
 #import "QControlTableView.h"
-
 #import "QControlController.h"
 #import "../QDocument/QDocument.h"
-
 
 #define ICON_WIDTH 9.0
 #define ICON_HEIGHT 9.0
@@ -304,8 +302,6 @@
         ];
     }
 	}
-
 }
-
 
 @end

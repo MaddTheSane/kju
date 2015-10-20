@@ -36,6 +36,8 @@
 	int commandCount;
 	NSConnection *theConnection;
 }
+@synthesize qemu;
+
 - (instancetype) initWithSender:(QDocument*)sender
 {
 	Q_DEBUG(@"init");
@@ -68,13 +70,6 @@
 
 	free(commandBuffer);
 }
-
-
-
--(id) qemu { return qemu;}
-
-
-
 
 // everything DO related
 - (BOOL) qemuRegister:(id)sender
