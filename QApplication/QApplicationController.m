@@ -93,41 +93,6 @@
 	return NSTerminateLater;
 }
 
-- (void)openPanelDidEnd:(NSOpenPanel *)panel returnCode:(int)returnCode  contextInfo:(void  *)contextInfo
-{
-	Q_DEBUG(@"openPanelDidEnd");
-
-    if (returnCode == NSOKButton) {
-        NSURL *path;
-        NSDocumentController *documentController;
-        NSDocument *document;
-        
-//        path = [NSURL URLWithString:[[panel filenames] objectAtIndex:0]];
-        if (panel.URLs.count < 1) {
-            return;
-        }
-        path = panel.URLs[0];
-        documentController = [NSDocumentController sharedDocumentController];
-        
-        // is this document already open?
-        if ([documentController documentForURL:path]) {
-            NSLog(@"Document is already open");
-            //Todo: show the document
-        } else {
-
-            // open the document
-            document = [documentController makeDocumentWithContentsOfURL:path ofType:@"QVM" error:nil];
-            if (document) {
-                [documentController addDocument:document];
-                [document makeWindowControllers];
-                [document showWindows];
-            } else {
-                NSLog(@"Document was not created");
-            }
-        }
-    }
-}
-
 - (IBAction) openDocument:(id)sender
 {
 	Q_DEBUG(@"applicationShouldOpenUntitledFile");
@@ -144,7 +109,7 @@
 			NSDocumentController *documentController;
 			NSDocument *document;
 			
-			//        path = [NSURL URLWithString:[[panel filenames] objectAtIndex:0]];
+			//path = [NSURL URLWithString:[[panel filenames] objectAtIndex:0]];
 			if (panel.URLs.count < 1) {
 				return;
 			}
