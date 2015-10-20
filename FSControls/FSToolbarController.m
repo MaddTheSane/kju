@@ -29,6 +29,15 @@
 #import "../QDocument/QDocumentOpenGLView.h"
 
 @implementation FSToolbarController
+{
+	NSWindow * window;
+	__weak FSRoundedView * view;
+	NSTimer * fadeTimer;
+	
+	BOOL showsToolbar;
+	BOOL isAnimating;
+	__weak QDocument *pc;
+}
 @synthesize showsToolbar;
 @synthesize animating = isAnimating;
 
@@ -47,8 +56,9 @@
 	window.delegate = self;
 	
 	// create a rounded view and make it the window's contentView
-	view = [[FSRoundedView alloc] init];
-	window.contentView = view;
+	FSRoundedView *rv = [[FSRoundedView alloc] init];
+	window.contentView = rv;
+	view = rv;
 	
     [self setupToolbar];
 	
@@ -90,17 +100,17 @@
 	Q_DEBUG(@"setupToolbar");
 
     // set up toolbar items
-	float margin_h = 30; // left and right margin of the toolbar on the window
-	//float margin_space = 40;
-	float itemWidth = 64 + 5;
-	float itemHeight = 64 + 5;
+	CGFloat margin_h = 30; // left and right margin of the toolbar on the window
+	//CGFloat margin_space = 40;
+	CGFloat itemWidth = 64 + 5;
+	CGFloat itemHeight = 64 + 5;
 	[self addToolbarItem:@"q_tbfs_screenshot" withTitle: NSLocalizedStringFromTable(@"toolbar:label:screenshot", @"Localizable", @"FSToolbarController") rectangle:NSMakeRect(margin_h,20,itemWidth,itemHeight) target:pc action:@selector(takeScreenShot:)];
 	[self addToolbarItem:@"q_tbfs_ctrlaltdel" withTitle: NSLocalizedStringFromTable(@"toolbar:label:ctrlaltdel", @"Localizable", @"FSToolbarController") rectangle:NSMakeRect(120,20,itemWidth,itemHeight) target:pc action:@selector(VMCtrlAltDel:)];
 	[self addToolbarItem:@"q_tbfs_shutdown" withTitle: NSLocalizedStringFromTable(@"toolbar:label:shutdown", @"Localizable", @"FSToolbarController") rectangle:NSMakeRect(220,20,itemWidth,itemHeight) target:self action:@selector(shutdownPC:)];
 	
 	// add seperator item and last item at the end of the window
 	NSRect viewFrame = window.contentView.superview.frame;
-	float lastItemOriginX = viewFrame.size.width - margin_h - itemWidth;
+	CGFloat lastItemOriginX = viewFrame.size.width - margin_h - itemWidth;
 	[self addToolbarItem:@"q_tbfs_fullscreen" withTitle: NSLocalizedStringFromTable(@"toolbar:label:fullscreen", @"Localizable", @"FSToolbarController") rectangle:NSMakeRect(lastItemOriginX,20,itemWidth,itemHeight) target:self action:@selector(setFullscreen:)];
 	
 	NSRect seperatorRect;
@@ -155,7 +165,7 @@
 {
 	Q_DEBUG(@"addCustomToolbarItem");
 
-	id cView = window.contentView.superview;	
+	id cView = window.contentView.superview;
 	[cView addSubview: item];
 
 	[cView setNeedsDisplay: YES];
@@ -191,7 +201,7 @@
 
 	if(window.alphaValue < 1.0) {
 		// fade in..
-		float nextAlphaValue = window.alphaValue + 0.2;
+		CGFloat nextAlphaValue = window.alphaValue + 0.2;
 		window.alphaValue = nextAlphaValue;
 	} else {
 		// fadeIn complete
@@ -207,11 +217,12 @@
 
 	if(window.alphaValue > 0.0) {
 		// fade out..
-		float nextAlphaValue = window.alphaValue - 0.2;
+		CGFloat nextAlphaValue = window.alphaValue - 0.2;
 		window.alphaValue = nextAlphaValue;
 	} else {
 		// fadeOut complete
 		[fadeTimer invalidate];
+		fadeTimer = nil;
 		[window orderOut:nil];
 		[self setAnimates: NO];
 	}
@@ -238,7 +249,7 @@
 
     [pc.screenView toggleFullScreen];
     // release ourselves with the FSController
-    [pc.screenView fullscreenController];
+    //[[[pc screenView] fullscreenController] release];
 }
 
 - (void) shutdownPC:(id)sender
@@ -247,7 +258,7 @@
 
     [pc VMShutDown:self];
     // release ourselves with the FSController
-    [pc.screenView fullscreenController];
+    //[[[pc screenView] fullscreenController] release];
 }
 
 - (void) dealloc

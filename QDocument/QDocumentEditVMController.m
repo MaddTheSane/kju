@@ -30,6 +30,47 @@
 
 
 @implementation QDocumentEditVMController
+{
+	// Document
+	__weak QDocument *document; //weak
+	NSMutableDictionary *VM;
+	
+	// niccount
+	int niccount;
+}
+@synthesize editVMPanel;
+@synthesize editVMPanelButtonOK;
+@synthesize editVMPanelButtonCancel;
+@synthesize grabless;
+@synthesize qDrivers;
+@synthesize pauseWhileInactive;
+@synthesize smb;
+@synthesize M;
+@synthesize cpu;
+@synthesize smp;
+@synthesize m;
+@synthesize vga;
+@synthesize pcspk;
+@synthesize adlib;
+@synthesize sb16;
+@synthesize es1370;
+@synthesize nicModel1;
+@synthesize nicModel2;
+@synthesize fda;
+@synthesize cdrom;
+@synthesize hda;
+@synthesize boot;
+@synthesize hdb;
+@synthesize hdc;
+@synthesize hdd;
+@synthesize localtime;
+@synthesize win2kHack;
+@synthesize kernel;
+@synthesize append;
+@synthesize initrd;
+@synthesize onlyOptional;
+@synthesize optional;
+
 - (void)showEditVMPanel:(QDocument*)sender
 {
 	Q_DEBUG(@"showEditVMPanel");
@@ -70,8 +111,6 @@
 	[NSApp endSheet:editVMPanel];
 	[editVMPanel orderOut:self];
 }
-
-- (NSPanel *) editVMPanel { return editVMPanel;}
 
 - (void) resetPanel:(id)sender
 {

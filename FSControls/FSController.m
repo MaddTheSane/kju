@@ -27,11 +27,14 @@
 #import "../QDocument/QDocumentOpenGLView.h"
 
 @implementation FSController
-
+{
+	FSToolbarController * toolbar;
+	__weak QDocument *pc;
+}
 - (instancetype) initWithSender:(QDocument*)sender
 {
 	Q_DEBUG(@"initWithSender");
-	
+	self = [super init];
     pc = sender;
     // init connections to fullscreen controls
     toolbar = [[FSToolbarController alloc] initWithSender: pc];

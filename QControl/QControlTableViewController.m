@@ -29,6 +29,15 @@
 
 
 @implementation QControlTableViewController
+{
+	NSImage *shutdownImage;
+	NSMutableArray *VMsImages;
+	NSArray *cpuTypes;
+	NSTimer *timer;
+}
+@synthesize table;
+@synthesize qControl;
+
 - (instancetype) init
 {
 	Q_DEBUG(@"init");
@@ -141,7 +150,6 @@
 }
 
 
-
 #pragma mark tooltips
 - (NSString *)tableView:(NSTableView *)aTableView toolTipForCell:(NSCell *)cell rect:(NSRectPointer)rect tableColumn:(NSTableColumn *)aTableColumn row:(NSInteger)rowIndex mouseLocation:(NSPoint)mouseLocation
 {
@@ -151,7 +159,6 @@
 	path = [[qControl VMs][rowIndex][@"Temporary"][@"URL"] path];
     return [NSString stringWithFormat:@"%@\n\n%@", [qControl VMs][rowIndex][@"Arguments"], path.stringByDeletingLastPathComponent];
 }
-
 
 
 #pragma mark drag'n'drop
@@ -213,7 +220,6 @@
 }
 
 
-
 #pragma mark double click
 - (void) tableDoubleClick:(id)sender
 {
@@ -227,7 +233,6 @@
         [qControl startVMWithURL:[qControl VMs][[sender clickedRow]][@"Temporary"][@"URL"]]; // start VM
     }
 }
-
 
 
 #pragma mark create tumbnails
@@ -298,4 +303,5 @@
 
     [table reloadData];
 }
+
 @end

@@ -25,12 +25,10 @@
 #import <Cocoa/Cocoa.h>
 #import "QButtonCell.h"
 
+NS_ASSUME_NONNULL_BEGIN
 
-
-@interface QPopUpButtonCell : NSPopUpButtonCell {
-	NSImage *image;
-	NSImage *imageNormal;
-	QButtonCellType buttonType;
-}
+@interface QPopUpButtonCell : NSPopUpButtonCell 
 - (instancetype)initTextCell:(NSString *)stringValue buttonType:(QButtonCellType)aButtonType pullsDown:(BOOL)pullDown menu:(NSMenu *)menu image:(NSImage *)anImage;
 @end
+
+NS_ASSUME_NONNULL_END

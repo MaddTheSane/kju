@@ -27,6 +27,11 @@
 
 
 @implementation QPopUpButtonCell
+{
+	NSImage *image;
+	NSImage *imageNormal;
+	QButtonCellType buttonType;
+}
 - (instancetype)initTextCell:(NSString *)stringValue buttonType:(QButtonCellType)aButtonType pullsDown:(BOOL)pullDown menu:(NSMenu *)menu image:(NSImage *)anImage
 {
 	Q_DEBUG(@"initImageCell");

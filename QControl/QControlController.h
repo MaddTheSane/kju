@@ -32,59 +32,29 @@
 @class QApplicationController;
 #import "QControlTableView.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class QWindow;
 
 @interface QControlController : NSObject <NSAnimationDelegate, NSMetadataQueryDelegate>
-{
-	QApplicationController *qApplication;
+@property (weak) IBOutlet QControlTableView *table;
+@property (weak) IBOutlet NSButton *prefUpdates;
+@property (weak) IBOutlet NSButton *prefLog;
+@property (weak) IBOutlet NSButton *prefYellow;
+@property (weak) IBOutlet NSButton *prefFSWarning;
 
-	// controlWindow
-	NSMutableArray *VMs;
-	QWindow *__unsafe_unretained mainWindow;
-	IBOutlet QControlTableView *table;
-	
-	NSTimer *timer;	 //to update Table Thumbnails
-	
-	// preferences
-	BOOL isPrefAnimating;
-	BOOL isPrefShown;
-	IBOutlet NSButton *prefUpdates;
-	IBOutlet NSButton *prefLog;
-	IBOutlet NSButton *prefYellow;
-	IBOutlet NSButton *prefFSWarning;
-	
-	IBOutlet NSButton *buttonEdit;
-	IBOutlet NSButton *buttonAdd;
-	
-	// loading VMs
-	IBOutlet NSProgressIndicator *loadProgressIndicator;
-	IBOutlet NSTextField *loadProgressText;
-	
-	// browsing for qvms
-	NSMetadataQuery *query;
-/*	
-	// progressPanel
-	IBOutlet id progressPanel;
-	IBOutlet NSProgressIndicator *progressIndicator;
-	IBOutlet NSTextField *progressTitle;
-	IBOutlet NSTextField *progressText;
-	IBOutlet NSTextField *progressStatusText;
+@property (weak) IBOutlet NSButton *buttonEdit;
+@property (weak) IBOutlet NSButton *buttonAdd;
 
-	// preferences
-	cocoaControlPreferences *preferences;
-	
-	// FreeOSDownloader
-	cocoaDownloadController *downloader;
-	
-	// newImage
-*/	
-}
+@property (weak) IBOutlet NSProgressIndicator *loadProgressIndicator;
+@property (weak) IBOutlet NSTextField *loadProgressText;
+
 /* init & dealloc */
 - (instancetype) init;
 
 // IBActions
 //- (IBAction) addPC:(id)sender;
-- (IBAction) showQControl:(id)sender;
+- (IBAction) showQControl:(nullable id)sender;
 //- (IBAction) addVMFromAssistant:(NSMutableDictionary *)VM;
 //- (IBAction) editPC:(id)sender;
 
@@ -100,11 +70,11 @@
 - (void) stopVM:(NSMutableDictionary *)VM;
 - (void) deleteVM:(NSMutableDictionary *)VM;
 
-- (IBAction) togglePreferences:(id)sender;
-- (IBAction) prefUpdates:(id)sender;
-- (IBAction) prefLog:(id)sender;
-- (IBAction) prefYellow:(id)sender;
-- (IBAction) prefFSWarning:(id)sender;
+- (IBAction) togglePreferences:(nullable id)sender;
+- (IBAction) prefUpdates:(nullable id)sender;
+- (IBAction) prefLog:(nullable id)sender;
+- (IBAction) prefYellow:(nullable id)sender;
+- (IBAction) prefFSWarning:(nullable id)sender;
 
 /*
 - (BOOL) importFreeOSZooPC:(NSString *)name withPath:(NSString *)path;
@@ -133,6 +103,8 @@
 - (void)standardAlert:(NSString *)messageText informativeText:(NSString *)informativeText;
 
 // getters & setters
-@property (readonly, copy) NSMutableArray *VMs;
-@property (readonly, unsafe_unretained) IBOutlet QWindow *mainWindow;
+@property (readonly, strong) NSMutableArray *VMs;
+@property (readonly, weak) IBOutlet QWindow *mainWindow;
 @end
+
+NS_ASSUME_NONNULL_END

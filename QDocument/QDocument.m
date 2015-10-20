@@ -42,6 +42,29 @@
 
 
 @implementation QDocument
+{
+	QDocumentWindowController *windowController;
+	QDocumentDistributedObject *distributedObject;
+	QDocumentTaskController *qemuTask;
+	QDocumentOpenGLView *screenView;
+	int uniqueDocumentID;
+	
+	// QEMU state
+	NSMutableDictionary *configuration;
+	BOOL VMPausedByUser;
+	NSString *smbPath;
+	NSMutableArray<NSString*> *driveFileNames;
+	BOOL VMSupportsSnapshots;
+		
+	//Edit VM panel
+	QDocumentEditVMController *editVMController;
+	
+	NSArray<NSString*> *fileTypes;
+	
+	// overriding "canCloseDocumentWithDelegate"
+	// http://lists.apple.com/archives/cocoa-dev/2001/Nov/msg00940.html
+	CanCloseDocumentContext *canCloseDocumentContext;
+}
 @synthesize VMState;
 @synthesize screenView;
 @synthesize cpuUsage;
@@ -55,6 +78,20 @@
 @synthesize VMPauseWhileInactive;
 @synthesize smbPath;
 @synthesize configuration;
+@synthesize buttonEdit;
+@synthesize buttonFloppy;
+@synthesize buttonCDROM;
+@synthesize buttonToggleFullscreen;
+@synthesize buttonTakeScreenshot;
+@synthesize buttonCtrlAltDel;
+@synthesize buttonReset;
+@synthesize buttonTogglePause;
+@synthesize buttonTogleStartShutdown;
+
+//Progress panel
+@synthesize progressPanel;
+@synthesize progressText;
+@synthesize progressIndicator;
 
 - (instancetype)init
 {
@@ -148,6 +185,7 @@
         if (fd == -1) {
             [self defaultAlertMessage:[NSString stringWithFormat:@"QDocument: could not create '/tmp/qDocument_%D.vga' file", uniqueDocumentID] informativeText:nil];
             self.VMState = QDocumentInvalid;
+			free(dummyFile);
             return nil;
         }
         ret = write(fd, dummyFile, videoRAMSize);
@@ -240,7 +278,6 @@
     NSLog(@"writeToURL");
 	return TRUE;
 }
-
 
 #pragma mark delegates and overrides for NSDocument
 - (IBAction) newDocument:(id)sender
@@ -351,8 +388,6 @@
 	}
 }
 
-
-
 #pragma mark QEMU related
 - (void) setVMState:(QDocumentVMState)tVMState
 {
@@ -441,10 +476,9 @@
 	
 	//communicate new state
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"QVMStatusDidChange" object:nil];
-
 }
 
-- (void) errorSheetDidEnd:(NSWindow *)sheet returnCode:(int)returnCode contextInfo:(id)contextInfo
+- (void) errorSheetDidEnd:(NSWindow *)sheet returnCode:(NSInteger)returnCode contextInfo:(id)contextInfo
 {
 	Q_DEBUG(@"errorSheetDidEnd");
 
@@ -480,8 +514,6 @@
 		@"%@", text); //informative text
 }
 
-
-
 #pragma mark edit VM
 - (IBAction) VMEdit:(id)sender
 {
@@ -489,8 +521,6 @@
 
 	[editVMController showEditVMPanel:self];
 }
-
-
 
 #pragma mark start/shutdown VM
 - (IBAction) VMStart:(id)sender
@@ -516,9 +546,7 @@
     }
 }
 
-
-
-- (void) shutdownVMSheetDidEnd: (NSAlert *)alert returnCode: (int)returnCode contextInfo: (void *)contextInfo
+- (void) shutdownVMSheetDidEnd: (NSAlert *)alert returnCode: (NSInteger)returnCode contextInfo: (void *)contextInfo
 {
 	Q_DEBUG(@"shutdownVMSheetDidEnd %@", (NSDictionary *)contextInfo);
 
@@ -610,8 +638,6 @@
 	}
 }
 
-
-
 #pragma mark reset VM
 - (IBAction) VMReset:(id)sender
 {
@@ -619,8 +645,6 @@
 
     [distributedObject setCommand:'R' arg1:0 arg2:0 arg3:0 arg4:0];
 }
-
-
 
 #pragma mark send ctrl-alt-del to VM
 - (IBAction) VMCtrlAltDel: (id)sender
@@ -685,8 +709,6 @@
 	}
 }
 
-
-
 #pragma mark change drives of VM
 - (NSString *) firstCDROMDrive
 {
@@ -696,9 +718,9 @@
     io_iterator_t mediaIterator;
     kern_return_t kernResult = KERN_FAILURE; 
     mach_port_t masterPort;
-    CFMutableDictionaryRef  classesToMatch;
+    NSMutableDictionary *classesToMatch;
     io_object_t nextMedia;
-    char *bsdPath = '\0';
+    char *bsdPath = NULL;
     CFIndex maxPathSize = 1024;
 
     // find ejectable media
@@ -707,14 +729,14 @@
         NSLog(@"QDocument: firstCDROMDrive: IOMasterPort returned %d", kernResult);
         return nil;
     }
-    classesToMatch = IOServiceMatching(kIOCDMediaClass); 
+    classesToMatch = CFBridgingRelease(IOServiceMatching(kIOCDMediaClass)); 
     if (classesToMatch == NULL) {
         NSLog(@"QDocument: firstCDROMDrive: IOServiceMatching returned a NULL dictionary.");
         return nil;
     } else {
-        CFDictionarySetValue(classesToMatch, CFSTR(kIOMediaEjectableKey), kCFBooleanTrue);
+		classesToMatch[@kIOMediaEjectableKey] = @YES;
     }
-    kernResult = IOServiceGetMatchingServices( masterPort, classesToMatch, &mediaIterator);
+    kernResult = IOServiceGetMatchingServices(masterPort, CFBridgingRetain(classesToMatch), &mediaIterator);
     if (KERN_SUCCESS != kernResult) {
         NSLog(@"QDocument: firstCDROMDrive: IOServiceGetMatchingServices returned %d", kernResult);
         return nil;
@@ -838,8 +860,6 @@
     [distributedObject setCommand:'E' arg1:2 arg2:0 arg3:0 arg4:0];
 }
 
-
-
 #pragma mark take screenshot of VM
 - (IBAction) takeScreenShot:(id)sender
 {
@@ -872,10 +892,7 @@
     [screenView toggleFullScreen];
 }
 
-
-
 #pragma mark getters
 - (NSArray *) driveFileNames { return [driveFileNames copy];}
 
 @end
-

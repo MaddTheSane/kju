@@ -103,15 +103,15 @@ static QQvmManager *sharedQvmManager = nil;
 	data = [NSData dataWithContentsOfFile:[filename stringByAppendingPathComponent:@"configuration.plist"]];
 	if (data) {
 		tempVM = [NSPropertyListSerialization
-			propertyListFromData: data
-			mutabilityOption: NSPropertyListMutableContainersAndLeaves
-			format: nil
-			errorDescription: nil];
+				  propertyListWithData: data
+				  options: NSPropertyListMutableContainersAndLeaves
+				  format: nil
+				  error: NULL];
 
 		// upgrade Version 0.1.0.Q to 0.2.0.Q
 		if ([tempVM[@"Version"] isEqual:@"0.1.0.Q"]) {
 			lookForArguments = @[@"-snapshot", @"-nographic", @"-audio-help", @"-localtime", @"-full-screen", @"-win2k-hack", @"-usb", @"-s", @"-S", @"-d", @"-std-vga"];
-			arguments = [[NSMutableString alloc] init];
+			arguments = [NSMutableString string];
 			for (key in tempVM[@"Arguments"]) {
 				if (tempVM[@"Arguments"][key]) {
 					if ([key isEqual:@"-net"] && [tempVM[@"Arguments"][key] isEqual:@"user"]) {
@@ -203,7 +203,7 @@ static QQvmManager *sharedQvmManager = nil;
 	unichar argument[256];
 	int argumentCharCount;
 	NSString *key;
-	NSMutableArray *argumentsArray;
+	NSMutableArray<NSString*> *argumentsArray;
 
 	argumentsArray = [NSMutableArray array];
 	key = nil;

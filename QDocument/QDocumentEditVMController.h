@@ -24,6 +24,8 @@
 
 #import <Cocoa/Cocoa.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @class QDocument;
 
 typedef NS_ENUM(NSInteger, QDocumentEditVMMachine) {
@@ -57,67 +59,59 @@ typedef NS_ENUM(NSInteger, QDocumentEditVMMachine) {
    QDocumentEditVMMachineCris = 27
 };
 
+@interface QDocumentEditVMController : NSObject
 
-@interface QDocumentEditVMController : NSObject {
+// Panel
+@property (weak) IBOutlet NSPanel *editVMPanel;
+@property (weak) IBOutlet NSButton *editVMPanelButtonOK;
+@property (weak) IBOutlet NSButton *editVMPanelButtonCancel;
 
-	// Document
-	QDocument *document; //weak
-	NSMutableDictionary *VM;
-	
-	// niccount
-	int niccount;
-	
-	// Panel
-	IBOutlet NSPanel *editVMPanel;
-	IBOutlet NSButton *editVMPanelButtonOK;
-	IBOutlet NSButton *editVMPanelButtonCancel;
-	
-	// Tab 1
-	IBOutlet NSButton *grabless;
-	IBOutlet NSButton *qDrivers;
-	IBOutlet NSButton *pauseWhileInactive;
-	IBOutlet NSPopUpButton *smb;
-	
-	// Tab 2
-	IBOutlet NSPopUpButton *M;
-	IBOutlet NSPopUpButton *cpu;
-	IBOutlet NSTextField *smp;
-	IBOutlet NSTextField *m;
-	IBOutlet NSPopUpButton *vga;
-	IBOutlet NSButton *pcspk;
-	IBOutlet NSButton *adlib;
-	IBOutlet NSButton *sb16;
-	IBOutlet NSButton *es1370;
-	IBOutlet NSPopUpButton *nicModel1;
-	IBOutlet NSPopUpButton *nicModel2;
-	IBOutlet NSPopUpButton *fda;
-	IBOutlet NSPopUpButton *cdrom;
-	IBOutlet NSPopUpButton *hda;
-	IBOutlet NSPopUpButton *boot;
-	
-	// Tab 3
-	
-	// Tab 4
-	IBOutlet NSPopUpButton *hdb;
-	IBOutlet NSPopUpButton *hdc;
-	IBOutlet NSPopUpButton *hdd;
-	IBOutlet NSButton *localtime;
-	IBOutlet NSButton *win2kHack;
-	IBOutlet NSPopUpButton *kernel;
-	IBOutlet NSTextField *append;
-	IBOutlet NSPopUpButton *initrd;
-	IBOutlet NSButton *onlyOptional;
-	IBOutlet NSTextField *optional;
+// Tab 1
+@property (weak) IBOutlet NSButton *grabless;
+@property (weak) IBOutlet NSButton *qDrivers;
+@property (weak) IBOutlet NSButton *pauseWhileInactive;
+@property (weak) IBOutlet NSPopUpButton *smb;
 
-}
+// Tab 2
+@property (weak) IBOutlet NSPopUpButton *M;
+@property (weak) IBOutlet NSPopUpButton *cpu;
+@property (weak) IBOutlet NSTextField *smp;
+@property (weak, setter=setm:) IBOutlet NSTextField *m;
+@property (weak) IBOutlet NSPopUpButton *vga;
+@property (weak) IBOutlet NSButton *pcspk;
+@property (weak) IBOutlet NSButton *adlib;
+@property (weak) IBOutlet NSButton *sb16;
+@property (weak) IBOutlet NSButton *es1370;
+@property (weak) IBOutlet NSPopUpButton *nicModel1;
+@property (weak) IBOutlet NSPopUpButton *nicModel2;
+@property (weak) IBOutlet NSPopUpButton *fda;
+@property (weak) IBOutlet NSPopUpButton *cdrom;
+@property (weak) IBOutlet NSPopUpButton *hda;
+@property (weak) IBOutlet NSPopUpButton *boot;
+
+// Tab 3
+
+// Tab 4
+@property (weak) IBOutlet NSPopUpButton *hdb;
+@property (weak) IBOutlet NSPopUpButton *hdc;
+@property (weak) IBOutlet NSPopUpButton *hdd;
+@property (weak) IBOutlet NSButton *localtime;
+@property (weak) IBOutlet NSButton *win2kHack;
+@property (weak) IBOutlet NSPopUpButton *kernel;
+@property (weak) IBOutlet NSTextField *append;
+@property (weak) IBOutlet NSPopUpButton *initrd;
+@property (weak) IBOutlet NSButton *onlyOptional;
+@property (weak) IBOutlet NSTextField *optional;
+
 - (void)showEditVMPanel:(QDocument*)sender;
-@property (readonly, strong) NSPanel *editVMPanel;
 
-- (IBAction)OK:(id)sender;
-- (IBAction)cancel:(id)sender;
+- (IBAction)OK:(nullable id)sender;
+- (IBAction)cancel:(nullable id)sender;
 
-- (IBAction) resetPanel:(id)sender;
+- (IBAction) resetPanel:(nullable id)sender;
 - (void) setMachine:(QDocumentEditVMMachine)machine;
 - (BOOL) setOption:(NSString *)key withArgument:(NSString *)argument;
-- (IBAction) populatePanel:(id)sender;
+- (IBAction) populatePanel:(nullable id)sender;
 @end
+
+NS_ASSUME_NONNULL_END

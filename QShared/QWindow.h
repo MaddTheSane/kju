@@ -24,13 +24,12 @@
 
 #import <Cocoa/Cocoa.h>
 
+NS_ASSUME_NONNULL_BEGIN
 
-@interface QWindow : NSWindow {
-    BOOL forceDisplay;
-	BOOL yellow;
-    NSImage *template;
-}
-- (void) setYellow:(id)sender;
+@interface QWindow : NSWindow 
+- (void) setYellow:(nullable id)sender;
 @property (readonly, copy) NSColor *sizedPolishedBackground;
 - (void)windowNeedsUpdate:(NSNotification *)aNotification;
 @end
+
+NS_ASSUME_NONNULL_END

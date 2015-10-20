@@ -23,10 +23,8 @@
  */
 
 #import "QControlTableView.h"
-
 #import "QControlController.h"
 #import "../QDocument/QDocument.h"
-
 
 #define ICON_WIDTH 9.0
 #define ICON_HEIGHT 9.0
@@ -35,6 +33,16 @@
 #define ICON_SPACE 2.0
 
 @implementation QControlTableView
+{
+	NSPoint pointClicked;
+	NSImage *qPlayIcon;
+	NSImage *qPauseIcon;
+	NSImage *qStopIcon;
+	NSImage *qEditIcon;
+	NSImage *qDeleteIcon;
+}
+@synthesize qControl;
+
 - (instancetype) initWithCoder: (NSCoder *) decoder
 {
 	Q_DEBUG(@"init");
@@ -180,15 +188,14 @@
     NSPoint point;
     id VM;
     NSImage *image;
-    float qFraction;
-    int i;
 	QDocument *document;
 
 	if (qControl) {
     [super drawRect: rect];
 
 
-    for (i = 0; i < [qControl VMs].count; i++) {
+    for (NSInteger i = 0; i < [qControl VMs].count; i++) {
+		CGFloat qFraction;
         VM = [qControl VMs][i];
 		document = [[NSDocumentController sharedDocumentController] documentForURL:VM[@"Temporary"][@"URL"]];
         cellRect = [self frameOfCellAtColumn:1 row:i];
@@ -201,6 +208,7 @@
 			switch (document.VMState) {
 				case QDocumentShutdown:
 					qFraction = 0.5;
+					break;
 				default:
 					qFraction = 0.25;
 					break;
@@ -294,11 +302,6 @@
         ];
     }
 	}
-
 }
 
-
-
-#pragma mark getters and setters
--(void) setQControl:(QControlController*)sender {qControl = sender;}
 @end

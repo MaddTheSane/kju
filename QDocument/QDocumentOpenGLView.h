@@ -35,6 +35,8 @@
 #define TITLE_BAR_HEIGHT 21.0
 #define ICON_BAR_HEIGHT 30.0
 
+NS_ASSUME_NONNULL_BEGIN
+
 typedef struct {
 	int width;
 	int height;
@@ -62,29 +64,15 @@ typedef NS_ENUM(NSInteger, QDocumentOpenGLTextures) {
 @class FSController;
 
 @interface QDocumentOpenGLView : NSOpenGLView
-{
-    IBOutlet QDocument *document;
-    IBOutlet NSWindow *normalWindow;
-    NSWindow *fullScreenWindow;
-    QScreen screenProperties;
-    QDisplayProperties displayProperties;
-    void *screenBuffer;
-    FSController *fullscreenController;
 
-	GLuint textures[3];
+@property (weak) IBOutlet QDocument *document;
+@property (weak) IBOutlet NSWindow *normalWindow;
 
-    int modifiers_state[256];
-    BOOL is_graphic_console;
-    BOOL mouseGrabed;
-    BOOL isFullscreen;
-    BOOL drag;
-    BOOL tablet_enabled;
-}
 // saved image and screenshot
 - (GLuint) createTextureFromImage:(NSImage *)image;
 - (GLuint) createTextureFromImagePath:(NSString *)path DEPRECATED_ATTRIBUTE;
 - (GLuint) createTextureFromImageURL:(NSURL *)url;
-- (void) updateSavedImage:(id)sender;
+- (void) updateSavedImage:(nullable id)sender;
 - (NSImage *) screenshot:(NSSize)size;
 
 // QEMU
@@ -103,11 +91,11 @@ typedef NS_ENUM(NSInteger, QDocumentOpenGLTextures) {
 // getters
 @property (readonly) BOOL mouseGrabed;
 @property (readonly, getter=isFullscreen) BOOL fullscreen;
-@property (readonly, strong) NSWindow *normalWindow;
 @property (readonly) QScreen screenProperties;
 @property (readonly) QDisplayProperties displayProperties;
-- (void) displayPropertiesSetZoom:(float)tZoom;
+- (void) displayPropertiesSetZoom:(CGFloat)tZoom;
 @property (readonly) void *screenBuffer NS_RETURNS_INNER_POINTER;
-@property (readonly) FSController *fullscreenController;
+@property (readonly, strong) FSController *fullscreenController;
 @end
 
+NS_ASSUME_NONNULL_END

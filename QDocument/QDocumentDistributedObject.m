@@ -29,8 +29,15 @@
 
 @implementation QDocumentDistributedObject
 {
+	QDocument *document;
+	id qemu;
+	void *commandBuffer;
+	QCommand *commandPointer;
+	int commandCount;
 	NSConnection *theConnection;
 }
+@synthesize qemu;
+
 - (instancetype) initWithSender:(QDocument*)sender
 {
 	Q_DEBUG(@"init");
@@ -45,7 +52,7 @@
         commandBuffer = malloc(Q_COMMANDS_MAX*sizeof(QCommand));
 
         // Open a connection, so the QEMU instance can connect to us
-        theConnection = [NSConnection new];
+        theConnection = [[NSConnection alloc] init];
 		[theConnection runInNewThread]; //we must run multithreaded: applicationShouldTerminate blocks the main thread
         theConnection.rootObject = self;
         if ([theConnection registerName:[NSString stringWithFormat:@"qDocument_%D", document.uniqueDocumentID]] == NO) {
@@ -63,13 +70,6 @@
 
 	free(commandBuffer);
 }
-
-
-
--(id) qemu { return qemu;}
-
-
-
 
 // everything DO related
 - (BOOL) qemuRegister:(id)sender

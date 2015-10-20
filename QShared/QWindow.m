@@ -51,7 +51,11 @@
 
 
 @implementation QWindow
-
+{
+	BOOL forceDisplay;
+	BOOL yellow;
+	NSImage *template;
+}
 
 - (instancetype)initWithContentRect:(NSRect)contentRect styleMask:(NSUInteger)styleMask backing:(NSBackingStoreType)bufferingType defer:(BOOL)flag
 {
@@ -59,7 +63,7 @@
     
     // Conditionally add textured window flag to stylemask
     NSUInteger newStyle;
-    if (styleMask & NSTexturedBackgroundWindowMask){
+    if (styleMask & NSTexturedBackgroundWindowMask) {
         newStyle = styleMask;
     } else {
         newStyle = (NSTexturedBackgroundWindowMask | styleMask);

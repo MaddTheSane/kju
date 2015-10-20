@@ -30,7 +30,9 @@
 #import "Q-Swift.h"
 
 
-@implementation QDocumentTaskController
+@implementation QDocumentTaskController {
+	__weak QDocument *document;
+}
 @synthesize task;
 
 - (instancetype) initWithFile:(NSString *)file sender:(QDocument*)sender
@@ -53,8 +55,6 @@
     return self;
 }
 
-
-
 - (void) dealloc
 {
 	Q_DEBUG(@"dealloc");
@@ -69,8 +69,6 @@
 		}
     }
 }
-
-
 
 - (void) checkATaskStatus:(NSNotification *)aNotification
 {
@@ -117,8 +115,6 @@
 		[document.screenView display];
 	}
 }
-
-
 
 - (BOOL) addArgumentTo:(id)arguments option:(id)option argument:(id)argument filename:(NSString*)filename
 {
@@ -169,8 +165,6 @@
     return TRUE;
 }
 
-
-
 - (void) startQemuForFile:(NSString *)filename
 {
 	Q_DEBUG(@"startPC:%@", filename);
@@ -199,7 +193,7 @@
     // Q Windows Drivers
     if ([document configuration][@"Temporary"][@"QWinDrivers"]) {
         [arguments addObject: @"-hdb"];
-        [arguments addObject:[NSString stringWithFormat:@"%@/Contents/Resources/qdrivers.qcow", [NSBundle mainBundle].bundlePath]];
+        [arguments addObject:[[NSBundle mainBundle] pathForResource:@"qdrivers" ofType:@"qcow"]];
     }
  
     // Arguments of configuration
@@ -238,7 +232,7 @@
     // add uniqueDocumentID for distributed object
     [arguments addObject: @"-distributedobject"];
     [arguments addObject: [NSString stringWithFormat:@"qDocument_%D", document.uniqueDocumentID]];
-NSLog(@"ARGUMENTS: %@", arguments);
+	NSLog(@"ARGUMENTS: %@", arguments);
     // save Status
     [document configuration][@"PC Data"][@"state"] = @"running";
     [[QQvmManager sharedQvmManager] saveVMConfiguration:[document configuration]];
@@ -254,7 +248,6 @@ NSLog(@"ARGUMENTS: %@", arguments);
         NSPipe * pipe = [NSPipe pipe];
         task.standardOutput = pipe;
         task.standardError = pipe;
-        
     }
     
 	document.VMState = QDocumentLoading;

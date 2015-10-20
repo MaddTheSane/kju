@@ -59,13 +59,7 @@ typedef struct QCommand
 
 @class QDocument;
 
-@interface QDocumentDistributedObject : NSObject <QDocumentDistributedObjectServerProto> {
-    QDocument *document;
-    id qemu;
-    void *commandBuffer;
-    QCommand *commandPointer;
-    int commandCount;
-}
+@interface QDocumentDistributedObject : NSObject <QDocumentDistributedObjectServerProto>
 @property (readonly, strong) id qemu;
 - (instancetype) initWithSender:(QDocument*)sender NS_DESIGNATED_INITIALIZER;
 - (void) setCommand:(char)command arg1:(int)arg1 arg2:(int)arg2 arg3:(int)arg3 arg4:(int)arg4;

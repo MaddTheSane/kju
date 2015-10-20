@@ -234,7 +234,7 @@ int cocoa_keycode_to_qemu(int keycode)
     CGContextRef viewContextRef = [NSGraphicsContext currentContext].graphicsPort;
     CGContextSetShouldAntialias (viewContextRef, NO);
     CGContextSetRGBFillColor(viewContextRef, 0, 0, 0, opacity);
-    CGContextFillRect(viewContextRef, cgrect(rect));
+    CGContextFillRect(viewContextRef, rect);
 }
 
 @end
@@ -242,6 +242,19 @@ int cocoa_keycode_to_qemu(int keycode)
 
 
 @implementation QDocumentOpenGLView
+{
+	NSWindow *fullScreenWindow;
+	void *screenBuffer;
+	
+	GLuint textures[3];
+	
+	int modifiers_state[256];
+	BOOL is_graphic_console;
+	BOOL mouseGrabed;
+	BOOL isFullscreen;
+	BOOL drag;
+	BOOL tablet_enabled;
+}
 @synthesize fullscreen = isFullscreen;
 @synthesize screenBuffer;
 @synthesize screenProperties;
@@ -249,6 +262,8 @@ int cocoa_keycode_to_qemu(int keycode)
 @synthesize fullscreenController;
 @synthesize mouseGrabed;
 @synthesize mouseDownCanMoveWindow;
+@synthesize document;
+@synthesize normalWindow;
 
 - (void) dealloc
 {
@@ -499,6 +514,7 @@ int cocoa_keycode_to_qemu(int keycode)
 	textureData = calloc(textureWidth * 4, textureHeight);
 	colorSpaceRef = CGColorSpaceCreateDeviceRGB();
 	contextRef = CGBitmapContextCreate (textureData, textureWidth, textureHeight, 8, textureWidth*4, colorSpaceRef, kCGImageAlphaPremultipliedLast);
+	CGColorSpaceRelease(colorSpaceRef);
 	
 	CGContextDrawImage(contextRef, textureRect, imageRef);
 	CGContextRelease(contextRef);
@@ -561,6 +577,7 @@ int cocoa_keycode_to_qemu(int keycode)
 	textureData = calloc(textureWidth * 4, textureHeight);
 	colorSpaceRef = CGColorSpaceCreateDeviceRGB();
 	contextRef = CGBitmapContextCreate (textureData, textureWidth, textureHeight, 8, textureWidth*4, colorSpaceRef, kCGImageAlphaPremultipliedLast);
+	CGColorSpaceRelease(colorSpaceRef);
 
 	CGContextDrawImage(contextRef, textureRect, imageRef);
 	CGContextRelease(contextRef);
@@ -647,17 +664,22 @@ int cocoa_keycode_to_qemu(int keycode)
 	CGDataProviderRef dataProviderRef;
 	dataProviderRef = CGDataProviderCreateWithData(NULL, screenBuffer, screenProperties.width * 4 * screenProperties.height, NULL);
 	if (dataProviderRef) {
+		CGColorSpaceRef colorSpace;
+#if __LITTLE_ENDIAN__
+		colorSpace = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB); //colorspace for OX X >= 10.4
+#else
+		colorSpace = CGColorSpaceCreateDeviceRGB(); //colorspace for OS X < 10.4 (actually ppc)
+#endif
 		CGImageRef imageRef = CGImageCreate(
 			screenProperties.width, //width
 			screenProperties.height, //height
 			8, //bitsPerComponent
 			32, //bitsPerPixel
 			(screenProperties.width * 4), //bytesPerRow
+											colorSpace,
 #if __LITTLE_ENDIAN__
-			CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB), //colorspace for OX S >= 10.4
 			(CGBitmapInfo)kCGImageAlphaNoneSkipLast,
 #else
-			CGColorSpaceCreateDeviceRGB(), //colorspace for OS X < 10.4 (actually ppc)
 			(CGBitmapInfo)kCGImageAlphaNoneSkipFirst, //bitmapInfo
 #endif
 			dataProviderRef, //provider
@@ -667,6 +689,7 @@ int cocoa_keycode_to_qemu(int keycode)
 		);
 		CGContextDrawImage (viewContextRef, CGRectMake(0, 0, size.width, size.height), imageRef);
 		CGImageRelease (imageRef);
+		CGColorSpaceRelease(colorSpace);
 	}
 	CGDataProviderRelease(dataProviderRef);
 	
@@ -714,14 +737,14 @@ int cocoa_keycode_to_qemu(int keycode)
 
 	if (isFullscreen) {
 		if (([NSScreen mainScreen].frame.size.width / screenProperties.width) > ([NSScreen mainScreen].frame.size.height / screenProperties.height)) {
-			displayProperties.dx = [NSScreen mainScreen].frame.size.height / (float)screenProperties.height;
+			displayProperties.dx = [NSScreen mainScreen].frame.size.height / (CGFloat)screenProperties.height;
 		} else {
-			displayProperties.dx = [NSScreen mainScreen].frame.size.width / (float)screenProperties.width;
+			displayProperties.dx = [NSScreen mainScreen].frame.size.width / (CGFloat)screenProperties.width;
 		}
         if (displayProperties.dx < 2.0) {
-            displayProperties.dx = (float)((int)(displayProperties.dx * 4)) / 4.0; //only allow factors of .25/.5/.75/1.0/1.25/1.5/1.75
+            displayProperties.dx = (CGFloat)((int)(displayProperties.dx * 4)) / 4.0; //only allow factors of .25/.5/.75/1.0/1.25/1.5/1.75
         } else {
-            displayProperties.dx = (float)(int)displayProperties.dx; //only allow full factors
+            displayProperties.dx = (CGFloat)(int)displayProperties.dx; //only allow full factors
         }
         displayProperties.dy = displayProperties.dx;
         displayProperties.width = screenProperties.width * displayProperties.dx;
@@ -730,8 +753,8 @@ int cocoa_keycode_to_qemu(int keycode)
         displayProperties.y = ([NSScreen mainScreen].frame.size.height - displayProperties.height) / 2.0;
 		self.frame = NSMakeRect(displayProperties.x, displayProperties.y, displayProperties.width, displayProperties.height);
 	} else {
-		displayProperties.dx = rect.size.width / (float)screenProperties.width;
-		displayProperties.dy = rect.size.height / (float)screenProperties.height;
+		displayProperties.dx = rect.size.width / (CGFloat)screenProperties.width;
+		displayProperties.dy = rect.size.height / (CGFloat)screenProperties.height;
 		displayProperties.width = rect.size.width;
 		displayProperties.height = rect.size.height;
 		displayProperties.x = 0.0;
@@ -803,6 +826,7 @@ int cocoa_keycode_to_qemu(int keycode)
         // switch from fullscreen to desktop
         
         // remove fullscreenController
+		fullscreenController = nil;
 		
         isFullscreen = FALSE;
         [self ungrabMouse];
@@ -991,8 +1015,8 @@ int cocoa_keycode_to_qemu(int keycode)
 {
 	Q_DEBUG(@"handleEvent");
 
-    int buttons;
-    int keycode;
+    int buttons = 0;
+    int keycode = 0;
     switch (event.type) {
         case NSFlagsChanged:
             keycode = cocoa_keycode_to_qemu(event.keyCode);
@@ -1153,6 +1177,10 @@ int cocoa_keycode_to_qemu(int keycode)
         case NSScrollWheel:
             [document.distributedObject setCommand:'M' arg1:0 arg2:0 arg3:event.deltaY arg4:0];
             break;
+			
+		default:
+			NSLog(@"Unhandled type: %lu", (unsigned long)event.type);
+			break;
     }
 }
 - (void) flagsChanged:(NSEvent *)event { [self handleEvent:event];}
@@ -1180,6 +1208,5 @@ int cocoa_keycode_to_qemu(int keycode)
 
 
 #pragma mark getters
-- (void) displayPropertiesSetZoom:(float)tZoom {displayProperties.zoom = tZoom;}
-- (NSWindow *) normalWindow { return normalWindow;}
+- (void) displayPropertiesSetZoom:(CGFloat)tZoom {displayProperties.zoom = tZoom;}
 @end
