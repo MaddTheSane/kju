@@ -7,7 +7,6 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="QDocumentEditVMController">
             <connections>
-                <outlet property="M" destination="42" id="305"/>
                 <outlet property="adlib" destination="92" id="311"/>
                 <outlet property="append" destination="173" id="326"/>
                 <outlet property="boot" destination="142" id="319"/>
@@ -26,7 +25,8 @@
                 <outlet property="initrd" destination="231" id="327"/>
                 <outlet property="kernel" destination="219" id="325"/>
                 <outlet property="localtime" destination="207" id="324"/>
-                <outlet property="m" destination="75" id="308"/>
+                <outlet property="machinePopUp" destination="42" id="305"/>
+                <outlet property="memory" destination="75" id="308"/>
                 <outlet property="nicModel1" destination="258" id="314"/>
                 <outlet property="nicModel2" destination="290" id="315"/>
                 <outlet property="onlyOptional" destination="252" id="328"/>
@@ -136,7 +136,7 @@
                             <tabViewItem label="Hardware" identifier="2" id="10">
                                 <view key="view" id="11">
                                     <rect key="frame" x="10" y="33" width="416" height="489"/>
-                                    <autoresizingMask key="autoresizingMask"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <popUpButton verticalHuggingPriority="750" id="42">
                                             <rect key="frame" x="116" y="439" width="286" height="22"/>
@@ -552,14 +552,14 @@
                             <tabViewItem label="Router" identifier="Item 2" id="13">
                                 <view key="view" id="14">
                                     <rect key="frame" x="10" y="33" width="416" height="489"/>
-                                    <autoresizingMask key="autoresizingMask"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <animations/>
                                 </view>
                             </tabViewItem>
                             <tabViewItem label="Advanced" identifier="Item 3" id="15">
                                 <view key="view" id="16">
                                     <rect key="frame" x="10" y="33" width="416" height="489"/>
-                                    <autoresizingMask key="autoresizingMask"/>
+                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <popUpButton verticalHuggingPriority="750" id="159">
                                             <rect key="frame" x="116" y="438" width="286" height="22"/>

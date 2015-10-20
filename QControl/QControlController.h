@@ -48,6 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (weak) IBOutlet NSProgressIndicator *loadProgressIndicator;
 @property (weak) IBOutlet NSTextField *loadProgressText;
+@property (weak) IBOutlet QWindow *mainWindow;
 
 /* init & dealloc */
 - (instancetype) init;
@@ -104,7 +105,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 // getters & setters
 @property (readonly, strong) NSMutableArray *VMs;
-@property (readonly, weak) IBOutlet QWindow *mainWindow;
 @end
 
 NS_ASSUME_NONNULL_END

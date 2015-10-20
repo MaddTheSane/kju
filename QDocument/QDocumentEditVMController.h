@@ -73,10 +73,10 @@ typedef NS_ENUM(NSInteger, QDocumentEditVMMachine) {
 @property (weak) IBOutlet NSPopUpButton *smb;
 
 // Tab 2
-@property (weak) IBOutlet NSPopUpButton *M;
+@property (weak) IBOutlet NSPopUpButton *machinePopUp;
 @property (weak) IBOutlet NSPopUpButton *cpu;
 @property (weak) IBOutlet NSTextField *smp;
-@property (weak, setter=setm:) IBOutlet NSTextField *m;
+@property (weak) IBOutlet NSTextField *memory;
 @property (weak) IBOutlet NSPopUpButton *vga;
 @property (weak) IBOutlet NSButton *pcspk;
 @property (weak) IBOutlet NSButton *adlib;

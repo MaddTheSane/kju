@@ -45,10 +45,10 @@
 @synthesize qDrivers;
 @synthesize pauseWhileInactive;
 @synthesize smb;
-@synthesize M;
+@synthesize machinePopUp;
 @synthesize cpu;
 @synthesize smp;
-@synthesize m;
+@synthesize memory;
 @synthesize vga;
 @synthesize pcspk;
 @synthesize adlib;
@@ -138,10 +138,10 @@
 	[smb selectItemAtIndex:0];
 	
 	// Tab 2
-	[M selectItemAtIndex:0];
+	[machinePopUp selectItemAtIndex:0];
 	[cpu selectItemAtIndex:0];
 	smp.stringValue = @"1";
-	m.stringValue = @"128"; // 128
+	memory.stringValue = @"128"; // 128
 	[vga selectItemAtIndex:0];
 	pcspk.state = NSOffState;
 	adlib.state = NSOffState;
@@ -299,10 +299,10 @@
 	// select machine
 	} else if ([key isEqual:@"-M"]) {
         if ([argument isEqual:@"pc"]) {
-            [M selectItemAtIndex:1];
+            [machinePopUp selectItemAtIndex:1];
 			[self setMachine:QDocumentEditVMMachinePc];
         } else if ([argument isEqual:@"isapc"]) {
-            [M selectItemAtIndex:2];
+            [machinePopUp selectItemAtIndex:2];
 			[self setMachine:QDocumentEditVMMachineIsapc];
         }
 		return TRUE;
@@ -330,7 +330,7 @@
 
 	// m
 	} else if ([key isEqual:@"-m"]) {
-		m.stringValue = argument;
+		memory.stringValue = argument;
 		return TRUE;		
 
 	// graphicscards
