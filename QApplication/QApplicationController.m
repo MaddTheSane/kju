@@ -57,7 +57,7 @@
 		if ([userDefaults objectForKey:@"dataPath"]) {
 			[userDefaults removeObjectForKey:@"dataPath"];
 		}
-#pragma mark TODO:Sparclekey for userdefaults
+		// TODO:Sparclekey for userdefaults
 		
 		// add necessary entries to old preferences
 		NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -69,10 +69,11 @@
         // create PC directory
         if ([fileManager fileExistsAtPath: [NSString stringWithFormat:@"%@/", [userDefaults objectForKey:@"dataPath"]]] == NO)
 			[fileManager createDirectoryAtPath:[userDefaults objectForKey:@"dataPath"] withIntermediateDirectories:YES attributes:nil error:nil];
+		
+		// uniqueDocumentIDs
+		uniqueDocumentID = 7;
         }
-        
-        // uniqueDocumentIDs
-        uniqueDocumentID = 7;
+	
     return self;
 }
 

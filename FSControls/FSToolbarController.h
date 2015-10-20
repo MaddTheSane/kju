@@ -40,12 +40,11 @@
 - (void) addToolbarItem:(NSString *)icon withTitle:(NSString *)title rectangle:(NSRect)rectangle target:(id) target action:(SEL)action;
 - (void) addCustomToolbarItem:(id)item;
 
-@property (readonly, strong) NSWindow *createTransparentWindow;
+- (NSWindow *) createTransparentWindow NS_RETURNS_RETAINED;
 
 // fading operations
 - (void) fadeIn;
 - (void) fadeOut;
-- (void) setAnimates:(BOOL)lock;
 @property (getter=isAnimating, setter=setAnimates:) BOOL animating;
 - (IBAction) setFullscreen:(id)sender;
 - (IBAction) shutdownPC:(id)sender;

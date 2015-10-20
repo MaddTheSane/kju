@@ -184,6 +184,7 @@
         if (fd == -1) {
             [self defaultAlertMessage:[NSString stringWithFormat:@"QDocument: could not create '/tmp/qDocument_%D.vga' file", uniqueDocumentID] informativeText:nil];
             self.VMState = QDocumentInvalid;
+			free(dummyFile);
             return nil;
         }
         ret = write(fd, dummyFile, videoRAMSize);
@@ -718,7 +719,7 @@
     mach_port_t masterPort;
     CFMutableDictionaryRef  classesToMatch;
     io_object_t nextMedia;
-    char *bsdPath = '\0';
+    char *bsdPath = NULL;
     CFIndex maxPathSize = 1024;
 
     // find ejectable media

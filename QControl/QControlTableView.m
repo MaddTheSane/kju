@@ -208,6 +208,7 @@
 			switch (document.VMState) {
 				case QDocumentShutdown:
 					qFraction = 0.5;
+					break;
 				default:
 					qFraction = 0.25;
 					break;

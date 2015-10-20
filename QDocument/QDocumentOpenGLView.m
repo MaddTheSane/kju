@@ -513,6 +513,7 @@ int cocoa_keycode_to_qemu(int keycode)
 	textureData = calloc(textureWidth * 4, textureHeight);
 	colorSpaceRef = CGColorSpaceCreateDeviceRGB();
 	contextRef = CGBitmapContextCreate (textureData, textureWidth, textureHeight, 8, textureWidth*4, colorSpaceRef, kCGImageAlphaPremultipliedLast);
+	CGColorSpaceRelease(colorSpaceRef);
 	
 	CGContextDrawImage(contextRef, textureRect, imageRef);
 	CGContextRelease(contextRef);
@@ -575,6 +576,7 @@ int cocoa_keycode_to_qemu(int keycode)
 	textureData = calloc(textureWidth * 4, textureHeight);
 	colorSpaceRef = CGColorSpaceCreateDeviceRGB();
 	contextRef = CGBitmapContextCreate (textureData, textureWidth, textureHeight, 8, textureWidth*4, colorSpaceRef, kCGImageAlphaPremultipliedLast);
+	CGColorSpaceRelease(colorSpaceRef);
 
 	CGContextDrawImage(contextRef, textureRect, imageRef);
 	CGContextRelease(contextRef);
@@ -1012,8 +1014,8 @@ int cocoa_keycode_to_qemu(int keycode)
 {
 	Q_DEBUG(@"handleEvent");
 
-    int buttons;
-    int keycode;
+    int buttons = 0;
+    int keycode = 0;
     switch (event.type) {
         case NSFlagsChanged:
             keycode = cocoa_keycode_to_qemu(event.keyCode);
