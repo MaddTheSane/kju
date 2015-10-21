@@ -38,8 +38,8 @@ final class QQvmManager : NSObject {
 		Q_DEBUG("loadQVM: \(filepath)");
 
 		if let data = NSData(contentsOfFile: filepath.stringByAppendingPathComponent("configuration.plist")) {
-			var tempVM = try! NSPropertyListSerialization.propertyListWithData(data, options: .MutableContainersAndLeaves, format: nil) as! NSMutableDictionary as NSDictionary as! [String: AnyObject]
-
+			let tempVM = try! NSPropertyListSerialization.propertyListWithData(data, options: .MutableContainersAndLeaves, format: nil) as! NSMutableDictionary
+			
 			// upgrade Version 0.1.0.Q to 0.2.0.Q
 			if tempVM["Version"] as? String == "0.1.0.Q" {
 				let lookForArguments = ["-snapshot", "-nographic", "-audio-help", "-localtime", "-full-screen", "-win2k-hack", "-usb", "-s", "-S", "-d", "-std-vga"];
@@ -106,21 +106,19 @@ final class QQvmManager : NSObject {
 					}
 				}
 				// remove obsolte keys
-				var pcData = (tempVM["PC Data"] as! [String: AnyObject])
-				pcData.removeValueForKey("name")
-				tempVM["PC Data"] = pcData
+				(tempVM["PC Data"] as! NSMutableDictionary).removeObjectForKey("name")
 				
 				tempVM["Arguments"] = arguments;
 				tempVM["Version"] = "0.3.0.Q";
 			}
 			// get rid of old temporary items and add new
 			if tempVM["Temporary"] != nil {
-				tempVM.removeValueForKey("Temporary")
+				tempVM.removeObjectForKey("Temporary")
 			}
-			var tempor = [NSObject: AnyObject]()
+			let tempor = NSMutableDictionary()
 			
 			// exploded arguments
-			tempor["explodedArguments"] = explodeVMArguments(tempVM["Arguments"] as! String)
+			tempor["explodedArguments"] = NSMutableArray(array: explodeVMArguments(tempVM["Arguments"] as! String))
 
 			
 			// url

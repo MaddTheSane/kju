@@ -103,7 +103,7 @@ class QApplicationController : NSObject, NSApplicationDelegate {
 				} else {
 					// open the document
 					do {
-						let document = try documentController.makeDocumentWithContentsOfURL(path, ofType: "QVM")
+						let document = try documentController.makeDocumentWithContentsOfURL(path, ofType: "ch.kberg.Q.vm")
 						documentController.addDocument(document)
 						document.makeWindowControllers()
 						document.showWindows()
