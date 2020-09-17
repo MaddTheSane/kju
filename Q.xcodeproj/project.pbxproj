@@ -47,7 +47,7 @@
 		27C9788E0CC3BE4B00A5F3AF /* FSToolbarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C978890CC3BE4B00A5F3AF /* FSToolbarController.m */; };
 		27C9788F0CC3BE4B00A5F3AF /* FSTransparentButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 27C9788B0CC3BE4B00A5F3AF /* FSTransparentButton.m */; };
 		554512DA1BD4ADF800EDF6EE /* QDocument.xib in Resources */ = {isa = PBXBuildFile; fileRef = 554512DC1BD4ADF800EDF6EE /* QDocument.xib */; };
-		55BA7AA91BD40CB800A404A1 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55BA7AA81BD40CB800A404A1 /* Media.xcassets */; settings = {ASSET_TAGS = (); }; };
+		55BA7AA91BD40CB800A404A1 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55BA7AA81BD40CB800A404A1 /* Media.xcassets */; };
 		55BA7AAC1BD4144800A404A1 /* QEditVM.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55BA7AAE1BD4144800A404A1 /* QEditVM.xib */; };
 		55BA7AB11BD4146600A404A1 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55BA7AB31BD4146600A404A1 /* MainMenu.xib */; };
 		8D15AC2C0486D014006FF6A4 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */; };
@@ -133,6 +133,7 @@
 		2A37F4C4FDCFA73011CA2CEA /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		2A37F4C5FDCFA73011CA2CEA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		32DBCF750370BD2300C91783 /* Q_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Q_Prefix.pch; sourceTree = "<group>"; };
+		5539E62C1CB4755200ED6EF3 /* qemu */ = {isa = PBXFileReference; lastKnownFileType = folder; name = qemu; path = qemu/qemu; sourceTree = "<group>"; };
 		554512D01BD4AA6900EDF6EE /* fr */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		554512D51BD4AA9500EDF6EE /* de */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		554512D91BD4AACB00EDF6EE /* pl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -272,7 +273,7 @@
 			);
 			name = Q;
 			sourceTree = "<group>";
-			usesTabs = 1;
+			usesTabs = 0;
 		};
 		2A37F4ABFDCFA73011CA2CEA /* Classes */ = {
 			isa = PBXGroup;
@@ -286,10 +287,12 @@
 			);
 			name = Classes;
 			sourceTree = "<group>";
+			usesTabs = 1;
 		};
 		2A37F4AFFDCFA73011CA2CEA /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				5539E62C1CB4755200ED6EF3 /* qemu */,
 				32DBCF750370BD2300C91783 /* Q_Prefix.pch */,
 				2A37F4B0FDCFA73011CA2CEA /* main.m */,
 			);
@@ -402,7 +405,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#I would preffer this in \"build\", but XCode 3 does not allow Makefiles inside \"build\" so we go with /tmp and clean it up\nQEMUPATCHDIRECTORY=\"/tmp\"\nQEMUROOT=\"$SRCROOT/qemu\"\n\n#check if a built version already exists, else copy, patch, build and cleanup sources\ntest -e \"$TARGET_TEMP_DIR/i386-softmmu/qemu\" || {\n\trm -rf \"$QEMUPATCHDIRECTORY/qemu\" > /dev/null\n\tmkdir -p \"$QEMUPATCHDIRECTORY\"\n\tcp -r \"qemu/qemu\" \"$QEMUPATCHDIRECTORY\"\n\tcd \"$QEMUPATCHDIRECTORY/qemu\"\n\n\tmkdir -p \"$TARGET_TEMP_DIR\"\n\tcd \"$TARGET_TEMP_DIR\"\n\n\t# build only for i386 by default\n\t\"$QEMUPATCHDIRECTORY/qemu/./configure\" --prefix=.. --enable-cocoa --enable-adlib --disable-gcc-check --target-list=i386-softmmu,ppc-softmmu,sparc-softmmu,mips-softmmu,arm-softmmu,x86_64-softmmu\n\n\t# uncomment if you want to build all targets\n\t#\"$QEMUPATCHDIRECTORY/qemu/./configure\" --prefix=../products/i386 --enable-cocoa --enable-adlib --disable-gcc-check --target-list=i386-softmmu,ppc-softmmu,sparc-softmmu,mips-softmmu,arm-softmmu\n\n\t#make\n\tmake\n\n\t#backup bios files\n\tmkdir -p \"$TARGET_TEMP_DIR/pc-bios/\"\n\tcd \"$QEMUPATCHDIRECTORY/qemu/pc-bios/\"\n\tcp *.bin \"$TARGET_TEMP_DIR/pc-bios/\"\n\tcd -\n\n\t#cleanup\n\trm -rf \"$QEMUPATCHDIRECTORY/qemu\" > /dev/null\n}\n\n#create and copy qemu bins\nrm -rf   \"$BUILD_DIR/$CONFIGURATION/Q.app/Contents/Resources/bin/*-softmmu\" > /dev/null\nmkdir -p \"$BUILD_DIR/$CONFIGURATION/Q.app/Contents/Resources/bin/\"\ncp \"$TARGET_TEMP_DIR/i386-softmmu/qemu\" \"$BUILD_DIR/$CONFIGURATION/Q.app/Contents/Resources/bin/i386-softmmu\"\n\n#create and copy bios\nrm -rf   \"$BUILD_DIR/$CONFIGURATION/Q.app/Contents/Resources/share/qemu\" > /dev/null\nmkdir -p \"$BUILD_DIR/$CONFIGURATION/Q.app/Contents/Resources/share/qemu/\"\ncd \"$TARGET_TEMP_DIR/pc-bios/\"\ncp *.bin \"$BUILD_DIR/$CONFIGURATION/Q.app/Contents/Resources/share/qemu/\"\n";
+			shellScript = "#I would preffer this in \"build\", but XCode 3 does not allow Makefiles inside \"build\" so we go with /tmp and clean it up\nQEMUPATCHDIRECTORY=\"/tmp\"\nQEMUROOT=\"$SRCROOT/qemu\"\n\n#check if a built version already exists, else copy, patch, build and cleanup sources\ntest -e \"$TARGET_TEMP_DIR/i386-softmmu/qemu\" || {\n\trm -rf \"$QEMUPATCHDIRECTORY/qemu\" > /dev/null\n\tmkdir -p \"$QEMUPATCHDIRECTORY\"\n\tcp -r \"qemu/qemu\" \"$QEMUPATCHDIRECTORY\"\n\tcd \"$QEMUPATCHDIRECTORY/qemu\"\n\n\tmkdir -p \"$TARGET_TEMP_DIR\"\n\tcd \"$TARGET_TEMP_DIR\"\n\n\t# build only for i386 by default\n\t\"$QEMUPATCHDIRECTORY/qemu/./configure\" --prefix=.. --enable-cocoa --audio-card-list=\"ac97 es1370 sb16 hda adlib\" --target-list=i386-softmmu,ppc-softmmu,sparc-softmmu,mips-softmmu,arm-softmmu,x86_64-softmmu\n\n\t# uncomment if you want to build all targets\n\t#\"$QEMUPATCHDIRECTORY/qemu/./configure\" --prefix=../products/i386 --enable-cocoa --enable-adlib --disable-gcc-check --target-list=i386-softmmu,ppc-softmmu,sparc-softmmu,mips-softmmu,arm-softmmu\n\n\t#make\n\tmake\n\n\t#backup bios files\n\tmkdir -p \"$TARGET_TEMP_DIR/pc-bios/\"\n\tcd \"$QEMUPATCHDIRECTORY/qemu/pc-bios/\"\n\tcp *.bin \"$TARGET_TEMP_DIR/pc-bios/\"\n\tcd -\n\n\t#cleanup\n\trm -rf \"$QEMUPATCHDIRECTORY/qemu\" > /dev/null\n}\n\n#create and copy qemu bins\nrm -rf   \"$BUILD_DIR/$CONFIGURATION/Q.app/Contents/Resources/bin/*-softmmu\" > /dev/null\nmkdir -p \"$BUILD_DIR/$CONFIGURATION/Q.app/Contents/Resources/bin/\"\ncp \"$TARGET_TEMP_DIR/i386-softmmu/qemu\" \"$BUILD_DIR/$CONFIGURATION/Q.app/Contents/Resources/bin/i386-softmmu\"\n\n#create and copy bios\nrm -rf   \"$BUILD_DIR/$CONFIGURATION/Q.app/Contents/Resources/share/qemu\" > /dev/null\nmkdir -p \"$BUILD_DIR/$CONFIGURATION/Q.app/Contents/Resources/share/qemu/\"\ncd \"$TARGET_TEMP_DIR/pc-bios/\"\ncp *.bin \"$BUILD_DIR/$CONFIGURATION/Q.app/Contents/Resources/share/qemu/\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 

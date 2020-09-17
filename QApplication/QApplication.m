@@ -92,7 +92,4 @@
 }
 
 
-
-
-- (QApplicationController *) applicationController { return applicationController;}
 @end

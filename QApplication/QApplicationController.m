@@ -41,7 +41,7 @@
 		[[NSUserDefaults standardUserDefaults] registerDefaults:@{@"enableLogToConsole": @NO, // disable log to console
 			@"yellow": @YES, // yellow
 			@"showFullscreenWarning": @YES, // showFullscreenWarning
-			@"knownVMs": [NSMutableArray array]}]; // known VMs
+			@"knownVMs": @[]}]; // known VMs
 		userDefaults = [NSUserDefaults standardUserDefaults];
 
 		// remove obsolete entries form old preferences

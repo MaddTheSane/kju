@@ -45,9 +45,7 @@
 		self.arrowPosition = NSPopUpNoArrow;
 
 		image = anImage;
-		[image setFlipped:TRUE];
 		imageNormal = [NSImage imageNamed:@"q_button_n"];
-		[imageNormal setFlipped:TRUE];
 
 		buttonType = aButtonType;
 	}
