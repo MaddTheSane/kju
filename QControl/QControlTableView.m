@@ -49,11 +49,11 @@
 
     if ((self = [super initWithCoder: decoder]))
     {
-        qPlayIcon = [NSImage imageNamed: @"q_tv_play"];
-        qPauseIcon = [NSImage imageNamed: @"q_tv_pause"];
-        qStopIcon = [NSImage imageNamed: @"q_tv_stop"];
+        qPlayIcon = [NSImage imageNamed: @"qPlayFreestandingTemplate"];
+        qPauseIcon = [NSImage imageNamed: @"qPauseFreestandingTemplate"];
+        qStopIcon = [NSImage imageNamed: @"qStopFreestandingTemplate"];
         qEditIcon = [NSImage imageNamed: NSImageNameActionTemplate];
-        qDeleteIcon = [NSImage imageNamed: @"q_tv_delete"];
+        qDeleteIcon = [NSImage imageNamed: @"qDeleteFreestandingTemplate"];
 
 		// register table for drag'n drop
 		[self registerForDraggedTypes:@[NSFilenamesPboardType]];
