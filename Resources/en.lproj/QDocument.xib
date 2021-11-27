@@ -1,8 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="19455" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8191"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="19455"/>
+        <capability name="Image references" minToolsVersion="12.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="QDocument">
@@ -28,24 +30,24 @@
         <window title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" frameAutosaveName="DocumentWindow" animationBehavior="default" id="5" userLabel="Window" customClass="QWindow">
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" texturedBackground="YES"/>
             <rect key="contentRect" x="200" y="214" width="640" height="510"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
             <view key="contentView" id="6">
                 <rect key="frame" x="0.0" y="0.0" width="640" height="510"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <customView focusRingType="none" id="21" customClass="QDocumentOpenGLView">
+                    <customView focusRingType="none" translatesAutoresizingMaskIntoConstraints="NO" id="21" customClass="QDocumentOpenGLView">
                         <rect key="frame" x="0.0" y="30" width="640" height="480"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <animations/>
                         <connections>
                             <outlet property="document" destination="-2" id="29"/>
                             <outlet property="normalWindow" destination="5" id="27"/>
                         </connections>
                     </customView>
-                    <button id="89">
+                    <button translatesAutoresizingMaskIntoConstraints="NO" id="89">
                         <rect key="frame" x="16" y="4" width="41" height="19"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <animations/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="12" id="Mxq-zQ-IMM"/>
+                            <constraint firstAttribute="width" constant="35" id="UYL-th-ZQh"/>
+                        </constraints>
                         <buttonCell key="cell" type="bevel" alternateTitle="Edit VM" bezelStyle="regularSquare" image="NSActionTemplate" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="228">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -54,10 +56,11 @@
                             <action selector="VMEdit:" target="-2" id="223"/>
                         </connections>
                     </button>
-                    <button id="95">
+                    <button translatesAutoresizingMaskIntoConstraints="NO" id="95">
                         <rect key="frame" x="144" y="4" width="41" height="19"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <animations/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="35" id="FuH-m5-MiY"/>
+                        </constraints>
                         <buttonCell key="cell" type="bevel" alternateTitle="Toggle fullscreen" bezelStyle="regularSquare" image="NSEnterFullScreenTemplate" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="229">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -66,10 +69,11 @@
                             <action selector="toggleFullscreen:" target="-2" id="224"/>
                         </connections>
                     </button>
-                    <button id="97">
+                    <button translatesAutoresizingMaskIntoConstraints="NO" id="97">
                         <rect key="frame" x="182" y="4" width="41" height="19"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <animations/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="35" id="aGw-6O-d1f"/>
+                        </constraints>
                         <buttonCell key="cell" type="bevel" alternateTitle="Screenshot" bezelStyle="regularSquare" image="q_d_screenshot" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="230">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -78,11 +82,12 @@
                             <action selector="takeScreenShot:" target="-2" id="225"/>
                         </connections>
                     </button>
-                    <button id="99">
-                        <rect key="frame" x="459" y="4" width="41" height="19"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                        <animations/>
-                        <buttonCell key="cell" type="bevel" alternateTitle="Send ctrl-alt-del" bezelStyle="regularSquare" image="q_d_ctraltdel" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="231">
+                    <button translatesAutoresizingMaskIntoConstraints="NO" id="99">
+                        <rect key="frame" x="468" y="4" width="41" height="19"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="35" id="63k-eg-dir"/>
+                        </constraints>
+                        <buttonCell key="cell" type="bevel" alternateTitle="Send ctrl-alt-del" bezelStyle="regularSquare" image="q_d_ctraltdel" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="231">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
@@ -90,46 +95,53 @@
                             <action selector="VMCtrlAltDel:" target="-2" id="119"/>
                         </connections>
                     </button>
-                    <button id="101">
-                        <rect key="frame" x="497" y="4" width="41" height="19"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                        <animations/>
-                        <buttonCell key="cell" type="bevel" alternateTitle="Toggle pause" bezelStyle="regularSquare" image="q_d_start" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="232">
+                    <button translatesAutoresizingMaskIntoConstraints="NO" id="101">
+                        <rect key="frame" x="506" y="4" width="41" height="19"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="35" id="yzs-w3-Unm"/>
+                        </constraints>
+                        <buttonCell key="cell" type="bevel" alternateTitle="Toggle pause" bezelStyle="regularSquare" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="232">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
+                            <imageReference key="image" image="play.fill" catalog="system" symbolScale="small"/>
                         </buttonCell>
                         <connections>
                             <action selector="togglePause:" target="-2" id="122"/>
                         </connections>
                     </button>
-                    <button id="103">
-                        <rect key="frame" x="535" y="4" width="41" height="19"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                        <animations/>
-                        <buttonCell key="cell" type="bevel" alternateTitle="Reset VM" bezelStyle="regularSquare" image="q_d_reset" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="233">
+                    <button translatesAutoresizingMaskIntoConstraints="NO" id="103">
+                        <rect key="frame" x="544" y="4" width="41" height="19"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="35" id="O0n-Eu-vnA"/>
+                        </constraints>
+                        <buttonCell key="cell" type="bevel" alternateTitle="Reset VM" bezelStyle="regularSquare" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="233">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
+                            <imageReference key="image" image="restart.circle.fill" catalog="system" symbolScale="small"/>
                         </buttonCell>
                         <connections>
                             <action selector="VMReset:" target="-2" id="120"/>
                         </connections>
                     </button>
-                    <button id="105">
-                        <rect key="frame" x="573" y="4" width="41" height="19"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                        <animations/>
-                        <buttonCell key="cell" type="bevel" alternateTitle="Shutdown VM" bezelStyle="regularSquare" image="q_d_shutdown" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="234">
+                    <button translatesAutoresizingMaskIntoConstraints="NO" id="105">
+                        <rect key="frame" x="582" y="4" width="41" height="19"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="35" id="uoh-7X-QRj"/>
+                        </constraints>
+                        <buttonCell key="cell" type="bevel" alternateTitle="Shutdown VM" bezelStyle="regularSquare" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="234">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
+                            <imageReference key="image" image="power" catalog="system" symbolScale="small"/>
                         </buttonCell>
                         <connections>
                             <action selector="toggleStartShutdown:" target="-2" id="121"/>
                         </connections>
                     </button>
-                    <popUpButton id="196">
+                    <popUpButton translatesAutoresizingMaskIntoConstraints="NO" id="196">
                         <rect key="frame" x="61" y="4" width="41" height="19"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <animations/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="35" id="wNe-RK-p9G"/>
+                        </constraints>
                         <popUpButtonCell key="cell" type="bevel" title="Eject floppy A" bezelStyle="regularSquare" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" arrowPosition="noArrow" selectedItem="200" id="235">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="menu"/>
@@ -152,10 +164,11 @@
                             </menu>
                         </popUpButtonCell>
                     </popUpButton>
-                    <popUpButton id="203">
+                    <popUpButton translatesAutoresizingMaskIntoConstraints="NO" id="203">
                         <rect key="frame" x="99" y="4" width="41" height="19"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <animations/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="35" id="iE3-za-6kT"/>
+                        </constraints>
                         <popUpButtonCell key="cell" type="bevel" title="Eject CD-Rom" bezelStyle="regularSquare" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" imageScaling="proportionallyDown" inset="2" arrowPosition="noArrow" selectedItem="206" id="236">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="menu"/>
@@ -184,55 +197,93 @@
                         </popUpButtonCell>
                     </popUpButton>
                 </subviews>
-                <animations/>
+                <constraints>
+                    <constraint firstItem="89" firstAttribute="baseline" secondItem="95" secondAttribute="baseline" id="24u-ai-Gfn"/>
+                    <constraint firstAttribute="trailing" secondItem="105" secondAttribute="trailing" constant="20" id="38l-R4-tAZ"/>
+                    <constraint firstItem="103" firstAttribute="top" secondItem="99" secondAttribute="top" id="4if-dQ-HHa"/>
+                    <constraint firstItem="105" firstAttribute="leading" secondItem="103" secondAttribute="trailing" constant="3" id="7gV-jp-Epm"/>
+                    <constraint firstItem="89" firstAttribute="firstBaseline" secondItem="95" secondAttribute="firstBaseline" id="9uf-Hm-aMi"/>
+                    <constraint firstItem="97" firstAttribute="leading" secondItem="95" secondAttribute="trailing" constant="3" id="A9G-RG-jqY"/>
+                    <constraint firstItem="101" firstAttribute="leading" secondItem="99" secondAttribute="trailing" constant="3" id="BJa-n9-1X8"/>
+                    <constraint firstItem="103" firstAttribute="leading" secondItem="101" secondAttribute="trailing" constant="3" id="CvU-vX-EYm"/>
+                    <constraint firstItem="89" firstAttribute="top" secondItem="21" secondAttribute="bottom" constant="10" id="EAn-3M-ECd"/>
+                    <constraint firstItem="95" firstAttribute="top" secondItem="97" secondAttribute="top" id="Ejq-ix-PeW"/>
+                    <constraint firstItem="105" firstAttribute="bottom" secondItem="99" secondAttribute="bottom" id="I3P-DJ-bhq"/>
+                    <constraint firstItem="203" firstAttribute="leading" secondItem="196" secondAttribute="trailing" constant="3" id="Ilj-Ef-G3j"/>
+                    <constraint firstItem="101" firstAttribute="bottom" secondItem="99" secondAttribute="bottom" id="K7O-f7-x70"/>
+                    <constraint firstItem="95" firstAttribute="bottom" secondItem="97" secondAttribute="bottom" id="Lys-hY-4c1"/>
+                    <constraint firstItem="21" firstAttribute="top" secondItem="6" secondAttribute="top" id="O8U-H3-PW9"/>
+                    <constraint firstItem="95" firstAttribute="baseline" secondItem="101" secondAttribute="baseline" id="PG5-rr-Rvs"/>
+                    <constraint firstAttribute="bottom" secondItem="89" secondAttribute="bottom" constant="8" id="U31-95-SBC"/>
+                    <constraint firstItem="89" firstAttribute="leading" secondItem="6" secondAttribute="leading" constant="19" id="Veq-Dk-uq6"/>
+                    <constraint firstItem="196" firstAttribute="baseline" secondItem="203" secondAttribute="baseline" id="X6G-WK-K0O"/>
+                    <constraint firstItem="103" firstAttribute="bottom" secondItem="99" secondAttribute="bottom" id="e1z-dq-Pgy"/>
+                    <constraint firstItem="89" firstAttribute="top" secondItem="196" secondAttribute="top" id="giG-tK-xMI"/>
+                    <constraint firstAttribute="trailing" secondItem="21" secondAttribute="trailing" id="idI-1T-ye3"/>
+                    <constraint firstItem="21" firstAttribute="leading" secondItem="6" secondAttribute="leading" id="kZj-AA-FXQ"/>
+                    <constraint firstItem="196" firstAttribute="leading" secondItem="89" secondAttribute="trailing" constant="10" id="oEw-np-0iS"/>
+                    <constraint firstItem="196" firstAttribute="firstBaseline" secondItem="203" secondAttribute="firstBaseline" id="pCy-vL-mCL"/>
+                    <constraint firstItem="89" firstAttribute="bottom" secondItem="196" secondAttribute="bottom" id="tbH-RZ-ydu"/>
+                    <constraint firstItem="95" firstAttribute="firstBaseline" secondItem="101" secondAttribute="firstBaseline" id="uMU-ZS-iUN"/>
+                    <constraint firstItem="105" firstAttribute="top" secondItem="99" secondAttribute="top" id="xpF-qo-0nz"/>
+                    <constraint firstItem="95" firstAttribute="leading" secondItem="203" secondAttribute="trailing" constant="10" id="xxt-41-FUc"/>
+                    <constraint firstItem="101" firstAttribute="top" secondItem="99" secondAttribute="top" id="ycb-zL-xcX"/>
+                </constraints>
             </view>
             <connections>
                 <outlet property="delegate" destination="-2" id="17"/>
             </connections>
+            <point key="canvasLocation" x="139" y="125"/>
         </window>
-        <window title="Progress Bar" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" hidesOnDeactivate="YES" oneShot="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="148" userLabel="Panel (Progress Bar)" customClass="NSPanel">
+        <window title="Progress Bar" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" hidesOnDeactivate="YES" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="148" userLabel="Panel (Progress Bar)" customClass="NSPanel">
             <windowStyleMask key="styleMask" titled="YES" utility="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="108" width="256" height="56"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="878"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
             <view key="contentView" id="149">
                 <rect key="frame" x="0.0" y="0.0" width="256" height="56"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" minValue="16" maxValue="100" doubleValue="16" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" id="150">
+                    <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" minValue="16" maxValue="100" doubleValue="16" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="150">
                         <rect key="frame" x="220" y="20" width="16" height="16"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <animations/>
                     </progressIndicator>
-                    <textField verticalHuggingPriority="750" id="151">
+                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="151">
                         <rect key="frame" x="49" y="21" width="166" height="14"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <animations/>
                         <textFieldCell key="cell" controlSize="small" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Label" id="237">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
-                    <imageView id="168">
+                    <imageView translatesAutoresizingMaskIntoConstraints="NO" id="168">
                         <rect key="frame" x="12" y="12" width="32" height="32"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <animations/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="32" id="K42-ic-ihK"/>
+                        </constraints>
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="proportionallyUpOrDown" image="NSApplicationIcon" id="238"/>
                     </imageView>
                 </subviews>
-                <animations/>
+                <constraints>
+                    <constraint firstItem="151" firstAttribute="centerY" secondItem="150" secondAttribute="centerY" id="0fR-Fn-bKa"/>
+                    <constraint firstItem="150" firstAttribute="leading" secondItem="151" secondAttribute="trailing" constant="7" id="FNs-PL-kk1"/>
+                    <constraint firstAttribute="trailing" secondItem="150" secondAttribute="trailing" constant="20" symbolic="YES" id="KM8-uc-vsA"/>
+                    <constraint firstItem="168" firstAttribute="centerY" secondItem="151" secondAttribute="centerY" id="Xie-kD-GIf"/>
+                    <constraint firstItem="150" firstAttribute="top" secondItem="149" secondAttribute="top" constant="20" symbolic="YES" id="gQ5-br-ku5"/>
+                    <constraint firstItem="151" firstAttribute="leading" secondItem="168" secondAttribute="trailing" constant="7" id="qIh-DH-uNW"/>
+                    <constraint firstItem="168" firstAttribute="leading" secondItem="149" secondAttribute="leading" constant="12" id="zLD-Z5-PPH"/>
+                </constraints>
             </view>
+            <point key="canvasLocation" x="139" y="505"/>
         </window>
     </objects>
     <resources>
-        <image name="NSActionTemplate" width="14" height="14"/>
-        <image name="NSApplicationIcon" width="128" height="128"/>
-        <image name="NSEnterFullScreenTemplate" width="15" height="15"/>
-        <image name="q_d_ctraltdel" width="16.225351333618164" height="16.225351333618164"/>
-        <image name="q_d_reset" width="16.225351333618164" height="16.225351333618164"/>
-        <image name="q_d_screenshot" width="16.225351333618164" height="16.225351333618164"/>
-        <image name="q_d_shutdown" width="16.225351333618164" height="16.225351333618164"/>
-        <image name="q_d_start" width="16.225351333618164" height="16.225351333618164"/>
+        <image name="NSActionTemplate" width="15" height="15"/>
+        <image name="NSApplicationIcon" width="32" height="32"/>
+        <image name="NSEnterFullScreenTemplate" width="16" height="15"/>
+        <image name="play.fill" catalog="system" width="10" height="11"/>
+        <image name="power" catalog="system" width="13" height="13"/>
+        <image name="q_d_ctraltdel" width="16" height="16"/>
+        <image name="q_d_screenshot" width="16" height="16"/>
+        <image name="restart.circle.fill" catalog="system" width="13" height="13"/>
     </resources>
 </document>

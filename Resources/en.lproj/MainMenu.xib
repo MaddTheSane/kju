@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="8191" systemVersion="15A284" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="19455" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="8191"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="19455"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="NSApplication"/>
@@ -303,30 +304,30 @@ UREXBRLigoIgSGVscA
                     </menu>
                 </menuItem>
             </items>
+            <point key="canvasLocation" x="139" y="135"/>
         </menu>
         <customObject id="213" userLabel="Updater" customClass="SUUpdater"/>
-        <window allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" oneShot="NO" releasedWhenClosed="NO" frameAutosaveName="qControl" animationBehavior="default" id="216" userLabel="controlWindow" customClass="QWindow">
+        <window allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" frameAutosaveName="qControl" animationBehavior="default" id="216" userLabel="controlWindow" customClass="QWindow">
             <string key="title" base64-UTF8="YES">
 UREXBRLigoIgQ29udHJvbA
 </string>
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES" texturedBackground="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="112" width="248" height="398"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1280" height="778"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="1440" height="875"/>
             <view key="contentView" id="217">
                 <rect key="frame" x="0.0" y="0.0" width="248" height="398"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <imageView id="312">
-                        <rect key="frame" x="0.0" y="30" width="251" height="100"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
-                        <animations/>
+                    <imageView translatesAutoresizingMaskIntoConstraints="NO" id="312">
+                        <rect key="frame" x="0.0" y="29" width="251" height="100"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="100" id="gaZ-5P-0I7"/>
+                        </constraints>
                         <imageCell key="cell" refusesFirstResponder="YES" alignment="left" animates="YES" imageScaling="axesIndependently" image="q_prefs_bg" id="365"/>
                     </imageView>
-                    <button id="274">
-                        <rect key="frame" x="54" y="94" width="176" height="18"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <animations/>
+                    <button translatesAutoresizingMaskIntoConstraints="NO" id="274">
+                        <rect key="frame" x="54" y="93" width="172" height="16"/>
                         <buttonCell key="cell" type="check" title="Check for updates at startup" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="362">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -335,10 +336,8 @@ UREXBRLigoIgQ29udHJvbA
                             <action selector="prefUpdates:" target="237" id="305"/>
                         </connections>
                     </button>
-                    <button id="276">
-                        <rect key="frame" x="54" y="74" width="136" height="18"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <animations/>
+                    <button translatesAutoresizingMaskIntoConstraints="NO" id="276">
+                        <rect key="frame" x="54" y="73" width="133" height="16"/>
                         <buttonCell key="cell" type="check" title="Log errors to console" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="363">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -347,10 +346,8 @@ UREXBRLigoIgQ29udHJvbA
                             <action selector="prefLog:" target="237" id="306"/>
                         </connections>
                     </button>
-                    <button id="278">
-                        <rect key="frame" x="54" y="54" width="107" height="18"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <animations/>
+                    <button translatesAutoresizingMaskIntoConstraints="NO" id="278">
+                        <rect key="frame" x="54" y="53" width="103" height="16"/>
                         <buttonCell key="cell" type="check" title="Yellow windows" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="364">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -359,10 +356,8 @@ UREXBRLigoIgQ29udHJvbA
                             <action selector="prefYellow:" target="237" id="307"/>
                         </connections>
                     </button>
-                    <button id="332">
-                        <rect key="frame" x="54" y="34" width="152" height="18"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <animations/>
+                    <button translatesAutoresizingMaskIntoConstraints="NO" id="332">
+                        <rect key="frame" x="54" y="33" width="149" height="16"/>
                         <buttonCell key="cell" type="check" title="Show fullscreen warning" bezelStyle="regularSquare" imagePosition="left" alignment="left" controlSize="small" state="on" inset="2" id="368">
                             <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -371,24 +366,21 @@ UREXBRLigoIgQ29udHJvbA
                             <action selector="prefFSWarning:" target="237" id="334"/>
                         </connections>
                     </button>
-                    <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="62" horizontalPageScroll="10" verticalLineScroll="62" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" id="218">
-                        <rect key="frame" x="0.0" y="30" width="248" height="368"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                    <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="62" horizontalPageScroll="10" verticalLineScroll="62" verticalPageScroll="10" hasHorizontalScroller="NO" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="218">
+                        <rect key="frame" x="0.0" y="29" width="248" height="369"/>
                         <clipView key="contentView" id="Obm-bL-7e2">
-                            <rect key="frame" x="0.0" y="0.0" width="248" height="368"/>
+                            <rect key="frame" x="0.0" y="0.0" width="248" height="369"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" alternatingRowBackgroundColors="YES" columnReordering="NO" columnResizing="NO" multipleSelection="NO" autosaveColumns="NO" typeSelect="NO" autosaveName="qControlTable" rowHeight="60" id="221" customClass="QControlTableView">
-                                    <rect key="frame" x="200" y="0.0" width="249" height="62"/>
+                                    <rect key="frame" x="200" y="0.0" width="278" height="369"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                    <animations/>
                                     <size key="intercellSpacing" width="3" height="2"/>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                     <tableColumns>
                                         <tableColumn identifier="image" editable="NO" width="80" minWidth="80" maxWidth="80" id="223">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Image">
-                                                <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" white="0.33333299" alpha="1" colorSpace="calibratedWhite"/>
                                             </tableHeaderCell>
@@ -396,7 +388,6 @@ UREXBRLigoIgQ29udHJvbA
                                         </tableColumn>
                                         <tableColumn identifier="description" editable="NO" width="163" minWidth="147" maxWidth="1000" id="224">
                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" alignment="left" title="Description">
-                                                <font key="font" metaFont="smallSystem"/>
                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                 <color key="backgroundColor" white="0.33333299" alpha="1" colorSpace="calibratedWhite"/>
                                             </tableHeaderCell>
@@ -414,25 +405,23 @@ UREXBRLigoIgQ29udHJvbA
                                     </connections>
                                 </tableView>
                             </subviews>
-                            <animations/>
-                            <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            <nil key="backgroundColor"/>
                         </clipView>
-                        <animations/>
-                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="370">
+                        <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="370">
                             <rect key="frame" x="-100" y="-100" width="231" height="15"/>
                             <autoresizingMask key="autoresizingMask"/>
-                            <animations/>
                         </scroller>
-                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="0.027173904702067375" horizontal="NO" id="371">
+                        <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" doubleValue="0.027173904702067375" horizontal="NO" id="371">
                             <rect key="frame" x="232" y="17" width="15" height="343"/>
                             <autoresizingMask key="autoresizingMask"/>
-                            <animations/>
                         </scroller>
                     </scrollView>
-                    <button id="328">
-                        <rect key="frame" x="16" y="4" width="41" height="19"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <animations/>
+                    <button translatesAutoresizingMaskIntoConstraints="NO" id="328">
+                        <rect key="frame" x="17" y="3" width="41" height="19"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="35" id="J0y-8I-0Wd"/>
+                            <constraint firstAttribute="height" constant="12" id="hhA-lH-zK5"/>
+                        </constraints>
                         <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="NSActionTemplate" imagePosition="only" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="366">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="smallSystem"/>
@@ -441,24 +430,21 @@ UREXBRLigoIgQ29udHJvbA
                             <action selector="togglePreferences:" target="237" id="338"/>
                         </connections>
                     </button>
-                    <button id="330">
-                        <rect key="frame" x="54" y="4" width="41" height="19"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <animations/>
+                    <button translatesAutoresizingMaskIntoConstraints="NO" id="330">
+                        <rect key="frame" x="55" y="3" width="41" height="19"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="35" id="4It-To-ZtI"/>
+                        </constraints>
                         <buttonCell key="cell" type="bevel" bezelStyle="regularSquare" image="NSAddTemplate" imagePosition="only" alignment="center" controlSize="small" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="367">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="smallSystem"/>
                         </buttonCell>
                     </button>
-                    <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" minValue="16" maxValue="100" doubleValue="16" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" id="354">
-                        <rect key="frame" x="212" y="6" width="16" height="16"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                        <animations/>
+                    <progressIndicator horizontalHuggingPriority="750" verticalHuggingPriority="750" minValue="16" maxValue="100" doubleValue="16" displayedWhenStopped="NO" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="354">
+                        <rect key="frame" x="212" y="5" width="16" height="16"/>
                     </progressIndicator>
-                    <textField verticalHuggingPriority="750" id="355">
-                        <rect key="frame" x="111" y="5" width="96" height="17"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxY="YES"/>
-                        <animations/>
+                    <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="355">
+                        <rect key="frame" x="112" y="5" width="95" height="16"/>
                         <textFieldCell key="cell" controlSize="small" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="searching VMs…" id="369">
                             <font key="font" metaFont="smallSystem"/>
                             <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -466,8 +452,40 @@ UREXBRLigoIgQ29udHJvbA
                         </textFieldCell>
                     </textField>
                 </subviews>
-                <animations/>
+                <constraints>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="276" secondAttribute="trailing" constant="20" id="5ru-RC-8K6"/>
+                    <constraint firstItem="278" firstAttribute="leading" secondItem="332" secondAttribute="leading" id="82s-Wx-uVP"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="274" secondAttribute="trailing" constant="20" id="91D-vP-hE5"/>
+                    <constraint firstItem="355" firstAttribute="leading" secondItem="330" secondAttribute="trailing" constant="21" id="9uk-cb-8OX"/>
+                    <constraint firstItem="330" firstAttribute="leading" secondItem="328" secondAttribute="trailing" constant="3" id="AYP-Ec-def"/>
+                    <constraint firstItem="328" firstAttribute="top" secondItem="330" secondAttribute="top" id="AbK-PF-Fsf"/>
+                    <constraint firstItem="218" firstAttribute="top" secondItem="217" secondAttribute="top" id="CHm-Tl-hg1"/>
+                    <constraint firstItem="274" firstAttribute="leading" secondItem="276" secondAttribute="leading" id="DHK-ox-4r8"/>
+                    <constraint firstItem="355" firstAttribute="top" secondItem="332" secondAttribute="bottom" constant="13" id="ELC-RZ-vcK"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="278" secondAttribute="trailing" constant="20" id="FGL-CP-Llr"/>
+                    <constraint firstItem="276" firstAttribute="leading" secondItem="278" secondAttribute="leading" id="K2I-D6-1Rj"/>
+                    <constraint firstItem="328" firstAttribute="top" secondItem="312" secondAttribute="bottom" constant="10" id="SWD-Fn-lZt"/>
+                    <constraint firstAttribute="trailing" secondItem="354" secondAttribute="trailing" constant="20" symbolic="YES" id="Wjv-th-Y7d"/>
+                    <constraint firstItem="355" firstAttribute="top" secondItem="218" secondAttribute="bottom" constant="8" symbolic="YES" id="ZNL-0q-B07"/>
+                    <constraint firstItem="312" firstAttribute="leading" secondItem="217" secondAttribute="leading" id="ZTZ-WB-CHb"/>
+                    <constraint firstAttribute="bottom" secondItem="355" secondAttribute="bottom" constant="5" id="c7E-m0-ui4"/>
+                    <constraint firstItem="354" firstAttribute="leading" secondItem="355" secondAttribute="trailing" constant="7" id="eI8-QY-b3X"/>
+                    <constraint firstItem="328" firstAttribute="leading" secondItem="217" secondAttribute="leading" constant="20" id="fUt-Yl-0yF"/>
+                    <constraint firstItem="355" firstAttribute="top" secondItem="312" secondAttribute="bottom" constant="8" symbolic="YES" id="fe1-XU-bd1"/>
+                    <constraint firstAttribute="trailing" secondItem="218" secondAttribute="trailing" id="g5G-wd-hA5"/>
+                    <constraint firstItem="278" firstAttribute="top" secondItem="276" secondAttribute="bottom" constant="6" symbolic="YES" id="h3X-Wg-qxc"/>
+                    <constraint firstItem="276" firstAttribute="top" secondItem="274" secondAttribute="bottom" constant="6" symbolic="YES" id="iGW-YM-MQh"/>
+                    <constraint firstAttribute="trailing" secondItem="312" secondAttribute="trailing" constant="-3" id="pPV-69-yNK"/>
+                    <constraint firstItem="330" firstAttribute="centerY" secondItem="355" secondAttribute="centerY" id="qrO-X5-Ec1"/>
+                    <constraint firstItem="274" firstAttribute="leading" secondItem="217" secondAttribute="leading" constant="55" id="sNd-l8-8rg"/>
+                    <constraint firstItem="355" firstAttribute="top" secondItem="354" secondAttribute="top" id="szO-Xe-YJi"/>
+                    <constraint firstItem="332" firstAttribute="top" secondItem="278" secondAttribute="bottom" constant="6" symbolic="YES" id="tXD-DM-I2x"/>
+                    <constraint firstItem="328" firstAttribute="bottom" secondItem="330" secondAttribute="bottom" id="u2n-DT-UyR"/>
+                    <constraint firstItem="312" firstAttribute="leading" secondItem="218" secondAttribute="leading" id="w83-D5-ktt"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="332" secondAttribute="trailing" constant="20" id="w8R-jo-NZG"/>
+                </constraints>
             </view>
+            <point key="canvasLocation" x="139" y="-161"/>
         </window>
         <customObject id="234" userLabel="Control Table View Controller" customClass="QControlTableViewController">
             <connections>
@@ -491,9 +509,9 @@ UREXBRLigoIgQ29udHJvbA
         </customObject>
     </objects>
     <resources>
-        <image name="NSActionTemplate" width="14" height="14"/>
-        <image name="NSAddTemplate" width="11" height="11"/>
-        <image name="NSApplicationIcon" width="128" height="128"/>
+        <image name="NSActionTemplate" width="15" height="15"/>
+        <image name="NSAddTemplate" width="14" height="13"/>
+        <image name="NSApplicationIcon" width="32" height="32"/>
         <image name="q_prefs_bg" width="1" height="71"/>
     </resources>
 </document>
