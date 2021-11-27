@@ -37,6 +37,7 @@
 #import <IOKit/storage/IOCDMedia.h>
 #import <IOKit/storage/IODVDMedia.h>
 #import <IOKit/storage/IOBDMedia.h>
+#include <objc/message.h>
 
 
 @implementation QDocument
@@ -361,7 +362,7 @@
 	Q_DEBUG(@"docShouldClose: %D", canCloseDocumentClose);
 
 	if (canCloseDocumentContext->shouldCloseSelector) {
-		id objc_msgSend(id, SEL, ...);
+//		id objc_msgSend(id, SEL, ...);
 		void (*callback)(id, SEL, NSDocument *, BOOL, void *) = (void (*)(id, SEL, NSDocument *, BOOL, void *))objc_msgSend;
 		(*callback)(canCloseDocumentContext->delegate, canCloseDocumentContext->shouldCloseSelector, self, canCloseDocumentClose, canCloseDocumentContext->contextInfo);
 	}

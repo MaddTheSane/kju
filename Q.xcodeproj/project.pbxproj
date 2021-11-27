@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -25,8 +25,6 @@
 		27210CD80D51A2360067EBF6 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27210CD70D51A2360067EBF6 /* OpenGL.framework */; };
 		273B943A0CC0E2E20006BD99 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 273B94390CC0E2E10006BD99 /* IOKit.framework */; };
 		273B965D0CC1E19E0006BD99 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 273B965B0CC1E19E0006BD99 /* Localizable.strings */; };
-		274EB3DC0D37C6F200E1A75D /* Sparkle.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 274EB3DB0D37C6F200E1A75D /* Sparkle.framework */; };
-		274EB4050D37C74800E1A75D /* Sparkle.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 274EB3DB0D37C6F200E1A75D /* Sparkle.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		274EB4450D37CCF600E1A75D /* QDocumentWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EB4390D37CCF600E1A75D /* QDocumentWindowController.m */; };
 		274EB4460D37CCF600E1A75D /* QDocumentTaskController.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EB43A0D37CCF600E1A75D /* QDocumentTaskController.m */; };
 		274EB4480D37CCF600E1A75D /* QDocumentDistributedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 274EB43F0D37CCF600E1A75D /* QDocumentDistributedObject.m */; };
@@ -50,6 +48,7 @@
 		55BA7AA91BD40CB800A404A1 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 55BA7AA81BD40CB800A404A1 /* Media.xcassets */; };
 		55BA7AAC1BD4144800A404A1 /* QEditVM.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55BA7AAE1BD4144800A404A1 /* QEditVM.xib */; };
 		55BA7AB11BD4146600A404A1 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55BA7AB31BD4146600A404A1 /* MainMenu.xib */; };
+		55C9170A275212E4003725D4 /* Sparkle in Frameworks */ = {isa = PBXBuildFile; productRef = 55C91709275212E4003725D4 /* Sparkle */; };
 		8D15AC2C0486D014006FF6A4 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 2A37F4B9FDCFA73011CA2CEA /* Credits.rtf */; };
 		8D15AC2F0486D014006FF6A4 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 089C165FFE840EACC02AAC07 /* InfoPlist.strings */; };
 		8D15AC320486D014006FF6A4 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A37F4B0FDCFA73011CA2CEA /* main.m */; settings = {ATTRIBUTES = (); }; };
@@ -73,7 +72,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				274EB4050D37C74800E1A75D /* Sparkle.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -90,7 +88,6 @@
 		273B94390CC0E2E10006BD99 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		273B965C0CC1E19E0006BD99 /* en */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		273B989F0CC2ABCC0006BD99 /* CGSPrivate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CGSPrivate.h; sourceTree = "<group>"; };
-		274EB3DB0D37C6F200E1A75D /* Sparkle.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Sparkle.framework; sourceTree = "<group>"; };
 		274EB4390D37CCF600E1A75D /* QDocumentWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QDocumentWindowController.m; sourceTree = "<group>"; };
 		274EB43A0D37CCF600E1A75D /* QDocumentTaskController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QDocumentTaskController.m; sourceTree = "<group>"; };
 		274EB43B0D37CCF600E1A75D /* QDocumentWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QDocumentWindowController.h; sourceTree = "<group>"; };
@@ -150,9 +147,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				55C9170A275212E4003725D4 /* Sparkle in Frameworks */,
 				8D15AC340486D014006FF6A4 /* Cocoa.framework in Frameworks */,
 				273B943A0CC0E2E20006BD99 /* IOKit.framework in Frameworks */,
-				274EB3DC0D37C6F200E1A75D /* Sparkle.framework in Frameworks */,
 				27210CD80D51A2360067EBF6 /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -163,7 +160,6 @@
 		1058C7A6FEA54F5311CA2CBB /* Linked Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				274EB3DB0D37C6F200E1A75D /* Sparkle.framework */,
 				273B94390CC0E2E10006BD99 /* IOKit.framework */,
 				1058C7A7FEA54F5311CA2CBB /* Cocoa.framework */,
 			);
@@ -342,6 +338,9 @@
 				2796F66D0D58EA50006DA3A0 /* PBXTargetDependency */,
 			);
 			name = Q;
+			packageProductDependencies = (
+				55C91709275212E4003725D4 /* Sparkle */,
+			);
 			productInstallPath = "$(HOME)/Applications";
 			productName = Q;
 			productReference = 8D15AC370486D014006FF6A4 /* Q.app */;
@@ -356,7 +355,7 @@
 				LastUpgradeCheck = 0700;
 			};
 			buildConfigurationList = C05733CB08A9546B00998B17 /* Build configuration list for PBXProject "Q" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 1;
 			knownRegions = (
@@ -366,6 +365,9 @@
 				pl,
 			);
 			mainGroup = 2A37F4AAFDCFA73011CA2CEA /* Q */;
+			packageReferences = (
+				55C91708275212E4003725D4 /* XCRemoteSwiftPackageReference "Sparkle" */,
+			);
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -542,7 +544,10 @@
 				GCC_PREFIX_HEADER = Q_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				MARKETING_VERSION = 0.9.2d107;
 				PRODUCT_BUNDLE_IDENTIFIER = ch.kberg.Q;
 				PRODUCT_NAME = Q;
@@ -568,7 +573,10 @@
 				GCC_PREFIX_HEADER = Q_Prefix.pch;
 				INFOPLIST_FILE = Info.plist;
 				INSTALL_PATH = "$(HOME)/Applications";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
 				MARKETING_VERSION = 0.9.2d107;
 				PRODUCT_BUNDLE_IDENTIFIER = ch.kberg.Q;
 				PRODUCT_NAME = Q;
@@ -676,6 +684,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		55C91708275212E4003725D4 /* XCRemoteSwiftPackageReference "Sparkle" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sparkle-project/Sparkle";
+			requirement = {
+				kind = exactVersion;
+				version = 1.27.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		55C91709275212E4003725D4 /* Sparkle */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 55C91708275212E4003725D4 /* XCRemoteSwiftPackageReference "Sparkle" */;
+			productName = Sparkle;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 2A37F4A9FDCFA73011CA2CEA /* Project object */;
 }
